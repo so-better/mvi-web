@@ -1,0 +1,225 @@
+<template>
+	<transition v-if="closable" name="mvi-label">
+		<div v-on="listeners" v-if="show" :class="labelClass" :style="labelStyle">
+			<slot></slot>
+			<span v-if="closable" class="mvi-label-closable" @click="closeLabel">
+				<m-icon type="times" />
+			</span>
+		</div>
+	</transition>
+	<div v-on="listeners" v-else :class="labelClass" :style="labelStyle">
+		<slot></slot>
+		<span v-if="closable" class="mvi-label-closable" @click="closeLabel">
+			<m-icon type="times" />
+		</span>
+	</div>
+</template>
+
+<script>
+	export default {
+		name:"m-label",
+		data(){
+			return {
+				show:true
+			}
+		},
+		props:{
+			type:{//标签样式
+				type:String,
+				default:'default',
+				validator(value){
+					return ['default','error','info','primary','success','warn'].includes(value)
+				}
+			},
+			size:{//标签大小
+				type:String,
+				default:'medium',
+				validator(value){
+					return ['medium','large'].includes(value)
+				}
+			},
+			color:{//自定义颜色
+				type:String,
+				default:null
+			},
+			plain:{//是否为朴素样式
+				type:Boolean,
+				default:false
+			},
+			round:{//是否为圆角样式
+				type:Boolean,
+				default:false
+			},
+			mark:{//是否为标记样式
+				type:Boolean,
+				default:false
+			},
+			textColor:{//文本颜色
+				type:String,
+				default:null
+			},
+			closable:{//是否可关闭
+				type:Boolean,
+				default:false
+			}
+		},
+		computed:{
+			listeners(){
+				return Object.assign({},this.$listeners)
+			},
+			labelClass(){
+				var cls = 'mvi-label';
+				if(this.size){
+					cls += ' mvi-label-' + this.size;
+				}
+				if(this.type){
+					cls += ' mvi-label-' + this.type;
+				}
+				if(this.plain){
+					cls += ' mvi-label-plain';
+				}
+				if(this.round){
+					cls += ' mvi-label-round';
+				}
+				if(this.mark){
+					cls += ' mvi-label-mark';
+				}
+				return cls;
+			},
+			labelStyle(){
+				var style = {};
+				if(this.color){
+					if(this.plain){
+						style.borderColor = this.color;
+						style.color = (this.textColor?this.textColor:this.color);
+					}else{
+						style.backgroundColor = this.color;
+						style.borderColor = this.color;
+						style.color = (this.textColor?this.textColor:"#fff");
+					}
+				}
+				if(this.textColor){
+					style.color = this.textColor;
+				}
+				return style;
+			}
+		},
+		methods:{
+			closeLabel(){
+				this.show = false;
+			}
+		}
+	}
+</script>
+
+<style scoped lang="less">
+	@import "../../css/mvi-basic.less";
+	
+	.mvi-label{
+		display: inline-flex;
+		display: -webkit-inline-flex;
+		justify-content: flex-start;
+		align-items: center;
+		border-radius: @radius-default;
+		border: 1px solid transparent;
+		border-radius: @radius-default;
+		margin: 0;
+	}
+	.mvi-label-medium{
+		padding: @mp-xs;
+		font-size: @font-size-small;
+		line-height: 1;
+	}
+	.mvi-label-large{
+		padding: @mp-sm;
+		font-size: @font-size-default;
+		line-height: 1;
+	}
+	.mvi-label-default{
+		background-color:@light-default;
+		border-color:@light-default;
+		color: @font-color-sub;
+	}
+	
+	.mvi-label-success{
+		background-color: @success-normal;
+		border-color: @success-normal;
+		color: #fff;
+	}
+	
+	.mvi-label-warn{
+		background-color: @warn-normal;
+		border-color: @warn-normal;
+		color: #fff;
+	}
+	
+	.mvi-label-error{
+		background-color: @error-normal;
+		border-color: @error-normal;
+		color: #fff;
+	}
+	.mvi-label-info{
+		background-color: @info-normal;
+		border-color: @info-normal;
+		color: #fff;
+	}
+	.mvi-label-primary{
+		background-color: @primary-normal;
+		border-color: @primary-normal;
+		color: #fff;
+	}
+	
+	.mvi-label-round{
+		border-radius: @radius-round;
+	}
+	
+	.mvi-label-mark{
+		border-radius: @radius-round;
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	
+	.mvi-label-plain{
+		background-color: #fff;
+	}
+	.mvi-label-default.mvi-label-plain{
+		border-color: @border-color;
+		color: @font-color-sub;
+	}
+	.mvi-label-success.mvi-label-plain{
+		border-color: @success-normal;
+		color: @success-normal;
+	}
+	.mvi-label-warn.mvi-label-plain{
+		border-color: @warn-normal;
+		color: @warn-normal;
+	}
+	.mvi-label-error.mvi-label-plain{
+		border-color: @error-normal;
+		color: @error-normal;
+	}
+	.mvi-label-info.mvi-label-plain{
+		border-color: @info-normal;
+		color: @info-normal;
+	}
+	.mvi-label-primary.mvi-label-plain{
+		border-color: @primary-normal;
+		color: @primary-normal;
+	}
+	
+	.mvi-label-closable{
+		display: inline-block;
+		margin-left: @mp-sm;
+		font-size: .8em;
+		cursor: pointer;
+	}
+	
+	.mvi-label-enter-active,.mvi-label-leave-active{
+		transition: opacity 300ms;
+		-webkit-transition: opacity 300ms;
+	}
+	
+	.mvi-label-enter,.mvi-label-leave-to{
+		opacity: 0;
+	}
+</style>

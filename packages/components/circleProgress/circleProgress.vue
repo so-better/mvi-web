@@ -1,0 +1,203 @@
+<template>
+	<div class="mvi-circle-progress" :style="'width: '+(size?size:'')+'; height: '+(size?size:'')" v-on="listeners">
+		<svg :viewBox="viewBox">
+			<path :d="pathD" :style="trackStyle" class="mvi-circle-progress-track"></path>
+			<path :d="pathD" :style="barStyle" class="mvi-circle-progress-bar"></path>
+		</svg>
+		<div v-if="showTip" class="mvi-circle-progress-tip">
+			<slot v-if="$scopedSlots.tip" name="tip" :value="value"></slot>
+			<span v-else :class="(tipClass?tipClass:'')" v-text="computedValue"></span>
+		</div>
+	</div>
+</template>
+
+<script>
+	import $util from "../../util/util"
+	export default {
+		name: "m-circle-progress",
+		data() {
+			return {
+				ele: null,
+				pathSize: 1000
+			}
+		},
+		props: {
+			value: {
+				type: Number,
+				default: 0
+			},
+			max: {
+				type: Number,
+				default: 100
+			},
+			size: {
+				type: String,
+				default: null
+			},
+			color: { //进度颜色
+				type: String,
+				default: null
+			},
+			trackColor: { //轨道颜色
+				type: String,
+				default: null
+			},
+			fill: { //填充色
+				type: String,
+				default: null
+			},
+			animation: { //是否显示动画效果
+				type: Boolean,
+				default: true
+			},
+			timeout: { //动画效果的时长
+				type: Number,
+				default: 400
+			},
+			showTip: { //是否显示文字
+				type: Boolean,
+				default: false
+			},
+			tipText: { //中间显示的文本
+				type: String,
+				default: null
+			},
+			strokeWidth: { //进度条厚度
+				type: String,
+				default: null
+			},
+			round: { //进度条端点是否有圆角
+				type: Boolean,
+				default: false
+			},
+			clockWise: { //是否顺时针增加
+				type: Boolean,
+				default: true
+			},
+			tipClass: { //文字内容添加额外的样式类
+				type: String,
+				default: null
+			}
+		},
+		computed: {
+			viewBox() {
+				var width = 20;
+				if ($util.isElement(this.ele)) {
+					width = $util.getCssStyle(this.ele.querySelector('path'), 'stroke-width');
+					width = parseFloat(width);
+				}
+				return `0 0 ${this.pathSize+2*width} ${this.pathSize+2*width}`;
+			},
+			pathD() {
+				var width = 20;
+				if ($util.isElement(this.ele)) {
+					width = $util.getCssStyle(this.ele.querySelector('path'), 'stroke-width');
+					width = parseFloat(width);
+				}
+				return `M ${this.pathSize/2+width} ${this.pathSize/2+width} m 0, -${this.pathSize/2} a ${this.pathSize/2}, ${this.pathSize/2} 0 1, ${this.clockWise?1:0} 0, ${this.pathSize} a ${this.pathSize/2}, ${this.pathSize/2} 0 1, ${this.clockWise?1:0} 0, -${this.pathSize}`;
+			},
+			computedValue() {
+				if (this.tipText) {
+					return this.tipText;
+				} else {
+					return Math.round((this.value > this.max ? this.max : this.value) / this.max * 100) + "%";
+				}
+			},
+			barStyle() {
+				var style = {};
+				if (this.fill) {
+					style.fill = this.fill;
+				}
+				if (this.color) {
+					style.stroke = this.color;
+				}
+				if (this.strokeWidth) {
+					style.strokeWidth = this.strokeWidth;
+				}
+
+				if (this.round) {
+					style.strokeLinecap = 'round';
+				}
+				if (this.animation) {
+					style.transition = 'stroke-dasharray ' + this.timeout + 'ms';
+					style.webkitTransition = 'stroke-dasharray ' + this.timeout + 'ms';
+				}
+				//计算进度
+				var circleLength = Number((this.pathSize * Math.PI).toFixed(2)); //圆周长
+				var valueLength = Number((((this.value > this.max ? this.max : this.value) / this.max) * circleLength).toFixed(2)); //进度长度
+				style.strokeDasharray = valueLength + ',' + (circleLength - valueLength);
+				return style;
+			},
+			trackStyle() {
+				var style = {};
+				if (this.fill) {
+					style.fill = this.fill;
+				}
+				if (this.trackColor) {
+					style.stroke = this.trackColor;
+				}
+				if (this.strokeWidth) {
+					style.strokeWidth = this.strokeWidth;
+				}
+				return style;
+			},
+			listeners() {
+				return Object.assign({}, this.$listeners)
+			}
+		},
+		mounted() {
+			this.ele = this.$el;
+		},
+	}
+</script>
+
+<style scoped lang="less">
+	@import "../../css/mvi-basic.less";
+
+	.mvi-circle-progress {
+		display: inline-block;
+		position: relative;
+		width: 2rem;
+		height: 2rem;
+		margin: 0;
+		padding: 0;
+	}
+
+	.mvi-circle-progress>svg {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.mvi-circle-progress-track {
+		fill: none;
+		stroke:@bg-color-dark;
+		stroke-width: 0.2rem;
+		margin: 0;
+		padding: 0;
+	}
+
+	.mvi-circle-progress-bar {
+		fill: none;
+		stroke: @info-normal;
+		stroke-width: 0.2rem;
+		margin: 0;
+		padding: 0;
+		stroke-linecap: square;
+	}
+
+	.mvi-circle-progress-tip {
+		display: inline-block;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		-webkit-transform: translate(-50%,-50%);
+		width: 100%;
+		font-size: @font-size-default;
+		color: @font-color-sub;
+		line-height: 1.5;
+		text-align: center;
+		z-index: 10;
+	}
+</style>

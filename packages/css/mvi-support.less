@@ -1,0 +1,272 @@
+/**
+ * 常用的一些简单的样式辅助类配置，可以直接使用
+ */
+@import "./mvi-basic.less";
+
+//Y轴回弹滚动效果
+.mvi-scrolling-touch {
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
+	-webkit-overflow-scrolling: touch !important;
+}
+//错误样式文本
+.mvi-text-error {
+	color: @error-normal !important;
+}
+//警告样式文本
+.mvi-text-warn {
+	color: @warn-normal !important;
+}
+//普通信息文本
+.mvi-text-info {
+	color: @info-normal !important;
+}
+//成功样式文本
+.mvi-text-success {
+	color: @success-normal !important;
+}
+//首要样式文本
+.mvi-text-primary {
+	color: @primary-normal !important;
+}
+//链接样式文本
+.mvi-text-link{
+	color: @font-color-link !important;
+}
+//灰色样式文本
+.mvi-text-muted{
+	color: @font-color-mute !important;
+}
+//白色样式文本
+.mvi-text-white{
+	color: #fff !important;
+}
+//副文本样式
+.mvi-text-sub{
+	color: @font-color-sub !important;
+}
+
+//成功样式的背景色
+.mvi-bg-success{
+	background-color: @light-success !important;
+	color: @success-normal !important;
+}
+//警告样式的背景色
+.mvi-bg-warn {
+	background-color: @light-warn !important;
+	color: @warn-normal !important;
+}
+//普通信息的背景色
+.mvi-bg-info {
+	background-color: @light-info !important;
+	color: @info-normal !important;
+}
+//首要样式的背景色
+.mvi-bg-primary {
+	background-color: @light-primary !important;
+	color:#fff !important;
+}
+//错误样式的背景色
+.mvi-bg-error {
+	background-color: @light-error !important;
+	color: @error-normal !important;
+}
+//柔和灰色的背景色
+.mvi-bg-muted {
+	background-color: @light-default !important;
+	color: @font-color-default !important;
+}
+
+//文本右对齐
+.mvi-text-right {
+	text-align: right !important;
+}
+//文本左对齐
+.mvi-text-left {
+	text-align: left !important;
+}
+//文本居中对齐
+.mvi-text-center {
+	text-align: center !important;
+}
+//文本两端对齐
+.mvi-text-justify {
+	text-align: justify !important;
+}
+//作为块元素其内容水平垂直居中
+.mvi-flex-center {
+	display: flex !important;
+	display: -webkit-flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+//作为行内元素其内容水平垂直居中
+.mvi-inline-center{
+	display: inline-flex !important;
+	display: -webkit-inline-flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+}
+
+//圆角
+.mvi-radius-default{
+	border-radius: @radius-default !important;
+}
+.mvi-radius-round{
+	border-radius: @radius-round !important;
+}
+.mvi-radius-circle{
+	border-radius: @radius-circle !important;
+}
+
+//加粗
+.mvi-text-bold{
+	font-weight: bold !important;
+}
+//粗细默认
+.mvi-text-normal{
+	font-weight: normal !important;
+}
+//变细
+.mvi-text-light{
+	font-weight: lighter !important;
+}
+
+//外边距、内边距辅助类
+.distance(@num,@attribue){
+	.mixin(@attribute) when (@attribute = m){
+		.mvi-@{attribute}-@{num}{
+			margin:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = ml){
+		.mvi-@{attribute}-@{num}{
+			margin-left:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = mr){
+		.mvi-@{attribute}-@{num}{
+			margin-right:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = mt){
+		.mvi-@{attribute}-@{num}{
+			margin-top:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = mb){
+		.mvi-@{attribute}-@{num}{
+			margin-bottom:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = mx){
+		.mvi-@{attribute}-@{num}{
+			margin-left:0.1rem * @num !important;
+			margin-right:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = my){
+		.mvi-@{attribute}-@{num}{
+			margin-top:0.1rem * @num !important;
+			margin-bottom:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = p){
+		.mvi-@{attribute}-@{num}{
+			padding:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = px){
+		.mvi-@{attribute}-@{num}{
+			padding-left: 0.1rem * @num !important;
+			padding-right:0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = py){
+		.mvi-@{attribute}-@{num}{
+			padding-top: 0.1rem * @num !important;
+			padding-bottom: 0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = pl){
+		.mvi-@{attribute}-@{num}{
+			padding-left: 0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = pr){
+		.mvi-@{attribute}-@{num}{
+			padding-right: 0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = pt){
+		.mvi-@{attribute}-@{num}{
+			padding-top: 0.1rem * @num !important;
+		}
+	}
+	.mixin(@attribute) when (@attribute = pb){
+		.mvi-@{attribute}-@{num}{
+			padding-bottom: 0.1rem * @num !important;
+		}
+	}
+	
+	
+	//执行这个函数
+	.mixin(@attribue);
+}
+.loop(@i) when (@i<=10){
+	.distance(@i,m);
+	.distance(@i,ml);
+	.distance(@i,mr);
+	.distance(@i,mt);
+	.distance(@i,mb);
+	.distance(@i,mx);
+	.distance(@i,my);
+	.distance(@i,p);
+	.distance(@i,pl);
+	.distance(@i,pr);
+	.distance(@i,pt);
+	.distance(@i,pb);
+	.distance(@i,px);
+	.distance(@i,py);
+	.loop(@i+1);
+}
+.loop(0);
+
+//省略文本辅助类
+.ellipsis(@num){
+	.mvi-ellipsis-@{num}{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp:@num;
+		-webkit-box-orient: vertical;
+	}
+}
+.loopEllipsis(@i) when (@i<=5){
+	.ellipsis(@i);
+	.loopEllipsis(@i+1);
+}
+.loopEllipsis(1);
+
+
+//单行文本省略
+.mvi-text-ellipsis{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+//flex布局
+.mvi-flex-start{
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+//鼠标悬浮样式
+.mvi-cursor-pointer{
+	&:hover{
+		cursor: pointer;
+	}
+}

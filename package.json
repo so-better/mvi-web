@@ -1,0 +1,28 @@
+{
+  "name": "mvi-web",
+  "version": "3.1.5",
+  "private": false,
+  "author": "lingkai",
+  "main": "packages/index.js",
+  "license": "MIT",
+  "description": "一个基于Vue.js的前端样式框架",
+  "scripts": {
+    "serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name mvi --dest lib packages/index.js"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.1.0",
+    "@vue/cli-service": "^4.1.0",
+    "core-js": "^3.6.5",
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0",
+    "rem-fit": "^1.2.5",
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
