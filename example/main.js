@@ -4,7 +4,7 @@ Vue.config.productionTip = false
 import mvi from "../packages"
 Vue.use(mvi)
 import RemFit from "rem-fit"
-var remFit = new RemFit(20,false);
+var remFit = new RemFit(20,true);
 remFit.set();
 new Vue({
   render: h => h(App),
