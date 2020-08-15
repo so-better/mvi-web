@@ -173,8 +173,6 @@
 	.mvi-layer{
 		position: absolute;
 		z-index: 400;
-		overflow: hidden;
-		
 		
 		&.mvi-layer-fixed{
 			position: fixed;

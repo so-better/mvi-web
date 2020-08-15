@@ -1,124 +1,95 @@
 <template>
 	<div class="mvi-editor" v-on="listeners">
 		<div class="mvi-editor-menus">
-			<div
-				class="mvi-editor-menu"
-				v-for="(item, index) in computedMenuKeys"
-				:key="'mvi-editor-menu-' + index"
-				v-if="showMenu(item)"
-				:data-id="'mvi-editor-menu-' + _uid + '-' + index"
-				@mouseenter="hoverOpenLayer(item)"
-				@mouseleave="hoverCloseLayer(item)"
-			>
-				<div @click="clickTriggerLayer(item)" :mvi-editor-key="item" class="mvi-editor-menu-item" :data-id="'mvi-editor-menu-item-' + _uid + '-' + index">
-					<m-icon :type="icons[item]" />
-				</div>
-				<transition name="mvi-editor-layer" v-if="isSelect(item)">
-					<m-layer
-						v-show="selectShows[item]"
-						:root="`[data-id='mvi-editor-menu-${_uid}-${index}']`"
-						:target="`[data-id='mvi-editor-menu-item-${_uid}-${index}']`"
-						:placement="placement"
-						:fixed="fixed"
-						:z-index="zIndex"
-						offset="0rem"
-						class="mvi-editor-layer"
-						ref="layer"
-						:mvi-editor-key="item"
-					>
-						<div v-if="item == 'backColor' || item == 'foreColor'" class="mvi-editor-layer-colors">
-							<div
-								class="mvi-editor-color"
-								:style="'background-color:' + el.value"
-								v-for="(el, i) in computedMenus[item]"
-								:key="'mvi-editor-color-' + i"
-								@click="select(item, el)"
-							></div>
-						</div>
-						<div v-else-if="item == 'image' || item == 'video'" class="mvi-editor-layer-medias">
-							<div class="mvi-editor-media-header">
-								<div v-if="computedMenus[item].upload" :mvi-editor-key="item" @click="goLocalUpload(item)"
-								:class="(mediaTabs[item] == 0)?'mvi-editor-media-active':''">本地上传</div>
-								<div v-if="computedMenus[item].remote" :mvi-editor-key="item" @click="goRemote(item)"
-								:class="(mediaTabs[item] == 1)?'mvi-editor-media-active':''">{{item=='image'?'网络图片':'网络视频'}}</div>
-							</div>
-							<div class="mvi-editor-media-content">
-								<div v-show="mediaTabs[item] == 0" :mvi-editor-key="item">
-									<m-icon :mvi-editor-key="item" class="mvi-editor-media-upload" type="upload"
-									 v-upload="uploadOptions(item)"/>
-								</div>
-								<div v-show="mediaTabs[item] == 1" :mvi-editor-key="item">
-									
-								</div>
-							</div>
-						</div>
-						<div v-else class="mvi-editor-layer-wrapper">
-							<div
-								@click="select(item, el)"
-								unselectable="off"
-								class="mvi-editor-select-item"
-								v-text="el.label"
-								v-for="(el, i) in computedMenus[item]"
-								:key="'mvi-editor-menu-select-' + i"
-							></div>
-						</div>
-					</m-layer>
-				</transition>
-			</div>
+			<m-editor-item v-if="showMenuItem(item)" v-for="(item,index) in computedMenuKeys" :key="'mvi-editor-menu-'+index"
+			:value="item" :menu="computedMenus[item]"></m-editor-item>
 		</div>
-		<div :class="contentClass" :contenteditable="!disabled" :style="contentStyle" v-html="value"></div>
+		<div class="mvi-editor-body">
+			<div ref="content" @blur="saveRange" :class="contentClass" :contenteditable="!disabled" :style="contentStyle" v-html="value"></div>
+		</div>
 	</div>
 </template>
 
 <script>
-import $util from '../../util/util.js';
+import $util from '../../util/util.js'
+import editorItem from "./edotir-item"
 export default {
 	name: 'm-editor',
 	data() {
 		return {
-			basicMenus: {
-				//默认菜单配置
-				undo: true, //撤销
-				redo: true, //重复
-				tag: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'], //标签
-				fontSize: [
+			range:null,//选区
+			defaultLayerProps:{//默认菜单浮层配置
+				fixed:false,//是否fixed
+				placement:'bottom-start',//位置
+				zIndex:400,//浮层z-index
+			},
+			defaultMenus: {//默认菜单配置
+				undo:true, //撤销
+				redo:true,//恢复
+				tag: [//标签
 					{
-						label: '1号',
-						value: '1'
+						label:'H1',
+						value:'h1'
 					},
 					{
-						label: '2号',
-						value: '2'
+						label:'H2',
+						value:'h2'
 					},
 					{
-						label: '3号',
-						value: '3'
+						label:'H3',
+						value:'h3'
 					},
 					{
-						label: '4号',
-						value: '4'
+						label:'H4',
+						value:'h4'
 					},
 					{
-						label: '5号',
-						value: '5'
+						label:'H5',
+						value:'h5'
 					},
 					{
-						label: '6号',
-						value: '6'
+						label:'H6',
+						value:'h6'
 					},
 					{
-						label: '7号',
-						value: '7'
+						label:'段落',
+						value:'p'
 					}
-				], //字号
+				], 
+				fontSize: [//字号
+					{
+						label: '12px',
+						value: '0.24rem'
+					},
+					{
+						label: '14px',
+						value: '0.28rem'
+					},
+					{
+						label: '16px',
+						value: '0.32rem'
+					},
+					{
+						label: '20px',
+						value: '0.4rem'
+					},
+					{
+						label: '30px',
+						value: '0.6rem'
+					},
+					{
+						label: '40px',
+						value: '0.8rem'
+					}
+				], 
 				fontFamily: ['PingFang SC', 'Helvetica Neue', 'kaiTi', 'Microsoft YaHei', 'Arial', 'sans-serif'], //字体
-				bold: true, //加粗
-				italic: true, //斜体
-				underline: true, //下划线
-				strikeThrough: true, //删除线
-				subscript: true, //下标
-				superscript: true, //上标
-				foreColor: [
+				bold:true,//加粗
+				italic:true,//斜体 
+				underline:true,//下划线
+				strikeThrough:true,//删除线 
+				subscript:true,//下标
+				superscript: true,//上标
+				foreColor: [//字体颜色
 					'#333',
 					'#ff0000',
 					'#505050',
@@ -139,8 +110,8 @@ export default {
 					'#ffd6b6',
 					'#1eacf3',
 					'#f9cec3'
-				], //字体颜色
-				backColor: [
+				], 
+				backColor: [//背景色
 					'#505050',
 					'#808080',
 					'#bbb',
@@ -159,9 +130,8 @@ export default {
 					'#ffd6b6',
 					'#1eacf3',
 					'#f9cec3'
-				], //背景色
-				list: [
-					//列表
+				], 
+				list: [//列表
 					{
 						label: '有序列表',
 						value: 'ol'
@@ -170,9 +140,8 @@ export default {
 						label: '无序列表',
 						value: 'ul'
 					}
-				], //插入链接
-				justify: [
-					//对齐方式
+				],
+				justify: [//对齐方式
 					{
 						label: '左对齐',
 						value: 'left'
@@ -190,44 +159,94 @@ export default {
 						value: 'justify'
 					}
 				],
-				quote: true, //引用
-				link: true, //链接
-				image: true, //插入图片
-				video: true, //插入视频
-				table: true, //插入表格
-				code: true //插入代码
+				quote:true,//引用
+				link: [{//链接
+					label:'插入链接',
+					value:'link'
+				}],
+				image: [//插入图片
+					{
+						label:'本地上传',
+						value:'upload'
+					},
+					{
+						label:'网络图片',
+						value:'remote'
+					}
+				], 
+				video: [//插入视频
+					{
+						label:'本地上传',
+						value:'upload'
+					},
+					{
+						label:'网络视频',
+						value:'remote'
+					}
+				], 
+				table: [//插入表格
+					{
+						label:'插入表格',
+						value:'table'
+					}
+				], 
+				code:true,//插入代码 
 			},
-			icons: {
-				//菜单图标
-				undo: 'undo',
-				redo: 'redo',
-				tag: 'font-title',
-				bold: 'bold',
-				fontSize: 'font-size',
-				fontFamily: 'font',
-				italic: 'italic',
-				underline: 'underline',
-				strikeThrough: 'strikethrough',
-				subscript: 'subscript',
-				superscript: 'superscript',
-				foreColor: 'color-picker',
-				backColor: 'brush',
-				link: 'link',
-				list: 'ul',
-				justify: 'align-justify',
-				quote: 'quote',
-				image: 'image',
-				table: 'table-alt',
-				video: 'video',
-				code: 'code'
+			defaultTooltips:{//默认的工具提示内容
+				undo:'撤销',
+				redo:'重做',
+				tag:'标签',
+				fontSize:'字号',
+				fontFamily:'字体',
+				bold:'加粗',
+				italic:'斜体',
+				underline:'下划线',
+				strikeThrough:'删除线',
+				subscript:'下标',
+				superscript:'上标',
+				foreColor:'字体颜色',
+				backColor:'背景色',
+				list:'列表',
+				justify:'对齐方式',
+				quote:'引用',
+				link:'插入链接',
+				image:'插入图片',
+				video:'插入视频',
+				table:'插入表格',
+				code:'插入代码'
 			},
-			selectShows: {}, //控制每个layer是否显示
-			layers: {} ,//存放每个layer的vue组件实例
-			mediaTabs:{//用以显示媒体上传的tab
-				image:0,
-				video:0
+			defaultTooltipProps:{//默认工具提示组件参数配置
+				placement:'bottom',
+				timeout:400,
+				color:'#333',
+				textColor:'#fff',
+				borderColor:'#333'
+			},
+			defaultUploadImageProps:{//默认上传图片配置
+				multiple:false,//是否多选
+				allowedFileType:['jpg','png','JPG','PNG','JPEG','jpeg','gif','GIF'],//限定格式
+				accept:'image',//限制类型
+				minSize:-1,//限制单个图片最小值，单位kb
+				maxSize:-1,//限定单个图片最大值，单位kb
+				minLength:-1,//多选时选择图片的最小数量
+				maxLength:-1,//多选时选择图片的最大数量
+			},
+			defaultUploadVideoProps:{//默认上传视频配置
+				multiple:false,//是否多选
+				allowedFileType:['mp4','MP4','avi','AVI','WAV','wav'],//限定格式
+				accept:'video',//限制类型
+				minSize:-1,//限制单个视频最小值，单位kb
+				maxSize:-1,//限定单个视频最大值，单位kb
+				minLength:-1,//多选时选择视频的最小数量
+				maxLength:-1,//多选时选择视频的最大数量
+			},
+			defaultVideoShowProps:{//视频显示设置
+				autoplay:true,//视频是否自动播放
+				muted:true,//视频静音
+				controls:false,//是否显示控制器
+				loop:false,//是否循环
 			}
-		};
+		}
 	},
 	model: {
 		prop: 'value',
@@ -266,20 +285,12 @@ export default {
 				return {};
 			}
 		},
-		//菜单选择浮层位置
-		placement: {
-			type: String,
-			default: 'bottom'
-		},
-		//菜单选择浮层是否为fixed
-		fixed: {
-			type: Boolean,
-			default: false
-		},
-		//菜单选择浮层z-index值
-		zIndex: {
-			type: Number,
-			default: 400
+		//菜单项浮层参数
+		layerProps:{
+			type:Object,
+			default:function(){
+				return {}
+			}
 		},
 		//触发悬浮层显现的方式
 		trigger: {
@@ -289,81 +300,94 @@ export default {
 				return ['hover', 'click'].includes(value);
 			}
 		},
-		//是否允许本地上传图片和视频
-		promiseUpload: {
-			type: Boolean,
-			default: false
-		},
 		//本地上传文件是否使用base64
 		useBase64:{
 			type:Boolean,
 			default:true
+		},
+		//提示内容配置
+		tooltips:{
+			type:Object,
+			default:function(){
+				return {}
+			}
+		},
+		//提示组件参数配置
+		tooltipProps:{
+			type:Object,
+			default:function(){
+				return {}
+			}
+		},
+		//自定义上传图片配置
+		uploadImageProps:{
+			type:Object,
+			default:function(){
+				return {}
+			}
+		},
+		//自定义上传视频配置
+		uploadVideoProps:{
+			type:Object,
+			default:function(){
+				return {}
+			}
+		},
+		//自定义上传图片出错回调
+		uploadImageError:{
+			type:Function
+		},
+		//自定义上传视频出错回调
+		uploadVideoError:{
+			type:Function
+		},
+		//自定义视频显示设置
+		videoShowProps:{
+			type:Object,
+			default:function(){
+				return {}
+			}
 		}
 	},
 	computed: {
 		listeners() {
 			return Object.assign({}, this.$listeners);
 		},
-		//是否显示指定菜单
-		showMenu() {
-			return key => {
-				if (typeof this.computedMenus[key] == 'boolean') {
+		//是否显示指定菜单项
+		showMenuItem(){
+			return key=>{
+				if(typeof(this.computedMenus[key]) == 'boolean'){
 					return this.computedMenus[key];
-				} else if (Array.isArray(this.computedMenus[key])) {
+				}else if (Array.isArray(this.computedMenus[key])){
 					return this.computedMenus[key].length > 0;
-				}else if($util.isObject(this.computedMenus[key])){
-					var flag = false;
-					Object.keys(this.computedMenus).forEach(item=>{
-						if(item){
-							flag = true;
-						}
-					})
-					return flag;
-				}
-			};
-		},
-		//是否为可选择的菜单项
-		isSelect() {
-			return key => {
-				if (Array.isArray(this.computedMenus[key]) || typeof this.computedMenus[key] == 'object') {
-					return true;
-				} else {
+				}else {
 					return false;
 				}
-			};
+			}
 		},
 		//菜单配置值
 		computedMenus() {
 			var menus = {};
-			Object.keys(this.basicMenus).forEach(key => {
-				//布尔值
-				if (typeof this.basicMenus[key] == 'boolean') {
-					if (key == 'image' || key == 'video') {
-						menus[key] = {
-							remote: this.basicMenus[key], //远程图片路径
-							upload: this.promiseUpload ,//本地上传
-						};
-						this.mediaTabs[key] = 0;
-					} else {
-						menus[key] = this.basicMenus[key];
-					}
-				} else if (Array.isArray(this.basicMenus[key])) {
-					//数组
+			Object.keys(this.defaultMenus).forEach(key => {
+				//数组
+				if (Array.isArray(this.defaultMenus[key])) {
 					var newArray = [];
-					this.basicMenus[key].forEach(item => {
-						if (typeof item == 'string' || $util.isNumber(item)) {
-							newArray.push({
-								label: item,
-								value: item
-							});
-						} else if ($util.isObject(item)) {
+					this.defaultMenus[key].forEach(item => {
+						if ($util.isObject(item) && item.label && item.value) {
 							newArray.push({
 								label: item.label,
 								value: item.value
-							});
+							})
+						} else if (typeof item == 'string' || $util.isNumber(item)) {
+							newArray.push({
+								label: item,
+								value: item
+							})
 						}
 					});
 					menus[key] = newArray;
+				}else if(typeof(this.defaultMenus[key]) == 'boolean'){//非数组情况只能是布尔值
+					menus[key] = this.defaultMenus[key];
 				}
 			});
 			return menus;
@@ -393,201 +417,39 @@ export default {
 				}
 			}
 			return style;
-		},
-		//上传文件配置
-		uploadOptions(){
-			return key=>{
-				return {
-					select:files=>{
-						//使用base64
-						if(this.useBase64){
-							$util.dataFileToBase64(files[0]).then(base64=>{
-								if(key == 'image'){
-									this.insertImage(base64);
-								}else {
-									this.insertVideo(base64);
-								}
-							})
-						}else {
-							//自定义一个事件，让开发者自定义上传
-							this.$emit('upload',{
-								type:key,
-								file:files[0]
-							})
-						}
-					}
-				}
-			}
 		}
 	},
+	provide(){
+		return {
+			editor:this
+		}
+	},
+	components:{
+		mEditorItem:editorItem
+	},
 	mounted() {
-		this.init();
-		console.log(this.computedMenus);
+		this.init()
+		console.log(this.computedMenus)
 	},
 	methods: {
 		//初始化
 		init() {
-			//将自定义的值配置到基本配置中去，进行覆盖
-			Object.assign(this.basicMenus, this.menus);
-			//设置每个有下拉选择的菜单项的下拉框默认不显示
-			this.computedMenuKeys.forEach((key, index) => {
-				if (Array.isArray(this.computedMenus[key])) {
-					this.$set(this.selectShows, key, false);
-				}
-			});
-			//存放layer组件实例
-			this.$refs.layer.forEach(layer => {
-				this.$set(this.layers, layer.$el.getAttribute('mvi-editor-key'), layer);
-			});
-			//trigger为click情况下添加window点击事件来关闭浮层
-			if (this.trigger == 'click') {
-				window.addEventListener('click', this.hideLayerForWindow);
-			}
+			//将自定义的菜单项浮层配置与默认配置整合
+			Object.assign(this.defaultLayerProps,this.layerProps)
+			//将自定义的菜单栏配置与默认配置整合
+			Object.assign(this.defaultMenus, this.menus)
+			//将自定义的提示内容与默认提示整合
+			Object.assign(this.defaultTooltips,this.tooltips)
+			//将自定义的工具提示组件参数与默认工具提示组件参数整合
+			Object.assign(this.defaultTooltipProps,this.tooltipProps)
+			//将自定义上传图片配置参数与默认上传图片配置参数整合
+			Object.assign(this.defaultUploadImageProps,this.uploadImageProps)
+			//将自定义上传视频配置参数与默认上传视频配置参数整合
+			Object.assign(this.defaultUploadVideoProps,this.uploadVideoProps)
 			//定义段落分隔符
 			document.execCommand('defaultParagraphSeparator', false, 'p');
 			//使用css
 			document.execCommand('styleWithCSS', false, true);
-		},
-		//显示本地上传
-		goLocalUpload(key){
-			this.$set(this.mediaTabs,key,0);
-		},
-		goRemote(key){
-			this.$set(this.mediaTabs,key,1);
-		},
-		//点击显示/关闭悬浮层
-		clickTriggerLayer(key) {
-			if (this.disabled) {
-				return;
-			}
-			if (this.isSelect(key)) {
-				//开启下拉
-				if (this.trigger == 'click') {
-					this.$set(this.selectShows, key, !this.selectShows[key]);
-					if (this.selectShows[key]) {
-						this.$nextTick(() => {
-							this.layers[key].reset();
-						});
-					}
-				}
-			} else {
-				//直接设置
-				switch (key) {
-					case 'undo': //撤销
-						document.execCommand('undo');
-						break;
-					case 'redo': //重做
-						document.execCommand('redo');
-						break;
-					case 'bold': //加粗
-						document.execCommand('bold');
-						break;
-					case 'italic': //斜体
-						document.execCommand('italic');
-						break;
-					case 'underline': //下划线
-						document.execCommand('underline');
-						break;
-					case 'strikeThrough': //删除线
-						document.execCommand('strikeThrough');
-						break;
-					case 'subscript': //下标
-						document.execCommand('subscript');
-						break;
-					case 'superscript': //上标
-						document.execCommand('superscript');
-						break;
-					case 'quote': //引用
-						document.execCommand('formatBlock', false, 'blockquote');
-						break;
-					case 'code': //代码
-						document.execCommand('formatBlock', false, 'pre');
-						break;
-				}
-			}
-		},
-		//悬浮打开浮层
-		hoverOpenLayer(key) {
-			if (this.disabled) {
-				return;
-			}
-			if (this.isSelect(key)) {
-				//开启下拉
-				if (this.trigger == 'hover') {
-					this.$set(this.selectShows, key, true);
-					this.$nextTick(() => {
-						this.layers[key].reset();
-					});
-				}
-			}
-		},
-		//移出隐藏浮层
-		hoverCloseLayer(key) {
-			if (this.disabled) {
-				return;
-			}
-			if (this.isSelect(key)) {
-				//开启下拉
-				if (this.trigger == 'hover') {
-					this.$set(this.selectShows, key, false);
-				}
-			}
-		},
-		//选择
-		select(key, value) {
-			switch (key) {
-				case 'tag': //设置dom标签
-					document.execCommand('formatBlock', false, value.value);
-					break;
-				case 'fontSize': //设置字号
-					document.execCommand('fontSize', false, value.value);
-					break;
-				case 'fontFamily': //设置字体
-					document.execCommand('fontName', false, value.value);
-					break;
-				case 'list': //设置列表
-					if (value.value == 'ol') {
-						//有序列表
-						document.execCommand('insertOrderedList');
-					} else {
-						//无序列表
-						document.execCommand('insertUnorderedList');
-					}
-					break;
-				case 'justify': //对齐方式
-					if (value.value == 'left') {
-						document.execCommand('justifyLeft');
-					} else if (value.value == 'center') {
-						document.execCommand('justifyCenter');
-					} else if (value.value == 'right') {
-						document.execCommand('justifyRight');
-					} else if (value.value == 'justify') {
-						document.execCommand('justifyFull');
-					}
-					break;
-				case 'foreColor': //字体颜色
-					document.execCommand('foreColor', false, value.value);
-					break;
-				case 'backColor': //背景色
-					document.execCommand('hiliteColor', false, value.value);
-					break;
-			}
-			if (this.trigger == 'hover') {
-				this.$set(this.selectShows, key, false);
-			}
-		},
-		//点击窗口隐藏浮窗
-		hideLayerForWindow(event) {
-			var dataKey = event.target.getAttribute('mvi-editor-key');
-			Object.keys(this.selectShows).forEach(key => {
-				if (dataKey) {
-					if (key != dataKey) {
-						this.$set(this.selectShows, key, false);
-					}
-				} else {
-					this.$set(this.selectShows, key, false);
-				}
-			});
 		},
 		//对外提供的用以插入图片的api
 		insertImage(url){
@@ -595,14 +457,39 @@ export default {
 		},
 		//对外提供的用以插入视频的api
 		insertVideo(url){
-			document.execCommand('insertHtml',false,`<video src="${url}" class="mvi-editor-video" />`)
+			var video = $util.string2dom(`<video src="${url}" class="mvi-editor-video"></video>`);
+			if(this.defaultVideoShowProps.muted){
+				video.setAttribute('muted','muted')
+			}
+			if(this.defaultVideoShowProps.loop){
+				video.setAttribute('loop','loop')
+			}
+			if(this.defaultVideoShowProps.controls){
+				video.setAttribute('controls','controls')
+			}
+			if(this.defaultVideoShowProps.autoplay){
+				video.setAttribute('autoplay','autoplay')
+			}
+			document.execCommand('insertHtml',false,video.outerHTML)
+		},
+		//保存选区
+		saveRange() {
+			this.range = null;
+			var selection = window.getSelection();
+			if(selection.getRangeAt && selection.rangeCount){
+				this.range = selection.getRangeAt(0)
+			}
+		},
+		//恢复选区
+		restoreRange(){
+			var selection = window.getSelection();
+			selection.removeAllRanges();
+			if(this.range){
+				selection.addRange(this.range)
+			}
 		}
 	},
-	beforeDestroy() {
-		if (this.trigger == 'click') {
-			window.removeEventListener('click', this.hideLayerForWindow);
-		}
-	}
+	
 };
 </script>
 
@@ -637,207 +524,35 @@ export default {
 	width: 100%;
 	flex-wrap: wrap;
 	-webkit-flex-wrap: wrap;
-
-	.mvi-editor-menu {
-		position: relative;
-		margin: @mp-xs;
-
-		.mvi-editor-menu-item {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			padding: @mp-xs;
-			margin: 0;
-			color: @font-color-sub;
-			font-size: @font-size-default;
-			transition: color 200ms;
-			-webkit-transition: color 200ms;
-			position: relative;
-			user-select: none;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-
-			&:hover {
-				cursor: pointer;
-				color: @font-color-default;
-			}
-
-			& > .mvi-icon {
-				pointer-events: none;
-				touch-action: none;
-			}
-		}
-
-		.mvi-editor-layer {
-			background-color: transparent;
-			padding-top: @mp-sm;
-
-			.mvi-editor-layer-wrapper {
-				display: block;
-				width: 2.4rem;
-				height: auto;
-				background-color: #fff;
-				box-shadow: @boxshadow-basic;
-				-webkit-box-shadow: @boxshadow-basic;
-				border: 1px solid @bg-color-dark;
-				border-radius: @radius-default;
-				padding: @mp-xs 0;
-
-				.mvi-editor-select-item {
-					display: block;
-					width: 100%;
-					font-size: @font-size-default;
-					color: @font-color-sub;
-					text-align: center;
-					padding: @mp-xs 0;
-					user-select: none;
-					-webkit-user-select: none;
-					-moz-user-select: none;
-					-ms-user-select: none;
-					white-space: nowrap;
-					text-overflow: ellipsis;
-					overflow: hidden;
-
-					&:hover {
-						cursor: pointer;
-						background-color: @bg-color-default;
-					}
-				}
-			}
-
-			.mvi-editor-layer-colors {
-				display: flex;
-				display: -webkit-flex;
-				justify-content: flex-start;
-				flex-wrap: wrap;
-				-webkit-flex-wrap: wrap;
-				-ms-flex-wrap: wrap;
-				align-items: center;
-				width: calc(3.4rem + 2px);
-				height: auto;
-				background-color: #fff;
-				box-shadow: @boxshadow-basic;
-				-webkit-box-shadow: @boxshadow-basic;
-				border: 1px solid @bg-color-dark;
-				border-radius: @radius-default;
-				padding: @mp-xs;
-
-				.mvi-editor-color {
-					display: block;
-					margin: @mp-xs;
-					width: @mini-height;
-					height: @mini-height / 2;
-					border: 1px solid @border-color;
-					border-radius: @radius-default / 2;
-					user-select: none;
-					-webkit-user-select: none;
-					-moz-user-select: none;
-					-ms-user-select: none;
-
-					&:hover {
-						cursor: pointer;
-					}
-				}
-			}
-		
-			.mvi-editor-layer-medias{
-				display: block;
-				width: 5rem;
-				height: 2rem;
-				background-color: #fff;
-				box-shadow: @boxshadow-basic;
-				-webkit-box-shadow: @boxshadow-basic;
-				border: 1px solid @bg-color-dark;
-				padding: @mp-xs;
-				
-				.mvi-editor-media-header{
-					display: flex;
-					justify-content: flex-start;
-					align-items: center;
-					width: 100%;
-					font-size: @font-size-small;
-					color: @font-color-sub;
-					height: @mini-height;
-					&>div{
-						margin-right: @mp-md;
-						padding-bottom: @mp-xs;
-						border-bottom: 2px solid transparent;
-						&:hover{
-							cursor: pointer;
-							color: @font-color-default;
-						}
-						
-						&.mvi-editor-media-active{
-							color: @font-color-default;
-							border-color: @font-color-sub;
-						}
-					}
-				}
-				
-				.mvi-editor-media-content{
-					display: block;
-					width: 100%;
-					padding: @mp-md 0;
-					
-					&>div:first-child{
-						text-align: center;
-					}
-					
-					.mvi-editor-media-upload{
-						font-size: @font-size-h1;
-						color: @font-color-sub;
-						user-select: none;
-						-webkit-user-select: none;
-						-moz-user-select: none;
-						-ms-user-select: none;
-						
-						&:hover{
-							cursor: pointer;
-							color: @font-color-default;
-						}
-					}
-					
-					
-					
-				}
-			}
-		}
-	}
 }
 
-.mvi-editor-content {
+.mvi-editor-body{
 	display: block;
 	position: relative;
-	width: 100%;
-	border: 1px solid @border-color;
-	height: 8rem;
-	background-color: #fff;
-	border-radius: @radius-default;
-	margin: 0;
 	padding: @mp-sm;
-	overflow-x: hidden;
-	overflow-y: auto;
-
-	&.mvi-editor-content-auto {
-		height: auto;
-		min-height: 8rem;
-		overflow: hidden;
+	width: 100%;
+	
+	.mvi-editor-content {
+		display: block;
+		position: relative;
+		width: 100%;
+		border: 1px solid @border-color;
+		height: 8rem;
+		background-color: #fff;
+		border-radius: @radius-default;
+		margin: 0;
+		padding: @mp-sm;
+		overflow-x: hidden;
+		overflow-y: auto;
+		font-size: @font-size-default;
+		color: @font-color-default;
+		
+		&.mvi-editor-content-auto {
+			height: auto;
+			min-height: 8rem;
+			overflow: hidden;
+		}
+	
 	}
-
-}
-
-.mvi-editor-layer-enter-active,
-.mvi-editor-layer-leave-active {
-	transition: transform 100ms, opacity 100ms;
-	-webkit-transition: transform 100ms, opacity 100ms;
-	-moz-transition: transform 100ms, opacity 100ms;
-	-ms-transition: transform 100ms, opacity 100ms;
-}
-
-.mvi-editor-layer-enter,
-.mvi-editor-layer-leave-to {
-	transform: translateY(0.2rem);
-	opacity: 0;
 }
 </style>
