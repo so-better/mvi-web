@@ -5,7 +5,7 @@
 		:border-color="editor.defaultTooltipProps.borderColor">
 			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" 
 			:data-id="`mvi-editor-target-${_uid}-${value}`">
-				<m-icon :type="menuIcon" />
+				<m-icon :type="editor.defaultMenuIcons[this.value]" />
 			</div>
 		</m-tooltip>
 		<transition name="mvi-editor-layer" v-if="hasSelect">
@@ -77,7 +77,7 @@
 				<!-- 其他 -->
 				<div v-else>
 					<div class="mvi-editor-el" v-for="(item,index) in menu" :key="'mvi-editor-el-'+index" @click="doSelect(item)">
-						<m-icon class="mvi-editor-el-icon" v-if="listIcon(item)" :type="listIcon(item)"/>
+						<m-icon class="mvi-editor-el-icon" v-if="item.icon" :type="item.icon"/>
 						<span v-text="item.label"></span>
 					</div>
 				</div>
@@ -128,112 +128,6 @@
 		},
 		inject: ['editor'],
 		computed: {
-			//菜单项图标配置
-			menuIcon() {
-				var icon = '';
-				switch (this.value) {
-					case 'undo':
-						icon = 'undo'
-						break;
-					case 'redo':
-						icon = 'redo'
-						break;
-					case 'tag':
-						icon = 'font-title'
-						break;
-					case 'bold':
-						icon = 'bold'
-						break;
-					case 'fontSize':
-						icon = 'font-size'
-						break;
-					case 'fontFamily':
-						icon = 'font'
-						break;
-					case 'italic':
-						icon = 'italic'
-						break;
-					case 'underline':
-						icon = 'underline'
-						break;
-					case 'strikeThrough':
-						icon = 'strikethrough'
-						break;
-					case 'subscript':
-						icon = 'subscript'
-						break;
-					case 'superscript':
-						icon = 'superscript'
-						break;
-					case 'foreColor':
-						icon = 'color-picker'
-						break;
-					case 'backColor':
-						icon = 'brush'
-						break;
-					case 'link':
-						icon = 'link'
-						break;
-					case 'list':
-						icon = 'ul'
-						break;
-					case 'justify':
-						icon = 'align-justify'
-						break;
-					case 'quote':
-						icon = 'quote'
-						break;
-					case 'image':
-						icon = 'image'
-						break;
-					case 'table':
-						icon = 'table-alt'
-						break;
-					case 'video':
-						icon = 'video'
-						break;
-					case 'code':
-						icon = 'code'
-						break;
-				}
-				return icon;
-			},
-			//列表项图标配置
-			listIcon(){
-				return item=>{
-					var icon = '';
-					switch (this.value){
-						case 'list':
-							switch (item.value){
-								case 'ol':
-									icon = 'ol';
-									break;
-								case 'ul':
-									icon = 'ul';
-									break;
-								
-							}
-							break;
-						case 'justify':
-							switch (item.value){
-								case 'left':
-									icon = 'align-left';
-									break;
-								case 'center':
-									icon = 'align-center';
-									break;
-								case 'right':
-									icon = 'align-right';
-									break;
-								case 'justify':
-									icon = 'align-justify';
-									break;
-							}
-							break;
-					}
-					return icon;
-				}
-			},
 			//是否为下拉
 			hasSelect(){
 				return Array.isArray(this.menu)
@@ -344,6 +238,11 @@
 					case 'backColor': //背景色
 						document.execCommand('hiliteColor', false, item.value);
 						break;
+					default://自定义操作
+						this.editor.$emit('custom',{
+							key:this.value,
+							itemKey:item.value
+						})
 				}
 				this.hideLayer()
 			},
@@ -398,8 +297,19 @@
 						case 'undo': //撤销
 							document.execCommand('undo');
 							break;
-						case 'redo': //重做
+						case 'redo': //恢复
 							document.execCommand('redo');
+							break;
+						case 'removeFormat'://移出全部样式
+							document.execCommand('removeFormat');
+							break;
+						case 'selectAll'://全选
+							document.execCommand('selectAll');
+							break;
+						case 'divider'://分割线
+							document.execCommand('insertHorizontalRule');
+							this.editor.collapseToEnd();
+							document.execCommand('insertHtml',false,'<p><br></p>');
 							break;
 						case 'bold': //加粗
 							document.execCommand('bold');
@@ -425,6 +335,10 @@
 						case 'code': //代码
 							document.execCommand('formatBlock', false, 'pre');
 							break;
+						default://自定义
+							this.editor.$emit('custom',{
+								key:this.value
+							})
 					}
 				}
 			},
@@ -433,7 +347,7 @@
 				if($util.isContains(this.$el,event.target)){
 					return;
 				}
-				this.layerShow = false;
+				this.hideLayer();
 			},
 			//插入远程图片或者视频
 			insertRemote(){

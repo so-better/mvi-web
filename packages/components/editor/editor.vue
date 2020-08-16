@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-editor" v-on="listeners">
-		<div class="mvi-editor-menus">
+		<div class="mvi-editor-menus" v-if="showMenus" :disabled="disabled">
 			<m-editor-item
 				v-if="showMenuItem(item)"
 				v-for="(item, index) in computedMenuKeys"
@@ -35,6 +35,9 @@ export default {
 			defaultMenus: {//默认菜单配置
 				undo: true, //撤销
 				redo: true, //恢复
+				removeFormat:true,//移除格式
+				selectAll:true,//全选
+				divider:true,//分割线
 				tag: [
 					//标签
 					{
@@ -147,29 +150,35 @@ export default {
 				list: [//列表
 					{
 						label: '有序列表',
-						value: 'ol'
+						value: 'ol',
+						icon:'ol'
 					},
 					{
 						label: '无序列表',
-						value: 'ul'
+						value: 'ul',
+						icon:'ul'
 					}
 				],
 				justify: [//对齐方式
 					{
 						label: '左对齐',
-						value: 'left'
+						value: 'left',
+						icon: 'align-left'
 					},
 					{
 						label: '居中对齐',
-						value: 'center'
+						value: 'center',
+						icon:'align-center'
 					},
 					{
 						label: '右对齐',
-						value: 'right'
+						value: 'right',
+						icon: 'align-right'
 					},
 					{
 						label: '两端对齐',
-						value: 'justify'
+						value: 'justify',
+						icon: 'align-justify'
 					}
 				],
 				quote: true, //引用
@@ -210,6 +219,9 @@ export default {
 			defaultTooltips: {//默认的工具提示内容
 				undo: '撤销',
 				redo: '重做',
+				removeFormat:'清除格式',
+				selectAll:'全选',
+				divider:'分割线',
 				tag: '标签',
 				fontSize: '字号',
 				fontFamily: '字体',
@@ -260,6 +272,32 @@ export default {
 				muted: true, //视频静音
 				controls: false, //是否显示控制器
 				loop: false //是否循环
+			},
+			defaultMenuIcons:{//默认菜单项图标
+				undo:'undo',
+				redo:'redo',
+				removeFormat:'clear',
+				selectAll:'check',
+				divider:'divider',
+				tag:'font-title',
+				bold:'bold',
+				fontSize:'font-size',
+				fontFamily:'font',
+				italic:'italic',
+				underline:'underline',
+				strikeThrough:'strikethrough',
+				subscript:'subscript',
+				superscript:'superscript',
+				foreColor:'color-picker',
+				backColor:'brush',
+				link:'link',
+				list:'ul',
+				justify:'align-justify',
+				quote:'quote',
+				image:'image',
+				table:'table-alt',
+				video:'video',
+				code:'code'
 			}
 		};
 	},
@@ -288,6 +326,16 @@ export default {
 		disabled: {
 			type: Boolean,
 			default: false
+		},
+		//是否显示菜单栏
+		showMenus:{
+			type:Boolean,
+			default:true
+		},
+		//编辑区域边框是否显示
+		contentBorder:{
+			type:Boolean,
+			default:true
 		},
 		//菜单配置
 		menus: {
@@ -358,6 +406,13 @@ export default {
 			default: function() {
 				return {};
 			}
+		},
+		//自定义菜单项图标
+		menuIcons:{
+			type:Object,
+			default:function(){
+				return {}
+			}
 		}
 	},
 	computed: {
@@ -385,10 +440,14 @@ export default {
 					var newArray = [];
 					this.defaultMenus[key].forEach(item => {
 						if ($util.isObject(item) && item.label && item.value) {
-							newArray.push({
-								label: item.label,
-								value: item.value
-							});
+							var obj = {
+								label:item.label,
+								value:item.value
+							}
+							if(item.icon){
+								obj.icon = item.icon;
+							}
+							newArray.push(obj);
 						} else if (typeof item == 'string' || $util.isNumber(item)) {
 							newArray.push({
 								label: item,
@@ -431,6 +490,9 @@ export default {
 					style.height = this.height;
 				}
 			}
+			if(!this.contentBorder){
+				style.border = 'none';
+			}
 			return style;
 		},
 		//编辑器初始值
@@ -450,12 +512,15 @@ export default {
 	components: {
 		mEditorItem: editorItem
 	},
+	created() {
+		this.initOptions();
+	},
 	mounted() {
 		this.init();
 	},
 	methods: {
-		//初始化
-		init() {
+		//参数初始化
+		initOptions(){
 			//将自定义的菜单项浮层配置与默认配置整合
 			Object.assign(this.defaultLayerProps, this.layerProps);
 			//将自定义的菜单栏配置与默认配置整合
@@ -470,6 +535,11 @@ export default {
 			Object.assign(this.defaultUploadVideoProps, this.uploadVideoProps);
 			//将自定义的视频配置参数与默认的视频配置参数整合
 			Object.assign(this.defaultVideoShowProps,this.videoShowProps);
+			//将自定义的菜单项图标配置与默认的菜单项图标配置整合
+			Object.assign(this.defaultMenuIcons,this.menuIcons);
+		},
+		//初始化
+		init() {
 			//定义段落分隔符
 			document.execCommand('defaultParagraphSeparator', false, 'p');
 			//使用css
@@ -499,6 +569,16 @@ export default {
 			}
 			document.execCommand('insertHtml', false, video.outerHTML);
 		},
+		//对外提供的用以清除内容的api
+		empty(){
+			this.$refs.content.innerHTML = '<p><br></p>';
+			this.html = this.$refs.content.innerHTML;
+			this.text = this.$refs.content.innerText;
+			this.$emit('change',{
+				html:this.html,
+				text:this.text
+			})
+		},
 		//保存选区
 		saveRange() {
 			this.range = null;
@@ -524,6 +604,9 @@ export default {
 		},
 		//根据选取获取节点
 		getSelectNode(){
+			if(!this.range){
+				return null;
+			}
 			var node = this.range.commonAncestorContainer;
 			if($util.isElement(node)){
 				return node;
