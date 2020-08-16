@@ -3,7 +3,8 @@
 		<m-tooltip :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement"
 		:timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor"
 		:border-color="editor.defaultTooltipProps.borderColor">
-			<div class="mvi-editor-target" @click="targetTrigger" :data-id="`mvi-editor-target-${_uid}-${value}`">
+			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" 
+			:data-id="`mvi-editor-target-${_uid}-${value}`">
 				<m-icon :type="menuIcon" />
 			</div>
 		</m-tooltip>
@@ -36,7 +37,7 @@
 									<m-checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" 
 									label-color="#808080" fill-color="#0b73de" :checked.sync="linkTarget"></m-checkbox>
 									<div class="mvi-editor-link-operation">
-										<span class="mvi-editor-link-delete" v-if="linkRemove" @click="deleteLink">删除链接</span>
+										<span class="mvi-editor-link-delete" v-if="menuActive" @click="deleteLink">删除链接</span>
 										<span class="mvi-editor-link-insert" @click="insertLink">插入</span>
 									</div>
 								</div>
@@ -55,12 +56,18 @@
 					<m-tabs flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
 						<m-tab :title="menu[0].label">
 							<div v-if="menu[0].value == 'table'" class="mvi-editor-table">
-								<div class="mvi-editor-table-create">
+								<div class="mvi-editor-table-edit" v-if="menuActive">
+									<span @click="addTableRow" class="mvi-editor-table-add">增加行</span>
+									<span @click="removeTableRow" class="mvi-editor-table-delete">删除行</span>
+									<span @click="addTableColumn" class="mvi-editor-table-add">增加列</span>
+									<span @click="removeTableColumn" class="mvi-editor-table-delete">删除列</span>
+								</div>
+								<div class="mvi-editor-table-create" v-else>
 									创建<input ref="rowsInput" class="mvi-editor-table-input" v-model.trim.number="tableRows"/>
 									行<input ref="columnsInput" class="mvi-editor-table-input" v-model.trim.number="tableColumns" />列的表格
 								</div>
 								<div class="mvi-editor-table-footer">
-									<span class="mvi-editor-table-delete" v-if="tableEdit">删除表格</span>
+									<span class="mvi-editor-table-delete" v-if="menuActive" @click="deleteTable">删除表格</span>
 									<span class="mvi-editor-table-insert" v-else @click="insertTable">插入</span>
 								</div>
 							</div>
@@ -76,16 +83,12 @@
 				</div>
 			</m-layer>
 		</transition>
-		<!-- tabl模板 -->
-		<table v-if="value == 'table'" style="display: none;" ref="table" class="mvi-editor-table-demo" cellpadding="0" cellspacing="0">
-			<thead>
-				<tr>
-					<th v-for="item in tableColumns" :key="'thead-th-'+item"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="item in (tableRows-1)" :key="'tr-'+item">
-					<td v-for="el in tableColumns" :key="'td-'+el"></td>
+		<!-- table模板 -->
+		<table v-if="value == 'table'" style="display: none;" ref="table" class="mvi-editor-table-demo" 
+		cellpadding="0" cellspacing="0" mvi-editor-insert-table>
+			<tbody mvi-editor-insert-table>
+				<tr v-for="item in tableRows" :key="'tr-'+item" mvi-editor-insert-table>
+					<td v-for="el in tableColumns" :key="'td-'+el" mvi-editor-insert-table></td>
 				</tr>
 			</tbody>
 		</table>
@@ -118,11 +121,9 @@
 				linkUrl:'',//插入的链接
 				linkText:'',//链接内容
 				linkTarget:false,//链接是否在新窗口打开
-				linkRemove:false,//是否显示去除链接按钮
 				tableRows:5,//表格行数
 				tableColumns:5,//表格列数
-				tableEdit:false,//是否编辑表格
-				tableHtml:'<h1></h1>'
+				menuActive:false,//菜单项是否激活状态，激活状态下如果是浮层显示浮层内容有些会有不同
 			}
 		},
 		inject: ['editor'],
@@ -251,19 +252,22 @@
 						this.editor.restoreRange();
 						//使用base64
 						if(this.editor.useBase64){
-							$util.dataFileToBase64(files[0]).then(base64=>{
-								if(this.value == 'image'){
-									this.editor.insertImage(base64);
-								}else {
-									this.editor.insertVideo(base64);
-								}
+							files.forEach((file)=>{
+								$util.dataFileToBase64(file).then(base64=>{
+									if(this.value == 'image'){
+										this.editor.insertImage(base64);
+									}else {
+										this.editor.insertVideo(base64);
+									}
+								})
 							})
 						}else {
 							//自定义一个事件，让开发者自定义上传
-							this.editor.$emit('upload',{
-								type:this.value,
-								file:files[0]
-							})
+							if(this.value == 'image'){
+								this.editor.$emit('uploadImage',files)
+							}else if(this.value == 'video'){
+								this.editor.$emit('uploadVideo',files)
+							}
 						}
 						this.hideLayer()
 					},
@@ -355,8 +359,13 @@
 					this.layerShow = true;
 					this.$nextTick(()=>{
 						this.$refs.layer.reset()
-						this.linkInsertSet();
-						this.tableInsertSet();
+						if(this.editor.range){
+							if(this.value == 'link'){
+								this.linkInsertSet();
+							}else if(this.value == 'table'){
+								this.tableInsertSet();
+							}
+						}
 					})
 				}
 			},
@@ -458,10 +467,10 @@
 					link.setAttribute('target','_blank');
 				}
 				this.editor.restoreRange();
-				if(this.linkRemove){
-					var parentNode = this.editor.range.commonAncestorContainer.parentNode;
-					if(parentNode.tagName.toUpperCase() == 'A'){
-						parentNode.remove()
+				if(this.menuActive){
+					var node = this.editor.getSelectNode();
+					if(node.tagName.toUpperCase() == 'A'){
+						node.remove()
 					}
 				}
 				document.execCommand('insertHtml',false,link.outerHTML)
@@ -469,58 +478,47 @@
 			},
 			//链接插入设置
 			linkInsertSet(){
-				//如果是插入链接且有选区文字，则将文字值赋给链接显示文字
-				if(this.value == 'link' && this.editor.range){
-					var parentNode = this.editor.range.commonAncestorContainer.parentNode;
-					//如果选区是链接，则可以去除链接
-					if(parentNode.tagName.toUpperCase() == 'A'){
-						this.linkRemove = true;
-						this.linkUrl = parentNode.getAttribute('href');
-						this.linkText = parentNode.innerText;
-						this.linkTarget = parentNode.hasAttributes('target');
-						this.$nextTick(()=>{
-							this.$refs.linkText.focus()
-						})
+				if(this.menuActive){//激活状态
+					var node = this.editor.getSelectNode();
+					this.linkUrl = node.getAttribute('href');//初始化赋值
+					this.linkText = node.innerText;//初始化赋值
+					this.linkTarget = node.hasAttribute('target');//初始化赋值
+					this.$nextTick(()=>{
+						this.$refs.linkText.focus()
+					})
+				}else {
+					this.linkUrl = '';
+					this.linkTarget = false;
+					var text = this.editor.range.toString();
+					if(text){
+						this.linkText = text;
+						this.$refs.linkUrl.focus()
 					}else {
-						this.linkRemove = false;
-						this.linkUrl = '';
-						this.linkTarget = false;
-						var text = this.editor.range.toString();
-						if(text){
-							this.linkText = text;
-							this.$refs.linkUrl.focus()
-						}else {
-							this.linkText = '';
-							this.$refs.linkText.focus()
-						}
-					}	
-				}
+						this.linkText = '';
+						this.$refs.linkText.focus()
+					}
+				}	
 			},
 			//删除链接
 			deleteLink(){
 				this.editor.restoreRange();
-				var parentNode = this.editor.range.commonAncestorContainer.parentNode;
-				if(parentNode.tagName.toUpperCase() == 'A'){
-					parentNode.remove()
+				var node = this.editor.getSelectNode();
+				if(node.tagName.toUpperCase() == 'A'){
+					node.remove()
 				}
 				this.hideLayer()
 			},
 			//表格插入设置
 			tableInsertSet(){
-				if(this.value == 'table' && this.editor.range){
-					var parentNode = this.editor.range.commonAncestorContainer.parentNode;
-					if(this.tableEdit){
-						
-					}else{
-						this.$refs.rowsInput.focus();
-					}
+				if(this.$refs.rowsInput){
+					this.$refs.rowsInput.focus();
 				}
 			},
 			//插入表格
 			insertTable(){
 				if(!this.tableRows || !this.tableColumns){
 					this.hideLayer()
-					return
+					return;
 				}
 				if(!$util.matchingText(this.tableRows,'number') || !$util.matchingText(this.tableColumns,'number')){
 					this.hideLayer();
@@ -529,8 +527,142 @@
 				var table = this.$refs.table.cloneNode(true);
 				table.style.display = '';
 				this.editor.restoreRange();
-				document.execCommand('insertHtml',false,table.outerHTML)
+				document.execCommand('insertHtml',false,table.outerHTML);
+				this.editor.collapseToEnd();
+				document.execCommand('insertHtml',false,'<p><br></p>');
 				this.hideLayer()
+			},
+			//增加行
+			addTableRow(){
+				var node = this.editor.getSelectNode();
+				if(node.tagName.toUpperCase() == 'TD'){//td
+					this.copyRowAppend(node.parentNode);
+				}else if(node.tagName.toUpperCase() == 'TR'){//tr
+					this.copyRowAppend(node);
+				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
+					var children = $util.children(node,'tr');
+					this.copyRowAppend(children[children.length-1]);
+				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
+					var tbody = $util.children(node,'tbody')[0];
+					var children = $util.children(tbody,'tr');
+					this.copyRowAppend(children[children.length-1]);
+				}
+				this.editor.collapseToEnd()
+				this.hideLayer();
+			},
+			//删除行
+			removeTableRow(){
+				var node = this.editor.getSelectNode();
+				if(node.tagName.toUpperCase() == 'TD'){//td
+					node.parentNode.remove();
+				}else if(node.tagName.toUpperCase() == 'TR'){//tr
+					node.remove();
+				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
+					var children = $util.children(node,'tr');
+					children[children.length-1].remove();
+				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
+					var tbody = $util.children(node,'tbody')[0];
+					var children = $util.children(tbody,'tr');
+					children[children.length-1].remove()
+				}
+				this.editor.collapseToEnd()
+				this.hideLayer();
+			},
+			//增加列
+			addTableColumn(){
+				var node = this.editor.getSelectNode();
+				if(node.tagName.toUpperCase() == 'TD'){//td
+					this.copyColumnAppend(node);
+				}else if(node.tagName.toUpperCase() == 'TR'){//tr
+					var children = $util.children(node,'td');
+					this.copyColumnAppend(children[children.length-1]);
+				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
+					var tr = $util.children(node,'tr')[0];
+					var childrenTd = $util.children(tr,'td');
+					this.copyColumnAppend(childrenTd[childrenTd.length-1]);
+				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
+					var tbody = $util.children(node,'tbody')[0];
+					var tr = $util.children(tbody,'tr')[0];
+					var childrenTd = $util.children(tr,'td');
+					this.copyColumnAppend(childrenTd[childrenTd.length-1]);
+				}
+				this.editor.collapseToEnd()
+				this.hideLayer();
+			},
+			//删除列
+			removeTableColumn(){
+				var node = this.editor.getSelectNode();
+				if(node.tagName.toUpperCase() == 'TD'){//td
+					this.removeColumn(node);
+				}else if(node.tagName.toUpperCase() == 'TR'){//tr
+					var children = $util.children(node,'td');
+					this.removeColumn(children[children.length-1]);
+				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
+					var tr = $util.children(node,'tr')[0];
+					var childrenTd = $util.children(tr,'td');
+					this.removeColumn(childrenTd[childrenTd.length-1]);
+				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
+					var tbody = $util.children(node,'tbody')[0];
+					var tr = $util.children(tbody,'tr')[0];
+					var childrenTd = $util.children(tr,'td');
+					this.removeColumn(childrenTd[childrenTd.length-1]);
+				}
+				this.editor.collapseToEnd()
+				this.hideLayer();
+			},
+			//删除表格
+			deleteTable(){
+				this.editor.restoreRange();
+				var node = this.editor.getSelectNode();
+				if(node.tagName.toUpperCase() == 'TD'){//td
+					node.parentNode.parentNode.parentNode.remove();
+				}else if(node.tagName.toUpperCase() == 'TR'){//tr
+					node.parentNode.parentNode.remove();
+				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
+					node.parentNode.remove();
+				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
+					node.remove();
+				}
+				this.editor.collapseToEnd()
+				this.hideLayer();
+			},
+			//在指定节点后插入节点
+			insertNodeAfter(newNode,targetNode){
+				var parent = targetNode.parentNode;
+				var children = $util.children(parent);
+				if(children[children.length-1] == targetNode){
+					parent.appendChild(newNode)
+				}else{
+					parent.insertBefore(newNode,targetNode.nextSibling);
+				}
+			},
+			//复制表格行进行增加
+			copyRowAppend(row){
+				var newRow = row.cloneNode(true);
+				newRow.querySelectorAll('td').forEach(td=>{
+					td.innerText = '';
+				})
+				this.insertNodeAfter(newRow,row);
+			},
+			//复制表格列进行增加
+			copyColumnAppend(column){
+				//该列在父元素中的序列
+				var index = [].indexOf.call($util.children(column.parentNode,column.tagName),column);
+				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr=>{
+					var td = $util.children(tr,'td')[index];
+					var newColumn = td.cloneNode(true);
+					newColumn.innerText = '';
+					this.insertNodeAfter(newColumn,td);
+				})
+			},
+			//根据表格列删除指定的一列
+			removeColumn(column){
+				//该列在父元素中的序列
+				var index = [].indexOf.call($util.children(column.parentNode,column.tagName),column);
+				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr=>{
+					var td = $util.children(tr,'td')[index];
+					td.remove();
+				})
 			}
 		},
 		beforeDestroy() {
@@ -567,6 +699,14 @@
 			&:hover {
 				cursor: pointer;
 				color: @font-color-default;
+			}
+			
+			&.mvi-editor-active{
+				color: @primary-normal;
+				
+				&:hover {
+					color: @primary-normal;
+				}
 			}
 		}
 
@@ -757,6 +897,7 @@
 						display: block;
 						width: 100%;
 						text-align: center;
+						padding-bottom: @mp-md;
 						
 						.mvi-editor-table-input{
 							appearance: none;
@@ -772,7 +913,6 @@
 							font-size: @font-size-default;
 							color: @font-color-default;
 							line-height: 1.5;
-							margin-bottom: @mp-sm;
 							transition: border-color 400ms;
 							-moz-transition: border-color 400ms;
 							-webkit-transition: border-color 400ms;
@@ -783,29 +923,62 @@
 						}
 					}
 					
+					.mvi-editor-table-edit{
+						display: flex;
+						display: -webkit-flex;
+						justify-content: space-between;
+						align-items: center;
+						width: 100%;
+						
+						&>span{
+							display: inline-block;
+							padding: @mp-xs @mp-sm;
+							border-radius: @radius-default;
+							
+							&:hover{
+								cursor: pointer;
+								background-color: @bg-color-default;
+							}
+						}
+						
+						.mvi-editor-table-add{
+							color: @primary-normal;
+						}
+						
+						.mvi-editor-table-delete{
+							color: @error-normal;
+						}
+					}
+					
 					.mvi-editor-table-footer{
 						display: flex;
 						justify-content: flex-end;
 						align-items: center;
 						width: 100%;
-						margin-top: @mp-sm;
+						margin-top: @mp-xs;
 						
 						.mvi-editor-table-delete{
 							color: @font-color-sub;
 							font-size: @font-size-default;
+							padding: @mp-xs @mp-sm;
+							border-radius: @radius-default;
 							
 							&:hover{
 								color: @font-color-default;
 								cursor: pointer;
+								background-color: @bg-color-default;
 							}
 						}
 						
 						.mvi-editor-table-insert{
 							color: @primary-normal;
 							font-size: @font-size-default;
+							border-radius: @radius-default;
+							padding: @mp-xs @mp-sm;
 							
 							&:hover{
 								cursor: pointer;
+								background-color: @bg-color-default;
 							}
 						}
 					}
@@ -814,20 +987,19 @@
 		}
 	}
 
-	.mvi-editor-layer-enter-active,
-	.mvi-editor-layer-leave-active {
+	.mvi-editor-layer-enter-active{
 		transition: transform 100ms, opacity 100ms;
 		-webkit-transition: transform 100ms, opacity 100ms;
 		-moz-transition: transform 100ms, opacity 100ms;
 		-ms-transition: transform 100ms, opacity 100ms;
 	}
 
-	.mvi-editor-layer-enter,
-	.mvi-editor-layer-leave-to {
+	.mvi-editor-layer-enter{
 		transform: translateY(0.2rem);
 		opacity: 0;
 	}
 	
+	/* 表格demo样式 */
 	.mvi-editor-table-demo{
 		width: 100%;
 		border: 1px solid @border-color;
@@ -835,26 +1007,36 @@
 		padding: 0;
 		font-size: @font-size-default;
 		color: @font-color-default;
-		
-		thead{
+		border-collapse: collapse;
+		margin-bottom: @mp-sm;
+		tbody{
 			margin: 0;
 			padding: 0;
+			
 			tr{
 				margin: 0;
 				padding: 0;
 				
-				th{
-					font-size: @font-size-default;
-					color: @font-color-default;
-					font-weight: bold;
-					margin: 0;
-					padding: 0;
-					border-bottom: 1px solid @border-color;
-					border-right: 1px solid @border-color;
+				&:first-child{
+					background-color: @bg-color-dark;
+					
+					td{
+						font-weight: bold;
+					}
 				}
 				
-				th:last-child{
-					border-right: none;
+				td{
+					font-size: @font-size-default;
+					color: @font-color-default;
+					margin: 0;
+					border-bottom: 1px solid @border-color;
+					border-right: 1px solid @border-color;
+					padding: @mp-xs;
+					text-align: center;
+					
+					&:last-child{
+						border-right: none;
+					}
 				}
 			}
 		}
