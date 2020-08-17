@@ -14,7 +14,7 @@
 			:target="`[data-id='mvi-editor-target-${_uid}-${value}']`" :root="`[data-id='mvi-editor-root-${_uid}-${value}']`">
 				<!-- 插入图片或者视频 -->
 				<div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
-					<m-tabs v-model="mediaIndex" flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
+					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
 						<m-tab v-for="(item,index) in menu" :key="'mvi-editor-media-tab-'+index" :title="item.label">
 							<div v-upload="uploadOptions" class="mvi-editor-upload" v-if="item.value == 'upload'">
 								<m-icon type='upload-square'/>
@@ -54,7 +54,7 @@
 				<!-- 插入表格 -->
 				<div v-else-if="value == 'table'" class="mvi-editor-tables">
 					<m-tabs flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
-						<m-tab :title="menu[0].label">
+						<m-tab :title="menuActive?'编辑表格':menu[0].label">
 							<div v-if="menu[0].value == 'table'" class="mvi-editor-table">
 								<div class="mvi-editor-table-edit" v-if="menuActive">
 									<span @click="addTableRow" class="mvi-editor-table-add">增加行</span>
@@ -116,7 +116,7 @@
 			return {
 				layerShow: false,//layer开关
 				layerFirstShow:false,//layer是否第一次打开
-				mediaIndex:0,//媒体layer浮层默认显示的tab序列
+				tabIndex:0,//媒体layer浮层默认显示的tab序列
 				remoteUrl:'',//插入的网络图片或者视频地址
 				linkUrl:'',//插入的链接
 				linkText:'',//链接内容
@@ -361,11 +361,9 @@
 				}else {
 					this.editor.insertVideo(this.remoteUrl)
 				}
-				this.hideLayer()
-				setTimeout(()=>{
-					this.remoteUrl = '';
-					this.mediaIndex = 0;
-				},100)
+				this.remoteUrl = '';
+				this.tabIndex = 0;
+				this.hideLayer();
 			},
 			//插入链接
 			insertLink(){

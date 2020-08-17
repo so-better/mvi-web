@@ -59,7 +59,13 @@ export default {
 			console.log(res);
 		},
 		customAction(e){
-			console.log(this.$refs.editor.getSelectNode())
+			if(e.key == 'op'){
+				if(e.itemKey == 'deleteAll'){
+					this.$refs.editor.empty();
+				}else {
+					this.$alert('弹出一个框')
+				}
+			}
 		}
 	}
 };
