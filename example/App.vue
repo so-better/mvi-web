@@ -1,7 +1,7 @@
 <template>
 	<div id="app" style="padding: .4rem 0.4rem;" ref="app">
 		<div class="mvi-mb-10"><m-button type="success" @click="change">Button</m-button></div>
-		<m-editor ref="editor"></m-editor>
+		<m-editor ref="editor"  :menus="{codeView:true}"></m-editor>
 	</div>
 </template>
 

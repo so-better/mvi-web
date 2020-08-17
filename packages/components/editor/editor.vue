@@ -14,7 +14,7 @@
 			<div v-if="codeViewShow" v-text="computedValue" key="code" :contenteditable="!disabled" :style="codeViewStyle"
 			:class="codeViewClass" ref="codeView" @input="codeViewInput"></div>
 			<div v-else ref="content" @click="changeActive" @input="contentInput" @blur="contentBlur" @focus="contentFocus"
-			:class="contentClass" key="content"
+			:class="contentClass" key="content" @keydown="tabDown"
 			:contenteditable="!disabled" :style="contentStyle" v-html="computedValue" :data-placeholder="placeholder"></div>
 		</div>
 	</div>
@@ -779,6 +779,26 @@ export default {
 		//编辑区域获取焦点
 		contentFocus(){
 			this.contentIsFocus = true;
+		},
+		//tab键按下
+		tabDown(event){
+			if(event.keyCode == 9){
+				event.preventDefault();
+				var node = this.getSelectNode();
+				if(node && this.range){
+					var startIndex = this.range.startOffset
+					node.innerHTML = $util.insertStr(node.innerHTML,'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',startIndex)
+					this.collapseToEnd();
+					if(!this.codeViewShow){
+						this.html = this.$refs.content.innerHTML;
+						this.text = this.$refs.content.innerText;
+						this.$emit('change',{
+							html:this.html,
+							text:this.text
+						})
+					}
+				}
+			}
 		}
 	}
 };
