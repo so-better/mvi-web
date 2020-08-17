@@ -1,13 +1,18 @@
 <template>
 	<div class="mvi-eitor-item" :data-id="`mvi-editor-root-${_uid}-${value}`">
-		<m-tooltip :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement"
+		<m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)" 
+		:title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement"
 		:timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor"
 		:border-color="editor.defaultTooltipProps.borderColor">
 			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" 
-			:data-id="`mvi-editor-target-${_uid}-${value}`">
+			:disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)" :data-id="`mvi-editor-target-${_uid}-${value}`">
 				<m-icon :type="editor.defaultMenuIcons[this.value]" />
 			</div>
 		</m-tooltip>
+		<div v-else :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled"
+		:data-id="`mvi-editor-target-${_uid}-${value}`">
+			<m-icon :type="editor.defaultMenuIcons[this.value]" />
+		</div>
 		<transition name="mvi-editor-layer" v-if="hasSelect">
 			<m-layer v-if="layerFirstShow" v-show="layerShow" ref="layer" class="mvi-editor-layer" :placement="editor.defaultLayerProps.placement" 
 			:z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" offset="0rem"
@@ -16,7 +21,7 @@
 				<div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
 					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
 						<m-tab v-for="(item,index) in menu" :key="'mvi-editor-media-tab-'+index" :title="item.label">
-							<div v-upload="uploadOptions" class="mvi-editor-upload" v-if="item.value == 'upload'">
+							<div ref="upload" class="mvi-editor-upload" v-if="item.value == 'upload'">
 								<m-icon type='upload-square'/>
 							</div>
 							<div v-if="item.value == 'remote'" class="mvi-editor-remote">
@@ -96,8 +101,8 @@
 </template>
 
 <script>
-	import Vue from "vue"
-	import $util from "../../util/util.js"
+	import $util from "../../util/util"
+	import Upload from "../upload/upload"
 	export default {
 		name: 'm-editor-item',
 		props: {
@@ -158,9 +163,9 @@
 						}else {
 							//自定义一个事件，让开发者自定义上传
 							if(this.value == 'image'){
-								this.editor.$emit('uploadImage',files)
+								this.editor.$emit('upload-image',files)
 							}else if(this.value == 'video'){
-								this.editor.$emit('uploadVideo',files)
+								this.editor.$emit('upload-video',files)
 							}
 						}
 						this.hideLayer()
@@ -263,6 +268,8 @@
 								this.linkInsertSet();
 							}else if(this.value == 'table'){
 								this.tableInsertSet();
+							}else if(this.value == 'image' || this.value == 'video'){
+								this.uploadSet();
 							}
 						}
 					})
@@ -280,6 +287,9 @@
 			//菜单项点击
 			targetTrigger() {
 				if (this.editor.disabled) {
+					return;
+				}
+				if(this.value != 'codeView' && this.editor.codeViewShow){
 					return;
 				}
 				if (this.hasSelect) {
@@ -335,6 +345,17 @@
 						case 'code': //代码
 							document.execCommand('formatBlock', false, 'pre');
 							break;
+						case 'codeView'://显示源码
+							this.editor.codeViewShow = !this.editor.codeViewShow;
+							this.$nextTick(()=>{
+								if(this.editor.codeViewShow){
+									this.editor.$refs.codeView.innerText = this.editor.html;
+								}else{
+									this.editor.$refs.content.innerHTML = this.editor.html;
+								}
+								this.editor.collapseToEnd();
+							})
+							break;
 						default://自定义
 							this.editor.$emit('custom',{
 								key:this.value
@@ -364,6 +385,15 @@
 				this.remoteUrl = '';
 				this.tabIndex = 0;
 				this.hideLayer();
+			},
+			//上传设置
+			uploadSet(){
+				if(this.$refs.upload && Object.keys(this.$refs.upload).length > 0){
+					for(var i = 0;i<this.$refs.upload.length;i++){
+						var upload = new Upload(this.$refs.upload[i],this.uploadOptions)
+						upload.init()
+					}
+				}
 			},
 			//插入链接
 			insertLink(){
@@ -611,6 +641,15 @@
 			&:hover {
 				cursor: pointer;
 				color: @font-color-default;
+			}
+			
+			&[disabled]{
+				opacity: .6;
+			}
+			
+			&[disabled]:hover{
+				cursor: not-allowed;
+				color: @font-color-sub;
 			}
 			
 			&.mvi-editor-active{

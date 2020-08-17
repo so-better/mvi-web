@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-editor" v-on="listeners">
-		<div class="mvi-editor-menus" v-if="showMenus" :disabled="disabled">
+		<div class="mvi-editor-menus" :style="{border:(border?'':'none')}" v-if="showMenus" :disabled="disabled">
 			<m-editor-item
 				v-if="showMenuItem(item)"
 				v-for="(item, index) in computedMenuKeys"
@@ -10,9 +10,13 @@
 				ref="menu"
 			></m-editor-item>
 		</div>
-		<div ref="content" @click="changeActive" @input="contentInput" @blur="contentBlur" @focus="contentFocus" 
-		:class="contentClass" 
-		:contenteditable="!disabled" :style="contentStyle" v-html="computedValue" :data-placeholder="placeholder"></div>
+		<div class="mvi-editor-body">
+			<div v-if="codeViewShow" v-text="computedValue" key="code" :contenteditable="!disabled" :style="codeViewStyle"
+			:class="codeViewClass" ref="codeView" @input="codeViewInput"></div>
+			<div v-else ref="content" @click="changeActive" @input="contentInput" @blur="contentBlur" @focus="contentFocus"
+			:class="contentClass" key="content"
+			:contenteditable="!disabled" :style="contentStyle" v-html="computedValue" :data-placeholder="placeholder"></div>
+		</div>
 	</div>
 </template>
 
@@ -25,6 +29,7 @@ export default {
 		return {
 			range: null, //选区
 			contentIsFocus:false,//编辑区域是否获取焦点
+			codeViewShow:false,//源码是否显示
 			html:'',//html内容
 			text:'',//text内容
 			defaultLayerProps: {//默认菜单浮层配置
@@ -214,7 +219,8 @@ export default {
 						value: 'table'
 					}
 				],
-				code: true //插入代码
+				code: true ,//插入代码
+				codeView:false,//显示源码
 			},
 			defaultTooltips: {//默认的工具提示内容
 				undo: '撤销',
@@ -240,7 +246,8 @@ export default {
 				image: '插入图片',
 				video: '插入视频',
 				table: '插入表格',
-				code: '插入代码'
+				code: '插入代码',
+				codeView:'显示源码'
 			},
 			defaultTooltipProps: {//默认工具提示组件参数配置
 				placement: 'bottom',
@@ -297,7 +304,8 @@ export default {
 				image:'image',
 				table:'table-alt',
 				video:'video',
-				code:'code'
+				code:'code',
+				codeView:'eye'
 			}
 		};
 	},
@@ -306,6 +314,11 @@ export default {
 		value: {
 			type: String,
 			default: ''
+		},
+		//是否自动获取焦点
+		autofocus:{
+			type:Boolean,
+			default:false
 		},
 		//占位符
 		placeholder: {
@@ -333,7 +346,7 @@ export default {
 			default:true
 		},
 		//编辑区域边框是否显示
-		contentBorder:{
+		border:{
 			type:Boolean,
 			default:true
 		},
@@ -363,6 +376,11 @@ export default {
 		useBase64: {
 			type: Boolean,
 			default: true
+		},
+		//是否使用tooltip
+		useTooltip:{
+			type:Boolean,
+			default:true
 		},
 		//提示内容配置
 		tooltips: {
@@ -473,8 +491,16 @@ export default {
 			if (this.autoHeight) {
 				cls += ' mvi-editor-content-auto';
 			}
-			if(this.html == '<p><br></p>' && !this.contentIsFocus){
+			if((this.html == '<p><br></p>' || this.html == '') && !this.contentIsFocus){
 				cls += ' mvi-editor-content-empty';
+			}
+			return cls;
+		},
+		//源码视图样式类
+		codeViewClass(){
+			var cls = 'mvi-editor-codeview';
+			if (this.autoHeight) {
+				cls += ' mvi-editor-codeview-auto';
 			}
 			return cls;
 		},
@@ -490,8 +516,22 @@ export default {
 					style.height = this.height;
 				}
 			}
-			if(!this.contentBorder){
+			if(!this.border){
 				style.border = 'none';
+			}
+			return style;
+		},
+		//源码视图样式
+		codeViewStyle(){
+			var style = {};
+			if (this.autoHeight) {
+				if (this.height) {
+					style.minHeight = this.height;
+				}
+			} else {
+				if (this.height) {
+					style.height = this.height;
+				}
 			}
 			return style;
 		},
@@ -547,6 +587,10 @@ export default {
 			//初始化赋值
 			this.html = this.$refs.content.innerHTML;
 			this.text = this.$refs.content.innerText;
+			if(this.autofocus){
+				this.collapseToEnd();
+				this.$refs.content.focus();
+			}
 		},
 		//对外提供的用以插入图片的api
 		insertImage(url) {
@@ -597,9 +641,15 @@ export default {
 		},
 		//将编辑区域光标移至最后
 		collapseToEnd(){
-			this.$refs.content.focus();			
+			var el = null;
+			if(this.$refs.content){
+				el = this.$refs.content;	
+			}else {
+				el = this.$refs.codeView;
+			}
+			el.focus();
 			var selection = window.getSelection(); 	
-			selection.selectAllChildren(this.$refs.content); 
+			selection.selectAllChildren(el); 
 			selection.collapseToEnd();
 		},
 		//根据选取获取节点
@@ -707,6 +757,20 @@ export default {
 				text:this.text
 			})
 		},
+		//源码视图输入
+		codeViewInput(){
+			if(this.$refs.codeView.innerText == ''){
+				this.$refs.codeView.innerText = '<p><br></p>';
+				this.collapseToEnd();
+			}
+			this.html = this.$refs.codeView.innerText;
+			var el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
+			this.text = el.innerText;
+			this.$emit('change',{
+				html:this.html,
+				text:this.text
+			})
+		},
 		//编辑区域失去焦点
 		contentBlur(){
 			this.saveRange();
@@ -757,34 +821,63 @@ export default {
 	border-radius: @radius-default;
 }
 
-.mvi-editor-content {
+.mvi-editor-body{
 	display: block;
 	position: relative;
 	width: 100%;
-	border: 1px solid @border-color;
-	height: 8rem;
-	background-color: #fff;
-	border-radius: @radius-default;
-	margin: 0;
-	padding: @mp-sm;
-	overflow-x: hidden;
-	overflow-y: auto;
-	font-size: @font-size-default;
-	color: @font-color-default;
-
-	&.mvi-editor-content-auto {
-		height: auto;
-		min-height: 8rem;
-		overflow: hidden;
+	
+	.mvi-editor-codeview{
+		display: block;
+		position: relative;
+		width: 100%;
+		border: 1px solid #000;
+		height: 8rem;
+		background-color: #000;
+		border-radius: @radius-default;
+		margin: 0;
+		padding: @mp-sm;
+		overflow-x: hidden;
+		overflow-y: auto;
+		font-size: @font-size-default;
+		color: #fff;
+		font-family: Consolas;
+		
+		&.mvi-editor-codeview-auto {
+			height: auto;
+			min-height: 8rem;
+			overflow: hidden;
+		}
 	}
 	
-	&.mvi-editor-content-empty::before{
-		content: attr(data-placeholder);
-		font-size: inherit;
-		color: inherit;
-		opacity: .5;
-		line-height: inherit;
-		vertical-align: middle;
+	.mvi-editor-content {
+		display: block;
+		position: relative;
+		width: 100%;
+		border: 1px solid @border-color;
+		height: 8rem;
+		background-color: #fff;
+		border-radius: @radius-default;
+		margin: 0;
+		padding: @mp-sm;
+		overflow-x: hidden;
+		overflow-y: auto;
+		font-size: @font-size-default;
+		color: @font-color-default;
+	
+		&.mvi-editor-content-auto {
+			height: auto;
+			min-height: 8rem;
+			overflow: hidden;
+		}
+		
+		&.mvi-editor-content-empty::before{
+			content: attr(data-placeholder);
+			font-size: inherit;
+			color: inherit;
+			opacity: .5;
+			line-height: inherit;
+			vertical-align: middle;
+		}
 	}
 }
 </style>

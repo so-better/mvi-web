@@ -1,10 +1,11 @@
 <template>
-	<div class="mvi-date-chooser" :data-id="`mvi-date-chooser-${_uid}`" v-on="listeners" @mouseenter="hoverOpenCalendar" @mouseleave="hoverCloseCalendar">
+	<div class="mvi-date-chooser" :data-id="`mvi-date-chooser-${_uid}`" v-on="listeners">
 		<div class="mvi-date-chooser-target" :data-id="`mvi-date-chooser-target-${_uid}`" ref="target" @click="clickCalendar"><slot></slot></div>
 		<transition name="mvi-date-chooser">
 			<m-layer
 				:target="`[data-id='mvi-date-chooser-target-${_uid}']`"
 				:root="`[data-id='mvi-date-chooser-${_uid}']`"
+				v-if="firstShow"
 				v-show="show"
 				class="mvi-date-chooser-layer"
 				:placement="placement"
@@ -12,6 +13,7 @@
 				offset="0rem"
 				:z-index="zIndex"
 				:style="layerStyle"
+				ref="layer"
 			>
 				<div class="mvi-date-chooser-layer-wrapper">
 					<div class="mvi-date-chooser-header">
@@ -92,7 +94,7 @@
 						:end-year="endYear"
 						:now-class="nowClass"
 						:current-class="currentClass"
-						:non-current-click="nonCurrentClick"
+						:non-current-click="false"
 						:active="active"
 						@date-click="dateClick"
 						@month-click="monthClick"
@@ -106,12 +108,14 @@
 </template>
 
 <script>
-import $util from '../../util/util.js';
+import $util from '../../util/util';
 export default {
 	name: 'm-date-chooser',
 	data() {
 		return {
 			target: null,
+			layer:null,
+			firstShow:false,
 			show: false,
 			view: 'date',
 			hover: [false, false, false, false, false, false, false]
@@ -226,18 +230,13 @@ export default {
 			type: [String, Object],
 			default: null
 		},
-		//非本月日期是否可以点击
-		nonCurrentClick: {
-			type: Boolean,
-			default: false
-		},
 		//日历面板点击态
 		active: {
 			type: Boolean,
 			default: true
 		},
+		//头部悬浮样式
 		headerHoverClass: {
-			//头部悬浮样式
 			type: String,
 			default: null
 		}
@@ -255,7 +254,15 @@ export default {
 				style.width = this.$refs.target.offsetWidth + 'px';
 			}
 			if (this.offset) {
-				style.paddingTop = this.offset;
+				if(this.placement == 'top' || this.placement == 'top-start' || this.placement == 'top-end'){
+					style.paddingBottom = this.offset;
+				}else if(this.placement == 'bottom' || this.placement == 'bottom-start' || this.placement == 'bottom-end'){
+					style.paddingTop = this.offset;
+				}else if(this.placement == 'left' || this.placement == 'left-start' || this.placement == 'left-end'){
+					style.paddingRight = this.offset;
+				}else if(this.placement == 'right' || this.placement == 'right-start' || this.placement == 'right-end'){
+					style.paddingLeft = this.offset;
+				}
 			}
 			return style;
 		},
@@ -286,26 +293,30 @@ export default {
 		},
 		currentYears() {
 			//年视图下显示的中间年份区间
-			var years = [...this.$refs.calendar.years];
-			for (var i = 0; i < years.length; i++) {
-				if (years[i].year < this.startYear) {
-					years.splice(i, 1);
+			if(this.$refs.layer){
+				var years = [...this.$refs.calendar.years];
+				for (var i = 0; i < years.length; i++) {
+					if (years[i].year < this.startYear) {
+						years.splice(i, 1);
+					}
+					if (years[i].year > this.endYear) {
+						years.splice(i, 1);
+					}
 				}
-				if (years[i].year > this.endYear) {
-					years.splice(i, 1);
-				}
+				return years[0].year + '年 - ' + years[years.length - 1].year + '年';
+			}else {
+				return ''
 			}
-			return years[0].year + '年 - ' + years[years.length - 1].year + '年';
 		},
 		prevYearDisabled() {
-			if (this.view == 'year') {
+			if (this.view == 'year' && this.$refs.layer) {
 				return this.$refs.calendar.years[0].year <= this.startYear;
 			} else {
 				return this.value.getFullYear() <= this.startYear;
 			}
 		},
 		nextYearDisabled() {
-			if (this.view == 'year') {
+			if (this.view == 'year' && this.$refs.layer) {
 				var years = this.$refs.calendar.years;
 				return years[years.length - 1].year >= this.endYear;
 			} else {
@@ -316,38 +327,65 @@ export default {
 	mounted() {
 		this.view = this.mode;
 		this.target = this.$refs.target;
-		window.addEventListener('click', this.hideForWindow);
+		this.layer = this.$refs.layer;
+		if(this.trigger == 'click'){
+			window.addEventListener('click', this.hideForWindow);
+		}else if(this.trigger == 'hover'){
+			this.$el.addEventListener('mouseenter',this.openCalendar)
+			this.$el.addEventListener('mouseleave',this.closeCalendar)
+		}
 	},
 	methods: {
 		//点击窗口其他地方
 		hideForWindow(event) {
+			if(this.disabled){
+				return;
+			}
 			if ($util.isContains(this.$el, event.target)) {
+				return;
+			}
+			this.closeCalendar()
+		},
+		//打开日期选择弹窗
+		openCalendar(){
+			if(this.disabled){
+				return;
+			}
+			if(!this.firstShow){
+				this.firstShow = true;
+			}
+			this.show = true;
+			this.$nextTick(()=>{
+				this.$refs.layer.reset();
+			})
+		},
+		//关闭日期选择弹窗
+		closeCalendar(){
+			if(this.disabled){
 				return;
 			}
 			this.show = false;
 		},
 		//点击打开/关闭日历弹窗
 		clickCalendar() {
+			if(this.disabled){
+				return;
+			}
 			if (this.trigger == 'click') {
-				this.show = !this.show;
-			}
-		},
-		//悬浮打开弹窗
-		hoverOpenCalendar() {
-			if (this.trigger == 'hover') {
-				this.show = true;
-			}
-		},
-		//悬浮关闭弹窗
-		hoverCloseCalendar() {
-			if (this.trigger == 'hover') {
-				this.show = false;
+				if(this.show){
+					this.closeCalendar();
+				}else{
+					this.openCalendar()
+				}
 			}
 		},
 		//点击日期
 		dateClick(res) {
 			if (event || window.event) {
 				event.stopPropagation();
+			}
+			if(this.disabled){
+				return;
 			}
 			this.$emit('update:value', res.date);
 			this.$emit('model-change', res.date);
@@ -357,6 +395,9 @@ export default {
 		yearClick(res) {
 			if (event || window.event) {
 				event.stopPropagation();
+			}
+			if(this.disabled){
+				return;
 			}
 			if (this.mode == 'year') {
 				//如果只是年选择模式
@@ -372,6 +413,9 @@ export default {
 		monthClick(res) {
 			if (event || window.event) {
 				event.stopPropagation();
+			}
+			if(this.disabled){
+				return;
 			}
 			if (this.mode == 'date') {
 				this.view = 'date';
@@ -475,7 +519,12 @@ export default {
 		}
 	},
 	beforeDestroy() {
-		window.removeEventListener('click', this.hideForWindow);
+		if(this.trigger == 'click'){
+			window.removeEventListener('click', this.hideForWindow);
+		}else if(this.trigger == 'hover'){
+			this.$el.removeEventListener('mouseenter',this.openCalendar)
+			this.$el.removeEventListener('mouseleave',this.closeCalendar)
+		}
 	}
 };
 </script>
@@ -486,6 +535,12 @@ export default {
 	position: relative;
 	display: block;
 	width: 100%;
+}
+
+.mvi-date-chooser-target{
+	display: block;
+	width: fit-content;
+	width: -webkit-fit-content;
 }
 
 .mvi-date-chooser-enter-active,
