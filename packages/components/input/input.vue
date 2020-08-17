@@ -478,7 +478,6 @@
 			//日期变更
 			dateChange(value) {
 				if (this.isDatePicker) {
-					console.log(value)
 					this.$emit('update:date', value)
 				}
 			},

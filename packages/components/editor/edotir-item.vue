@@ -52,7 +52,10 @@
 				</div>
 				<!-- 设置颜色 -->
 				<div class="mvi-editor-colors" v-else-if="value == 'foreColor' || value == 'backColor'">
-					<m-tooltip trigger="hover" :title="item.label" v-for="(item,index) in menu" :key="'mvi-editor-color-'+index">
+					<m-tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item,index) in menu" :key="'mvi-editor-color-'+index"
+					:placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" 
+					:color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor"
+					:border-color="editor.defaultTooltipProps.borderColor">
 						<span @click="doSelect(item)" class="mvi-editor-color" :style="{backgroundColor:item.value}"></span>
 					</m-tooltip>
 				</div>
@@ -350,8 +353,10 @@
 							this.$nextTick(()=>{
 								if(this.editor.codeViewShow){
 									this.editor.$refs.codeView.innerText = this.editor.html;
+									this.menuActive = true;
 								}else{
 									this.editor.$refs.content.innerHTML = this.editor.html;
+									this.menuActive = false;
 								}
 								this.editor.collapseToEnd();
 							})
@@ -693,18 +698,21 @@
 		
 			.mvi-editor-colors{
 				width: 3.2rem;
-				padding-bottom: 0;
+				padding:@mp-xs @mp-xs 0 @mp-xs;
 				
 				.mvi-editor-color{
-					display: inline-block;
-					margin:@mp-xs;
-					width: @mini-height;
-					height: @mini-height/2;
-					border-radius: 0;
+					display: block;
+					width: @small-height/2;
+					height: @small-height/2;
+					position: relative;
+					transition: transform 300ms;
+					-webkit-transition: transform 300ms;
+					-moz-transition: transform 300ms;
 					
 					&:hover{
-						border: 1px solid @font-color-default;
 						cursor: pointer;
+						transform: scale(1.2);
+						z-index: 2;
 					}
 				}
 			}

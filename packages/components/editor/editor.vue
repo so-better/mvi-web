@@ -12,7 +12,7 @@
 		</div>
 		<div class="mvi-editor-body">
 			<div v-if="codeViewShow" v-text="computedValue" key="code" :contenteditable="!disabled" :style="codeViewStyle"
-			:class="codeViewClass" ref="codeView" @input="codeViewInput"></div>
+			:class="codeViewClass" ref="codeView" @input="codeViewInput" @keydown="tabDown"></div>
 			<div v-else ref="content" @click="changeActive" @input="contentInput" @blur="contentBlur" @focus="contentFocus"
 			:class="contentClass" key="content" @keydown="tabDown"
 			:contenteditable="!disabled" :style="contentStyle" v-html="computedValue" :data-placeholder="placeholder"></div>
@@ -109,48 +109,24 @@ export default {
 				subscript: true, //下标
 				superscript: true, //上标
 				foreColor: [//字体颜色
-					'#333',
-					'#ff0000',
-					'#505050',
-					'#808080',
-					'#bbb',
-					'#ddd',
-					'#eee',
-					'#f7f7f7',
-					'#0a9455',
-					'#03a8f3',
-					'#ec1a0a',
-					'#f90',
-					'#07C160',
-					'#0b73de',
-					'#e2e7ea',
-					'#c3ebff',
-					'#c2fdc4',
-					'#ffd6b6',
-					'#1eacf3',
-					'#f9cec3'
+					'#000000', '#505050', '#808080', '#BBBBBB', '#CCCCCC', '#EEEEEE', '#F7F7F7', '#FFFFFF',
+					'#EC1A0A', '#FF9900', '#FFFF00', '#07C160', '#00FFFF', '#0B73DE', '#9C00FF', '#FF00FF',
+					'#F7C6CE', '#FFE7CE', '#FFEFC6', '#D6EFD6', '#CEDEE7', '#CEE7F7', '#D6D6E7', '#E7D6DE',
+					'#E79C9C', '#FFC69C', '#FFE79C', '#B5D6A5', '#A5C6CE', '#9CC6EF', '#B5A5D6', '#D6A5BD',
+					'#E76363', '#F7AD6B', '#FFD663', '#94BD7B', '#73A5AD', '#6BADDE', '#8C7BC6', '#C67BA5',
+					'#CE0000', '#E79439', '#EFC631', '#6BA54A', '#4A7B8C', '#03A8F3', '#634AA5', '#A54A7B',
+					'#9C0000', '#B56308', '#BD9400', '#397B21', '#104A5A', '#085294', '#311873', '#731842',
+					'#630000', '#7B3900', '#846300', '#295218', '#083139', '#003163', '#21104A', '#4A1031'
 				],
 				backColor: [//背景色
-					'#333',
-					'#ff0000',
-					'#505050',
-					'#808080',
-					'#bbb',
-					'#ddd',
-					'#eee',
-					'#f7f7f7',
-					'#0a9455',
-					'#03a8f3',
-					'#ec1a0a',
-					'#f90',
-					'#07C160',
-					'#0b73de',
-					'#e2e7ea',
-					'#c3ebff',
-					'#c2fdc4',
-					'#ffd6b6',
-					'#1eacf3',
-					'#f9cec3'
+					'#000000', '#505050', '#808080', '#BBBBBB', '#CCCCCC', '#EEEEEE', '#F7F7F7', '#FFFFFF',
+					'#EC1A0A', '#FF9900', '#FFFF00', '#07C160', '#00FFFF', '#0B73DE', '#9C00FF', '#FF00FF',
+					'#F7C6CE', '#FFE7CE', '#FFEFC6', '#D6EFD6', '#CEDEE7', '#CEE7F7', '#D6D6E7', '#E7D6DE',
+					'#E79C9C', '#FFC69C', '#FFE79C', '#B5D6A5', '#A5C6CE', '#9CC6EF', '#B5A5D6', '#D6A5BD',
+					'#E76363', '#F7AD6B', '#FFD663', '#94BD7B', '#73A5AD', '#6BADDE', '#8C7BC6', '#C67BA5',
+					'#CE0000', '#E79439', '#EFC631', '#6BA54A', '#4A7B8C', '#03A8F3', '#634AA5', '#A54A7B',
+					'#9C0000', '#B56308', '#BD9400', '#397B21', '#104A5A', '#085294', '#311873', '#731842',
+					'#630000', '#7B3900', '#846300', '#295218', '#083139', '#003163', '#21104A', '#4A1031'
 				],
 				list: [//列表
 					{
@@ -224,7 +200,7 @@ export default {
 			},
 			defaultTooltips: {//默认的工具提示内容
 				undo: '撤销',
-				redo: '重做',
+				redo: '恢复',
 				removeFormat:'清除格式',
 				selectAll:'全选',
 				divider:'分割线',
@@ -741,6 +717,13 @@ export default {
 							item.menuActive = false;
 						}
 						break;
+					case 'codeView':
+						if(this.codeViewShow){
+							item.menuActive = true;
+						}else{
+							item.menuActive = false;
+						}
+						break;
 				}
 			})
 		},
@@ -780,24 +763,10 @@ export default {
 		contentFocus(){
 			this.contentIsFocus = true;
 		},
-		//tab键按下
+		//tab键按下禁用默认事件
 		tabDown(event){
 			if(event.keyCode == 9){
 				event.preventDefault();
-				var node = this.getSelectNode();
-				if(node && this.range){
-					var startIndex = this.range.startOffset
-					node.innerHTML = $util.insertStr(node.innerHTML,'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',startIndex)
-					this.collapseToEnd();
-					if(!this.codeViewShow){
-						this.html = this.$refs.content.innerHTML;
-						this.text = this.$refs.content.innerText;
-						this.$emit('change',{
-							html:this.html,
-							text:this.text
-						})
-					}
-				}
 			}
 		}
 	}
