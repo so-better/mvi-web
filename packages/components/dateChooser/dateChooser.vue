@@ -293,7 +293,7 @@ export default {
 		},
 		currentYears() {
 			//年视图下显示的中间年份区间
-			if(this.$refs.layer){
+			if(this.layer){
 				var years = [...this.$refs.calendar.years];
 				for (var i = 0; i < years.length; i++) {
 					if (years[i].year < this.startYear) {
@@ -309,14 +309,14 @@ export default {
 			}
 		},
 		prevYearDisabled() {
-			if (this.view == 'year' && this.$refs.layer) {
+			if (this.view == 'year' && this.layer) {
 				return this.$refs.calendar.years[0].year <= this.startYear;
 			} else {
 				return this.value.getFullYear() <= this.startYear;
 			}
 		},
 		nextYearDisabled() {
-			if (this.view == 'year' && this.$refs.layer) {
+			if (this.view == 'year' && this.layer) {
 				var years = this.$refs.calendar.years;
 				return years[years.length - 1].year >= this.endYear;
 			} else {
@@ -327,7 +327,6 @@ export default {
 	mounted() {
 		this.view = this.mode;
 		this.target = this.$refs.target;
-		this.layer = this.$refs.layer;
 		if(this.trigger == 'click'){
 			window.addEventListener('click', this.hideForWindow);
 		}else if(this.trigger == 'hover'){
@@ -356,6 +355,9 @@ export default {
 			}
 			this.show = true;
 			this.$nextTick(()=>{
+				if(!this.layer){
+					this.layer = this.$refs.layer
+				}
 				this.$refs.layer.reset();
 			})
 		},

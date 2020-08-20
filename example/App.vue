@@ -1,7 +1,9 @@
 <template>
 	<div id="app" style="padding: .4rem 0.4rem;" ref="app">
 		<div class="mvi-mb-10"><m-button type="success" @click="change">Button</m-button></div>
-		<m-editor ref="editor"  :menus="{codeView:true}"></m-editor>
+		<m-date-chooser v-model="date" mode="year">
+			<m-button type="primary" style="width:20rem">选择日期</m-button>
+		</m-date-chooser>
 	</div>
 </template>
 
