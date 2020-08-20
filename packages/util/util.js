@@ -1,16 +1,16 @@
 const util = {
-	
+
 	/**
 	 * 判断是否数值
 	 */
-	isNumber(param){
-		if(typeof(param) == 'number' && !isNaN(param)){
+	isNumber(param) {
+		if (typeof(param) == 'number' && !isNaN(param)) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	},
-	
+
 	/**
 	 * 判断两个参数是否相等
 	 */
@@ -54,13 +54,13 @@ const util = {
 	 */
 	isEmptyObject(obj) {
 		var _this = this;
-		if(_this.isObject(obj)){
-			if(Object.keys(obj).length == 0){
+		if (_this.isObject(obj)) {
+			if (Object.keys(obj).length == 0) {
 				return true;
-			}else{
+			} else {
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
 	},
@@ -696,18 +696,18 @@ const util = {
 					break;
 				case "attribute": //属性
 					for (var i = 0; i < childNodes.length; i++) {
-						if(typeof(selector_value) == 'object'){
+						if (typeof(selector_value) == 'object') {
 							if (childNodes[i].hasAttribute(selector_value.attributeName)) {
 								if (childNodes[i].getAttribute(selector_value.attributeName) == selector_value.attributeValue) {
 									result.push(childNodes[i]);
 								}
 							}
-						}else {
+						} else {
 							if (childNodes[i].hasAttribute(selector_value)) {
 								result.push(childNodes[i]);
 							}
 						}
-						
+
 					}
 					break;
 				default: //标签名
@@ -792,13 +792,13 @@ const util = {
 					break;
 				case "attribute": //属性
 					for (var i = 0; i < siblingsArray.length; i++) {
-						if(typeof(selector_value) == 'object'){
+						if (typeof(selector_value) == 'object') {
 							if (siblingsArray[i].hasAttribute(selector_value.attributeName)) {
 								if (siblingsArray[i].getAttribute(selector_value.attributeName) == selector_value.attributeValue) {
 									result.push(siblingsArray[i]);
 								}
 							}
-						}else {
+						} else {
 							if (siblingsArray[i].hasAttribute(selector_value)) {
 								result.push(siblingsArray[i]);
 							}
@@ -1084,8 +1084,17 @@ const util = {
 	 */
 	getUrlParams(name) {
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-		var r = window.location.search.substr(1).match(reg);
-		if (r != null) return decodeURI(r[2]);
+		var search = window.location.search.substr(1);
+		if (!search) {
+			var arr = window.location.hash.split("?");
+			if (arr.length == 2) {
+				search = arr[1]
+			}
+		}
+		var r = search.match(reg);
+		if (r) {
+			return unescape(r[2])
+		}
 		return null;
 	},
 
