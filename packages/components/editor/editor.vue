@@ -13,8 +13,7 @@
 		<div class="mvi-editor-body">
 			<div v-if="codeViewShow" v-text="computedValue" key="code" :contenteditable="!disabled" :style="codeViewStyle"
 			:class="codeViewClass" ref="codeView" @input="codeViewInput" @keydown="tabDown"></div>
-			<div v-else ref="content" @click="changeActive" @input="contentInput" @blur="contentBlur" @focus="contentFocus"
-			:class="contentClass" key="content" @keydown="tabDown"
+			<div v-else ref="content" @click="changeActive" @input="contentInput" :class="contentClass" key="content" @keydown="tabDown"
 			:contenteditable="!disabled" :style="contentStyle" v-html="computedValue" :data-placeholder="placeholder"></div>
 		</div>
 	</div>
@@ -28,7 +27,6 @@ export default {
 	data() {
 		return {
 			range: null, //选区
-			contentIsFocus:false,//编辑区域是否获取焦点
 			codeViewShow:false,//源码是否显示
 			html:'',//html内容
 			text:'',//text内容
@@ -467,7 +465,7 @@ export default {
 			if (this.autoHeight) {
 				cls += ' mvi-editor-content-auto';
 			}
-			if((this.html == '<p><br></p>' || this.html == '') && !this.contentIsFocus){
+			if((this.html == '<p><br></p>' || this.html == '')){
 				cls += ' mvi-editor-content-empty';
 			}
 			return cls;
@@ -528,34 +526,28 @@ export default {
 	components: {
 		mEditorItem: editorItem
 	},
-	created() {
-		this.initOptions();
-	},
 	mounted() {
 		this.init();
 	},
 	methods: {
-		//参数初始化
-		initOptions(){
-			//将自定义的菜单项浮层配置与默认配置整合
-			Object.assign(this.defaultLayerProps, this.layerProps);
-			//将自定义的菜单栏配置与默认配置整合
-			Object.assign(this.defaultMenus, this.menus);
-			//将自定义的提示内容与默认提示整合
-			Object.assign(this.defaultTooltips, this.tooltips);
-			//将自定义的工具提示组件参数与默认工具提示组件参数整合
-			Object.assign(this.defaultTooltipProps, this.tooltipProps);
-			//将自定义上传图片配置参数与默认上传图片配置参数整合
-			Object.assign(this.defaultUploadImageProps, this.uploadImageProps);
-			//将自定义上传视频配置参数与默认上传视频配置参数整合
-			Object.assign(this.defaultUploadVideoProps, this.uploadVideoProps);
-			//将自定义的视频配置参数与默认的视频配置参数整合
-			Object.assign(this.defaultVideoShowProps,this.videoShowProps);
-			//将自定义的菜单项图标配置与默认的菜单项图标配置整合
-			Object.assign(this.defaultMenuIcons,this.menuIcons);
-		},
 		//初始化
 		init() {
+			//将自定义的菜单项浮层配置与默认配置整合
+			this.defaultLayerProps = this.initOption(this.defaultLayerProps,this.layerProps)
+			//将自定义的菜单栏配置与默认配置整合
+			this.defaultMenus = this.initOption(this.defaultMenus,this.menus)
+			//将自定义的提示内容与默认提示整合
+			this.defaultTooltips = this.initOption(this.defaultTooltips, this.tooltips)
+			//将自定义的工具提示组件参数与默认工具提示组件参数整合
+			this.defaultTooltipProps = this.initOption(this.defaultTooltipProps, this.tooltipProps)
+			//将自定义上传图片配置参数与默认上传图片配置参数整合
+			this.defaultUploadImageProps = this.initOption(this.defaultUploadImageProps, this.uploadImageProps)
+			//将自定义上传视频配置参数与默认上传视频配置参数整合
+			this.defaultUploadVideoProps = this.initOption(this.defaultUploadVideoProps, this.uploadVideoProps)
+			//将自定义的视频配置参数与默认的视频配置参数整合
+			this.defaultVideoShowProps = this.initOption(this.defaultVideoShowProps,this.videoShowProps)
+			//将自定义的菜单项图标配置与默认的菜单项图标配置整合
+			this.defaultMenuIcons = this.initOption(this.defaultMenuIcons,this.menuIcons)
 			//定义段落分隔符
 			document.execCommand('defaultParagraphSeparator', false, 'p');
 			//使用css
@@ -754,20 +746,18 @@ export default {
 				text:this.text
 			})
 		},
-		//编辑区域失去焦点
-		contentBlur(){
-			this.saveRange();
-			this.contentIsFocus = false;
-		},
-		//编辑区域获取焦点
-		contentFocus(){
-			this.contentIsFocus = true;
-		},
 		//tab键按下禁用默认事件
 		tabDown(event){
 			if(event.keyCode == 9){
 				event.preventDefault();
 			}
+		},
+		//初始化对象参数方法
+		initOption(defaultObj,propObj){
+			var obj = {}
+			Object.assign(obj,defaultObj)
+			Object.assign(obj,propObj)
+			return obj
 		}
 	}
 };
@@ -860,6 +850,9 @@ export default {
 		}
 		
 		&.mvi-editor-content-empty::before{
+			position: absolute;
+			top: @mp-sm;
+			left: @mp-sm;
 			content: attr(data-placeholder);
 			font-size: inherit;
 			color: inherit;

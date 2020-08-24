@@ -1,9 +1,10 @@
 <template>
 	<div id="app" style="padding: .4rem 0.4rem;" ref="app">
 		<div class="mvi-mb-10"><m-button type="success" @click="change">Button</m-button></div>
-		<m-date-chooser v-model="date" mode="year">
-			<m-button type="primary" style="width:20rem">选择日期</m-button>
-		</m-date-chooser>
+		<m-editor :value="value" placeholder="请输入" trigger="hover" :menus="{custom:true,codeView:true}" :menu-icons="{custom:'ul'}" 
+		:tooltips="{custom:'有序列表'}" @custom="customAction">
+			
+		</m-editor>
 	</div>
 </template>
 
@@ -39,8 +40,9 @@ export default {
 			console.log(res);
 		},
 		customAction(e){
+			console.log(e)
 			if(e.key == 'custom'){
-				this.$msgbox('自定义操作：弹出一个弹窗')
+				document.execCommand('insertOrderedList');
 			}
 		}
 	}
