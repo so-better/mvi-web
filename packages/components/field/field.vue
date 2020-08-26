@@ -9,7 +9,7 @@
 				<slot v-if="$slots.innerLeft" name="innerLeft"></slot>
 				<m-icon v-else-if="innerLeftType || innerLeftUrl" :type="innerLeftType" :url="innerLeftUrl" :spin="innerLeftSpin" />
 			</div>
-			<input ref="input" :disabled="disabled" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue"
+			<input ref="input" :disabled="disabled" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners"
 			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength">
 			<div class="mvi-field-inner mvi-field-inner-right" v-if="innerRightType || innerRightUrl || $slots.innerRight" @click="innerRightClick">
 				<slot v-if="$slots.innerRight" name="innerRight"></slot>
@@ -130,6 +130,9 @@
 			}
 		},
 		computed:{
+			listeners(){
+				return Object.assign({},this.$listeners)
+			},
 			//outer外侧样式
 			outerStyle(){
 				var style = {}
