@@ -4,7 +4,7 @@ Vue.config.productionTip = false
 import mvi from "../packages"
 Vue.use(mvi)
 import RemFit from "rem-fit"
-var remFit = new RemFit(25.6,true);
+var remFit = new RemFit(38.4,true);
 remFit.set();
 import Ruax from "ruax"
 var ruax = new Ruax();
