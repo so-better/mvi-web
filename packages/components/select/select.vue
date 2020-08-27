@@ -345,7 +345,7 @@
 		color: inherit;
 		font-family: inherit;
 		font-size: inherit;
-		opacity: .6;
+		opacity: .5;
 		vertical-align: middle;
 	}
 

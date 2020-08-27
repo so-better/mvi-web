@@ -381,7 +381,8 @@
 			opacity: .5;
 			font-family: inherit;
 			font-size: inherit;
-			color: @font-color-mute;
+			color:inherit;
+			opacity: .5;
 			vertical-align: middle;
 		}
 		

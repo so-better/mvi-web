@@ -511,7 +511,7 @@ export default {
 		},
 		//编辑器初始值
 		computedValue(){
-			if(this.value == ''){
+			if(this.value == '' || this.value == '<br>' || this.value == '<p></p>'){
 				return '<p><br></p>'
 			}else {
 				return this.value;
