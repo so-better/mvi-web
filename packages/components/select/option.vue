@@ -59,6 +59,11 @@
 		justify-content: flex-start;
 		align-items: center;
 		
+		&.mvi-option-small{
+			padding: @mp-xs @mp-sm;
+			font-size: @font-size-small;
+		}
+		
 		&.mvi-option-medium{
 			padding: @mp-sm @mp-md;
 			font-size: @font-size-default;

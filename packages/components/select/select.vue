@@ -1,7 +1,7 @@
 <template>
 	<div :data-id="'mvi-select-'+_uid" v-on="listeners" class="mvi-select" :disabled="disabled">
 		<div :data-id="'mvi-select-target-'+_uid" :class="targetClass" :style="targetStyle"
-		ref="target" @click="trigger" readonly="readonly" :disabled="disabled">
+		ref="target" @click="trigger" :disabled="disabled">
 			<span class="mvi-select-label" :data-placeholder="placeholder" v-text="selectLabel"></span>
 			<!-- 下拉图标 -->
 			<m-icon :class="iconClass" :type="icon" :style="iconStyle" />
@@ -44,7 +44,7 @@
 				type:String,
 				default:'medium',
 				validator(value){
-					return ['medium','large'].includes(value)
+					return ['small','medium','large'].includes(value)
 				}
 			},
 			placement:{//layer位置
@@ -224,15 +224,22 @@
 		cursor: pointer;
 		color: inherit;
 		//输入框大小
+		
+		&.mvi-select-small{
+			height: @small-height;
+			font-size: @font-size-small;
+			padding: 0 @mp-sm*3 0 @mp-sm;
+		}
+		
 		&.mvi-select-medium{
 			height: @medium-height;
 			font-size: @font-size-default;
-			padding: 0 @mp-md*2 0 @mp-sm;
+			padding: 0 @mp-md*3 0 @mp-md;
 		}
 		&.mvi-select-large{
 			height: @large-height;
 			font-size: @font-size-h6;
-			padding: 0 @mp-lg*2 0 @mp-md;
+			padding: 0 @mp-lg*3 0 @mp-lg;
 		}
 		
 		//输入框样式
@@ -268,7 +275,6 @@
 	
 	.mvi-select-icon{
 		position: absolute;
-		right: @mp-sm;
 		top: auto;
 		color: inherit;
 		opacity: .6;
@@ -281,11 +287,18 @@
 			transform: rotate(180deg);
 		}
 		
+		&.mvi-select-small{
+			right: @mp-sm;
+			font-size: @font-size-small;
+		}
+		
 		&.mvi-select-medium{
+			right: @mp-md;
 			font-size: @font-size-default;
 		}
 		
 		&.mvi-select-large{
+			right: @mp-lg;
 			font-size: @font-size-h6;
 		}
 	}

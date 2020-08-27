@@ -3,9 +3,9 @@
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
-		<div style="width:10rem;">
-			{{value}}
-			<m-field round v-model="value" inner-left="user" placeholder="请输入内容"></m-field>
+		<div style="width:6rem;">
+			<m-field v-model="value" round placeholder="请输入内容" clearable></m-field>
+			<m-autocomplete v-model="value" :list="list" clearable></m-autocomplete>
 		</div>
 	</div>
 </template>
@@ -18,7 +18,8 @@
 				html: '',
 				text: '',
 				date: new Date(),
-				value: 'ele',
+				value: '',
+				active:-1,
 				list:['ElementUI','iView','Vueifty','MVI','BootStrap','layUI']
 			};
 		},
@@ -42,5 +43,6 @@
 		overflow: auto;
 		overflow-x: hidden;
 		position: relative;
+		background-color: #fff;
 	}
 </style>

@@ -1,24 +1,27 @@
 <template>
 	<div :class="fieldClass" :disabled="disabled">
-		<div class="mvi-field-outer mvi-field-outer-left" v-if="outerLeftType || outerLeftUrl || $slots.outerLeft" :style="outerStyle" @click="outerLeftClick">
-			<slot v-if="$slots.outerLeft" name="outerLeft"></slot>
-			<m-icon v-else-if="outerLeftType || outerLeftUrl" :type="outerLeftType" :url="outerLeftUrl" :spin="outerLeftSpin" />
+		<div class="mvi-field-prepend" v-if="prependType || prependUrl || $slots.prepend" :style="prependStyle" @click="prependClick">
+			<slot v-if="$slots.prepend" name="prepend"></slot>
+			<m-icon v-else-if="prependType || prependUrl" :type="prependType" :url="prependUrl" :spin="prependSpin" />
 		</div>
 		<div :class="fieldBodyClass" :style="fieldBodyStyle">
-			<div class="mvi-field-inner mvi-field-inner-left" v-if="innerLeftType || innerLeftUrl || $slots.innerLeft" @click="innerLeftClick">
-				<slot v-if="$slots.innerLeft" name="innerLeft"></slot>
-				<m-icon v-else-if="innerLeftType || innerLeftUrl" :type="innerLeftType" :url="innerLeftUrl" :spin="innerLeftSpin" />
+			<div class="mvi-field-prefix" v-if="prefixType || prefixUrl || $slots.prefix" @click="prefixClick">
+				<slot v-if="$slots.prefix" name="prefix"></slot>
+				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" />
 			</div>
 			<input ref="input" :disabled="disabled" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners"
 			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength">
-			<div class="mvi-field-inner mvi-field-inner-right" v-if="innerRightType || innerRightUrl || $slots.innerRight" @click="innerRightClick">
-				<slot v-if="$slots.innerRight" name="innerRight"></slot>
-				<m-icon v-else-if="innerRightType || innerRightUrl" :type="innerRightType" :url="innerRightUrl" :spin="innerRightSpin" />
+			<div class="mvi-field-clear" @click="doClear" v-if="clearable" v-show="showClearIcon" :style="clearStyle">
+				<m-icon type="times-o"/>
+			</div>
+			<div class="mvi-field-suffix" v-if="suffixType || suffixUrl || $slots.suffix" @click="suffixClick">
+				<slot v-if="$slots.suffix" name="suffix"></slot>
+				<m-icon v-else-if="suffixType || suffixUrl" :type="suffixType" :url="suffixUrl" :spin="suffixSpin" />
 			</div>
 		</div>
-		<div class="mvi-field-outer mvi-field-outer-right" v-if="outerRightType || outerRightUrl || $slots.outerRight" :style="outerStyle" @click="outerRightClick">
-			<slot v-if="$slots.outerRight" name="outerRight"></slot>
-			<m-icon v-else-if="outerRightType || outerRightUrl" :type="outerRightType" :url="outerRightUrl" :spin="outerRightSpin" />
+		<div class="mvi-field-append" v-if="appendType || appendUrl || $slots.append" :style="appendStyle" @click="appendClick">
+			<slot v-if="$slots.append" name="append"></slot>
+			<m-icon v-else-if="appendType || appendUrl" :type="appendType" :url="appendUrl" :spin="appendSpin" />
 		</div>
 	</div>
 </template>
@@ -62,7 +65,7 @@
 				type:String,
 				default:'medium',
 				validator(value){
-					return ['medium','large'].includes(value)
+					return ['small','medium','large'].includes(value)
 				}
 			},
 			//输入框最大字符长度
@@ -80,23 +83,23 @@
 				type:Boolean,
 				default:false
 			},
-			//左侧内图标
-			innerLeft:{
+			//前缀
+			prefix:{
 				type:[String,Object],
 				default:null
 			},
-			//右侧内图标
-			innerRight:{
+			//后缀
+			suffix:{
 				type:[String,Object],
 				default:null
 			},
-			//左侧外图标
-			outerLeft:{
+			//前置
+			prepend:{
 				type:[String,Object],
 				default:null
 			},
-			//右侧外图标
-			outerRight:{
+			//后置
+			append:{
 				type:[String,Object],
 				default:null
 			},
@@ -113,13 +116,23 @@
 				type:String,
 				default:null
 			},
-			//外侧背景色
-			outerBackground:{
+			//前置背景色
+			prependBackground:{
 				type:String,
 				default:null
 			},
-			//外侧字体颜色
-			outerColor:{
+			//前置字体颜色
+			prependColor:{
+				type:String,
+				default:null
+			},
+			//后置背景色
+			appendBackground:{
+				type:String,
+				default:null
+			},
+			//后置字体颜色
+			appendColor:{
 				type:String,
 				default:null
 			},
@@ -127,30 +140,62 @@
 			borderColor:{
 				type:String,
 				default:null
+			},
+			//是否使用清除图标
+			clearable:{
+				type:Boolean,
+				default:false
 			}
 		},
 		computed:{
 			listeners(){
 				return Object.assign({},this.$listeners)
 			},
-			//outer外侧样式
-			outerStyle(){
-				var style = {}
-				if(this.outerBackground){
-					style.backgroundColor = this.outerBackground
+			//是否显示清除图标
+			showClearIcon(){
+				if(this.value &&　this.focus){
+					return true;
+				}else{
+					return false;
 				}
-				if(this.outerColor){
-					style.color = this.outerColor
+			},
+			//清除图标样式
+			clearStyle(){
+				var style = {}
+				if(this.suffixType || this.suffixUrl || this.$slots.suffix){
+					style.borderRadius = 0;
+				}
+				return style
+			},
+			//前置样式
+			prependStyle(){
+				var style = {}
+				if(this.prependBackground){
+					style.backgroundColor = this.prependBackground
+				}
+				if(this.prependColor){
+					style.color = this.prependColor
+				}
+				return style
+			},
+			//后置样式
+			appendStyle(){
+				var style = {}
+				if(this.appendBackground){
+					style.backgroundColor = this.appendBackground
+				}
+				if(this.appendColor){
+					style.color = this.appendColor
 				}
 				return style
 			},
 			//输入框样式
 			inputStyle(){
 				var style = {}
-				if(this.$slots.innerLeft || this.innerLeftType || this.innerLeftUrl){
+				if(this.$slots.prefix || this.prefixType || this.prefixUrl){
 					style.paddingLeft = 0;
 				}
-				if(this.$slots.innerRight || this.innerRightType || this.innerRightUrl){
+				if(this.$slots.suffix || this.suffixType || this.suffixUrl || (this.showClearIcon && this.clearable)){
 					style.paddingRight = 0;
 				}
 				return style
@@ -172,10 +217,10 @@
 			//输入框父容器样式类
 			fieldBodyClass(){
 				var cls = 'mvi-field-body';
-				if(this.outerLeftType || this.outerLeftUrl || this.$slots.outerLeft){
+				if(this.prependType || this.prependUrl || this.$slots.prepend){
 					cls += ' mvi-field-body-left';
 				}
-				if(this.outerRightType || this.outerRightUrl || this.$slots.outerRight){
+				if(this.appendType || this.appendUrl || this.$slots.append){
 					cls += ' mvi-field-body-right';
 				}
 				if(!this.activeColor && this.activeType && this.focus){
@@ -221,118 +266,130 @@
 				}
 				return value;
 			},
-			outerLeftType() {
+			//前置图标类型
+			prependType() {
 				var t = null;
-				if ($util.isObject(this.outerLeft)) {
-					if (typeof(this.outerLeft.type) == "string") {
-						t = this.outerLeft.type;
+				if ($util.isObject(this.prepend)) {
+					if (typeof(this.prepend.type) == "string") {
+						t = this.prepend.type;
 					}
-				} else if (typeof(this.outerLeft) == "string") {
-					t = this.outerLeft;
+				} else if (typeof(this.prepend) == "string") {
+					t = this.prepend;
 				}
 				return t;
 			},
-			outerLeftUrl() {
+			//前置图标url
+			prependUrl() {
 				var url = null;
-				if ($util.isObject(this.outerLeft)) {
-					if (typeof(this.outerLeft.url) == "string") {
-						url = this.outerLeft.url;
+				if ($util.isObject(this.prepend)) {
+					if (typeof(this.prepend.url) == "string") {
+						url = this.prepend.url;
 					}
 				}
 				return url;
 			},
-			outerLeftSpin() {
+			//前置图标旋转
+			prependSpin() {
 				var spin = false;
-				if ($util.isObject(this.outerLeft)) {
-					if (typeof(this.outerLeft.spin) == "boolean") {
-						spin = this.outerLeft.spin;
+				if ($util.isObject(this.prepend)) {
+					if (typeof(this.prepend.spin) == "boolean") {
+						spin = this.prepend.spin;
 					}
 				}
 				return spin;
 			},
-			outerRightType() {
+			//后置图标类型
+			appendType() {
 				var t = null;
-				if ($util.isObject(this.outerRight)) {
-					if (typeof(this.outerRight.type) == "string") {
-						t = this.outerRight.type;
+				if ($util.isObject(this.append)) {
+					if (typeof(this.append.type) == "string") {
+						t = this.append.type;
 					}
-				} else if (typeof(this.outerRight) == "string") {
-					t = this.outerRight;
+				} else if (typeof(this.append) == "string") {
+					t = this.append;
 				}
 				return t;
 			},
-			outerRightUrl() {
+			//后置图标url
+			appendUrl() {
 				var url = null;
-				if ($util.isObject(this.outerRight)) {
-					if (typeof(this.outerRight.url) == "string") {
-						url = this.outerRight.url;
+				if ($util.isObject(this.append)) {
+					if (typeof(this.append.url) == "string") {
+						url = this.append.url;
 					}
 				}
 				return url;
 			},
-			outerRightSpin() {
+			//后置图标旋转
+			appendSpin() {
 				var spin = false;
-				if ($util.isObject(this.outerRight)) {
-					if (typeof(this.outerRight.spin) == "boolean") {
-						spin = this.outerRight.spin;
+				if ($util.isObject(this.append)) {
+					if (typeof(this.append.spin) == "boolean") {
+						spin = this.append.spin;
 					}
 				}
 				return spin;
 			},
-			innerLeftType() {
+			//前缀图标类型
+			prefixType() {
 				var t = null;
-				if ($util.isObject(this.innerLeft)) {
-					if (typeof(this.innerLeft.type) == "string") {
-						t = this.innerLeft.type;
+				if ($util.isObject(this.prefix)) {
+					if (typeof(this.prefix.type) == "string") {
+						t = this.prefix.type;
 					}
-				} else if (typeof(this.innerLeft) == "string") {
-					t = this.innerLeft;
+				} else if (typeof(this.prefix) == "string") {
+					t = this.prefix;
 				}
 				return t;
 			},
-			innerLeftUrl() {
+			//前缀图标url
+			prefixUrl() {
 				var url = null;
-				if ($util.isObject(this.innerLeft)) {
-					if (typeof(this.innerLeft.url) == "string") {
-						url = this.innerLeft.url;
+				if ($util.isObject(this.prefix)) {
+					if (typeof(this.prefix.url) == "string") {
+						url = this.prefix.url;
 					}
 				}
 				return url;
 			},
-			innerLeftSpin() {
+			//前缀图标旋转
+			prefixSpin() {
 				var spin = false;
-				if ($util.isObject(this.innerLeft)) {
-					if (typeof(this.innerLeft.spin) == "boolean") {
-						spin = this.innerLeft.spin;
+				if ($util.isObject(this.prefix)) {
+					if (typeof(this.prefix.spin) == "boolean") {
+						spin = this.prefix.spin;
 					}
 				}
 				return spin;
 			},
-			innerRightType() {
+			//后缀图标类型
+			suffixType() {
 				var t = null;
-				if ($util.isObject(this.innerRight)) {
-					if (typeof(this.innerRight.type) == "string") {
-						t = this.innerRight.type;
+				if ($util.isObject(this.suffix)) {
+					if (typeof(this.suffix.type) == "string") {
+						t = this.suffix.type;
 					}
-				} else if (typeof(this.innerRight) == "string") {
-					t = this.innerRight;
+				} else if (typeof(this.suffix) == "string") {
+					t = this.suffix;
 				}
 				return t;
 			},
-			innerRightUrl() {
+			//后缀图标url
+			suffixUrl() {
 				var url = null;
-				if ($util.isObject(this.innerRight)) {
-					if (typeof(this.innerRight.url) == "string") {
-						url = this.innerRight.url;
+				if ($util.isObject(this.suffix)) {
+					if (typeof(this.suffix.url) == "string") {
+						url = this.suffix.url;
 					}
 				}
 				return url;
 			},
-			innerRightSpin() {
+			//后缀图标旋转
+			suffixSpin() {
 				var spin = false;
-				if ($util.isObject(this.innerRight)) {
-					if (typeof(this.innerRight.spin) == "boolean") {
-						spin = this.innerRight.spin;
+				if ($util.isObject(this.suffix)) {
+					if (typeof(this.suffix.spin) == "boolean") {
+						spin = this.suffix.spin;
 					}
 				}
 				return spin;
@@ -345,7 +402,9 @@
 			},
 			//输入框失去焦点
 			inputBlur(){
-				this.focus = false;
+				setTimeout(()=>{
+					this.focus = false;
+				},300)
 			},
 			//输入框实时输入
 			doInput(event){
@@ -365,22 +424,36 @@
 				this.$emit('update:value', value);
 				this.$emit('model-change', value);
 			},
-			//点击左外侧元素
-			outerLeftClick(){
-				this.$emit('outer-left-click',this.value)
+			//点击前置
+			prependClick(){
+				this.$emit('prepend-click',this.value)
 			},
-			//点击左内侧元素
-			innerLeftClick(){
-				this.$emit('inner-left-click',this.value)
+			//点击前缀
+			prefixClick(){
+				this.$emit('prefix-click',this.value)
 			},
-			//点击右外侧元素
-			outerRightClick(){
-				this.$emit('outer-right-click',this.value)
+			//点击后置
+			appendClick(){
+				this.$emit('append-click',this.value)
 			},
-			//点击右内侧元素
-			innerRightClick(){
-				this.$emit('inner-right-click',this.value)
-			}
+			//点击后缀
+			suffixClick(){
+				this.$emit('suffix-click',this.value)
+			},
+			//清除
+			doClear(){
+				if(this.disabled){
+					return;
+				}
+				this.$emit('model-change','');
+				this.$emit('update:value','')
+				this.$refs.input.value = ''
+				this.$nextTick(()=>{
+					setTimeout(()=>{
+						this.$refs.input.focus();
+					},300)
+				})
+			},
 		}
 	}
 </script>
@@ -398,15 +471,28 @@
 		color: @font-color-default;
 		background-color: #fff;
 		
-		&.mvi-field-medium{
-			font-size: @font-size-default;
-			height: @medium-height;
+		&.mvi-field-small{
+			font-size: @font-size-small;
+			height: @small-height;
 			
 			.mvi-field-input{
 				padding: 0 @mp-sm;
 			}
 			
-			.mvi-field-outer,.mvi-field-inner{
+			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix,.mvi-field-clear{
+				padding: 0 @mp-xs * 2.4;
+			}
+		}
+		
+		&.mvi-field-medium{
+			font-size: @font-size-default;
+			height: @medium-height;
+			
+			.mvi-field-input{
+				padding: 0 @mp-md;
+			}
+			
+			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix,.mvi-field-clear{
 				padding: 0 @mp-md;
 			}
 			
@@ -417,10 +503,10 @@
 			height: @large-height;
 			
 			.mvi-field-input{
-				padding: 0 @mp-md;
+				padding: 0 @mp-lg;
 			}
 			
-			.mvi-field-outer,.mvi-field-inner{
+			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix,.mvi-field-clear{
 				padding: 0 @mp-xs*3.4;
 			}
 		}
@@ -428,55 +514,57 @@
 		&.mvi-field-round{
 			border-radius: @radius-round;
 			
-			.mvi-field-outer-left{
+			.mvi-field-prepend{
 				border-top-left-radius: @radius-round;
 				border-bottom-left-radius: @radius-round;
 			}
 			
-			.mvi-field-outer-right{
+			.mvi-field-append{
 				border-top-right-radius: @radius-round;
 				border-bottom-right-radius: @radius-round;
-			}
-			
-			.mvi-field-body-left{
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-			}
-			
-			.mvi-field-body-right{
-				border-top-right-radius: 0;
-				border-bottom-right-radius: 0;
 			}
 		}
 		
 		&.mvi-field-square{
 			border-radius: 0;
 			
-			.mvi-field-outer-right{
+			.mvi-field-prepend{
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+			
+			.mvi-field-append{
 				border-top-right-radius: 0;
 				border-bottom-right-radius: 0;
 			}
-			
-			.mvi-field-body-left,.mvi-field-body-right{
-				border-radius: 0;
-			}
 		}
-	
+		
 		&[disabled]{
 			opacity: .6;
 		}
 	}
 	
-	.mvi-field-outer{
+	.mvi-field-append,.mvi-field-prepend{
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		height: 100%;
+		border-radius: 0;
 		background-color: @border-color;
 		
 		&:hover{
 			cursor: pointer;
 		}
+	}
+	
+	.mvi-field-prepend{
+		border-top-left-radius: @radius-default;
+		border-bottom-left-radius: @radius-default;
+	}
+	
+	.mvi-field-append{
+		border-top-right-radius: @radius-default;
+		border-bottom-right-radius: @radius-default;
 	}
 	
 	.mvi-field-body{
@@ -495,29 +583,37 @@
 		-ms-transition: border-color 600ms;
 		-moz-transition: border-color 600ms;
 		
-		.mvi-field-inner{
+		.mvi-field-prefix,.mvi-field-suffix,.mvi-field-clear{
 			display: flex;
 			display: -webkit-flex;
 			justify-content: center;
 			align-items: center;
 			height: 100%;
+			border-radius: 0;
 			
 			&:hover{
 				cursor: pointer;
 			}
-			
-			&.mvi-field-inner-left{
-				border-top-left-radius: inherit;
-				border-bottom-left-radius: inherit;
-			}
-			
-			&.mvi-field-inner-right{
-				border-top-right-radius: inherit;
-				border-bottom-right-radius: inherit;
-			}
+		}
+		
+		.mvi-field-clear{
+			opacity: .6;
+		}
+		
+		.mvi-field-prefix{
+			border-top-left-radius: inherit;
+			border-bottom-left-radius: inherit;
+		}
+		
+		.mvi-field-suffix,.mvi-field-clear{
+			border-top-right-radius: inherit;
+			border-bottom-right-radius: inherit;
 		}
 		
 		.mvi-field-input{
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
 			display: block;
 			width: 100%;
 			flex: 1;
@@ -563,6 +659,16 @@
 		
 		&.mvi-field-body-error{
 			border-color: @error-normal;
+		}
+		
+		&.mvi-field-body-left{
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+		}
+			
+		&.mvi-field-body-right{
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 	}
 </style>
