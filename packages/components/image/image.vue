@@ -11,7 +11,7 @@
 			<m-icon v-else class="mvi-image-loading-icon" :style="'font-size:'+iconSize" type="image-alt" />
 		</div>
 		<!-- 加载成功 -->
-		<img @load="loadSuccess" @error="loadError" v-show="show" :src="(lazyLoad?lazySrc:src)" :alt="showError?'':alt"
+		<img @load="loadSuccess" @error="loadError" v-show="show" :src="computedSrc" :alt="showError?'':alt"
 		 :class="imgClass">
 	</div>
 </template>
@@ -93,6 +93,19 @@
 				} else {
 					return 'mvi-image-fill';
 				}
+			},
+			//图片链接
+			computedSrc(){
+				if(this.lazyLoad){
+					return this.lazySrc;
+				}else {
+					return this.src;
+				}
+			}
+		},
+		watch:{
+			computedSrc(newValue,oldValue){
+				this.loading = true;
 			}
 		},
 		mounted() {

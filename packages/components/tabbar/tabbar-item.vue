@@ -125,6 +125,9 @@
 		height: 100%;
 		padding: 0 @mp-sm;
 		cursor: pointer;
+		user-select: none;
+		-moz-user-select: none;
+		-webkit-user-select: none;
 	}
 	
 	.mvi-tabbar-item-small{

@@ -151,7 +151,6 @@
 		-webkit-appearance: none;
 		-webkit-user-select: none;
 		-moz-user-select: none;
-		-ms-user-select: none;
 		user-select: none;
 		margin: 0;
 		padding: 0;

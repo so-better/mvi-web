@@ -7,7 +7,7 @@
 </template>
 
 <script>
-	import mTabItem from "./tabbarItem"
+	import mTabItem from "./tabbar-item"
 	
 	export default {
 		name:"m-tabbar",

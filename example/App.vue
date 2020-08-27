@@ -1,5 +1,5 @@
 <template>
-	<div id="app" style="padding: .4rem;" ref="app">
+	<div id="app" style="" ref="app">
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
@@ -16,16 +16,39 @@
 				text: '',
 				date: new Date(),
 				value: '',
-				active:-1,
-				list:['ElementUI','iView','Vueifty','MVI','BootStrap','layUI']
+				index: 0,
+				active: -1,
+				tabs: [{
+						value: 0,
+						name: '首页',
+						icon:'home'
+					},
+					{
+						value: 1,
+						name: '附近',
+						icon:'map'
+					},
+					{
+						value: 2,
+						name: '关注',
+						icon:'check-o'
+					},
+					{
+						value: 3,
+						name: '我的',
+						icon:'user-o'
+					}
+				],
+				list: ['ElementUI', 'iView', 'Vueifty', 'MVI', 'BootStrap', 'layUI']
 			};
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			change(value) {
 				console.log(value)
+				this.src1 = this.src2;
 			},
 			input(res) {
 				console.log(res);
