@@ -1,5 +1,5 @@
 <template>
-	<div :data-id="'mvi-select-'+_uid" v-on="listeners" class="mvi-select" :disabled="disabled">
+	<div :data-id="'mvi-select-'+_uid" v-on="listeners" :class="selectClass" :disabled="disabled">
 		<div :data-id="'mvi-select-target-'+_uid" :class="targetClass" :style="targetStyle"
 		ref="target" @click="trigger" :disabled="disabled">
 			<span class="mvi-select-label" :data-placeholder="placeholder" v-text="selectLabel"></span>
@@ -101,6 +101,14 @@
 			hoverClass:{//layer层列表悬浮样式
 				type:String,
 				default:null
+			},
+			round:{//是否圆角
+				type:Boolean,
+				default:false
+			},
+			square:{//是否方形
+				type:Boolean,
+				default:false
 			}
 		},
 		provide(){
@@ -124,8 +132,17 @@
 				}
 				return style;
 			},
+			selectClass(){
+				var cls = 'mvi-select mvi-select-'+this.size;
+				if(this.round){
+					cls += ' mvi-select-round'
+				}else if(this.square){
+					cls += ' mvi-select-square'
+				}
+				return cls;
+			},
 			targetClass(){
-				var cls = 'mvi-select-target mvi-select-' + this.size;
+				var cls = 'mvi-select-target';
 				if(this.activeType && !this.activeColor && this.focus){
 					cls += ' mvi-select-'+this.activeType;
 				}
@@ -147,7 +164,7 @@
 				return '';
 			},
 			iconClass(){
-				var cls = 'mvi-select-icon mvi-select-' + this.size;
+				var cls = 'mvi-select-icon';
 				if(this.focus){
 					cls += ' mvi-select-active';
 				}
@@ -200,7 +217,57 @@
 		color: @font-color-default;
 		border-radius: @radius-default;
 		background-color: #fff;
-		color: @font-color-default;
+
+		//大小
+		&.mvi-select-small{
+			
+			.mvi-select-target{
+				height: @small-height;
+				font-size: @font-size-small;
+				padding: 0 @mp-sm*3 0 @mp-sm;
+			}
+			
+			.mvi-select-icon{
+				right: @mp-sm;
+				font-size: @font-size-small;
+			}
+		}
+		
+		&.mvi-select-medium{
+			
+			.mvi-select-target{
+				height: @medium-height;
+				font-size: @font-size-default;
+				padding: 0 @mp-md*3 0 @mp-md;
+			}
+			
+			.mvi-select-icon{
+				right: @mp-md;
+				font-size: @font-size-default;
+			}
+		}
+		
+		&.mvi-select-large{
+			
+			.mvi-select-target{
+				height: @large-height;
+				font-size: @font-size-h6;
+				padding: 0 @mp-lg*3 0 @mp-lg;
+			}
+			
+			.mvi-select-icon{
+				right: @mp-lg;
+				font-size: @font-size-h6;
+			}
+		}
+		
+		&.mvi-select-round{
+			border-radius: @radius-round;
+		}
+		
+		.mvi-select-square{
+			border-radius: 0;
+		}
 		
 		&[disabled]{
 			opacity: .6;
@@ -223,24 +290,6 @@
 		-moz-transition: border-color 600ms;
 		cursor: pointer;
 		color: inherit;
-		//输入框大小
-		
-		&.mvi-select-small{
-			height: @small-height;
-			font-size: @font-size-small;
-			padding: 0 @mp-sm*3 0 @mp-sm;
-		}
-		
-		&.mvi-select-medium{
-			height: @medium-height;
-			font-size: @font-size-default;
-			padding: 0 @mp-md*3 0 @mp-md;
-		}
-		&.mvi-select-large{
-			height: @large-height;
-			font-size: @font-size-h6;
-			padding: 0 @mp-lg*3 0 @mp-lg;
-		}
 		
 		//输入框样式
 		&.mvi-select-info{
@@ -285,21 +334,6 @@
 		
 		&.mvi-select-active{
 			transform: rotate(180deg);
-		}
-		
-		&.mvi-select-small{
-			right: @mp-sm;
-			font-size: @font-size-small;
-		}
-		
-		&.mvi-select-medium{
-			right: @mp-md;
-			font-size: @font-size-default;
-		}
-		
-		&.mvi-select-large{
-			right: @mp-lg;
-			font-size: @font-size-h6;
 		}
 	}
 

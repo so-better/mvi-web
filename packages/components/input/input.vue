@@ -19,8 +19,8 @@
 		 :readonly="readonly || isDatePicker" :autofocus="autofocus" class="mvi-input" v-on="listeners" :value="inputValue"
 		 @click="callDate" @input="input" ref="input" :name="name" :style="inputStyle" @focus="getFocus" @blur="getBlur" autocomplete="off">
 		<!-- 清除图标 -->
-		<div @click="doClearValue" class="mvi-input-clear-icon" v-if="clearable">
-			<m-icon type="times-o" v-show="showClear" />
+		<div @click="doClearValue" class="mvi-input-clear-icon" v-if="clearable" v-show="showClear">
+			<m-icon type="times-o" />
 		</div>
 		<!-- 右侧图标 -->
 		<div @click="rightClick" class="mvi-input-right-icon" v-if="$slots.right || (rightIconUrl || rightIconType)">
@@ -384,7 +384,9 @@
 			},
 			//输入框或者文本域失去焦点
 			getBlur(){
-				this.focus = false;
+				setTimeout(()=>{
+					this.focus = false;
+				},300)
 			},
 			//左侧图标点击
 			leftClick(event) {
@@ -401,7 +403,9 @@
 					this.$emit('update:value', '');
 					this.$emit('model-change', '');
 					this.$nextTick(()=>{
-						this.$refs.textarea.focus();
+						setTimeout(()=>{
+							this.$refs.textarea.focus();
+						},300)
 					})
 				} else if (this.isDatePicker) {
 					this.$refs.input.value = '';
@@ -411,7 +415,9 @@
 					this.$emit('update:value', '');
 					this.$emit('model-change', '');
 					this.$nextTick(()=>{
-						this.$refs.input.focus();
+						setTimeout(()=>{
+							this.$refs.input.focus();
+						},300)
 					})
 				}
 			},

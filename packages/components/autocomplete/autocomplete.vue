@@ -1,12 +1,12 @@
 <template>
-	<div :data-id="'mvi-autocomplete-'+_uid" :class="autocompleteClass" :style="autocompleteStyle" :disabled="disabled">
-		<div class="mvi-autocomplete-target" :data-id="'mvi-autocomplete-target-'+_uid" ref="target">
+	<div :data-id="'mvi-autocomplete-'+_uid" :class="autocompleteClass" :disabled="disabled">
+		<div :class="targetClass" :style="targetStyle" :data-id="'mvi-autocomplete-target-'+_uid" ref="target">
 			<div @click="leftClick" v-if="leftIconType ||　leftIconUrl" class="mvi-autocomplete-left-icon">
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin"/>
 			</div>
-			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" :style="targetStyle" :name="name"
+			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" :style="inputStyle" :name="name"
 			@focus="inputFocus" :disabled="disabled" autocomplete="off"/>
-			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear">
+			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<m-icon type="times-o" />
 			</div>
 			<div class="mvi-autocomplete-right-icon" v-if="rightIconType ||　rightIconUrl" @click="rightClick">
@@ -122,6 +122,14 @@
 			rightIcon:{//右侧图标
 				type:[String,Object],
 				default:null
+			},
+			round:{//是否圆角
+				type:Boolean,
+				default:false
+			},
+			square:{//是否方形
+				type:Boolean,
+				default:false
 			}
 		},
 		computed:{
@@ -193,6 +201,13 @@
 					return false;
 				}
 			},
+			clearStyle(){
+				var style = {}
+				if(this.rightIconType || this.rightIconUrl){
+					style.borderRadius = 0;
+				}
+				return style
+			},
 			layerStyle(){
 				var style = {};
 				if(this.height){
@@ -214,7 +229,7 @@
 					return this.list;
 				}
 			},
-			targetStyle(){
+			inputStyle(){
 				var style = {}
 				if(this.leftIconType || this.leftIconUrl){
 					style.paddingLeft = 0;
@@ -228,17 +243,26 @@
 			},
 			autocompleteClass(){
 				var cls = 'mvi-autocomplete mvi-autocomplete-'+this.size;
-				if(this.activeType && !this.activeColor && this.focus){
-					cls += ' mvi-autocomplete-'+this.activeType;
+				if(this.round){
+					cls += ' mvi-autocomplete-round'
+				}else if(this.square){
+					cls += ' mvi-autocomplete-square'
 				}
 				return cls;
 			},
-			autocompleteStyle(){
+			targetStyle(){
 				var style = {};
 				if(this.activeColor && this.focus){
 					style.borderColor = this.activeColor;
 				}
 				return style;
+			},
+			targetClass(){
+				var cls = 'mvi-autocomplete-target';
+				if(this.activeType && !this.activeColor && this.focus){
+					cls += ' mvi-autocomplete-'+this.activeType;
+				}
+				return cls
 			}
 		},
 		mounted() {
@@ -337,12 +361,15 @@
 		border-radius: @radius-default;
 		color: @font-color-default;
 		position: relative;
-		border: 1px solid @border-color;
 		background-color: #fff;
-		transition: border-color 600ms;
-		-webkit-transition: border-color 600ms;
-		-ms-transition: border-color 600ms;
-		-moz-transition: border-color 600ms;
+
+		&.mvi-autocomplete-round{
+			border-radius: @radius-round;
+		}
+		
+		&.mvi-autocomplete-square{
+			border-radius: 0;
+		}
 
 		&.mvi-autocomplete-small{
 			font-size: @font-size-small;
@@ -394,22 +421,6 @@
 				padding: @mp-lg;
 			}
 		}
-
-		&.mvi-autocomplete-info{
-			border-color: @info-normal;
-		}
-		&.mvi-autocomplete-success{
-			border-color: @success-normal;
-		}
-		&.mvi-autocomplete-primary{
-			border-color: @primary-normal;
-		}
-		&.mvi-autocomplete-warn{
-			border-color: @warn-normal;
-		}
-		&.mvi-autocomplete-error{
-			border-color: @error-normal;
-		}
 		
 		&[disabled]{
 			opacity: .6;
@@ -423,6 +434,12 @@
 		align-items: center;
 		width: 100%;
 		height: 100%;
+		border-radius: inherit;
+		border: 1px solid @border-color;
+		transition: border-color 600ms;
+		-webkit-transition: border-color 600ms;
+		-ms-transition: border-color 600ms;
+		-moz-transition: border-color 600ms;
 		
 		input{
 			appearance: none;
@@ -462,6 +479,7 @@
 			justify-content: center;
 			align-items: center;
 			height: 100%;
+			border-radius: 0;
 			
 			&:hover{
 				cursor: pointer;
@@ -470,6 +488,32 @@
 		
 		.mvi-autocomplete-clear{
 			opacity: .6;
+		}
+		
+		.mvi-autocomplete-left-icon{
+			border-top-left-radius: inherit;
+			border-bottom-left-radius: inherit;
+		}
+		
+		.mvi-autocomplete-right-icon,.mvi-autocomplete-clear{
+			border-top-right-radius: inherit;
+			border-bottom-right-radius: inherit;
+		}
+		
+		&.mvi-autocomplete-info{
+			border-color: @info-normal;
+		}
+		&.mvi-autocomplete-success{
+			border-color: @success-normal;
+		}
+		&.mvi-autocomplete-primary{
+			border-color: @primary-normal;
+		}
+		&.mvi-autocomplete-warn{
+			border-color: @warn-normal;
+		}
+		&.mvi-autocomplete-error{
+			border-color: @error-normal;
 		}
 	}
 	

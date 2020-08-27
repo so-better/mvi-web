@@ -8,10 +8,9 @@
 			</div>
 			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off"
 			:placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly"
-			:value="computedValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="'text-align:'+align
-			+';padding-left:'+((leftIconType||leftIconUrl)?'0px':'')+';padding-right:'+((rightIconType||rightIconUrl)?'0px':'')">
-			<div v-if="clearable" class="mvi-search-clear" @click="clearInput">
-				<m-icon type="times-o" v-show="showClear"/>
+			:value="computedValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle">
+			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
+				<m-icon type="times-o"/>
 			</div>
 			<div v-if="rightIconType || rightIconUrl" class="mvi-search-right-icon" @click="rightClick">
 				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :class="(rightIconClass?rightIconClass:'')" />
@@ -223,6 +222,21 @@
 				}else{
 					return this.type;
 				}
+			},
+			inputStyle(){
+				var style = {}
+				if(this.align){
+					style.textAlign = this.align
+				}
+				if(this.leftIconType || this.leftIconUrl){
+					style.paddingLeft = 0;
+				}
+				if(this.showClear && this.clearable){
+					style.paddingRight = 0;
+				}else if(this.rightIconType || this.rightIconUrl){
+					style.paddingRight = 0;
+				}
+				return style;
 			}
 		},
 		methods:{
@@ -232,7 +246,9 @@
 			},
 			//输入框失去焦点
 			getBlur(){
-				this.focus = false;
+				setTimeout(()=>{
+					this.focus = false;
+				},300)
 			},
 			//输入监听
 			searchInput(){
@@ -287,7 +303,9 @@
 				this.$refs.input.value = '';
 				this.computedValue = '';
 				this.$nextTick(()=>{
-					this.$refs.input.focus();
+					setTimeout(()=>{
+						this.$refs.input.focus();
+					},300)
 				})
 			}
 		}
@@ -395,6 +413,11 @@
 		align-items: center;
 		height: .68rem;
 		width: .68rem;
+		
+		&:hover{
+			cursor: pointer;
+		}
+		
 		&>.mvi-icon{
 			opacity: .5;
 		}

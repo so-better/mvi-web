@@ -513,30 +513,10 @@
 		
 		&.mvi-field-round{
 			border-radius: @radius-round;
-			
-			.mvi-field-prepend{
-				border-top-left-radius: @radius-round;
-				border-bottom-left-radius: @radius-round;
-			}
-			
-			.mvi-field-append{
-				border-top-right-radius: @radius-round;
-				border-bottom-right-radius: @radius-round;
-			}
 		}
 		
 		&.mvi-field-square{
 			border-radius: 0;
-			
-			.mvi-field-prepend{
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-			}
-			
-			.mvi-field-append{
-				border-top-right-radius: 0;
-				border-bottom-right-radius: 0;
-			}
 		}
 		
 		&[disabled]{
@@ -558,13 +538,13 @@
 	}
 	
 	.mvi-field-prepend{
-		border-top-left-radius: @radius-default;
-		border-bottom-left-radius: @radius-default;
+		border-top-left-radius: inherit;
+		border-bottom-left-radius: inherit;
 	}
 	
 	.mvi-field-append{
-		border-top-right-radius: @radius-default;
-		border-bottom-right-radius: @radius-default;
+		border-top-right-radius: inherit;
+		border-bottom-right-radius: inherit;
 	}
 	
 	.mvi-field-body{

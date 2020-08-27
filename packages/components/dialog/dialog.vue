@@ -7,7 +7,7 @@
 		<template v-slot:default v-if="contentShow">
 			<div v-html="computedMessage" class="mvi-dialog-content" v-if="computedMessage"></div>
 			<div v-if="type=='prompt'" class="mvi-dialog-input">
-				<input ref="input" :type="computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength"
+				<input ref="input" :type="computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass"
 				:autofocus="computedInput.autofocus" v-model.trim="computedValue" @input="inputFun" @focus="inputFocus" @blur="inputBlur">
 				<m-icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
@@ -259,6 +259,13 @@
 				}else{
 					return false;
 				}
+			},
+			inputClass(){
+				var cls = '';
+				if(this.showClear && this.computedInput.clearable){
+					cls += 'mvi-dialog-input-padding'
+				}
+				return cls
 			}
 		},
 		methods:{
@@ -288,9 +295,11 @@
 			//清除输入框的值
 			doClear(){
 				this.computedValue = '';
-				setTimeout(()=>{
-					this.$refs.input.focus();
-				},400)
+				this.$nextTick(()=>{
+					setTimeout(()=>{
+						this.$refs.input.focus();
+					},300)
+				})
 			},
 			//确定
 			okFun(){
@@ -363,16 +372,21 @@
 		border: 1px solid @border-color;
 		color: @font-color-sub;
 		font-size: @font-size-default;
-		padding: 0 @mp-sm*3 0 @mp-sm;
+		padding: 0 @mp-sm 0 @mp-sm;
 		background-color: #fff;
 		vertical-align: middle;
 		margin-left: 5%;
+		
 		&::placeholder,&::-webkit-input-placeholder,&:-moz-placeholder,&::-moz-placeholder,&:-ms-input-placeholder{
 			opacity: .5;
 			font-family: inherit;
 			font-size: inherit;
 			color: @font-color-mute;
 			vertical-align: middle;
+		}
+		
+		&.mvi-dialog-input-padding{
+			padding-right: @mp-sm * 3;
 		}
 	}
 	

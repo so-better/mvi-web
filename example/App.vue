@@ -4,8 +4,7 @@
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
 		<div style="width:6rem;">
-			<m-field v-model="value" round placeholder="请输入内容" clearable></m-field>
-			<m-autocomplete v-model="value" :list="list" clearable></m-autocomplete>
+			
 		</div>
 	</div>
 </template>
@@ -24,7 +23,7 @@
 			};
 		},
 		mounted() {
-
+			
 		},
 		methods: {
 			change(value) {
@@ -43,6 +42,5 @@
 		overflow: auto;
 		overflow-x: hidden;
 		position: relative;
-		background-color: #fff;
 	}
 </style>
