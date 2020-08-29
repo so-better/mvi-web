@@ -48,10 +48,10 @@
 		methods: {
 			change(value) {
 				console.log(value)
-				this.$alert({
-					animation:'scale',
-					message:'这是一个提示框'
-				})
+				this.$showLoadingBar()
+				setTimeout(()=>{
+					this.$hideLoadingBar()
+				},300)
 			},
 			input(res) {
 				console.log(res);
