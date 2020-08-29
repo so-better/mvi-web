@@ -175,7 +175,7 @@
 	//缩放效果
 	.mvi-msgbox-scale-enter{
 		opacity: 0;
-		transform: scale(0.5);
+		transform: translate3d(0,0,0) scale(0.5);
 	}
 	.mvi-msgbox-scale-leave-to{
 		opacity: 0;

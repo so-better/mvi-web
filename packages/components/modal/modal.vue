@@ -367,7 +367,7 @@
 	}
 	
 	.mvi-modal-scale-enter,.mvi-modal-scale-leave-to{
-		transform:scale(0.5);
+		transform:translate3d(0,0,0) scale(0.5);
 		opacity: 0;
 	}
 	

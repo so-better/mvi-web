@@ -48,7 +48,10 @@
 		methods: {
 			change(value) {
 				console.log(value)
-				this.src1 = this.src2;
+				this.$alert({
+					animation:'scale',
+					message:'这是一个提示框'
+				})
 			},
 			input(res) {
 				console.log(res);

@@ -711,7 +711,7 @@
 					
 					&:hover{
 						cursor: pointer;
-						transform: scale(1.2);
+						transform: translate3d(0,0,0) scale(1.2);
 						z-index: 2;
 					}
 				}
