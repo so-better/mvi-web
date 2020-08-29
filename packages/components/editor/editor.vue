@@ -593,6 +593,9 @@ export default {
 		},
 		//保存选区
 		saveRange() {
+			if(this.disabled){
+				return
+			}
 			this.range = null;
 			var selection = window.getSelection();
 			if (selection.getRangeAt && selection.rangeCount) {
@@ -601,6 +604,9 @@ export default {
 		},
 		//恢复选区
 		restoreRange() {
+			if(this.disabled){
+				return
+			}
 			var selection = window.getSelection();
 			selection.removeAllRanges();
 			if (this.range) {
@@ -634,6 +640,9 @@ export default {
 		},
 		//改变菜单项激活状态
 		changeActive(){
+			if(this.disabled){
+				return
+			}
 			this.saveRange();
 			var node = this.getSelectNode();
 			this.$refs.menu.forEach((item)=>{
@@ -721,6 +730,9 @@ export default {
 		},
 		//输入框输入
 		contentInput(){
+			if(this.disabled){
+				return
+			}
 			if(this.$refs.content.innerHTML == ''){
 				this.$refs.content.innerHTML = '<p><br></p>'
 			}
@@ -734,6 +746,9 @@ export default {
 		},
 		//源码视图输入
 		codeViewInput(){
+			if(this.disabled){
+				return
+			}
 			if(this.$refs.codeView.innerText == ''){
 				this.$refs.codeView.innerText = '<p><br></p>';
 				this.collapseToEnd();
@@ -748,6 +763,9 @@ export default {
 		},
 		//tab键按下禁用默认事件
 		tabDown(event){
+			if(this.disabled){
+				return
+			}
 			if(event.keyCode == 9){
 				event.preventDefault();
 			}

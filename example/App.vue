@@ -3,7 +3,7 @@
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
-		
+		<m-editor disabled value="111"></m-editor>
 	</div>
 </template>
 
