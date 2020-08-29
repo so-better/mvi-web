@@ -332,6 +332,7 @@
 			doSelect(item){
 				this.$emit('model-change',item);
 				this.$emit('update:value',item);
+				this.$emit('select',item);
 				this.focus = false;
 			},
 			//默认过滤方法
