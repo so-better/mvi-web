@@ -136,76 +136,76 @@
 .distance(@num,@attribue){
 	.mixin(@attribute) when (@attribute = m){
 		.mvi-@{attribute}-@{num}{
-			margin:0.1rem * @num !important;
+			margin:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = ml){
 		.mvi-@{attribute}-@{num}{
-			margin-left:0.1rem * @num !important;
+			margin-left:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = mr){
 		.mvi-@{attribute}-@{num}{
-			margin-right:0.1rem * @num !important;
+			margin-right:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = mt){
 		.mvi-@{attribute}-@{num}{
-			margin-top:0.1rem * @num !important;
+			margin-top:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = mb){
 		.mvi-@{attribute}-@{num}{
-			margin-bottom:0.1rem * @num !important;
+			margin-bottom:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = mx){
 		.mvi-@{attribute}-@{num}{
-			margin-left:0.1rem * @num !important;
-			margin-right:0.1rem * @num !important;
+			margin-left:@mp-xs * @num !important;
+			margin-right:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = my){
 		.mvi-@{attribute}-@{num}{
-			margin-top:0.1rem * @num !important;
-			margin-bottom:0.1rem * @num !important;
+			margin-top:@mp-xs * @num !important;
+			margin-bottom:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = p){
 		.mvi-@{attribute}-@{num}{
-			padding:0.1rem * @num !important;
+			padding:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = px){
 		.mvi-@{attribute}-@{num}{
-			padding-left: 0.1rem * @num !important;
-			padding-right:0.1rem * @num !important;
+			padding-left: @mp-xs * @num !important;
+			padding-right:@mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = py){
 		.mvi-@{attribute}-@{num}{
-			padding-top: 0.1rem * @num !important;
-			padding-bottom: 0.1rem * @num !important;
+			padding-top:@mp-xs * @num !important;
+			padding-bottom: @mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = pl){
 		.mvi-@{attribute}-@{num}{
-			padding-left: 0.1rem * @num !important;
+			padding-left: @mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = pr){
 		.mvi-@{attribute}-@{num}{
-			padding-right: 0.1rem * @num !important;
+			padding-right: @mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = pt){
 		.mvi-@{attribute}-@{num}{
-			padding-top: 0.1rem * @num !important;
+			padding-top: @mp-xs * @num !important;
 		}
 	}
 	.mixin(@attribute) when (@attribute = pb){
 		.mvi-@{attribute}-@{num}{
-			padding-bottom: 0.1rem * @num !important;
+			padding-bottom: @mp-xs * @num !important;
 		}
 	}
 	
@@ -213,7 +213,7 @@
 	//执行这个函数
 	.mixin(@attribue);
 }
-.loop(@i) when (@i<=10){
+.loop(@i) when (@i<=20){
 	.distance(@i,m);
 	.distance(@i,ml);
 	.distance(@i,mr);
@@ -235,11 +235,11 @@
 //省略文本辅助类
 .ellipsis(@num){
 	.mvi-ellipsis-@{num}{
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp:@num;
-		-webkit-box-orient: vertical;
+		overflow: hidden !important;
+		text-overflow: ellipsis !important;
+		display: -webkit-box !important;
+		-webkit-line-clamp:@num !important;
+		-webkit-box-orient: vertical !important;
 	}
 }
 .loopEllipsis(@i) when (@i<=5){
@@ -251,23 +251,23 @@
 
 //单行文本省略
 .mvi-text-ellipsis{
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+	text-overflow: ellipsis !important;
+	white-space: nowrap !important;
+	overflow: hidden !important;
 }
 
 //flex布局
 .mvi-flex-start{
-	display: flex;
-	display: -webkit-flex;
-	justify-content: flex-start;
-	align-items: center;
+	display: flex !important;
+	display: -webkit-flex !important;
+	justify-content: flex-start !important;
+	align-items: center !important;
 }
 
 //鼠标悬浮样式
 .mvi-cursor-pointer{
 	&:hover{
-		cursor: pointer;
+		cursor: pointer !important;
 	}
 }
 
@@ -295,6 +295,7 @@ input.mvi-default-input{
 	}
 }
 
+//默认文本域样式
 textarea.mvi-default-textarea{
 	appearance: none;
 	-webkit-appearance: none;
@@ -319,6 +320,7 @@ textarea.mvi-default-textarea{
 	}
 }
 
+//默认按钮样式
 .mvi-default-btn{
 	appearance: none;
 	-moz-appearance: none;
@@ -345,4 +347,31 @@ textarea.mvi-default-textarea{
 	&:active::before{
 		.mvi-active();
 	}
+}
+
+//字体大小辅助类
+.mvi-font-h1{
+	font-size: @font-size-h1 !important;
+}
+.mvi-font-h2{
+	font-size: @font-size-h2 !important;
+}
+.mvi-font-h3{
+	font-size: @font-size-h3 !important;
+}
+.mvi-font-h4{
+	font-size: @font-size-h4 !important;
+}
+.mvi-font-h5{
+	font-size: @font-size-h1 !important;
+}
+.mvi-font-h6{
+	font-size: @font-size-h6 !important;
+}
+.mvi-font-default{
+	font-size: @font-size-default !important;
+}
+
+.mvi-font-small{
+	font-size: @font-size-small !important;
 }

@@ -562,10 +562,16 @@ export default {
 		},
 		//对外提供的用以插入图片的api
 		insertImage(url) {
+			if(this.disabled){
+				return
+			}
 			document.execCommand('insertHtml', false, `<img src="${url}" class="mvi-editor-image" />`);
 		},
 		//对外提供的用以插入视频的api
 		insertVideo(url) {
+			if(this.disabled){
+				return
+			}
 			var video = $util.string2dom(`<video src="${url}" class="mvi-editor-video"></video>`);
 			if (this.defaultVideoShowProps.muted) {
 				video.setAttribute('muted', 'muted');
@@ -583,6 +589,9 @@ export default {
 		},
 		//对外提供的用以清除内容的api
 		empty(){
+			if(this.disabled){
+				return
+			}
 			this.$refs.content.innerHTML = '<p><br></p>';
 			this.html = this.$refs.content.innerHTML;
 			this.text = this.$refs.content.innerText;
@@ -615,6 +624,9 @@ export default {
 		},
 		//将编辑区域光标移至最后
 		collapseToEnd(){
+			if(this.disabled){
+				return
+			}
 			var el = null;
 			if(this.$refs.content){
 				el = this.$refs.content;	
@@ -628,6 +640,9 @@ export default {
 		},
 		//根据选取获取节点
 		getSelectNode(){
+			if(this.disabled){
+				return
+			}
 			if(!this.range){
 				return null;
 			}

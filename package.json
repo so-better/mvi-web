@@ -1,6 +1,6 @@
 {
   "name": "mvi-web",
-  "version": "3.2.4",
+  "version": "3.2.5",
   "private": false,
   "author": "lingkai",
   "main": "packages/index.js",
@@ -12,15 +12,15 @@
     "lib": "vue-cli-service build --target lib --name mvi --dest lib packages/index.js"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.1.0",
-    "@vue/cli-service": "^4.1.0",
+    "@vue/cli-plugin-babel": "^4.5.4",
+    "@vue/cli-service": "^4.5.4",
     "core-js": "^3.6.5",
-    "less": "^3.0.4",
+    "less": "^3.12.2",
     "less-loader": "^5.0.0",
-    "rem-fit": "^1.2.5",
-    "ruax": "^1.4.4",
-    "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.10"
+    "rem-fit": "^1.2.6",
+    "ruax": "^1.4.7",
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.12"
   },
   "browserslist": [
     "> 1%",

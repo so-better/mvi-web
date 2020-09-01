@@ -209,6 +209,9 @@
 		methods: {
 			//菜单项下拉选择
 			doSelect(item){
+				if (this.editor.disabled) {
+					return;
+				}
 				this.editor.restoreRange();
 				switch (this.value) {
 					case 'tag': //设置dom标签
@@ -377,6 +380,9 @@
 			},
 			//插入远程图片或者视频
 			insertRemote(){
+				if (this.editor.disabled) {
+					return;
+				}
 				if(!this.remoteUrl){
 					this.hideLayer()
 					return
@@ -402,6 +408,9 @@
 			},
 			//插入链接
 			insertLink(){
+				if (this.editor.disabled) {
+					return;
+				}
 				if(!this.linkUrl){
 					this.hideLayer()
 					return
@@ -448,6 +457,9 @@
 			},
 			//删除链接
 			deleteLink(){
+				if (this.editor.disabled) {
+					return;
+				}
 				this.editor.restoreRange();
 				var node = this.editor.getSelectNode();
 				if(node.tagName.toUpperCase() == 'A'){
