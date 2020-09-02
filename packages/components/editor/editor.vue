@@ -568,7 +568,6 @@ export default {
 			this.text = this.$refs.content.innerText;
 			if(this.autofocus){
 				this.collapseToEnd();
-				this.$refs.content.focus();
 			}
 		},
 		//对外提供的用以插入图片的api

@@ -3,7 +3,7 @@
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
-		<m-editor ref="editor" :menus="{codeView:true}" :value="value"></m-editor>
+		<m-editor autofocus ref="editor" :menus="{codeView:true}" :value="value"></m-editor>
 	</div>
 </template>
 
@@ -15,7 +15,7 @@
 				html: '',
 				text: '',
 				date: new Date(),
-				value: '',
+				value: '<p>222</p>',
 				index: 0,
 				active: -1,
 				tabs: [{
@@ -43,9 +43,7 @@
 			};
 		},
 		mounted() {
-			setTimeout(()=>{
-				this.value = '<p>222</p>'
-			},300)
+			
 		},
 		methods: {
 			change(value) {
