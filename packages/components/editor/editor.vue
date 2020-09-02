@@ -526,6 +526,17 @@ export default {
 	components: {
 		mEditorItem: editorItem
 	},
+	watch:{
+		computedValue(newValue){
+			this.html = newValue;
+			var el = $util.string2dom(`<div>${newValue}</div>`);
+			this.text = el.innerText;
+			this.$emit('change',{
+				html:this.html,
+				text:this.text
+			})
+		}
+	},
 	mounted() {
 		this.init();
 	},

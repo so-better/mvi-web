@@ -3,7 +3,7 @@
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
-		<m-editor disabled value="111"></m-editor>
+		<m-editor ref="editor" :menus="{codeView:true}" :value="value"></m-editor>
 	</div>
 </template>
 
@@ -43,15 +43,13 @@
 			};
 		},
 		mounted() {
-
+			setTimeout(()=>{
+				this.value = '<p>222</p>'
+			},300)
 		},
 		methods: {
 			change(value) {
-				console.log(value)
-				this.$showLoadingBar()
-				setTimeout(()=>{
-					this.$hideLoadingBar()
-				},300)
+				console.log(this.$refs.editor.html,this.$refs.editor.text)
 			},
 			input(res) {
 				console.log(res);
