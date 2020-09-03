@@ -668,6 +668,9 @@ export default {
 			if(this.disabled){
 				return
 			}
+			if(!this.showMenus){
+				return
+			}
 			this.saveRange();
 			var node = this.getSelectNode();
 			this.$refs.menu.forEach((item)=>{
