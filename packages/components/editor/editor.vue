@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-editor" v-on="listeners">
+	<div class="mvi-editor">
 		<div class="mvi-editor-menus" :style="{border:(border?'':'none')}" v-if="showMenus" :disabled="disabled">
 			<m-editor-item
 				v-if="showMenuItem(item)"
@@ -12,9 +12,9 @@
 		</div>
 		<div class="mvi-editor-body">
 			<div v-if="codeViewShow" v-text="computedValue" key="code" :contenteditable="!disabled" :style="codeViewStyle"
-			:class="codeViewClass" ref="codeView" @input="codeViewInput" @keydown="tabDown"></div>
+			:class="codeViewClass" ref="codeView" @input="codeViewInput" @keydown="tabDown" v-on="listeners"></div>
 			<div v-else ref="content" @click="changeActive" @input="contentInput" :class="contentClass" key="content" @keydown="tabDown"
-			:contenteditable="!disabled" :style="contentStyle" v-html="computedValue" :data-placeholder="placeholder"></div>
+			:contenteditable="!disabled" :style="contentStyle" v-html="computedValue" :data-placeholder="placeholder" v-on="listeners"></div>
 		</div>
 	</div>
 </template>
