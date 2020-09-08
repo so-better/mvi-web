@@ -3,7 +3,7 @@
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
-		<m-editor autofocus ref="editor" :menu-icons="{alert:'user'}" @custom="change" :menus="{codeView:true,alert:true}" :value="value" :custom-active="customActive"></m-editor>
+		<m-editor autofocus ref="editor" :value="value"></m-editor>
 	</div>
 </template>
 

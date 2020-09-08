@@ -560,7 +560,7 @@ export default {
 		customActive:{
 			type:Function,
 			default:function(){
-				return function(){}
+				return false;
 			}
 		}
 	},
@@ -917,6 +917,12 @@ export default {
 						}
 						break;
 					default:
+						//如果不是自定义的菜单项，则不激活
+						var selectKeys = ['undo','redo','removeFormat','selectAll','divider','tag','fontSize','fontFamily','foreColor','backColor','list','justify','image','video'];
+						if(selectKeys.lastIndexOf(item.value)>-1){
+							item.menuActive = false;
+							return;
+						}
 						item.menuActive = this.customActive(item.value,node) || false;
 				}
 			});
