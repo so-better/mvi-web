@@ -602,9 +602,16 @@ export default {
 			if(this.disabled){
 				return
 			}
-			this.$refs.content.innerHTML = '<p><br></p>';
-			this.html = this.$refs.content.innerHTML;
-			this.text = this.$refs.content.innerText;
+			if(this.$refs.content){
+				this.$refs.content.innerHTML = '<p><br></p>';
+				this.html = this.$refs.content.innerHTML;
+				this.text = this.$refs.content.innerText;
+			}else if(this.$refs.codeView){
+				this.$refs.codeView.innerText = '<p><br></p>';
+				this.html = this.$refs.codeView.innerText;
+				var el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
+				this.text = el.innerText;
+			}
 			this.$emit('change',{
 				html:this.html,
 				text:this.text
@@ -640,7 +647,7 @@ export default {
 			var el = null;
 			if(this.$refs.content){
 				el = this.$refs.content;	
-			}else {
+			}else if(this.$refs.codeView){
 				el = this.$refs.codeView;
 			}
 			el.focus();
@@ -759,7 +766,10 @@ export default {
 		//输入框输入
 		contentInput(){
 			if(this.disabled){
-				return
+				return;
+			}
+			if(!this.$refs.content){
+				return;
 			}
 			if(this.$refs.content.innerHTML == ''){
 				this.$refs.content.innerHTML = '<p><br></p>'
@@ -775,7 +785,10 @@ export default {
 		//源码视图输入
 		codeViewInput(){
 			if(this.disabled){
-				return
+				return;
+			}
+			if(!this.$refs.codeView){
+				return;
 			}
 			if(this.$refs.codeView.innerText == ''){
 				this.$refs.codeView.innerText = '<p><br></p>';
