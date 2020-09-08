@@ -1,5 +1,5 @@
 <template>
-	<div id="app" style="" ref="app">
+	<div id="app" style="padding: .4rem;" ref="app">
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>

@@ -655,7 +655,7 @@ export default {
 			selection.selectAllChildren(el); 
 			selection.collapseToEnd();
 		},
-		//根据选取获取节点
+		//根据选区获取节点
 		getSelectNode(){
 			if(this.disabled){
 				return
@@ -740,14 +740,29 @@ export default {
 						}
 						break;
 					case 'table':
-						if(node.hasAttribute('mvi-editor-insert-table')){
+						var tables = this.$refs.content.querySelectorAll('table[mvi-editor-insert-table]');
+						var flag = false;
+						for(var i = 0;i<tables.length;i++){
+							if($util.isContains(tables[i],node)){
+								flag = true;
+								break;
+							}
+						}
+						if(flag){
 							item.menuActive = true;
 						}else {
 							item.menuActive = false;
 						}
 						break;
 					case 'code':
-						if(node.tagName.toUpperCase() == 'PRE'){
+						var pres = this.$refs.content.querySelectorAll('pre');
+						var flag = false;
+						for(var i = 0;i<pres.length;i++){
+							if($util.isContains(pres[i],node)){
+								flag = true;
+							}
+						}
+						if(flag){
 							item.menuActive = true;
 						}else{
 							item.menuActive = false;

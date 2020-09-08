@@ -1,31 +1,31 @@
 <template>
 	<div class="mvi-eitor-item" :data-id="`mvi-editor-root-${_uid}-${value}`">
-		<m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)" 
-		:title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement"
-		:timeout="editor.defaultTooltipProps.timeout" :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor"
-		:border-color="editor.defaultTooltipProps.borderColor">
-			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" 
-			:disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)" :data-id="`mvi-editor-target-${_uid}-${value}`">
+		<m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
+		 :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout"
+		 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor">
+			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
+			 :data-id="`mvi-editor-target-${_uid}-${value}`">
 				<m-icon :type="editor.defaultMenuIcons[this.value]" />
 			</div>
 		</m-tooltip>
 		<div v-else :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled"
-		:data-id="`mvi-editor-target-${_uid}-${value}`">
+		 :data-id="`mvi-editor-target-${_uid}-${value}`">
 			<m-icon :type="editor.defaultMenuIcons[this.value]" />
 		</div>
 		<transition name="mvi-editor-layer" v-if="hasSelect">
-			<m-layer v-if="layerFirstShow" v-show="layerShow" ref="layer" class="mvi-editor-layer" :placement="editor.defaultLayerProps.placement" 
-			:z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" offset="0rem"
-			:target="`[data-id='mvi-editor-target-${_uid}-${value}']`" :root="`[data-id='mvi-editor-root-${_uid}-${value}']`">
+			<m-layer v-if="layerFirstShow" v-show="layerShow" ref="layer" class="mvi-editor-layer" :placement="editor.defaultLayerProps.placement"
+			 :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" offset="0rem" :target="`[data-id='mvi-editor-target-${_uid}-${value}']`"
+			 :root="`[data-id='mvi-editor-root-${_uid}-${value}']`">
 				<!-- 插入图片或者视频 -->
 				<div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
 					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
 						<m-tab v-for="(item,index) in menu" :key="'mvi-editor-media-tab-'+index" :title="item.label">
 							<div ref="upload" class="mvi-editor-upload" v-if="item.value == 'upload'">
-								<m-icon type='upload-square'/>
+								<m-icon type='upload-square' />
 							</div>
 							<div v-if="item.value == 'remote'" class="mvi-editor-remote">
-								<input class="mvi-editor-remote-input" v-model.trim="remoteUrl" :placeholder="value=='image'?'图片链接':'视频链接'" type="text"/>
+								<input class="mvi-editor-remote-input" v-model.trim="remoteUrl" :placeholder="value=='image'?'图片链接':'视频链接'"
+								 type="text" />
 								<div class="mvi-editor-remote-insert" @click="insertRemote">插入</div>
 							</div>
 						</m-tab>
@@ -36,11 +36,11 @@
 					<m-tabs flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
 						<m-tab :title="menu[0].label">
 							<div v-if="menu[0].value == 'link'" class="mvi-editor-link">
-								<input ref="linkText" class="mvi-editor-link-input" v-model.trim="linkText" placeholder="链接文字" type="text"/>
+								<input ref="linkText" class="mvi-editor-link-input" v-model.trim="linkText" placeholder="链接文字" type="text" />
 								<input ref="linkUrl" class="mvi-editor-link-input" v-model.trim="linkUrl" placeholder="链接地址" type="text">
 								<div class="mvi-editor-link-footer">
-									<m-checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" 
-									label-color="#808080" fill-color="#0b73de" :checked.sync="linkTarget"></m-checkbox>
+									<m-checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" label-color="#808080"
+									 fill-color="#0b73de" :checked.sync="linkTarget"></m-checkbox>
 									<div class="mvi-editor-link-operation">
 										<span class="mvi-editor-link-delete" v-if="menuActive" @click="deleteLink">删除链接</span>
 										<span class="mvi-editor-link-insert" @click="insertLink">插入</span>
@@ -52,10 +52,9 @@
 				</div>
 				<!-- 设置颜色 -->
 				<div class="mvi-editor-colors" v-else-if="value == 'foreColor' || value == 'backColor'">
-					<m-tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item,index) in menu" :key="'mvi-editor-color-'+index"
-					:placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout" 
-					:color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor"
-					:border-color="editor.defaultTooltipProps.borderColor">
+					<m-tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item,index) in menu"
+					 :key="'mvi-editor-color-'+index" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout"
+					 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor">
 						<span @click="doSelect(item)" class="mvi-editor-color" :style="{backgroundColor:item.value}"></span>
 					</m-tooltip>
 				</div>
@@ -71,7 +70,7 @@
 									<span @click="removeTableColumn" class="mvi-editor-table-delete">删除列</span>
 								</div>
 								<div class="mvi-editor-table-create" v-else>
-									创建<input ref="rowsInput" class="mvi-editor-table-input" v-model.trim.number="tableRows"/>
+									创建<input ref="rowsInput" class="mvi-editor-table-input" v-model.trim.number="tableRows" />
 									行<input ref="columnsInput" class="mvi-editor-table-input" v-model.trim.number="tableColumns" />列的表格
 								</div>
 								<div class="mvi-editor-table-footer">
@@ -85,15 +84,15 @@
 				<!-- 其他 -->
 				<div v-else>
 					<div class="mvi-editor-el" v-for="(item,index) in menu" :key="'mvi-editor-el-'+index" @click="doSelect(item)">
-						<m-icon class="mvi-editor-el-icon" v-if="item.icon" :type="item.icon"/>
+						<m-icon class="mvi-editor-el-icon" v-if="item.icon" :type="item.icon" />
 						<span v-text="item.label"></span>
 					</div>
 				</div>
 			</m-layer>
 		</transition>
 		<!-- table模板 -->
-		<table v-if="value == 'table'" style="display: none;" ref="table" class="mvi-editor-table-demo" 
-		cellpadding="0" cellspacing="0" mvi-editor-insert-table>
+		<table v-if="value == 'table'" style="display: none;" ref="table" class="mvi-editor-table-demo" cellpadding="0"
+		 cellspacing="0" mvi-editor-insert-table>
 			<tbody mvi-editor-insert-table>
 				<tr v-for="item in tableRows" :key="'tr-'+item" mvi-editor-insert-table>
 					<td v-for="el in tableColumns" :key="'td-'+el" mvi-editor-insert-table></td>
@@ -114,7 +113,7 @@
 				default: null
 			},
 			menu: { //菜单项值
-				type: [Array,Boolean],
+				type: [Array, Boolean],
 				default: function() {
 					return false;
 				}
@@ -122,74 +121,80 @@
 		},
 		data() {
 			return {
-				layerShow: false,//layer开关
-				layerFirstShow:false,//layer是否第一次打开
-				tabIndex:0,//媒体layer浮层默认显示的tab序列
-				remoteUrl:'',//插入的网络图片或者视频地址
-				linkUrl:'',//插入的链接
-				linkText:'',//链接内容
-				linkTarget:false,//链接是否在新窗口打开
-				tableRows:5,//表格行数
-				tableColumns:5,//表格列数
-				menuActive:false,//菜单项是否激活状态，激活状态下如果是浮层显示浮层内容有些会有不同
+				layerShow: false, //layer开关
+				layerFirstShow: false, //layer是否第一次打开
+				tabIndex: 0, //媒体layer浮层默认显示的tab序列
+				remoteUrl: '', //插入的网络图片或者视频地址
+				linkUrl: '', //插入的链接
+				linkText: '', //链接内容
+				linkTarget: false, //链接是否在新窗口打开
+				tableRows: 5, //表格行数
+				tableColumns: 5, //表格列数
+				menuActive: false, //菜单项是否激活状态，激活状态下如果是浮层显示浮层内容有些会有不同
 			}
 		},
 		inject: ['editor'],
 		computed: {
 			//是否为下拉
-			hasSelect(){
+			hasSelect() {
 				return Array.isArray(this.menu)
 			},
 			//上传文件配置
-			uploadOptions(){
+			uploadOptions() {
 				return {
-					allowedFileType:this.value == 'image'? this.editor.defaultUploadImageProps.allowedFileType:this.editor.defaultUploadVideoProps.allowedFileType,
-					multiple:this.value == 'image'? this.editor.defaultUploadImageProps.multiple:this.editor.defaultUploadVideoProps.multiple,
-					accept:this.value == 'image'? this.editor.defaultUploadImageProps.accept:this.editor.defaultUploadVideoProps.accept,
-					minSize:this.value == 'image'? this.editor.defaultUploadImageProps.minSize:this.editor.defaultUploadVideoProps.minSize,
-					maxSize:this.value == 'image'? this.editor.defaultUploadImageProps.maxSize:this.editor.defaultUploadVideoProps.maxSize,
-					minLength:this.value == 'image'? this.editor.defaultUploadImageProps.minLength:this.editor.defaultUploadVideoProps.minLength,
-					maxLength:this.value == 'image'? this.editor.defaultUploadImageProps.maxLength:this.editor.defaultUploadVideoProps.maxLength,
-					select:files=>{
+					allowedFileType: this.value == 'image' ? this.editor.defaultUploadImageProps.allowedFileType : this.editor.defaultUploadVideoProps
+						.allowedFileType,
+					multiple: this.value == 'image' ? this.editor.defaultUploadImageProps.multiple : this.editor.defaultUploadVideoProps
+						.multiple,
+					accept: this.value == 'image' ? this.editor.defaultUploadImageProps.accept : this.editor.defaultUploadVideoProps.accept,
+					minSize: this.value == 'image' ? this.editor.defaultUploadImageProps.minSize : this.editor.defaultUploadVideoProps
+						.minSize,
+					maxSize: this.value == 'image' ? this.editor.defaultUploadImageProps.maxSize : this.editor.defaultUploadVideoProps
+						.maxSize,
+					minLength: this.value == 'image' ? this.editor.defaultUploadImageProps.minLength : this.editor.defaultUploadVideoProps
+						.minLength,
+					maxLength: this.value == 'image' ? this.editor.defaultUploadImageProps.maxLength : this.editor.defaultUploadVideoProps
+						.maxLength,
+					select: files => {
 						this.editor.restoreRange();
 						//使用base64
-						if(this.editor.useBase64){
-							files.forEach((file)=>{
-								$util.dataFileToBase64(file).then(base64=>{
-									if(this.value == 'image'){
+						if (this.editor.useBase64) {
+							files.forEach((file) => {
+								$util.dataFileToBase64(file).then(base64 => {
+									if (this.value == 'image') {
 										this.editor.insertImage(base64);
-									}else {
+									} else {
 										this.editor.insertVideo(base64);
 									}
 								})
 							})
-						}else {
+						} else {
 							//自定义一个事件，让开发者自定义上传
-							if(this.value == 'image'){
-								this.editor.$emit('upload-image',files)
-							}else if(this.value == 'video'){
-								this.editor.$emit('upload-video',files)
+							if (this.value == 'image') {
+								this.editor.$emit('upload-image', files)
+							} else if (this.value == 'video') {
+								this.editor.$emit('upload-video', files)
 							}
 						}
 						this.hideLayer()
 					},
-					error:(state,message,file)=>{
-						if(this.value == 'image'){
-							if(typeof(this.editor.uploadImageError) == 'function'){
-								this.editor.uploadImageError(state,message,file)
-							}else{
+					error: (state, message, file) => {
+						if (this.value == 'image') {
+							if (typeof(this.editor.uploadImageError) == 'function') {
+								this.editor.uploadImageError(state, message, file)
+							} else {
 								this.$msgbox({
-									message:message,
-									animation:'scale'
+									message: message,
+									animation: 'scale'
 								})
 							}
-						}else {
-							if(typeof(this.editor.uploadVideoError) == 'function'){
-								this.editor.uploadVideoError(state,message,file)
-							}else{
+						} else {
+							if (typeof(this.editor.uploadVideoError) == 'function') {
+								this.editor.uploadVideoError(state, message, file)
+							} else {
 								this.$msgbox({
-									message:message,
-									animation:'scale'
+									message: message,
+									animation: 'scale'
 								})
 							}
 						}
@@ -200,15 +205,15 @@
 		},
 		mounted() {
 			if (this.editor.trigger == 'hover') {
-				this.$el.addEventListener('mouseenter',this.showLayer);
-				this.$el.addEventListener('mouseleave',this.hideLayer);
-			}else if(this.editor.trigger == 'click'){
+				this.$el.addEventListener('mouseenter', this.showLayer);
+				this.$el.addEventListener('mouseleave', this.hideLayer);
+			} else if (this.editor.trigger == 'click') {
 				window.addEventListener('click', this.hideLayerForWindow);
 			}
 		},
 		methods: {
 			//菜单项下拉选择
-			doSelect(item){
+			doSelect(item) {
 				if (this.editor.disabled) {
 					return;
 				}
@@ -249,32 +254,32 @@
 					case 'backColor': //背景色
 						document.execCommand('hiliteColor', false, item.value);
 						break;
-					default://自定义操作
-						this.editor.$emit('custom',{
-							key:this.value,
-							itemKey:item.value
+					default: //自定义操作
+						this.editor.$emit('custom', {
+							key: this.value,
+							itemKey: item.value
 						})
 				}
 				this.hideLayer()
 			},
 			//显示浮层
-			showLayer(){
+			showLayer() {
 				if (this.editor.disabled) {
 					return;
 				}
-				if(this.hasSelect){
-					if(!this.layerFirstShow){
+				if (this.hasSelect) {
+					if (!this.layerFirstShow) {
 						this.layerFirstShow = true;
 					}
 					this.layerShow = true;
-					this.$nextTick(()=>{
+					this.$nextTick(() => {
 						this.$refs.layer.reset()
-						if(this.editor.range){
-							if(this.value == 'link'){
+						if (this.editor.range) {
+							if (this.value == 'link') {
 								this.linkInsertSet();
-							}else if(this.value == 'table'){
+							} else if (this.value == 'table') {
 								this.tableInsertSet();
-							}else if(this.value == 'image' || this.value == 'video'){
+							} else if (this.value == 'image' || this.value == 'video') {
 								this.uploadSet();
 							}
 						}
@@ -282,11 +287,11 @@
 				}
 			},
 			//隐藏浮层
-			hideLayer(){
+			hideLayer() {
 				if (this.editor.disabled) {
 					return;
 				}
-				if(this.hasSelect){
+				if (this.hasSelect) {
 					this.layerShow = false;
 				}
 			},
@@ -295,14 +300,14 @@
 				if (this.editor.disabled) {
 					return;
 				}
-				if(this.value != 'codeView' && this.editor.codeViewShow){
+				if (this.value != 'codeView' && this.editor.codeViewShow) {
 					return;
 				}
 				if (this.hasSelect) {
 					if (this.editor.trigger == 'click') {
 						if (this.layerShow) {
 							this.hideLayer()
-						}else{
+						} else {
 							this.showLayer()
 						}
 					}
@@ -316,16 +321,15 @@
 						case 'redo': //恢复
 							document.execCommand('redo');
 							break;
-						case 'removeFormat'://移出全部样式
+						case 'removeFormat': //移出全部样式
 							document.execCommand('removeFormat');
 							break;
-						case 'selectAll'://全选
+						case 'selectAll': //全选
 							document.execCommand('selectAll');
 							break;
-						case 'divider'://分割线
+						case 'divider': //分割线
 							document.execCommand('insertHorizontalRule');
-							this.editor.collapseToEnd();
-							document.execCommand('insertHtml',false,'<p><br></p>');
+							document.execCommand('insertHtml', false, '<p><br></p>');
 							break;
 						case 'bold': //加粗
 							document.execCommand('bold');
@@ -349,48 +353,52 @@
 							document.execCommand('formatBlock', false, 'blockquote');
 							break;
 						case 'code': //代码
-							document.execCommand('formatBlock', false, 'pre');
+							if (this.menuActive) {
+								this.removeCode()
+							} else {
+								document.execCommand('formatBlock', false, 'pre');
+							}
 							break;
-						case 'codeView'://显示源码
+						case 'codeView': //显示源码
 							this.editor.codeViewShow = !this.editor.codeViewShow;
-							this.$nextTick(()=>{
-								if(this.editor.codeViewShow){
+							this.$nextTick(() => {
+								if (this.editor.codeViewShow) {
 									this.editor.$refs.codeView.innerText = this.editor.html;
 									this.menuActive = true;
-								}else{
+								} else {
 									this.editor.$refs.content.innerHTML = this.editor.html;
 									this.menuActive = false;
 								}
 								this.editor.collapseToEnd();
 							})
 							break;
-						default://自定义
-							this.editor.$emit('custom',{
-								key:this.value
+						default: //自定义
+							this.editor.$emit('custom', {
+								key: this.value
 							})
 					}
 				}
 			},
 			//点击窗口隐藏浮窗
 			hideLayerForWindow(event) {
-				if($util.isContains(this.$el,event.target)){
+				if ($util.isContains(this.$el, event.target)) {
 					return;
 				}
 				this.hideLayer();
 			},
 			//插入远程图片或者视频
-			insertRemote(){
+			insertRemote() {
 				if (this.editor.disabled) {
 					return;
 				}
-				if(!this.remoteUrl){
+				if (!this.remoteUrl) {
 					this.hideLayer()
 					return
 				}
 				this.editor.restoreRange();
-				if(this.value == 'image'){
+				if (this.value == 'image') {
 					this.editor.insertImage(this.remoteUrl)
-				}else {
+				} else {
 					this.editor.insertVideo(this.remoteUrl)
 				}
 				this.remoteUrl = '';
@@ -398,237 +406,278 @@
 				this.hideLayer();
 			},
 			//上传设置
-			uploadSet(){
-				if(this.$refs.upload && Object.keys(this.$refs.upload).length > 0){
-					for(var i = 0;i<this.$refs.upload.length;i++){
-						var upload = new Upload(this.$refs.upload[i],this.uploadOptions)
+			uploadSet() {
+				if (this.$refs.upload && Object.keys(this.$refs.upload).length > 0) {
+					for (var i = 0; i < this.$refs.upload.length; i++) {
+						var upload = new Upload(this.$refs.upload[i], this.uploadOptions)
 						upload.init()
 					}
 				}
 			},
 			//插入链接
-			insertLink(){
+			insertLink() {
 				if (this.editor.disabled) {
 					return;
 				}
-				if(!this.linkUrl){
+				if (!this.linkUrl) {
 					this.hideLayer()
 					return
 				}
-				if(!this.linkText){
+				if (!this.linkText) {
 					this.linkText = this.linkUrl;
 				}
 				var link = $util.string2dom(`<a href="${this.linkUrl}">${this.linkText}</a>`);
-				if(this.linkTarget){
-					link.setAttribute('target','_blank');
+				if (this.linkTarget) {
+					link.setAttribute('target', '_blank');
 				}
 				this.editor.restoreRange();
-				if(this.menuActive){
+				if (this.menuActive) {
 					var node = this.editor.getSelectNode();
-					if(node.tagName.toUpperCase() == 'A'){
+					if (node.tagName.toUpperCase() == 'A') {
 						node.remove()
 					}
 				}
-				document.execCommand('insertHtml',false,link.outerHTML)
+				document.execCommand('insertHtml', false, link.outerHTML)
 				this.hideLayer()
 			},
 			//链接插入设置
-			linkInsertSet(){
-				if(this.menuActive){//激活状态
+			linkInsertSet() {
+				if (this.menuActive) { //激活状态
 					var node = this.editor.getSelectNode();
-					this.linkUrl = node.getAttribute('href');//初始化赋值
-					this.linkText = node.innerText;//初始化赋值
-					this.linkTarget = node.hasAttribute('target');//初始化赋值
-					this.$nextTick(()=>{
+					this.linkUrl = node.getAttribute('href'); //初始化赋值
+					this.linkText = node.innerText; //初始化赋值
+					this.linkTarget = node.hasAttribute('target'); //初始化赋值
+					this.$nextTick(() => {
 						this.$refs.linkText.focus()
 					})
-				}else {
+				} else {
 					this.linkUrl = '';
 					this.linkTarget = false;
 					var text = this.editor.range.toString();
-					if(text){
+					if (text) {
 						this.linkText = text;
 						this.$refs.linkUrl.focus()
-					}else {
+					} else {
 						this.linkText = '';
 						this.$refs.linkText.focus()
 					}
-				}	
+				}
 			},
 			//删除链接
-			deleteLink(){
+			deleteLink() {
 				if (this.editor.disabled) {
 					return;
 				}
 				this.editor.restoreRange();
 				var node = this.editor.getSelectNode();
-				if(node.tagName.toUpperCase() == 'A'){
+				if (node.tagName.toUpperCase() == 'A') {
 					node.remove()
 				}
 				this.hideLayer()
 			},
 			//表格插入设置
-			tableInsertSet(){
-				if(this.$refs.rowsInput){
+			tableInsertSet() {
+				if (this.$refs.rowsInput) {
 					this.$refs.rowsInput.focus();
 				}
 			},
 			//插入表格
-			insertTable(){
-				if(!this.tableRows || !this.tableColumns){
+			insertTable() {
+				if (!this.tableRows || !this.tableColumns) {
 					this.hideLayer()
 					return;
 				}
-				if(!$util.matchingText(this.tableRows,'number') || !$util.matchingText(this.tableColumns,'number')){
+				if (!$util.matchingText(this.tableRows, 'number') || !$util.matchingText(this.tableColumns, 'number')) {
 					this.hideLayer();
 					return;
 				}
 				var table = this.$refs.table.cloneNode(true);
 				table.style.display = '';
 				this.editor.restoreRange();
-				document.execCommand('insertHtml',false,table.outerHTML);
-				this.editor.collapseToEnd();
-				document.execCommand('insertHtml',false,'<p><br></p>');
+				document.execCommand('insertHtml', false, table.outerHTML);
 				this.hideLayer()
 			},
 			//增加行
-			addTableRow(){
+			addTableRow() {
 				var node = this.editor.getSelectNode();
-				if(node.tagName.toUpperCase() == 'TD'){//td
-					this.copyRowAppend(node.parentNode);
-				}else if(node.tagName.toUpperCase() == 'TR'){//tr
-					this.copyRowAppend(node);
-				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
-					var children = $util.children(node,'tr');
-					this.copyRowAppend(children[children.length-1]);
-				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
-					var tbody = $util.children(node,'tbody')[0];
-					var children = $util.children(tbody,'tr');
-					this.copyRowAppend(children[children.length-1]);
-				}
-				this.editor.collapseToEnd()
+				this.funAddTableRow(node)
 				this.hideLayer();
+			},
+			//增加行的方法
+			funAddTableRow(node) {
+				if (node.tagName.toUpperCase() == 'TD') { //td
+					this.copyRowAppend(node.parentNode);
+				} else if (node.tagName.toUpperCase() == 'TR') { //tr
+					this.copyRowAppend(node);
+				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
+					var children = $util.children(node, 'tr');
+					this.copyRowAppend(children[children.length - 1]);
+				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
+					var tbody = $util.children(node, 'tbody')[0];
+					var children = $util.children(tbody, 'tr');
+					this.copyRowAppend(children[children.length - 1]);
+				} else {
+					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
+						this.funAddTableRow(node.parentNode)
+					}
+				}
 			},
 			//删除行
-			removeTableRow(){
+			removeTableRow() {
 				var node = this.editor.getSelectNode();
-				if(node.tagName.toUpperCase() == 'TD'){//td
-					node.parentNode.remove();
-				}else if(node.tagName.toUpperCase() == 'TR'){//tr
-					node.remove();
-				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
-					var children = $util.children(node,'tr');
-					children[children.length-1].remove();
-				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
-					var tbody = $util.children(node,'tbody')[0];
-					var children = $util.children(tbody,'tr');
-					children[children.length-1].remove()
-				}
-				this.editor.collapseToEnd()
+				this.funRemoveTableRow(node)
 				this.hideLayer();
+			},
+			//删除行的方法
+			funRemoveTableRow(node) {
+				if (node.tagName.toUpperCase() == 'TD') { //td
+					node.parentNode.remove();
+				} else if (node.tagName.toUpperCase() == 'TR') { //tr
+					node.remove();
+				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
+					var children = $util.children(node, 'tr');
+					children[children.length - 1].remove();
+				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
+					var tbody = $util.children(node, 'tbody')[0];
+					var children = $util.children(tbody, 'tr');
+					children[children.length - 1].remove()
+				} else {
+					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
+						this.funRemoveTableRow(node.parentNode)
+					}
+				}
 			},
 			//增加列
-			addTableColumn(){
+			addTableColumn() {
 				var node = this.editor.getSelectNode();
-				if(node.tagName.toUpperCase() == 'TD'){//td
-					this.copyColumnAppend(node);
-				}else if(node.tagName.toUpperCase() == 'TR'){//tr
-					var children = $util.children(node,'td');
-					this.copyColumnAppend(children[children.length-1]);
-				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
-					var tr = $util.children(node,'tr')[0];
-					var childrenTd = $util.children(tr,'td');
-					this.copyColumnAppend(childrenTd[childrenTd.length-1]);
-				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
-					var tbody = $util.children(node,'tbody')[0];
-					var tr = $util.children(tbody,'tr')[0];
-					var childrenTd = $util.children(tr,'td');
-					this.copyColumnAppend(childrenTd[childrenTd.length-1]);
-				}
-				this.editor.collapseToEnd()
+				this.funAddTableColumn(node)
 				this.hideLayer();
+			},
+			//增加列的方法
+			funAddTableColumn(node) {
+				if (node.tagName.toUpperCase() == 'TD') { //td
+					this.copyColumnAppend(node);
+				} else if (node.tagName.toUpperCase() == 'TR') { //tr
+					var children = $util.children(node, 'td');
+					this.copyColumnAppend(children[children.length - 1]);
+				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
+					var tr = $util.children(node, 'tr')[0];
+					var childrenTd = $util.children(tr, 'td');
+					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
+				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
+					var tbody = $util.children(node, 'tbody')[0];
+					var tr = $util.children(tbody, 'tr')[0];
+					var childrenTd = $util.children(tr, 'td');
+					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
+				} else {
+					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
+						this.funAddTableColumn(node.parentNode)
+					}
+				}
 			},
 			//删除列
-			removeTableColumn(){
+			removeTableColumn() {
 				var node = this.editor.getSelectNode();
-				if(node.tagName.toUpperCase() == 'TD'){//td
-					this.removeColumn(node);
-				}else if(node.tagName.toUpperCase() == 'TR'){//tr
-					var children = $util.children(node,'td');
-					this.removeColumn(children[children.length-1]);
-				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
-					var tr = $util.children(node,'tr')[0];
-					var childrenTd = $util.children(tr,'td');
-					this.removeColumn(childrenTd[childrenTd.length-1]);
-				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
-					var tbody = $util.children(node,'tbody')[0];
-					var tr = $util.children(tbody,'tr')[0];
-					var childrenTd = $util.children(tr,'td');
-					this.removeColumn(childrenTd[childrenTd.length-1]);
-				}
-				this.editor.collapseToEnd()
+				this.funRemoveTableColumn(node)
 				this.hideLayer();
 			},
-			//删除表格
-			deleteTable(){
-				this.editor.restoreRange();
-				var node = this.editor.getSelectNode();
-				if(node.tagName.toUpperCase() == 'TD'){//td
-					node.parentNode.parentNode.parentNode.remove();
-				}else if(node.tagName.toUpperCase() == 'TR'){//tr
-					node.parentNode.parentNode.remove();
-				}else if(node.tagName.toUpperCase() == 'TBODY'){//tbody
-					node.parentNode.remove();
-				}else if(node.tagName.toUpperCase() == 'TABLE'){//table
-					node.remove();
+			//删除列的方法
+			funRemoveTableColumn(node) {
+				if (node.tagName.toUpperCase() == 'TD') { //td
+					this.removeColumn(node);
+				} else if (node.tagName.toUpperCase() == 'TR') { //tr
+					var children = $util.children(node, 'td');
+					this.removeColumn(children[children.length - 1]);
+				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
+					var tr = $util.children(node, 'tr')[0];
+					var childrenTd = $util.children(tr, 'td');
+					this.removeColumn(childrenTd[childrenTd.length - 1]);
+				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
+					var tbody = $util.children(node, 'tbody')[0];
+					var tr = $util.children(tbody, 'tr')[0];
+					var childrenTd = $util.children(tr, 'td');
+					this.removeColumn(childrenTd[childrenTd.length - 1]);
+				} else {
+					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
+						this.funRemoveTableColumn(node.parentNode)
+					}
 				}
-				this.editor.collapseToEnd()
+			},
+			//删除表格
+			deleteTable() {
+				this.editor.restoreRange();
+				var node = this.editor.getSelectNode()
+				var tables = this.editor.$refs.content.querySelectorAll('table[mvi-editor-insert-table]');
+				var table = null;
+				for (var i = 0; i < tables.length; i++) {
+					if ($util.isContains(tables[i], node)) {
+						table = tables[i];
+						break;
+					}
+				}
+				table.remove()
 				this.hideLayer();
 			},
 			//在指定节点后插入节点
-			insertNodeAfter(newNode,targetNode){
+			insertNodeAfter(newNode, targetNode) {
 				var parent = targetNode.parentNode;
 				var children = $util.children(parent);
-				if(children[children.length-1] == targetNode){
+				if (children[children.length - 1] == targetNode) {
 					parent.appendChild(newNode)
-				}else{
-					parent.insertBefore(newNode,targetNode.nextSibling);
+				} else {
+					parent.insertBefore(newNode, targetNode.nextSibling);
 				}
 			},
 			//复制表格行进行增加
-			copyRowAppend(row){
+			copyRowAppend(row) {
 				var newRow = row.cloneNode(true);
-				newRow.querySelectorAll('td').forEach(td=>{
+				newRow.querySelectorAll('td').forEach(td => {
 					td.innerText = '';
 				})
-				this.insertNodeAfter(newRow,row);
+				this.insertNodeAfter(newRow, row);
 			},
 			//复制表格列进行增加
-			copyColumnAppend(column){
+			copyColumnAppend(column) {
 				//该列在父元素中的序列
-				var index = [].indexOf.call($util.children(column.parentNode,column.tagName),column);
-				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr=>{
-					var td = $util.children(tr,'td')[index];
+				var index = [].indexOf.call($util.children(column.parentNode, column.tagName), column);
+				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
+					var td = $util.children(tr, 'td')[index];
 					var newColumn = td.cloneNode(true);
 					newColumn.innerText = '';
-					this.insertNodeAfter(newColumn,td);
+					this.insertNodeAfter(newColumn, td);
 				})
 			},
 			//根据表格列删除指定的一列
-			removeColumn(column){
+			removeColumn(column) {
 				//该列在父元素中的序列
-				var index = [].indexOf.call($util.children(column.parentNode,column.tagName),column);
-				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr=>{
-					var td = $util.children(tr,'td')[index];
+				var index = [].indexOf.call($util.children(column.parentNode, column.tagName), column);
+				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
+					var td = $util.children(tr, 'td')[index];
 					td.remove();
 				})
+			},
+			//删除代码块
+			removeCode() {
+				var node = this.editor.getSelectNode()
+				var pres = this.editor.$refs.content.querySelectorAll('pre');
+				var pre = null;
+				var innerHTML = ''
+				for (var i = 0; i < pres.length; i++) {
+					if ($util.isContains(pres[i], node)) {
+						pre = pres[i];
+						innerHTML = pre.innerHTML;
+						break;
+					}
+				}
+				pre.remove()
+				document.execCommand('insertHtml', false, "<div>" + innerHTML + "</div>")
 			}
 		},
 		beforeDestroy() {
 			if (this.editor.trigger == 'hover') {
-				this.$el.removeEventListener('mouseenter',this.showLayer);
-				this.$el.removeEventListener('mouseleave',this.hideLayer);
-			}else if(this.editor.trigger == 'click'){
+				this.$el.removeEventListener('mouseenter', this.showLayer);
+				this.$el.removeEventListener('mouseleave', this.hideLayer);
+			} else if (this.editor.trigger == 'click') {
 				window.removeEventListener('click', this.hideLayerForWindow);
 			}
 		}
@@ -659,19 +708,19 @@
 				cursor: pointer;
 				color: @font-color-default;
 			}
-			
-			&[disabled]{
+
+			&[disabled] {
 				opacity: .6;
 			}
-			
-			&[disabled]:hover{
+
+			&[disabled]:hover {
 				cursor: not-allowed;
 				color: @font-color-sub;
 			}
-			
-			&.mvi-editor-active{
+
+			&.mvi-editor-active {
 				color: @primary-normal;
-				
+
 				&:hover {
 					color: @primary-normal;
 				}
@@ -683,36 +732,36 @@
 			background-color: #fff;
 			box-shadow: @boxshadow-basic;
 			-webkit-box-shadow: @boxshadow-basic;
-			
-			&>div{
+
+			&>div {
 				display: block;
 				padding: @mp-xs 0;
 			}
-			
-			.mvi-editor-el{
-				display:block;
+
+			.mvi-editor-el {
+				display: block;
 				padding: @mp-sm @mp-md;
 				white-space: nowrap;
 				font-size: @font-size-default;
 				color: @font-color-sub;
 				text-align: center;
-				
-				&:hover{
+
+				&:hover {
 					color: @font-color-default;
 					cursor: pointer;
 					background-color: @bg-color-default;
 				}
-				
-				.mvi-editor-el-icon{
+
+				.mvi-editor-el-icon {
 					margin-right: @mp-sm;
 				}
 			}
-		
-			.mvi-editor-colors{
+
+			.mvi-editor-colors {
 				width: 3.2rem;
-				padding:@mp-xs @mp-xs 0 @mp-xs;
-				
-				.mvi-editor-color{
+				padding: @mp-xs @mp-xs 0 @mp-xs;
+
+				.mvi-editor-color {
 					display: block;
 					width: @small-height/2;
 					height: @small-height/2;
@@ -720,38 +769,38 @@
 					transition: transform 300ms;
 					-webkit-transition: transform 300ms;
 					-moz-transition: transform 300ms;
-					
-					&:hover{
+
+					&:hover {
 						cursor: pointer;
-						transform: translate3d(0,0,0) scale(1.2);
+						transform: translate3d(0, 0, 0) scale(1.2);
 						z-index: 2;
 					}
 				}
 			}
-			
-			.mvi-editor-medias{
+
+			.mvi-editor-medias {
 				width: 4rem;
-				
-				.mvi-editor-upload{
+
+				.mvi-editor-upload {
 					display: block;
 					width: 100%;
 					padding: @mp-sm 0;
 					font-size: 0.72rem;
 					color: @font-color-sub;
 					text-align: center;
-					
-					&:hover{
+
+					&:hover {
 						cursor: pointer;
 						color: @font-color-default;
 					}
 				}
-				
-				.mvi-editor-remote{
+
+				.mvi-editor-remote {
 					display: block;
 					width: 100%;
 					padding: @mp-sm @mp-sm 0 @mp-sm;
-					
-					.mvi-editor-remote-input{
+
+					.mvi-editor-remote-input {
 						appearance: none;
 						-webkit-appearance: none;
 						-moz-appearance: none;
@@ -759,7 +808,7 @@
 						width: 100%;
 						margin: 0;
 						padding: @mp-xs;
-						border:none;
+						border: none;
 						border-bottom: 1px solid @border-color;
 						font-size: @font-size-default;
 						color: @font-color-default;
@@ -767,35 +816,35 @@
 						transition: border-color 400ms;
 						-moz-transition: border-color 400ms;
 						-webkit-transition: border-color 400ms;
-						
-						&:focus{
+
+						&:focus {
 							border-color: @primary-normal;
 						}
 					}
-					
-					.mvi-editor-remote-insert{
+
+					.mvi-editor-remote-insert {
 						display: block;
 						width: 100%;
 						padding-top: @mp-sm;
 						text-align: right;
 						color: @primary-normal;
-						
-						&:hover{
+
+						&:hover {
 							cursor: pointer;
 						}
 					}
 				}
 			}
-			
-			.mvi-editor-links{
+
+			.mvi-editor-links {
 				width: 6rem;
-				
-				.mvi-editor-link{
+
+				.mvi-editor-link {
 					display: block;
 					width: 100%;
 					padding: @mp-sm @mp-sm 0 @mp-sm;
-					
-					.mvi-editor-link-input{
+
+					.mvi-editor-link-input {
 						appearance: none;
 						-webkit-appearance: none;
 						-moz-appearance: none;
@@ -803,7 +852,7 @@
 						width: 100%;
 						margin: 0;
 						padding: @mp-xs;
-						border:none;
+						border: none;
 						border-bottom: 1px solid @border-color;
 						font-size: @font-size-default;
 						color: @font-color-default;
@@ -812,13 +861,13 @@
 						transition: border-color 400ms;
 						-moz-transition: border-color 400ms;
 						-webkit-transition: border-color 400ms;
-						
-						&:focus{
+
+						&:focus {
 							border-color: @primary-normal;
 						}
 					}
-					
-					.mvi-editor-link-footer{
+
+					.mvi-editor-link-footer {
 						display: flex;
 						display: -webkit-flex;
 						justify-content: space-between;
@@ -826,28 +875,28 @@
 						width: 100%;
 						margin-top: @mp-sm;
 						padding: @mp-xs 0;
-						
-						.mvi-editor-link-operation{
+
+						.mvi-editor-link-operation {
 							display: flex;
 							justify-content: flex-start;
 							align-items: center;
-							
-							.mvi-editor-link-delete{
+
+							.mvi-editor-link-delete {
 								color: @font-color-sub;
 								font-size: @font-size-default;
 								margin-right: @mp-md;
-								
-								&:hover{
+
+								&:hover {
 									color: @font-color-default;
 									cursor: pointer;
 								}
 							}
-							
-							.mvi-editor-link-insert{
+
+							.mvi-editor-link-insert {
 								color: @primary-normal;
 								font-size: @font-size-default;
-								
-								&:hover{
+
+								&:hover {
 									cursor: pointer;
 								}
 							}
@@ -855,22 +904,22 @@
 					}
 				}
 			}
-		
-			.mvi-editor-tables{
+
+			.mvi-editor-tables {
 				width: 6rem;
-				
-				.mvi-editor-table{
+
+				.mvi-editor-table {
 					display: block;
 					width: 100%;
 					padding: @mp-md @mp-md 0 @mp-md;
-					
-					.mvi-editor-table-create{
+
+					.mvi-editor-table-create {
 						display: block;
 						width: 100%;
 						text-align: center;
 						padding-bottom: @mp-md;
-						
-						.mvi-editor-table-input{
+
+						.mvi-editor-table-input {
 							appearance: none;
 							-webkit-appearance: none;
 							-moz-appearance: none;
@@ -879,7 +928,7 @@
 							margin: 0;
 							padding: 0;
 							text-align: center;
-							border:none;
+							border: none;
 							border-bottom: 1px solid @border-color;
 							font-size: @font-size-default;
 							color: @font-color-default;
@@ -887,67 +936,67 @@
 							transition: border-color 400ms;
 							-moz-transition: border-color 400ms;
 							-webkit-transition: border-color 400ms;
-							
-							&:focus{
+
+							&:focus {
 								border-color: @primary-normal;
 							}
 						}
 					}
-					
-					.mvi-editor-table-edit{
+
+					.mvi-editor-table-edit {
 						display: flex;
 						display: -webkit-flex;
 						justify-content: space-between;
 						align-items: center;
 						width: 100%;
-						
-						&>span{
+
+						&>span {
 							display: inline-block;
 							padding: @mp-xs @mp-sm;
 							border-radius: @radius-default;
-							
-							&:hover{
+
+							&:hover {
 								cursor: pointer;
 								background-color: @bg-color-default;
 							}
 						}
-						
-						.mvi-editor-table-add{
+
+						.mvi-editor-table-add {
 							color: @primary-normal;
 						}
-						
-						.mvi-editor-table-delete{
+
+						.mvi-editor-table-delete {
 							color: @error-normal;
 						}
 					}
-					
-					.mvi-editor-table-footer{
+
+					.mvi-editor-table-footer {
 						display: flex;
 						justify-content: flex-end;
 						align-items: center;
 						width: 100%;
 						margin-top: @mp-xs;
-						
-						.mvi-editor-table-delete{
+
+						.mvi-editor-table-delete {
 							color: @font-color-sub;
 							font-size: @font-size-default;
 							padding: @mp-xs @mp-sm;
 							border-radius: @radius-default;
-							
-							&:hover{
+
+							&:hover {
 								color: @font-color-default;
 								cursor: pointer;
 								background-color: @bg-color-default;
 							}
 						}
-						
-						.mvi-editor-table-insert{
+
+						.mvi-editor-table-insert {
 							color: @primary-normal;
 							font-size: @font-size-default;
 							border-radius: @radius-default;
 							padding: @mp-xs @mp-sm;
-							
-							&:hover{
+
+							&:hover {
 								cursor: pointer;
 								background-color: @bg-color-default;
 							}
@@ -958,20 +1007,20 @@
 		}
 	}
 
-	.mvi-editor-layer-enter-active{
+	.mvi-editor-layer-enter-active {
 		transition: transform 100ms, opacity 100ms;
 		-webkit-transition: transform 100ms, opacity 100ms;
 		-moz-transition: transform 100ms, opacity 100ms;
 		-ms-transition: transform 100ms, opacity 100ms;
 	}
 
-	.mvi-editor-layer-enter{
+	.mvi-editor-layer-enter {
 		transform: translateY(0.2rem);
 		opacity: 0;
 	}
-	
+
 	/* 表格demo样式 */
-	.mvi-editor-table-demo{
+	.mvi-editor-table-demo {
 		width: 100%;
 		border: 1px solid @border-color;
 		margin: 0;
@@ -980,23 +1029,24 @@
 		color: @font-color-default;
 		border-collapse: collapse;
 		margin-bottom: @mp-sm;
-		tbody{
+
+		tbody {
 			margin: 0;
 			padding: 0;
-			
-			tr{
+
+			tr {
 				margin: 0;
 				padding: 0;
-				
-				&:first-child{
+
+				&:first-child {
 					background-color: @bg-color-dark;
-					
-					td{
+
+					td {
 						font-weight: bold;
 					}
 				}
-				
-				td{
+
+				td {
 					font-size: @font-size-default;
 					color: @font-color-default;
 					margin: 0;
@@ -1004,8 +1054,8 @@
 					border-right: 1px solid @border-color;
 					padding: @mp-xs;
 					text-align: center;
-					
-					&:last-child{
+
+					&:last-child {
 						border-right: none;
 					}
 				}
