@@ -364,17 +364,30 @@
 							this.$nextTick(() => {
 								if (this.editor.codeViewShow) {
 									this.editor.$refs.codeView.innerText = this.editor.html;
-									this.menuActive = true;
+									this.editor.$children.forEach((child)=>{
+										if(child.value != 'codeView'){
+											child.menuActive = false;
+										}else {
+											child.menuActive = true;
+										}
+									})
 								} else {
 									this.editor.$refs.content.innerHTML = this.editor.html;
-									this.menuActive = false;
+									this.editor.$children.forEach((child)=>{
+										if(child.value != 'codeView'){
+											this.editor.changeActive()
+										}else {
+											child.menuActive = false;
+										}
+									})
 								}
 								this.editor.collapseToEnd();
 							})
 							break;
 						default: //自定义
 							this.editor.$emit('custom', {
-								key: this.value
+								key: this.value,
+								menu:this
 							})
 					}
 				}
@@ -433,8 +446,9 @@
 				this.editor.restoreRange();
 				if (this.menuActive) {
 					var node = this.editor.getSelectNode();
-					if (node.tagName.toUpperCase() == 'A') {
-						node.remove()
+					if (this.editor.compareTag(node,'a')) {
+						var a = this.editor.getCompareTag(node,'a');
+						a.remove()
 					}
 				}
 				document.execCommand('insertHtml', false, link.outerHTML)
@@ -444,9 +458,10 @@
 			linkInsertSet() {
 				if (this.menuActive) { //激活状态
 					var node = this.editor.getSelectNode();
-					this.linkUrl = node.getAttribute('href'); //初始化赋值
-					this.linkText = node.innerText; //初始化赋值
-					this.linkTarget = node.hasAttribute('target'); //初始化赋值
+					var a = this.editor.getCompareTag(node,'a');
+					this.linkUrl = a.getAttribute('href'); //初始化赋值
+					this.linkText = a.innerText; //初始化赋值
+					this.linkTarget = a.hasAttribute('target'); //初始化赋值
 					this.$nextTick(() => {
 						this.$refs.linkText.focus()
 					})
@@ -470,8 +485,12 @@
 				}
 				this.editor.restoreRange();
 				var node = this.editor.getSelectNode();
-				if (node.tagName.toUpperCase() == 'A') {
-					node.remove()
+				if (this.editor.compareTag(node,'a')) {
+					var a = this.editor.getCompareTag(node,'a')
+					if(a){
+						a.remove();
+						this.menuActive = false;
+					}
 				}
 				this.hideLayer()
 			},
@@ -500,122 +519,96 @@
 			//增加行
 			addTableRow() {
 				var node = this.editor.getSelectNode();
-				this.funAddTableRow(node)
-				this.hideLayer();
-			},
-			//增加行的方法
-			funAddTableRow(node) {
-				if (node.tagName.toUpperCase() == 'TD') { //td
-					this.copyRowAppend(node.parentNode);
-				} else if (node.tagName.toUpperCase() == 'TR') { //tr
-					this.copyRowAppend(node);
-				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
-					var children = $util.children(node, 'tr');
-					this.copyRowAppend(children[children.length - 1]);
-				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
-					var tbody = $util.children(node, 'tbody')[0];
+				if(this.editor.compareTag(node,'tr')){
+					var tr = this.editor.getCompareTag(node,'tr');
+					this.copyRowAppend(tr);
+				}else if (this.editor.compareTag(node,'tbody')) { //tbody
+					var tbody = this.editor.getCompareTag(node,'tbody');
 					var children = $util.children(tbody, 'tr');
 					this.copyRowAppend(children[children.length - 1]);
-				} else {
-					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
-						this.funAddTableRow(node.parentNode)
-					}
+				} else if (this.editor.compareTag(node,'table')) { //table
+					var table = this.editor.getCompareTag(node,'table')
+					var tbody = $util.children(table, 'tbody')[0];
+					var children = $util.children(tbody, 'tr');
+					this.copyRowAppend(children[children.length - 1]);
 				}
+				this.hideLayer();
 			},
 			//删除行
 			removeTableRow() {
 				var node = this.editor.getSelectNode();
-				this.funRemoveTableRow(node)
-				this.hideLayer();
-			},
-			//删除行的方法
-			funRemoveTableRow(node) {
-				if (node.tagName.toUpperCase() == 'TD') { //td
-					node.parentNode.remove();
-				} else if (node.tagName.toUpperCase() == 'TR') { //tr
-					node.remove();
-				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
-					var children = $util.children(node, 'tr');
-					children[children.length - 1].remove();
-				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
-					var tbody = $util.children(node, 'tbody')[0];
+				if(this.editor.compareTag(node,'tr')){
+					var tr = this.editor.getCompareTag(node,'tr');
+					tr.remove()
+				}else if (this.editor.compareTag(node,'tbody')) { //tbody
+					var tbody = this.editor.getCompareTag(node,'tbody');
 					var children = $util.children(tbody, 'tr');
 					children[children.length - 1].remove()
-				} else {
-					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
-						this.funRemoveTableRow(node.parentNode)
-					}
+				} else if (this.editor.compareTag(node,'table')) { //table
+					var table = this.editor.getCompareTag(node,'table')
+					var tbody = $util.children(table, 'tbody')[0];
+					var children = $util.children(tbody, 'tr');
+					children[children.length - 1].remove()
 				}
+				this.hideLayer();
 			},
 			//增加列
 			addTableColumn() {
 				var node = this.editor.getSelectNode();
-				this.funAddTableColumn(node)
-				this.hideLayer();
-			},
-			//增加列的方法
-			funAddTableColumn(node) {
-				if (node.tagName.toUpperCase() == 'TD') { //td
-					this.copyColumnAppend(node);
-				} else if (node.tagName.toUpperCase() == 'TR') { //tr
-					var children = $util.children(node, 'td');
+				if(this.editor.compareTag(node,'td')){
+					var td = this.editor.getCompareTag(node,'td');
+					this.copyColumnAppend(td)
+				}else if(this.editor.compareTag(node,'tr')){
+					var tr = this.editor.getCompareTag(node,'tr');
+					var children = $util.children(tr, 'td');
 					this.copyColumnAppend(children[children.length - 1]);
-				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
-					var tr = $util.children(node, 'tr')[0];
-					var childrenTd = $util.children(tr, 'td');
-					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
-				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
-					var tbody = $util.children(node, 'tbody')[0];
+				}else if(this.editor.compareTag(node,'tbody')){
+					var tbody = this.editor.getCompareTag(node,'tbody');
 					var tr = $util.children(tbody, 'tr')[0];
 					var childrenTd = $util.children(tr, 'td');
 					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
-				} else {
-					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
-						this.funAddTableColumn(node.parentNode)
-					}
+				}else if(this.editor.compareTag(node,'table')){
+					var table = this.editor.getCompareTag(node,'table');
+					var tbody = $util.children(table, 'tbody')[0];
+					var tr = $util.children(tbody, 'tr')[0];
+					var childrenTd = $util.children(tr, 'td');
+					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
 				}
+				this.hideLayer();
 			},
 			//删除列
 			removeTableColumn() {
 				var node = this.editor.getSelectNode();
-				this.funRemoveTableColumn(node)
-				this.hideLayer();
-			},
-			//删除列的方法
-			funRemoveTableColumn(node) {
-				if (node.tagName.toUpperCase() == 'TD') { //td
-					this.removeColumn(node);
-				} else if (node.tagName.toUpperCase() == 'TR') { //tr
-					var children = $util.children(node, 'td');
+				if(this.editor.compareTag(node,'td')){
+					var td = this.editor.getCompareTag(node,'td');
+					this.removeColumn(td);
+				}else if(this.editor.compareTag(node,'tr')){
+					var tr = this.editor.getCompareTag(node,'tr');
+					var children = $util.children(tr, 'td');
 					this.removeColumn(children[children.length - 1]);
-				} else if (node.tagName.toUpperCase() == 'TBODY') { //tbody
-					var tr = $util.children(node, 'tr')[0];
-					var childrenTd = $util.children(tr, 'td');
-					this.removeColumn(childrenTd[childrenTd.length - 1]);
-				} else if (node.tagName.toUpperCase() == 'TABLE') { //table
-					var tbody = $util.children(node, 'tbody')[0];
+				}else if(this.editor.compareTag(node,'tbody')){
+					var tbody = this.editor.getCompareTag(node,'tbody');
 					var tr = $util.children(tbody, 'tr')[0];
 					var childrenTd = $util.children(tr, 'td');
 					this.removeColumn(childrenTd[childrenTd.length - 1]);
-				} else {
-					if (node.parentNode && $util.isContains(this.editor.$refs.content, node.parentNode)) {
-						this.funRemoveTableColumn(node.parentNode)
-					}
+				}else if(this.editor.compareTag(node,'table')){
+					var table = this.editor.getCompareTag(node,'table');
+					var tbody = $util.children(table, 'tbody')[0];
+					var tr = $util.children(tbody, 'tr')[0];
+					var childrenTd = $util.children(tr, 'td');
+					this.removeColumn(childrenTd[childrenTd.length - 1]);
 				}
+				this.hideLayer();
 			},
 			//删除表格
 			deleteTable() {
 				this.editor.restoreRange();
 				var node = this.editor.getSelectNode()
-				var tables = this.editor.$refs.content.querySelectorAll('table[mvi-editor-insert-table]');
-				var table = null;
-				for (var i = 0; i < tables.length; i++) {
-					if ($util.isContains(tables[i], node)) {
-						table = tables[i];
-						break;
-					}
+				var table = this.editor.getCompareTag(node,'table');
+				if(table){
+					table.remove();
+					this.menuActive = false;
 				}
-				table.remove()
 				this.hideLayer();
 			},
 			//在指定节点后插入节点
@@ -669,8 +662,13 @@
 						break;
 					}
 				}
+				var pEl = $util.string2dom("<p>" + innerHTML + "</p>");
+				this.insertNodeAfter(pEl,pre)
 				pre.remove()
-				document.execCommand('insertHtml', false, "<div>" + innerHTML + "</div>")
+				if(this.editor.range){
+					this.editor.range.setStartAfter(pEl)
+					this.menuActive = false;
+				}
 			}
 		},
 		beforeDestroy() {

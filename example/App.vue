@@ -3,7 +3,7 @@
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
-		<m-editor autofocus ref="editor" :menus="{codeView:true}" :value="value"></m-editor>
+		<m-editor autofocus ref="editor" :menu-icons="{alert:'user'}" @custom="change" :menus="{codeView:true,alert:true}" :value="value" :custom-active="customActive"></m-editor>
 	</div>
 </template>
 
@@ -15,7 +15,7 @@
 				html: '',
 				text: '',
 				date: new Date(),
-				value: '<p>222</p>',
+				value: '<p><a href="#">1233444<span style="color:#ff3300;">44444444</span>4444444444</a></p>',
 				index: 0,
 				active: -1,
 				tabs: [{
@@ -47,7 +47,23 @@
 		},
 		methods: {
 			change(value) {
-				console.log(this.$refs.editor.html,this.$refs.editor.text)
+				if(value.key == 'alert'){
+					if(value.menu.menuActive){
+						document.execCommand('bold',false)
+					}else{
+						document.execCommand('bold',false)
+					}
+				}
+			},
+			customActive(key,node){
+				
+				if(key == 'alert'){
+					if(this.$refs.editor.compareCss(node,'font-weight','700')){
+						return true;
+					}else {
+						return false;
+					}
+				}
 			},
 			input(res) {
 				console.log(res);
