@@ -1016,48 +1016,4 @@
 		transform: translateY(0.2rem);
 		opacity: 0;
 	}
-
-	/* 表格demo样式 */
-	.mvi-editor-table-demo {
-		width: 100%;
-		border: 1px solid @border-color;
-		margin: 0;
-		padding: 0;
-		font-size: @font-size-default;
-		color: @font-color-default;
-		border-collapse: collapse;
-		margin-bottom: @mp-sm;
-
-		tbody {
-			margin: 0;
-			padding: 0;
-
-			tr {
-				margin: 0;
-				padding: 0;
-
-				&:first-child {
-					background-color: @bg-color-dark;
-
-					td {
-						font-weight: bold;
-					}
-				}
-
-				td {
-					font-size: @font-size-default;
-					color: @font-color-default;
-					margin: 0;
-					border-bottom: 1px solid @border-color;
-					border-right: 1px solid @border-color;
-					padding: @mp-xs;
-					text-align: center;
-
-					&:last-child {
-						border-right: none;
-					}
-				}
-			}
-		}
-	}
 </style>

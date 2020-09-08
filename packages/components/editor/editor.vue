@@ -557,9 +557,9 @@ export default {
 			}
 		},
 		//激活判定
-		customActive:{
-			type:Function,
-			default:function(){
+		customActive: {
+			type: Function,
+			default: function() {
 				return false;
 			}
 		}
@@ -840,70 +840,70 @@ export default {
 			this.$refs.menu.forEach(item => {
 				switch (item.value) {
 					case 'bold':
-						if (this.compareCss(node,'font-weight','bold') || this.compareCss(node,'font-weight','700')) {
+						if (this.compareCss(node, 'font-weight', 'bold') || this.compareCss(node, 'font-weight', '700')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'italic':
-						if (this.compareCss(node,'font-style','italic')) {
+						if (this.compareCss(node, 'font-style', 'italic')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'underline':
-						if (this.compareCss(node,'text-decoration-line','underline')) {
+						if (this.compareCss(node, 'text-decoration-line', 'underline')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'strikeThrough':
-						if (this.compareCss(node,'text-decoration-line','line-through')) {
+						if (this.compareCss(node, 'text-decoration-line', 'line-through')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'subscript':
-						if (this.compareCss(node,'vertical-align','sub')) {
+						if (this.compareCss(node, 'vertical-align', 'sub')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'superscript':
-						if (this.compareCss(node,'vertical-align','super')) {
+						if (this.compareCss(node, 'vertical-align', 'super')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'link':
-						if (this.compareTag(node,'a')) {
+						if (this.compareTag(node, 'a')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'quote':
-						if (this.compareTag(node,'blockquote')) {
+						if (this.compareTag(node, 'blockquote')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'table':
-						if (this.compareTag(node,'table')) {
+						if (this.compareTag(node, 'table')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
 						}
 						break;
 					case 'code':
-						if (this.compareTag(node,'pre')) {
+						if (this.compareTag(node, 'pre')) {
 							item.menuActive = true;
 						} else {
 							item.menuActive = false;
@@ -918,12 +918,27 @@ export default {
 						break;
 					default:
 						//如果不是自定义的菜单项，则不激活
-						var selectKeys = ['undo','redo','removeFormat','selectAll','divider','tag','fontSize','fontFamily','foreColor','backColor','list','justify','image','video'];
-						if(selectKeys.lastIndexOf(item.value)>-1){
+						var selectKeys = [
+							'undo',
+							'redo',
+							'removeFormat',
+							'selectAll',
+							'divider',
+							'tag',
+							'fontSize',
+							'fontFamily',
+							'foreColor',
+							'backColor',
+							'list',
+							'justify',
+							'image',
+							'video'
+						];
+						if (selectKeys.lastIndexOf(item.value) > -1) {
 							item.menuActive = false;
 							return;
 						}
-						item.menuActive = this.customActive(item.value,node) || false;
+						item.menuActive = this.customActive(item.value, node) || false;
 				}
 			});
 		},
@@ -974,9 +989,9 @@ export default {
 			if (event.keyCode == 9) {
 				event.preventDefault();
 				var node = this.getSelectNode();
-				if(this.compareCss(node,'font-family','Consolas')){
+				if (this.compareCss(node, 'font-family', 'Consolas')) {
 					document.execCommand('insertHtml', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
-				}else {
+				} else {
 					document.execCommand('insertHtml', false, '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
 				}
 			}
@@ -989,50 +1004,50 @@ export default {
 			return obj;
 		},
 		//判断某个节点是否在指定标签下，可对外提供
-		compareTag(el,tag){
-			if($util.isContains(this.$refs.content,el)){
-				if(el.tagName.toUpperCase() == tag.toUpperCase()){
+		compareTag(el, tag) {
+			if ($util.isContains(this.$refs.content, el)) {
+				if (el.tagName.toUpperCase() == tag.toUpperCase()) {
 					return true;
-				}else {
-					return this.compareTag(el.parentNode,tag)
+				} else {
+					return this.compareTag(el.parentNode, tag);
 				}
-			}else {
+			} else {
 				return false;
 			}
 		},
 		//判断某个节点是否在指定样式下，可对外提供
-		compareCss(el,cssName,cssValue){
-			if($util.isContains(this.$refs.content,el)){
-				if($util.getCssStyle(el,cssName) == cssValue){
+		compareCss(el, cssName, cssValue) {
+			if ($util.isContains(this.$refs.content, el)) {
+				if ($util.getCssStyle(el, cssName) == cssValue) {
 					return true;
-				}else {
-					return this.compareCss(el.parentNode,cssName,cssValue)
+				} else {
+					return this.compareCss(el.parentNode, cssName, cssValue);
 				}
-			}else {
+			} else {
 				return false;
 			}
 		},
 		//根据标签名获取某个节点，可对外提供
-		getCompareTag(el,tag){
-			if($util.isContains(this.$refs.content,el)){
-				if(el.tagName.toUpperCase() == tag.toUpperCase()){
+		getCompareTag(el, tag) {
+			if ($util.isContains(this.$refs.content, el)) {
+				if (el.tagName.toUpperCase() == tag.toUpperCase()) {
 					return el;
-				}else {
-					return this.getCompareTag(el.parentNode,tag)
+				} else {
+					return this.getCompareTag(el.parentNode, tag);
 				}
-			}else {
+			} else {
 				return null;
 			}
 		},
 		//根据css获取某个节点，可对外提供
-		getCompareTagForCss(el,cssName,cssValue){
-			if($util.isContains(this.$refs.content,el)){
-				if($util.getCssStyle(el,cssName) == cssValue){
+		getCompareTagForCss(el, cssName, cssValue) {
+			if ($util.isContains(this.$refs.content, el)) {
+				if ($util.getCssStyle(el, cssName) == cssValue) {
 					return el;
-				}else {
-					return this.getCompareTagForCss(el.parentNode,cssName,cssValue)
+				} else {
+					return this.getCompareTagForCss(el.parentNode, cssName, cssValue);
 				}
-			}else {
+			} else {
 				return null;
 			}
 		}
@@ -1041,6 +1056,8 @@ export default {
 </script>
 
 <style lang="less">
+@import '../../css/mvi-basic.less';
+
 .mvi-editor-image {
 	display: inline-block;
 	width: auto;
@@ -1053,6 +1070,50 @@ export default {
 	width: auto;
 	height: auto;
 	max-width: 100%;
+}
+
+/* 表格demo样式 */
+.mvi-editor-table-demo {
+	width: 100%;
+	border: 1px solid @border-color;
+	margin: 0;
+	padding: 0;
+	font-size: @font-size-default;
+	color: @font-color-default;
+	border-collapse: collapse;
+	margin-bottom: @mp-sm;
+
+	tbody {
+		margin: 0;
+		padding: 0;
+
+		tr {
+			margin: 0;
+			padding: 0;
+
+			&:first-child {
+				background-color: @bg-color-dark;
+
+				td {
+					font-weight: bold;
+				}
+			}
+
+			td {
+				font-size: @font-size-default;
+				color: @font-color-default;
+				margin: 0;
+				border-bottom: 1px solid @border-color;
+				border-right: 1px solid @border-color;
+				padding: @mp-xs;
+				text-align: center;
+
+				&:last-child {
+					border-right: none;
+				}
+			}
+		}
+	}
 }
 </style>
 <style lang="less" scoped>
