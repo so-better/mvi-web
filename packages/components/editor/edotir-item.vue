@@ -350,7 +350,11 @@
 							document.execCommand('superscript');
 							break;
 						case 'quote': //引用
-							document.execCommand('formatBlock', false, 'blockquote');
+							if (this.menuActive) {
+								this.removeBlock()
+							} else {
+								document.execCommand('formatBlock', false, 'blockquote');
+							}
 							break;
 						case 'code': //代码
 							if (this.menuActive) {
@@ -665,6 +669,30 @@
 				var pEl = $util.string2dom("<p>" + innerHTML + "</p>");
 				this.insertNodeAfter(pEl,pre)
 				pre.remove()
+				if(this.editor.range){
+					this.editor.range.setStartAfter(pEl)
+					this.menuActive = false;
+				}
+			},
+			//删除引用
+			removeBlock(){
+				var node = this.editor.getSelectNode()
+				var blockquotes = this.editor.$refs.content.querySelectorAll('blockquote');
+				var blockquote = null;
+				var innerHTML = ''
+				for (var i = 0; i < blockquotes.length; i++) {
+					if ($util.isContains(blockquotes[i], node)) {
+						blockquote = blockquotes[i];
+						innerHTML = blockquote.innerHTML;
+						break;
+					}
+				}
+				var pEl = $util.string2dom("<p>" + innerHTML + "</p>");
+				if(pEl instanceof HTMLCollection){
+					pEl = $util.string2dom("<div>" + innerHTML + "</div>")
+				}
+				this.insertNodeAfter(pEl,blockquote)
+				blockquote.remove()
 				if(this.editor.range){
 					this.editor.range.setStartAfter(pEl)
 					this.menuActive = false;
