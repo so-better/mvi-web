@@ -1047,6 +1047,7 @@ export default {
 		updateValue(){
 			this.isModelChange = true;
 			this.$emit('model-change',this.html);
+			this.$emit('update:value',this.html);
 			this.$nextTick(()=>{
 				this.isModelChange = false;
 			})
