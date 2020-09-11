@@ -3,7 +3,8 @@
 		<div class="mvi-mb-10">
 			<m-button type="success" @click="change">Button</m-button>
 		</div>
-		<m-editor autofocus ref="editor" :value="value"></m-editor>
+		<div class="mvi-mb-4">{{value}}</div>
+		<m-editor placeholder="请输入内容" autofocus ref="editor" v-model="value" :use-base64="false" @upload-image="uploadImage"></m-editor>
 	</div>
 </template>
 
@@ -15,7 +16,7 @@
 				html: '',
 				text: '',
 				date: new Date(),
-				value: '<p><a href="#">1233444<span style="color:#ff3300;">44444444</span>4444444444</a></p>',
+				value: '',
 				index: 0,
 				active: -1,
 				tabs: [{
@@ -47,26 +48,13 @@
 		},
 		methods: {
 			change(value) {
-				if(value.key == 'alert'){
-					if(value.menu.menuActive){
-						document.execCommand('bold',false)
-					}else{
-						document.execCommand('bold',false)
-					}
-				}
+				this.$refs.editor.empty()
 			},
-			customActive(key,node){
-				
-				if(key == 'alert'){
-					if(this.$refs.editor.compareCss(node,'font-weight','700')){
-						return true;
-					}else {
-						return false;
-					}
-				}
-			},
-			input(res) {
-				console.log(res);
+			uploadImage(files){
+				this.$util.dataFileToBase64(files[0]).then(res=>{
+					console.log(res)
+					this.$refs.editor.insertImage(res)
+				})
 			}
 		}
 	};

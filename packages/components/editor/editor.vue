@@ -13,7 +13,7 @@
 		<div class="mvi-editor-body">
 			<div
 				v-if="codeViewShow"
-				v-text="computedValue"
+				v-text="initalHtml"
 				key="code"
 				:contenteditable="!disabled"
 				:style="codeViewStyle"
@@ -26,6 +26,8 @@
 			<div
 				v-else
 				ref="content"
+				@blur="changeActive"
+				@focus="changeActive"
 				@click="changeActive"
 				@input="contentInput"
 				:class="contentClass"
@@ -33,7 +35,7 @@
 				@keydown="tabDown"
 				:contenteditable="!disabled"
 				:style="contentStyle"
-				v-html="computedValue"
+				v-html="initalHtml"
 				:data-placeholder="placeholder"
 				v-on="listeners"
 			></div>
@@ -50,8 +52,10 @@ export default {
 		return {
 			range: null, //选区
 			codeViewShow: false, //源码是否显示
+			initalHtml:'',//初始值
 			html: '', //html内容
 			text: '', //text内容
+			isModelChange:false,//是否双向绑定改变值
 			defaultLayerProps: {
 				//默认菜单浮层配置
 				fixed: false, //是否fixed
@@ -431,7 +435,11 @@ export default {
 				code: 'code',
 				codeView: 'eye'
 			}
-		};
+		}
+	},
+	model:{
+		prop:'value',
+		event:'model-change'
 	},
 	props: {
 		//值
@@ -622,7 +630,7 @@ export default {
 			if (this.autoHeight) {
 				cls += ' mvi-editor-content-auto';
 			}
-			if (this.html == '<p><br></p>' || this.html == '') {
+			if (this.html == '<p><br></p>' || this.html == '' || this.html == '<br>' || this.html == '<p></p>') {
 				cls += ' mvi-editor-content-empty';
 			}
 			return cls;
@@ -665,14 +673,6 @@ export default {
 				}
 			}
 			return style;
-		},
-		//编辑器初始值
-		computedValue() {
-			if (this.value == '' || this.value == '<br>' || this.value == '<p></p>') {
-				return '<p><br></p>';
-			} else {
-				return this.value;
-			}
 		}
 	},
 	provide() {
@@ -683,19 +683,20 @@ export default {
 	components: {
 		mEditorItem: editorItem
 	},
-	watch: {
-		computedValue(newValue) {
-			this.html = newValue;
-			var el = $util.string2dom(`<div>${newValue}</div>`);
-			this.text = el.innerText;
-			this.$emit('change', {
-				html: this.html,
-				text: this.text
-			});
-		}
-	},
 	mounted() {
-		this.init();
+		this.init(); 
+	},
+	watch:{
+		value(newValue){
+			if(!this.isModelChange){
+				if(this.$refs.content){
+					this.$refs.content.innerHTML = this.getValue();
+				}else if(this.$refs.codeView){
+					this.$refs.codeView.innerText = this.getValue();
+				}
+				this.updateHtmlText();
+			}
+		}
 	},
 	methods: {
 		//初始化
@@ -721,8 +722,10 @@ export default {
 			//使用css
 			document.execCommand('styleWithCSS', false, true);
 			//初始化赋值
-			this.html = this.$refs.content.innerHTML;
-			this.text = this.$refs.content.innerText;
+			this.initalHtml = this.getValue();
+			this.$nextTick(()=>{
+				this.updateHtmlText();
+			})
 			if (this.autofocus) {
 				this.collapseToEnd();
 			}
@@ -759,20 +762,14 @@ export default {
 			if (this.disabled) {
 				return;
 			}
-			if (this.$refs.content) {
+			if(this.$refs.content){
 				this.$refs.content.innerHTML = '<p><br></p>';
-				this.html = this.$refs.content.innerHTML;
-				this.text = this.$refs.content.innerText;
-			} else if (this.$refs.codeView) {
+			}else if(this.$refs.codeView){
 				this.$refs.codeView.innerText = '<p><br></p>';
-				this.html = this.$refs.codeView.innerText;
-				var el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
-				this.text = el.innerText;
 			}
-			this.$emit('change', {
-				html: this.html,
-				text: this.text
-			});
+			this.updateHtmlText()
+			this.updateValue()
+			this.collapseToEnd()
 		},
 		//保存选区，可对外提供
 		saveRange() {
@@ -950,16 +947,12 @@ export default {
 			if (!this.$refs.content) {
 				return;
 			}
-			if (this.$refs.content.innerHTML == '') {
+			if (this.$refs.content.innerHTML == '' || this.$refs.content.innerHTML == '<br>' || this.$refs.content.innerHTML == '<p></p>') {
 				this.$refs.content.innerHTML = '<p><br></p>';
 			}
+			this.updateHtmlText();
+			this.updateValue();
 			this.changeActive();
-			this.html = this.$refs.content.innerHTML;
-			this.text = this.$refs.content.innerText;
-			this.$emit('change', {
-				html: this.html,
-				text: this.text
-			});
 		},
 		//源码视图输入
 		codeViewInput() {
@@ -969,19 +962,10 @@ export default {
 			if (!this.$refs.codeView) {
 				return;
 			}
-			if (this.$refs.codeView.innerText == '') {
-				this.$refs.codeView.innerText = '<p><br></p>';
-				this.collapseToEnd();
-			}
-			this.html = this.$refs.codeView.innerText;
-			var el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
-			this.text = el.innerText;
-			this.$emit('change', {
-				html: this.html,
-				text: this.text
-			});
+			this.updateHtmlText()
+			this.updateValue();
 		},
-		//tab键按下禁用默认事件
+		//tab键按下
 		tabDown(event) {
 			if (this.disabled) {
 				return;
@@ -1049,6 +1033,33 @@ export default {
 				}
 			} else {
 				return null;
+			}
+		},
+		//获取经过处理的value值
+		getValue(){
+			if (this.value == '' || this.value == '<br>' || this.value == '<p></p>') {
+				return '<p><br></p>';
+			} else {
+				return this.value;
+			}
+		},
+		//根据html值更新value值，可对外提供
+		updateValue(){
+			this.isModelChange = true;
+			this.$emit('model-change',this.html);
+			this.$nextTick(()=>{
+				this.isModelChange = false;
+			})
+		},
+		//根据编辑器的值更新html和text值，可对外提供
+		updateHtmlText(){
+			if (this.$refs.content) {
+				this.html = this.$refs.content.innerHTML;
+				this.text = this.$refs.content.innerText;
+			} else if (this.$refs.codeView) {
+				this.html = this.$refs.codeView.innerText;
+				var el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
+				this.text = el.innerText;
 			}
 		}
 	}

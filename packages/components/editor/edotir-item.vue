@@ -496,6 +496,8 @@
 						this.menuActive = false;
 					}
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 				this.hideLayer()
 			},
 			//表格插入设置
@@ -536,6 +538,8 @@
 					var children = $util.children(tbody, 'tr');
 					this.copyRowAppend(children[children.length - 1]);
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 				this.hideLayer();
 			},
 			//删除行
@@ -554,6 +558,8 @@
 					var children = $util.children(tbody, 'tr');
 					children[children.length - 1].remove()
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 				this.hideLayer();
 			},
 			//增加列
@@ -578,6 +584,8 @@
 					var childrenTd = $util.children(tr, 'td');
 					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 				this.hideLayer();
 			},
 			//删除列
@@ -602,6 +610,8 @@
 					var childrenTd = $util.children(tr, 'td');
 					this.removeColumn(childrenTd[childrenTd.length - 1]);
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 				this.hideLayer();
 			},
 			//删除表格
@@ -613,6 +623,8 @@
 					table.remove();
 					this.menuActive = false;
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 				this.hideLayer();
 			},
 			//在指定节点后插入节点
@@ -673,6 +685,8 @@
 					this.editor.range.setStartAfter(pEl)
 					this.menuActive = false;
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 			},
 			//删除引用
 			removeBlock(){
@@ -697,6 +711,8 @@
 					this.editor.range.setStartAfter(pEl)
 					this.menuActive = false;
 				}
+				this.editor.updateHtmlText();
+				this.editor.updateValue();
 			}
 		},
 		beforeDestroy() {
