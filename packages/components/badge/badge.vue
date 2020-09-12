@@ -1,8 +1,11 @@
 <template>
-	<span v-on="listeners" :class="'mvi-badge mvi-badge-'+size+(dot?' mvi-badge-dot':'')" v-text="label" :style="badgeStyle"></span>
+	<span v-on="listeners" :class="'mvi-badge mvi-badge-'+size+(dot?' mvi-badge-dot':'')" :style="badgeStyle">
+		<slot></slot>
+	</span>
 </template>
 
 <script>
+	import $util from "../../util/util.js"
 	export default {
 		name: "m-badge",
 		data() {
@@ -11,10 +14,6 @@
 			}
 		},
 		props: {
-			label: {
-				type: [String, Number],
-				default: ''
-			},
 			background: {
 				type: String,
 				default: null
@@ -40,14 +39,18 @@
 				if(newValue){
 					this.$el.innerHTML = '';
 				}else{
-					this.$el.innerHTML = this.label;
+					this.$nextTick(()=>{
+						var html = '';
+						this.$slots.default.forEach((item,index)=>{
+							if(item && $util.isElement(item.elm)){
+								html += item.elm.outerHTML;
+							}else {
+								html += item.text;
+							}
+						})
+						this.$el.innerHTML = html;
+					})
 				}
-				this.$nextTick(()=>{
-					this.setPadding();
-				})
-			},
-			label(newValue){
-				this.$el.style.padding = 0;
 				this.$nextTick(()=>{
 					this.setPadding();
 				})
