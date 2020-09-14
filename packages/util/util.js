@@ -301,7 +301,6 @@ const util = {
 					var borderBottom = parseFloat(_this.getCssStyle(scrollEle, 'border-bottom-width'))
 					height = scrollEle.offsetHeight - borderTop - borderBottom;
 				}
-				console.log('flag:'+flag)
 				if ((_this.getScrollTop(scrollEle) + height >= _this.getScrollHeight(scrollEle)) && (height != _this.getScrollHeight(
 						scrollEle))) {
 					if(!flag){
