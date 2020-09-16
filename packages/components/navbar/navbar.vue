@@ -195,6 +195,7 @@
 		padding: 0 @mp-sm;
 		position: relative;
 		color: @font-color-default;
+		font-size: @font-size-default;
 	}
 	
 	.mvi-navbar-border{
@@ -247,7 +248,6 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		width: 100%;
-		font-size: @font-size-default;
 	}
 
 	.mvi-navbar-right{

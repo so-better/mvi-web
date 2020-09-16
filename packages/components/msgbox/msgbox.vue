@@ -1,5 +1,5 @@
 <template>
-	<transition :name="box_animation" @after-enter="afterEnter" @after-leave="afterLeave" @enter="enter">
+	<transition :name="box_animation" @after-enter="afterEnter" @after-leave="afterLeave">
 		<div v-show="show" v-on="listeners" :class="msgBoxClass" v-html="msgBox_message" :style="msgBoxStyle"></div>
 	</transition>
 </template>
@@ -105,11 +105,6 @@
 			this.show = true;
 		},
 		methods:{
-			//开始显示时
-			enter(el){
-				el.style.marginLeft = - el.offsetWidth/2 + 'px';
-				el.style.marginTop = -el.offsetHeight/2 + 'px';
-			},
 			//完全显示后
 			afterEnter(el){
 				if(this.msgBox_timeout>0){
@@ -135,11 +130,11 @@
 		position: fixed;
 		left: 50%;
 		top: 50%;
+		transform: translate(-50%,-50%);
 		display: block;
 		width: auto;
 		height: auto;
 		max-width: 90%;
-		word-break: keep-all;
 		word-wrap: break-word;
 		border-radius: @radius-default;
 		overflow: hidden;
@@ -156,8 +151,7 @@
 		&.mvi-msgbox-translate{
 			top: auto;
 			bottom: 0;
-			transform: translateY(-3rem);
-			-webkit-transform: translateY(-3rem);
+			transform: translate(-50%,calc(-50% - 3rem));
 		}
 	}
 	
@@ -175,7 +169,7 @@
 	//缩放效果
 	.mvi-msgbox-scale-enter{
 		opacity: 0;
-		transform: translate3d(0,0,0) scale(0.5);
+		transform: translate3d(-50%,-50%,0) scale(0.5);
 	}
 	.mvi-msgbox-scale-leave-to{
 		opacity: 0;
@@ -190,7 +184,7 @@
 	//平移效果
 	.mvi-msgbox-translate-enter{
 		opacity: 0;
-		transform: translateY(0) !important;
+		transform: translate(-50%,-50%) !important;
 	}
 	.mvi-msgbox-translate-enter-active{
 		transition: transform 300ms,opacity 300ms;

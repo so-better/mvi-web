@@ -16,11 +16,11 @@
 							<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" />
 						</div>
 					</div>
-					<div ref="content" class="mvi-modal-content" v-if="$slots.default || content" :style="'padding:'+(contentPadding?'':'0')">
+					<div ref="content" :class="'mvi-modal-content'+(contentClass?' '+contentClass:'')" v-if="$slots.default || content" :style="'padding:'+(contentPadding?'':'0')">
 						<slot v-if="$slots.default"></slot>
 						<span v-html="content" v-else-if="content"></span>
 					</div>
-					<div ref="footer" class="mvi-modal-footer" v-if="$slots.footer || footer" :style="'padding:'+(footerPadding?'':'0')">
+					<div ref="footer" :class="'mvi-modal-footer'+(footerClass?' '+footerClass:'')" v-if="$slots.footer || footer" :style="'padding:'+(footerPadding?'':'0')">
 						<slot name="footer" v-if="$slots.footer"></slot>
 						<span class="mvi-modal-footer-text" v-html="footer" v-else-if="footer"></span>
 					</div>
@@ -57,7 +57,15 @@
 				type:String,
 				default:""
 			},
+			contentClass:{//内容额外样式
+				type:String,
+				default:null
+			},
 			footer:{//尾注信息
+				type:String,
+				default:null
+			},
+			footerClass:{//尾注额外样式
 				type:String,
 				default:null
 			},
@@ -207,6 +215,9 @@
 				if(this.titleClass){
 					cls += ' ' + this.titleClass;
 				}
+				if(this.showTimes && (this.iconUrl || this.iconType)){
+					cls += ' ' + 'mvi-modal-title-padding'
+				}
 				return cls;
 			},
 			headerStyle(){
@@ -308,7 +319,7 @@
 		display: flex;
 		display: -webkit-flex;
 		justify-content: space-between;
-		align-items: center;
+		align-items: baseline;
 		padding: @mp-md;
 		
 		&.mvi-modal-no-header{
@@ -328,18 +339,21 @@
 			white-space: nowrap;
 			text-overflow: ellipsis;
 		}
+		
+		&.mvi-modal-title-padding{
+			padding-left: .44rem;
+		}
 	}
 	
 	.mvi-modal-times{
 		padding: 0;
 		margin-left: @mp-sm;
-		height: 100%;
 		display: flex;
 		display: -webkit-flex;
 		justify-content: center;
 		align-items: center;
 		color: @font-color-mute;
-		font-size:.8em;
+		font-size:@font-size-small;
 		cursor: pointer;
 	}
 	
