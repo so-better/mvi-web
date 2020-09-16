@@ -215,9 +215,6 @@
 				if(this.titleClass){
 					cls += ' ' + this.titleClass;
 				}
-				if(this.showTimes && (this.iconUrl || this.iconType)){
-					cls += ' ' + 'mvi-modal-title-padding'
-				}
 				return cls;
 			},
 			headerStyle(){
@@ -338,10 +335,6 @@
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
-		}
-		
-		&.mvi-modal-title-padding{
-			padding-left: .44rem;
 		}
 	}
 	
