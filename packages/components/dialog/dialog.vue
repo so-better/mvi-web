@@ -326,7 +326,7 @@
 			//模态框显示后
 			modalShown(){
 				//输入框获取焦点
-				if(this.type == 'prompt'){
+				if(this.type == 'prompt' && this.computedInput.autofocus){
 					this.$refs.input.focus();
 				}
 			}

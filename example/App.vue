@@ -1,7 +1,7 @@
 <template>
 	<div id="app" ref="app">
 		<m-button @click="change" type="info">Button</m-button>
-		<m-modal v-model="show" show-times title-class="mvi-text-center" times-color="#ff3300" content-class="mvi-text-center" title="IOS系统升级提醒系统升级提醒系统升级提醒系统升级提醒" content="你的系统需要更新,是否进行更新？" footer="2020/09/16"></m-modal>
+		<m-table :data="data" :columns="columns"></m-table>
 	</div>
 </template>
 
@@ -13,25 +13,41 @@
 				html: '',
 				text: '',
 				date: new Date(),
-				value: '1',
+				value: 50,
 				index: 0,
-				active: -1,
-				tabs: [{
-						value: 0,
-						name: '首页',
-						icon:'home'
+				active: 2,
+				data: [{
+						name: '张三',
+						age: 24,
+						sex: '男'
 					},
 					{
-						value: 1,
-						name: '附近'
+						name: '李四',
+						age: 20,
+						sex: '男'
 					},
 					{
-						value: 2,
-						name: '关注'
+						name: '王红',
+						age: 22,
+						sex: '女'
 					},
 					{
-						value: 3,
-						name: '我的'
+						name: '赵钱',
+						age: 30,
+						sex: '男'
+					}
+				],
+				columns: [{
+						key: 'name',
+						value: '姓名'
+					},
+					{
+						key: 'age',
+						value: '年龄'
+					},
+					{
+						key: 'sex',
+						value: '性别'
 					}
 				]
 			}
@@ -41,7 +57,7 @@
 		},
 		methods: {
 			change(value) {
-				this.show = !this.show
+
 			}
 		}
 	}
@@ -54,14 +70,15 @@
 		overflow-x: hidden;
 		position: relative;
 	}
-	
-	.mvi-msgbox-lk-enter,.mvi-msgbox-lk-leave-to{
+
+	.mvi-msgbox-lk-enter,
+	.mvi-msgbox-lk-leave-to {
 		opacity: 0 !important;
-		transform: translate(-50%,-50%) scale(2) !important;
+		transform: translate(-50%, -50%) scale(2) !important;
 	}
-	
-	.mvi-msgbox-lk-enter-active,.mvi-msgbox-lk-leave-active{
+
+	.mvi-msgbox-lk-enter-active,
+	.mvi-msgbox-lk-leave-active {
 		transition: all 500ms !important;
 	}
-	
 </style>

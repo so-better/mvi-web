@@ -20,7 +20,7 @@
 			return {
 				elShow:true,//是否显示
 				amount:0,//计数点
-				amountMax:4,//计数点最大值
+				amountMax:8,//计数点最大值
 				startY:0,//垂直起点
 				startY2:0,//第一次垂直起点
 				status:0,//0表示还没触发下拉，1表示触发下拉了但是还没松手，2表示已经松手正在刷新，3表示刷新完成
@@ -85,11 +85,15 @@
 			},
 			height:{
 				type:String,
-				default:'1rem'
+				default:null
 			},
 			zIndex:{
 				type:Number,
 				default:4000
+			},
+			distance:{//下拉触发刷新的距离值
+				type:Number,
+				default:1
 			}
 		},
 		computed:{
@@ -267,13 +271,14 @@
 				}
 				//不在元素顶部时禁止
 				if($util.getScrollTop(this.$refs.body) != 0){
+					this.startY = event.touches[0].pageY;
+					this.startY2 = this.startY;
 					return;
 				}
 				var endY = event.touches[0].pageY;
 				var move = endY - this.startY;//每一次移动的偏移量
 				var move2 = endY - this.startY2;//距离第一次触摸时的偏移量
 				this.startY = endY;
-				
 				//总偏移量小于0位向上滑动，是禁止的
 				if(move2 < 0){
 					return;
@@ -293,15 +298,11 @@
 				//元素移动距离
 				var y = this.transformY + move/this.amount;
 				
-				//如果移动距离大于1rem，则变为可释放状态
-				if(y > $util.rem2px(1)){
+				//如果移动距离大于distance指定的距离，则变为可释放状态
+				if(y > $util.rem2px(this.distance)){
 					this.status = 1;
 				}else{
 					this.status = 0;
-				}
-				//如果移动距离大于2rem，则不限制最大计数量，使每次偏移量不断减少
-				if(y > $util.rem2px(2)){
-					this.amountMax = 999999;
 				}
 				//改变元素位置
 				this.transformY = y;
@@ -342,15 +343,11 @@
 				//元素移动距离
 				var y = this.transformY + move/this.amount;
 				
-				//如果移动距离大于1rem，则变为可释放状态
-				if(y > $util.rem2px(1)){
+				//如果移动距离大于distance指定的距离，则变为可释放状态
+				if(y > $util.rem2px(this.distance)){
 					this.status = 1;
 				}else{
 					this.status = 0;
-				}
-				//如果移动距离大于2rem，则不限制最大计数量，使每次偏移量不断减少
-				if(y > $util.rem2px(2)){
-					this.amountMax = 999999;
 				}
 				//改变元素位置
 				this.transformY = y;
@@ -406,7 +403,7 @@
 						this.$refs.refresh.style.webkitTransition = 'all 300ms';
 						this.$nextTick(()=>{
 							setTimeout(()=> {
-								this.transformY = $util.rem2px(2);
+								this.transformY = $util.rem2px(this.distance);
 								setTimeout(()=>{
 									this.$refs.refresh.style.transition = '';
 									this.$refs.refresh.style.webkitTransition = '';

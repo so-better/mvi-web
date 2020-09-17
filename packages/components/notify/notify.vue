@@ -19,13 +19,13 @@
 				amounts:0,//计数
 				timers:[],//计时器实例数组
 				show:false,//是否显示
-				type:'success',//提示类型
-				message:'',//展示文案
+				type:null,//提示类型
+				message:null,//展示文案
 				color:null,//字体颜色
 				background:null,//背景色
-				zIndex:1100,//z-index
-				timeout:1500,//自动关闭时长
-				callback:function(){},//回调函数
+				zIndex:null,//z-index
+				timeout:null,//自动关闭时长
+				callback:null,//回调函数
 				icon:null,//图标
 			}
 		},
@@ -173,7 +173,7 @@
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-		height: @medium-height;
+		height: @small-height;
 		position: fixed;
 		top: 0;
 		left: 0;
