@@ -1,6 +1,6 @@
 <template>
-	<div v-on="listeners" :class="'mvi-option mvi-option-'+this.select.size" :style="optionStyle" @click="optionClick" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
-		<span class="mvi-option-label" v-text="label"></span>
+	<div v-on="listeners" :class="'mvi-option mvi-option-'+this.select.size" @click="optionClick" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
+		<slot></slot>
 	</div>
 </template>
 
@@ -12,29 +12,43 @@
 			value:{
 				type:[String,Number],
 				default:null
-			},
-			label:{
-				type:[String,Number],
-				default:null
 			}
 		},
 		computed:{
 			listeners(){
 				return Object.assign({},this.$listeners)
 			},
-			optionStyle(){
-				var style = {};
-				return style;
+			label(){
+				var html = '';
+				this.$slots.default.forEach((item,index)=>{
+					if(item && $util.isElement(item.elm)){
+						html += item.elm.outerHTML;
+					}else {
+						html += item.text;
+					}
+				})
+				return html;
 			}
 		},
 		inject:['select'],
 		created() {
-			this.select.children.push(this);
+			this.select.childrenOptions.push(this)
 		},
 		methods:{
 			optionClick(){
-				this.select.$emit('model-change',this.value);
-				this.select.$emit('update:value',this.value);
+				if(this.select.multiple){
+					var arr = this.select.value;
+					if(arr.includes(this.value)){
+						arr.splice(this.getIndexOfArray(arr,this.value),1);
+					}else{
+						arr.push(this.value)
+					}
+					this.select.$emit('model-change',arr);
+					this.select.$emit('update:value',arr);
+				}else{
+					this.select.$emit('model-change',this.value);
+					this.select.$emit('update:value',this.value);
+				}
 				this.select.trigger();
 			},
 			mouseEnter(e){
@@ -46,6 +60,16 @@
 				if(this.select.hoverClass){
 					$util.removeClass(e.currentTarget,this.select.hoverClass);
 				}
+			},
+			getIndexOfArray(arr,value){
+				var index = 0;
+				for(var i = 0;i<arr.length;i++){
+					if(arr[i] == value){
+						index = i;
+						break;
+					}
+				}
+				return index;
 			}
 		}
 	}
@@ -72,13 +96,6 @@
 		&.mvi-option-large{
 			font-size: @font-size-h6;
 			padding: @mp-md @mp-lg;
-		}
-		
-		
-		.mvi-option-label{
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
 		}
 	}
 	

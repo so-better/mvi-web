@@ -111,22 +111,24 @@
 			usePadding:{
 				type:Boolean,
 				default:false
+			},
+			calibration:{//是否进行数字校准
+				type:Boolean,
+				default:false
 			}
 		},
 		computed:{
 			listeners(){
 				return Object.assign({},this.$listeners)
 			},
-			computedValue(){
-				if($util.isNumber(this.value)){
-					if(this.value == 0){
-						return '';
-					}else{
+			computedValue:{
+				set(value){
+					this.$emit('update:value',value);
+					this.$emit('model-change',value);
+				},
+				get(){
+					if($util.isNumber(this.value)){
 						return this.value.toString();
-					}
-				}else{
-					if(this.value.startsWith('.')){
-						return this.value.substr(1);
 					}else{
 						return this.value;
 					}
@@ -209,13 +211,7 @@
 				if(this.computedValue.length >= this.maxlength && this.maxlength>0){
 					return;
 				}
-				if(item == '.'){
-					if(this.computedValue.includes('.')){
-						return;
-					}
-				}
-				this.$emit('update:value',this.computedValue+item);
-				this.$emit('model-change',this.computedValue+item);
+				this.computedValue += item;
 				this.$emit('input',item);
 			},
 			//删除点击
@@ -224,8 +220,7 @@
 					return;
 				}
 				var value = $util.deleteStr(this.computedValue,this.computedValue.length-1,1);
-				this.$emit('update:value',value);
-				this.$emit('model-change',value);
+				this.computedValue = value;
 				this.$emit('delete',value);
 			},
 			//完成点击
@@ -233,7 +228,10 @@
 				if(this.completeDisabled && !this.promiseEmpty){
 					return;
 				}
-				this.$emit('complete',this.value);
+				if(this.calibration){
+					this.computedValue = parseFloat(this.computedValue) || '';
+				}
+				this.$emit('complete',this.computedValue)
 				this.hideKeyboard();
 			},
 			//点击遮罩层关闭

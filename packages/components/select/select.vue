@@ -2,7 +2,7 @@
 	<div :data-id="'mvi-select-'+_uid" v-on="listeners" :class="selectClass" :disabled="disabled">
 		<div :data-id="'mvi-select-target-'+_uid" :class="targetClass" :style="targetStyle"
 		ref="target" @click="trigger" :disabled="disabled">
-			<span class="mvi-select-label" :data-placeholder="placeholder" v-text="selectLabel"></span>
+			<span :class="'mvi-select-label'+(selectLabel?'':' mvi-select-label-placeholder')" :data-placeholder="placeholder" v-html="selectLabel"></span>
 			<!-- 下拉图标 -->
 			<m-icon :class="iconClass" :type="icon" :style="iconStyle" />
 		</div>
@@ -28,12 +28,12 @@
 			return {
 				focus:false,//是否点击达到了获取焦点效果
 				target:null,
-				children:[],//存放option组件
+				childrenOptions:[]
 			}
 		},
 		props:{
 			value:{//选择的值
-				type:[String,Number],
+				type:[String,Number,Array],
 				default:null
 			},
 			placeholder:{//占位符
@@ -109,6 +109,14 @@
 			square:{//是否方形
 				type:Boolean,
 				default:false
+			},
+			multiple:{//是否多选
+				type:Boolean,
+				default:false
+			},
+			filterMethod:{//选择时显示内容的过滤方法
+				type:Function,
+				default:null
 			}
 		},
 		provide(){
@@ -155,14 +163,6 @@
 				}
 				return style;
 			},
-			selectLabel(){
-				for(var i = 0;i<this.children.length;i++){
-					if(this.children[i].value === this.value){
-						return this.children[i].label;
-					}
-				}
-				return '';
-			},
 			iconClass(){
 				var cls = 'mvi-select-icon';
 				if(this.focus){
@@ -176,6 +176,33 @@
 					style.color = this.iconColor;
 				}
 				return style;
+			},
+			selectLabel(){
+				if(this.multiple){
+					var labels = [];
+					this.childrenOptions.forEach((item,index)=>{
+						if(this.value.includes(item.value)){
+							labels.push(item.label)
+						}
+					})
+					if(typeof(this.filterMethod) == 'function'){
+						return this.filterMethod(labels)
+					}else{
+						return labels.join(' ')
+					}
+				}else{
+					var label = '';
+					this.childrenOptions.forEach((item,index)=>{
+						if(item.value == this.value){
+							label = item.label;
+						}
+					})
+					if(typeof(this.filterMethod) == 'function'){
+						return this.filterMethod(label)
+					}else{
+						return label;
+					}
+				}
 			}
 		},
 		mounted() {
@@ -320,6 +347,17 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		
+		//placeholder样式
+		&.mvi-select-label-placeholder::before{
+			position: relative;
+			content: attr(data-placeholder);
+			color: inherit;
+			font-family: inherit;
+			font-size: inherit;
+			opacity: .5;
+			vertical-align: middle;
+		}
 	}
 	
 	.mvi-select-icon{
@@ -337,17 +375,6 @@
 		}
 	}
 
-	
-	//placeholder样式
-	.mvi-select-label:empty::before{
-		position: relative;
-		content: attr(data-placeholder);
-		color: inherit;
-		font-family: inherit;
-		font-size: inherit;
-		opacity: .5;
-		vertical-align: middle;
-	}
 
 	.mvi-select-menu{
 		display: block;

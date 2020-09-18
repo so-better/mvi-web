@@ -274,13 +274,13 @@
 				if(this.disabled){
 					return;
 				}
-				this.$emit('right-click',e)
+				this.$emit('right-click',this.value)
 			},
 			leftClick(e){
 				if(this.disabled){
 					return;
 				}
-				this.$emit('left-click',e)
+				this.$emit('left-click',this.value)
 			},
 			listEnter(e){
 				if(this.hoverClass){
