@@ -535,14 +535,11 @@ export default {
 @import '../../css/mvi-basic.less';
 .mvi-date-chooser {
 	position: relative;
-	display: block;
-	width: 100%;
+	display: inline-block
 }
 
 .mvi-date-chooser-target{
-	display: block;
-	width: fit-content;
-	width: -webkit-fit-content;
+	display: inline-block;
 }
 
 .mvi-date-chooser-enter-active,

@@ -2,8 +2,8 @@
 	<div id="app" ref="app">
 		<p>{{value}}</p>
 		<m-button @click="change" type="info">Button</m-button>
-		<m-date-chooser v-model="date" width="7rem">
-		    <m-button type="primary" form-control>选择日期</m-button>
+		<m-date-chooser v-model="date" width="7rem" placement="right">
+		    <m-button type="primary">选择日期</m-button>
 		</m-date-chooser>
 	</div>
 </template>
