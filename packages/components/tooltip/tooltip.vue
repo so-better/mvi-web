@@ -218,10 +218,7 @@
 	@import "../../css/mvi-basic.less";
 	
 	.mvi-tooltip{
-		display: inline-flex;
-		display: -webkit-inline-flex;
-		justify-content: flex-start;
-		align-items: center;
+		display: inline-block;
 		position: relative;
 	}
 	

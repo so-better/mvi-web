@@ -9,7 +9,7 @@
 				<slot v-if="$slots.prefix" name="prefix"></slot>
 				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" />
 			</div>
-			<input ref="input" :disabled="disabled" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners"
+			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners"
 			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength">
 			<div class="mvi-field-clear" @click="doClear" v-if="clearable" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
@@ -42,6 +42,11 @@
 		props:{
 			//是否禁用
 			disabled:{
+				type:Boolean,
+				default:false
+			},
+			//是否只读
+			readonly:{
 				type:Boolean,
 				default:false
 			},
