@@ -1,150 +1,147 @@
 <template>
-	<div class="mvi-pull-refresh" v-on="listeners">
-		<div v-show="elShow" ref="refresh" :class="'mvi-pull-refresh-el'+(refresh?' mvi-pull-refresh-el-done':'')" :style="elStyle">
+	<div class="mvi-pull-refresh" v-on="listeners" @touchstart="startPull" @touchmove="onPull" @touchend="pulled"
+	 @mousedown="startPull2">
+		<div v-show="elShow" ref="refresh" class="mvi-pull-refresh-el" :style="elStyle">
 			<slot name="el" v-if="$scopedSlots.el" :status="status"></slot>
 			<m-icon v-if="!$scopedSlots.el" :type="icon.type" :spin="icon.spin" />
 			<span v-if="!$scopedSlots.el" class="mvi-pull-refresh-text" v-text="message"></span>
 		</div>
-		<div class="mvi-pull-refresh-body" :style="'height:'+(height?height:'')" ref="body" 
-		@touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2">
-			<slot></slot>
-		</div>
+		<slot></slot>
 	</div>
 </template>
 
 <script>
 	import $util from "../../util/util"
 	export default {
-		name:"m-pull-refresh",
-		data(){
+		name: "m-pull-refresh",
+		data() {
 			return {
-				elShow:true,//是否显示
-				amount:0,//计数点
-				amountMax:8,//计数点最大值
-				startY:0,//垂直起点
-				startY2:0,//第一次垂直起点
-				status:0,//0表示还没触发下拉，1表示触发下拉了但是还没松手，2表示已经松手正在刷新，3表示刷新完成
-				transformY:0,//垂直偏移距离
-				hasTouch:false,//是否触摸了
-				canTouch:false,//是否可以触摸
-				mouseDown:false,//是否按下鼠标了
+				elShow: true, //是否显示
+				amount: 0, //计数点
+				amountMax: 4, //计数点最大值
+				startY: 0, //垂直起点
+				startY2: 0, //第一次垂直起点
+				status: 0, //0表示还没触发下拉，1表示触发下拉了但是还没松手，2表示已经松手正在刷新，3表示刷新完成
+				elHeight:0,//刷新元素高度
+				transformY: 0, //垂直偏移距离
+				canTouch:false,//是否能够执行事件
+				hasTouch: false, //是否触摸行为导致下拉刷新
+				mouseDown: false, //是否按下鼠标了
+				isTop:false,//开始下拉时滚动条是否在顶部
+				isMove:false,//是否进入move事件了
 			}
 		},
-		model:{
-			prop:'refresh',
-			event:'model-change'
+		model: {
+			prop: 'refresh',
+			event: 'model-change'
 		},
-		props:{
-			pullingText:{//下拉文案
-				type:String,
-				default:'下拉刷新'
+		props: {
+			pullingText: { //下拉文案
+				type: String,
+				default: '下拉刷新'
 			},
-			loosingText:{
-				type:String,
-				default:'释放刷新'
+			loosingText: {
+				type: String,
+				default: '释放刷新'
 			},
-			loadingText:{//刷新时显示的文本
-				type:String,
-				default:'正在刷新'
+			loadingText: { //刷新时显示的文本
+				type: String,
+				default: '正在刷新'
 			},
-			refresh:{//是否刷新
-				type:Boolean,
-				default:false
+			refresh: { //是否刷新
+				type: Boolean,
+				default: false
 			},
-			pullingIcon:{
-				type:[String,Object],
-				default:'arrow-down'
+			pullingIcon: {
+				type: [String, Object],
+				default: 'arrow-down'
 			},
-			loosingIcon:{
-				type:[String,Object],
-				default:'arrow-up'
+			loosingIcon: {
+				type: [String, Object],
+				default: 'arrow-up'
 			},
-			loadingIcon:{
-				type:[String,Object],
-				default:'load-e'
+			loadingIcon: {
+				type: [String, Object],
+				default: 'load-e'
 			},
-			disabled:{
-				type:Boolean,
-				default:false
+			disabled: {
+				type: Boolean,
+				default: false
 			},
-			color:{
-				type:String,
-				default:null
+			color: {
+				type: String,
+				default: null
 			},
-			pullingColor:{
-				type:String,
-				default:null
+			pullingColor: {
+				type: String,
+				default: null
 			},
-			loosingColor:{
-				type:String,
-				default:null
+			loosingColor: {
+				type: String,
+				default: null
 			},
-			loadingColor:{
-				type:String,
-				default:null
+			loadingColor: {
+				type: String,
+				default: null
 			},
-			height:{
-				type:String,
-				default:null
+			zIndex: {
+				type: Number,
+				default: 4000
 			},
-			zIndex:{
-				type:Number,
-				default:4000
-			},
-			distance:{//下拉触发刷新的距离值
-				type:Number,
-				default:1
+			distance: { //下拉触发刷新的距离值
+				type: Number,
+				default: 1
 			}
 		},
-		computed:{
-			listeners(){
-				return Object.assign({},this.$listeners)
+		computed: {
+			listeners() {
+				return Object.assign({}, this.$listeners)
 			},
-			elStyle(){
+			elStyle() {
 				var style = {};
-				style.transform = 'translateY('+this.transformY+'px)';
-				if(this.color){
+				style.transform = 'translateY(' + this.transformY + 'px)';
+				if (this.color) {
 					style.color = this.color;
 				}
-				if(this.pullingColor && this.status == 0){
+				if (this.pullingColor && this.status == 0) {
 					style.color = this.pullingColor;
-				}else if(this.loosingColor && this.status == 1){
+				} else if (this.loosingColor && this.status == 1) {
 					style.color = this.loosingColor;
-				}else if(this.loadingColor && this.status == 2){
+				} else if (this.loadingColor && this.status == 2) {
 					style.color = this.loadingColor;
 				}
-				if(this.zIndex){
+				if (this.zIndex) {
 					style.zIndex = this.zIndex;
 				}
 				return style;
 			},
-			icon(){
-				if(this.status == 0){
+			icon() {
+				if (this.status == 0) {
 					return {
-						type:this.pullingIconType,
-						spin:this.pullingIconSpin,
-						url:this.pullingIconUrl
+						type: this.pullingIconType,
+						spin: this.pullingIconSpin,
+						url: this.pullingIconUrl
 					}
-				}else if(this.status == 1){
+				} else if (this.status == 1) {
 					return {
-						type:this.loosingIconType,
-						spin:this.loosingIconSpin,
-						url:this.loosingIconUrl
+						type: this.loosingIconType,
+						spin: this.loosingIconSpin,
+						url: this.loosingIconUrl
 					}
-				}else if(this.status == 2){
+				} else if (this.status == 2) {
 					return {
-						type:this.loadingIconType,
-						spin:this.loadingIconSpin,
-						url:this.loadingIconUrl
+						type: this.loadingIconType,
+						spin: this.loadingIconSpin,
+						url: this.loadingIconUrl
 					}
 				}
 			},
-			message(){
-				if(this.status == 0){
+			message() {
+				if (this.status == 0) {
 					return this.pullingText;
-				}else if(this.status == 1){
+				} else if (this.status == 1) {
 					return this.loosingText;
-				}else if(this.status == 2){
+				} else if (this.status == 2) {
 					return this.loadingText;
 				}
 			},
@@ -238,230 +235,282 @@
 		},
 		mounted() {
 			this.statusInit();
-			document.body.addEventListener('mousemove',this.onPull2);
-			document.body.addEventListener('mouseup',this.pulled2);
+			document.body.addEventListener('mousemove', this.onPull2);
+			document.body.addEventListener('mouseup', this.pulled2);
 		},
-		watch:{
-			refresh(newValue){
+		watch: {
+			refresh(newValue) {
 				this.changeStatus();
 			}
 		},
-		methods:{
+		methods: {
+			//初始化
+			statusInit() {
+				this.amount = 0;
+				this.amountMax = 4;
+				this.startY = 0;
+				this.startY2 = 0;
+				this.hasTouch = false;
+				this.elHeight = this.$refs.refresh.offsetHeight;
+				this.transformY = -this.elHeight;
+				this.status = 0;
+				this.elShow = false;
+				this.canTouch = true;
+			},
 			//开始下拉(移动端)
-			startPull(event){
-				if(this.canTouch && !this.disabled){
-					this.hasTouch = true;
-					this.startY = event.touches[0].pageY;//元素按下时的位置
-					this.startY2 = this.startY;//元素按下的位置，此数值不会变更
-				}
-			},
-			//开始下拉(PC端)
-			startPull2(event){
-				if(this.canTouch && !this.disabled){
-					this.hasTouch = true;
-					this.mouseDown = true;
-					this.startY = event.pageY;//元素按下时的位置
-					this.startY2 = this.startY;//元素按下的位置，此数值不会变更
-				}
-			},
-			//下拉过程(移动端)
-			onPull(event){
-				if(!this.canTouch || this.disabled){
+			startPull(event) {
+				if(this.disabled){
 					return;
 				}
-				//不在元素顶部时禁止
-				if($util.getScrollTop(this.$refs.body) != 0){
-					this.startY = event.touches[0].pageY;
+				if(!this.canTouch){
+					return;
+				}
+				if($util.getScrollTop(this.$el) != 0){
+					this.isTop = false;
+					return;
+				}
+				this.isTop = true;
+				this.hasTouch = true;
+				this.startY = event.touches[0].pageY; //元素按下时的位置
+				this.startY2 = this.startY; //元素按下的位置，此数值不会变更
+			},
+			//开始下拉(PC端)
+			startPull2(event) {
+				if(this.disabled){
+					return;
+				}
+				if(!this.canTouch){
+					return;
+				}
+				if($util.getScrollTop(this.$el) != 0){
+					this.isTop = false;
+					return;
+				}
+				this.isTop = true;
+				this.hasTouch = true;
+				this.mouseDown = true;
+				this.startY = event.pageY; //元素按下时的位置
+				this.startY2 = this.startY; //元素按下的位置，此数值不会变更
+			},
+			//下拉过程(移动端)
+			onPull(event) {
+				if (this.disabled) {
+					return;
+				}
+				if(!this.canTouch){
+					event.preventDefault();
+					return;
+				}
+				if(!this.isTop){
+					return;
+				}
+				if($util.getScrollTop(this.$el) != 0){
+					if(this.transformY>-this.elHeight){
+						this.transformY = -this.elHeight;
+					}
+					return;
+				}
+				this.isMove = true;
+				var endY = event.touches[0].pageY;
+				var move = endY - this.startY; //每一次移动的偏移量
+				var move2 = endY - this.startY2; //距离第一次触摸时的偏移量
+				this.startY = endY;
+				//总偏移量小于0为手指向上滑动，元素向下滚动，不执行刷新
+				if (move2 <= 0) {
 					this.startY2 = this.startY;
 					return;
 				}
-				var endY = event.touches[0].pageY;
-				var move = endY - this.startY;//每一次移动的偏移量
-				var move2 = endY - this.startY2;//距离第一次触摸时的偏移量
-				this.startY = endY;
-				//总偏移量小于0位向上滑动，是禁止的
-				if(move2 < 0){
-					return;
-				}
-				
-				if(event.cancelable){
+				if (event.cancelable) {
 					event.preventDefault();
 				}
+
+				this.elShow = true;
 				
-				if($util.getScrollTop(this.$refs.body) == 0 && move2>0){
-					this.elShow = true;
-				}
 				//当计数小于最大计数量时，每次移动计数+1
-				if(this.amount < this.amountMax){
+				if (this.amount < this.amountMax) {
 					this.amount++;
 				}
 				//元素移动距离
-				var y = this.transformY + move/this.amount;
-				
+				var y = this.transformY + move / this.amount;
+
 				//如果移动距离大于distance指定的距离，则变为可释放状态
-				if(y > $util.rem2px(this.distance)){
+				if (y > $util.rem2px(this.distance)) {
 					this.status = 1;
-				}else{
+				} else {
 					this.status = 0;
 				}
 				//改变元素位置
 				this.transformY = y;
 			},
 			//下拉过程(PC端)
-			onPull2(event){
-				if(!this.canTouch || this.disabled){
+			onPull2(event) {
+				if (this.disabled) {
 					return;
 				}
-				if(!this.mouseDown){
+				if(!this.canTouch){
+					event.preventDefault();
 					return;
 				}
-				//不在元素顶部时禁止
-				if($util.getScrollTop(this.$refs.body) != 0){
+				if (!this.mouseDown) {
+					return;
+				}
+				if(!this.isTop){
+					return;
+				}
+				this.isMove = true;
+				if($util.getScrollTop(this.$el) != 0){
+					if(this.transformY>-this.elHeight){
+						this.transformY = -this.elHeight;
+					}
 					return;
 				}
 				var endY = event.pageY;
-				var move = endY - this.startY;//每一次移动的偏移量
-				var move2 = endY - this.startY2;//距离第一次触摸时的偏移量
+				var move = endY - this.startY; //每一次移动的偏移量
+				var move2 = endY - this.startY2; //距离第一次触摸时的偏移量
 				this.startY = endY;
-				
-				//总偏移量小于0位向上滑动，是禁止的
-				if(move2 < 0){
+
+				//总偏移量小于0为手指向上滑动，元素向下滚动，不执行刷新
+				if (move2 <= 0) {
+					this.startY2 = this.startY;
 					return;
 				}
-				
-				if(event.cancelable){
+
+				if (event.cancelable) {
 					event.preventDefault();
 				}
+
+				this.elShow = true;
 				
-				if($util.getScrollTop(this.$refs.body) == 0 && move2>0){
-					this.elShow = true;
-				}
 				//当计数小于最大计数量时，每次移动计数+1
-				if(this.amount < this.amountMax){
+				if (this.amount < this.amountMax) {
 					this.amount++;
 				}
 				//元素移动距离
-				var y = this.transformY + move/this.amount;
-				
+				var y = this.transformY + move / this.amount;
+
 				//如果移动距离大于distance指定的距离，则变为可释放状态
-				if(y > $util.rem2px(this.distance)){
+				if (y > $util.rem2px(this.distance)) {
 					this.status = 1;
-				}else{
+				} else {
 					this.status = 0;
 				}
 				//改变元素位置
 				this.transformY = y;
 			},
 			//下拉结束释放(移动端)
-			pulled(event){
-				if(!this.canTouch || this.disabled){
+			pulled(event) {
+				if (this.disabled) {
+					return;
+				}
+				if(!this.canTouch){
+					return;
+				}
+				if(!this.isMove){
+					this.hasTouch = false;
 					return;
 				}
 				//当下拉结束时，判断状态是否为释放可加载状态，如果是，则更改refresh值，变为加载状态
-				if(this.status == 1 && this.refresh == false){
-					this.$emit('model-change',true);
-					this.$emit('update:refresh',true);
-				}else if(this.status != 1 && this.refresh == true){
-					this.$emit('model-change',false);
-					this.$emit('update:refresh',false);
-				}else {
+				if (this.status == 1 && this.refresh == false) {
+					this.$emit('model-change', true);
+					this.$emit('update:refresh', true);
+				} else if (this.status != 1 && this.refresh == true) {
+					this.$emit('model-change', false);
+					this.$emit('update:refresh', false);
+				} else {
 					this.changeStatus();
 				}
 			},
 			//下拉结束释放(PC端)
-			pulled2(event){
-				if(!this.canTouch || this.disabled){
+			pulled2(event) {
+				if (this.disabled) {
 					return;
 				}
-				if(!this.mouseDown){
+				if(!this.canTouch){
 					return;
 				}
-				this.mouseDown = false;
+				if (!this.mouseDown) {
+					return;
+				}
+				if(!this.isMove){
+					this.hasTouch = false;
+					return;
+				}
 				//当下拉结束时，判断状态是否为释放可加载状态，如果是，则更改refresh值，变为加载状态
-				if(this.status == 1 && this.refresh == false){
-					this.$emit('model-change',true);
-					this.$emit('update:refresh',true);
-				}else if(this.status != 1 && this.refresh == true){
-					this.$emit('model-change',false);
-					this.$emit('update:refresh',false);
-				}else {
+				if (this.status == 1 && this.refresh == false) {
+					this.$emit('model-change', true);
+					this.$emit('update:refresh', true);
+				} else if (this.status != 1 && this.refresh == true) {
+					this.$emit('model-change', false);
+					this.$emit('update:refresh', false);
+				} else {
 					this.changeStatus();
 				}
 			},
 			//根据refresh的值改变状态
-			changeStatus(){
-				if(this.disabled){
+			changeStatus() {
+				if (this.disabled) {
 					return;
 				}
-				if(this.refresh){//refresh值为true时状态变为加载状态
+				if (this.refresh) { //refresh值为true时状态变为加载状态
 					this.status = 2;
 					this.canTouch = false;
 					this.$emit('refresh');
-					if(!this.hasTouch){//非触摸下拉的
+					if (!this.hasTouch) { //非触摸下拉的
 						this.elShow = true;
 						this.$refs.refresh.style.transition = 'all 300ms';
 						this.$refs.refresh.style.webkitTransition = 'all 300ms';
-						this.$nextTick(()=>{
-							setTimeout(()=> {
+						this.$nextTick(() => {
+							setTimeout(() => {
 								this.transformY = $util.rem2px(this.distance);
-								setTimeout(()=>{
+								setTimeout(() => {
 									this.$refs.refresh.style.transition = '';
 									this.$refs.refresh.style.webkitTransition = '';
-								},300)
+								}, 300)
 							}, 10);
 						})
 					}
-				}else{//refresh值为false时状态变为下拉前状态，数据恢复初始化
+				} else { //refresh值为false时状态变为下拉前状态，数据恢复初始化
 					this.amount = 0;
 					this.amountMax = 4;
 					this.startY = 0;
 					this.startY2 = 0;
 					this.hasTouch = false;
+					this.mouseDown = false;
 					this.$refs.refresh.style.transition = 'all 300ms';
 					this.$refs.refresh.style.webkitTransition = 'all 300ms';
-					setTimeout(()=> {
-						this.transformY = -this.$refs.refresh.offsetHeight;
-						setTimeout(()=>{
+					setTimeout(() => {
+						this.transformY = -this.elHeight;
+						setTimeout(() => {
 							this.$refs.refresh.style.transition = '';
 							this.$refs.refresh.style.webkitTransition = '';
 							this.status = 0;
 							this.elShow = false;
 							this.canTouch = true;
-						},300)
+						}, 300)
 					}, 10);
 				}
-			},
-			//初始化
-			statusInit(){
-				this.amount = 0;
-				this.amountMax = 4;
-				this.startY = 0;
-				this.startY2 = 0;
-				this.hasTouch = false;
-				this.transformY = -this.$refs.refresh.offsetHeight;
-				this.status = 0;
-				this.elShow = false;
-				this.canTouch = true;
 			}
 		},
 		beforeDestroy() {
-			document.body.removeEventListener('mousemove',this.onPull2);
-			document.body.removeEventListener('mouseup',this.pulled2);
+			document.body.removeEventListener('mousemove', this.onPull2);
+			document.body.removeEventListener('mouseup', this.pulled2);
 		}
 	}
 </script>
 
 <style lang="less" scoped>
 	@import "../../css/mvi-basic.less";
-	
-	.mvi-pull-refresh{
+
+	.mvi-pull-refresh {
 		display: block;
 		width: 100%;
+		height: 100vh;
 		position: relative;
-		overflow: hidden;
+		overflow: auto;
+		overflow-x: hidden;
 	}
-	
-	.mvi-pull-refresh-el{
+
+	.mvi-pull-refresh-el {
 		display: flex;
 		display: -webkit-flex;
 		justify-content: center;
@@ -469,17 +518,11 @@
 		color: @font-color-mute;
 		position: absolute;
 		width: 100%;
-		top:0;
+		top: 0;
 		left: 0;
 	}
-	
-	.mvi-pull-refresh-text{
+
+	.mvi-pull-refresh-text {
 		margin-left: @mp-xs;
-	}
-	
-	.mvi-pull-refresh-body{
-		width: 100%;
-		overflow: auto;
-		overflow-x: hidden;
 	}
 </style>

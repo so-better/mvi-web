@@ -1,8 +1,28 @@
 <template>
 	<div id="app" ref="app">
-		<p>{{value}}</p>
-		<m-button @click="change" type="info">Button</m-button>
-		<m-field readonly></m-field>
+		<m-pull-refresh v-model="show" @refresh="change">
+			{{show}}
+			<m-button type="info" @click="show=true">Button</m-button>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eeeeee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
+		</m-pull-refresh>
+		
 	</div>
 </template>
 
@@ -17,15 +37,17 @@
 				value: 0,
 				index: 0,
 				active: 2,
-				list:['elementUI','iView','bootstrap','mvi','amazeUI']
+				list: ['elementUI', 'iView', 'bootstrap', 'mvi', 'amazeUI']
 			}
 		},
 		mounted() {
-
+			
 		},
 		methods: {
 			change(value) {
-				console.log(value)
+				setTimeout(()=>{
+					this.show = false;
+				},2000)
 			}
 		}
 	}
