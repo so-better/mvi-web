@@ -1,28 +1,18 @@
 <template>
 	<div id="app" ref="app">
-		<m-pull-refresh v-model="show" @refresh="change">
-			{{show}}
+		<m-view style="overflow: auto;">
+			<div style="height: 4rem;border: 1px solid #0A9455;overflow: auto;">
+				<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
+			</div>
+			<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
+		</m-view>
+		<!-- <m-pull-refresh v-model="show" @refresh="change">
 			<m-button type="info" @click="show=true">Button</m-button>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eeeeee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-			<div style="height: 1rem;background-color: #eee;margin-bottom: 1rem;"></div>
-		</m-pull-refresh>
-		
+			<div style="height: 4rem;border: 1px solid #0A9455;overflow: auto;">
+				<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
+			</div>
+			<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
+		</m-pull-refresh> -->
 	</div>
 </template>
 
@@ -56,9 +46,7 @@
 <style lang="less">
 	#app {
 		height: 100%;
-		overflow: auto;
-		overflow-x: hidden;
-		position: relative;
+		overflow: hidden;
 	}
 
 	.mvi-msgbox-lk-enter,

@@ -7,7 +7,6 @@ import scroll from "./scroll"
 import spy from "./spy"
 import observe from "./observe"
 import upload from "./upload"
-import prevent from "./prevent"
 //引入组件
 import button from "./button"
 import icon from "./icon"
@@ -58,6 +57,7 @@ import imagePreview from "./imagePreview"
 import page from "./page"
 import loadingBar from "./loadingBar"
 import picker from "./picker"
+import view from "./view"
 //以下为专门针对PC端使用时设计的组件
 import layer from "./layer"
 import select from "./select"
@@ -75,7 +75,6 @@ export default {
 	spy,
 	observe,
 	upload,
-	prevent,
 	button,
 	icon,
 	cell,
@@ -125,6 +124,7 @@ export default {
 	page,
 	loadingBar,
 	picker,
+	view,
 	layer,
 	select,
 	autocomplete,

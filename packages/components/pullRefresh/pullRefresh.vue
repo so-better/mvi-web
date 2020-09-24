@@ -24,11 +24,11 @@
 				status: 0, //0表示还没触发下拉，1表示触发下拉了但是还没松手，2表示已经松手正在刷新，3表示刷新完成
 				elHeight:0,//刷新元素高度
 				transformY: 0, //垂直偏移距离
-				canTouch:false,//是否能够执行事件
+				canTouch:true,//是否能够执行事件
 				hasTouch: false, //是否触摸行为导致下拉刷新
 				mouseDown: false, //是否按下鼠标了
 				isTop:false,//开始下拉时滚动条是否在顶部
-				isMove:false,//是否进入move事件了
+				isScroll:false,//是否滚动了
 			}
 		},
 		model: {
@@ -246,16 +246,9 @@
 		methods: {
 			//初始化
 			statusInit() {
-				this.amount = 0;
-				this.amountMax = 4;
-				this.startY = 0;
-				this.startY2 = 0;
-				this.hasTouch = false;
 				this.elHeight = this.$refs.refresh.offsetHeight;
 				this.transformY = -this.elHeight;
-				this.status = 0;
 				this.elShow = false;
-				this.canTouch = true;
 			},
 			//开始下拉(移动端)
 			startPull(event) {
@@ -269,8 +262,12 @@
 					this.isTop = false;
 					return;
 				}
+				var el = this.getScrollEl(event.target);
+				if(el != this.$el && $util.getScrollTop(el) != 0){
+					this.isTop = false;
+					return;
+				}
 				this.isTop = true;
-				this.hasTouch = true;
 				this.startY = event.touches[0].pageY; //元素按下时的位置
 				this.startY2 = this.startY; //元素按下的位置，此数值不会变更
 			},
@@ -286,8 +283,12 @@
 					this.isTop = false;
 					return;
 				}
+				var el = this.getScrollEl(event.target);
+				if(el != this.$el && $util.getScrollTop(el) != 0){
+					this.isTop = false;
+					return;
+				}
 				this.isTop = true;
-				this.hasTouch = true;
 				this.mouseDown = true;
 				this.startY = event.pageY; //元素按下时的位置
 				this.startY2 = this.startY; //元素按下的位置，此数值不会变更
@@ -308,9 +309,20 @@
 					if(this.transformY>-this.elHeight){
 						this.transformY = -this.elHeight;
 					}
+					this.isScroll = true;
 					return;
 				}
-				this.isMove = true;
+				var el = this.getScrollEl(event.target);
+				if(el != this.$el && $util.getScrollTop(el) != 0){
+					if(this.transformY>-this.elHeight){
+						this.transformY = -this.elHeight;
+					}
+					this.isScroll = true;
+					return;
+				}
+				if(this.isScroll){
+					return;
+				}
 				var endY = event.touches[0].pageY;
 				var move = endY - this.startY; //每一次移动的偏移量
 				var move2 = endY - this.startY2; //距离第一次触摸时的偏移量
@@ -320,6 +332,7 @@
 					this.startY2 = this.startY;
 					return;
 				}
+				this.hasTouch = true;
 				if (event.cancelable) {
 					event.preventDefault();
 				}
@@ -357,11 +370,22 @@
 				if(!this.isTop){
 					return;
 				}
-				this.isMove = true;
 				if($util.getScrollTop(this.$el) != 0){
 					if(this.transformY>-this.elHeight){
 						this.transformY = -this.elHeight;
 					}
+					this.isScroll = true;
+					return;
+				}
+				var el = this.getScrollEl(event.target);
+				if(el != this.$el && $util.getScrollTop(el) != 0){
+					if(this.transformY>-this.elHeight){
+						this.transformY = -this.elHeight;
+					}
+					this.isScroll = true;
+					return;
+				}
+				if(this.isScroll){
 					return;
 				}
 				var endY = event.pageY;
@@ -374,7 +398,7 @@
 					this.startY2 = this.startY;
 					return;
 				}
-
+				this.hasTouch = true;
 				if (event.cancelable) {
 					event.preventDefault();
 				}
@@ -405,8 +429,11 @@
 				if(!this.canTouch){
 					return;
 				}
-				if(!this.isMove){
-					this.hasTouch = false;
+				if(this.isScroll){
+					this.isScroll = false;
+					return;
+				}
+				if(!this.hasTouch){
 					return;
 				}
 				//当下拉结束时，判断状态是否为释放可加载状态，如果是，则更改refresh值，变为加载状态
@@ -428,13 +455,19 @@
 				if(!this.canTouch){
 					return;
 				}
+				if(this.isScroll){
+					this.isScroll = false;
+					return;
+				}
 				if (!this.mouseDown) {
 					return;
 				}
-				if(!this.isMove){
-					this.hasTouch = false;
+				this.mouseDown = false;
+				
+				if(!this.hasTouch){
 					return;
 				}
+				
 				//当下拉结束时，判断状态是否为释放可加载状态，如果是，则更改refresh值，变为加载状态
 				if (this.status == 1 && this.refresh == false) {
 					this.$emit('model-change', true);
@@ -471,11 +504,7 @@
 					}
 				} else { //refresh值为false时状态变为下拉前状态，数据恢复初始化
 					this.amount = 0;
-					this.amountMax = 4;
-					this.startY = 0;
-					this.startY2 = 0;
 					this.hasTouch = false;
-					this.mouseDown = false;
 					this.$refs.refresh.style.transition = 'all 300ms';
 					this.$refs.refresh.style.webkitTransition = 'all 300ms';
 					setTimeout(() => {
@@ -489,6 +518,16 @@
 						}, 300)
 					}, 10);
 				}
+			},
+			//获取触摸元素最近的滚动容器
+			getScrollEl(el){
+				if(el === this.$el){
+					return this.$el;
+				}
+				if($util.getScrollHeight(el) > el.clientHeight){
+					return el;
+				}
+				return this.getScrollEl(el.parentNode);
 			}
 		},
 		beforeDestroy() {
