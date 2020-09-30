@@ -1,18 +1,11 @@
 <template>
 	<div id="app" ref="app">
-		<m-view style="overflow: auto;">
-			<div style="height: 4rem;border: 1px solid #0A9455;overflow: auto;">
-				<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
-			</div>
-			<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
-		</m-view>
-		<!-- <m-pull-refresh v-model="show" @refresh="change">
-			<m-button type="info" @click="show=true">Button</m-button>
-			<div style="height: 4rem;border: 1px solid #0A9455;overflow: auto;">
-				<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
-			</div>
-			<div style="height: 1rem;margin-bottom: 1rem;background-color: #29A329;" v-for="(item,index) in new Array(20)">{{index}}</div>
-		</m-pull-refresh> -->
+		<m-button @click="change" :loading="show" type="success">
+			Button
+			<template v-slot:load>
+				<m-icon type="load-b" spin class="mvi-mr-1" /> LOADING...
+			</template>
+		</m-button>
 	</div>
 </template>
 
@@ -35,6 +28,7 @@
 		},
 		methods: {
 			change(value) {
+				this.show = true;
 				setTimeout(()=>{
 					this.show = false;
 				},2000)

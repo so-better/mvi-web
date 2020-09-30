@@ -1,7 +1,10 @@
 <template>
 	<Button :disabled="disabled" :class="buttonClass" :style="btnStyle">
-		<m-icon v-if="loading" type="load-e" spin />
-		<span v-if="loading" v-text="loadText" class="mvi-button-load-text"></span>
+		<slot name="load" v-if="loading && $slots.load"></slot>
+		<span v-else-if="loading">
+			<m-icon type="load-e" spin class="mvi-button-load-icon"/>
+			{{loadText}}
+		</span>
 		<slot v-else></slot>
 	</Button>
 </template>
@@ -242,9 +245,9 @@
 		padding: 0 @mp-lg;
 	}
 	
-	//加载按钮
-	.mvi-button-load-text{
-		margin-left: @mp-xs;
+	//加载按钮图标
+	.mvi-button-load-icon{
+		margin-right: @mp-xs;
 	}
 	
 	//按钮圆角
@@ -278,6 +281,6 @@
 	.mvi-button-loading{
 		pointer-events: none;
 		touch-action: none;
-		opacity: .8;
+		opacity: .6;
 	}
 </style>
