@@ -3,6 +3,8 @@
 		<m-button @click="change" type="success">
 			Button
 		</m-button>
+		<m-navbar title="用户中心" left-icon="angle-left" fixed></m-navbar>
+		<m-tabbar fixed v-model="index" :tabs="tabs"></m-tabbar>
 	</div>
 </template>
 
@@ -17,15 +19,35 @@
 				value: 0,
 				index: 0,
 				active: 2,
-				list: ['elementUI', 'iView', 'bootstrap', 'mvi', 'amazeUI']
+				tabs: [{
+						value: 0,
+						name: '首页',
+						icon:'home'
+					},
+					{
+						value: 1,
+						name: '附近',
+						icon:'map'
+					},
+					{
+						value: 2,
+						name: '关注',
+						icon:'file'
+					},
+					{
+						value: 3,
+						name: '我的',
+						icon:'user'
+					}
+				]
 			}
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			change(value) {
-				
+
 			}
 		}
 	}

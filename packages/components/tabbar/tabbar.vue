@@ -84,11 +84,11 @@
 	.mvi-tabbar{
 		display: flex;
 		display: -webkit-flex;
-		justify-content: space-around;
+		justify-content: space-between;
 		align-items: center;
 		width: 100%;
-		padding: 0;
-		height: @medium-height;
+		height: @mini-height*2;
+		padding: 0 @mp-md;
 		background-color: #fff;
 		color: @font-color-default;
 	}

@@ -4,7 +4,7 @@
 			<span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="'margin-bottom:'+(name?'':'0px')">
 				<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin"/>
 			</span>
-			<span class="mvi-tabbar-name" v-text="name"></span>
+			<span :class="'mvi-tabbar-name'+((iconType || iconUrl)?' mvi-tabbar-name-small':'')" v-text="name"></span>
 		</div>
 	</div>
 </template>
@@ -70,11 +70,6 @@
 				if(this.value == this.tabbar.value){
 					cls += " mvi-tabbar-item-active";
 				}
-				if(this.name && (this.iconType||this.iconUrl)){
-					cls += " mvi-tabbar-item-small";
-				}else if(this.iconType||this.iconUrl){
-					cls += " mvi-tabbar-item-large";
-				}
 				if(this.tabbar.active && !this.disabled && this.value != this.tabbar.value){
 					cls += " mvi-tabbar-active";
 				}
@@ -121,17 +116,12 @@
 		justify-content:center;
 		align-items: center;
 		vertical-align: middle;
-		font-size: @font-size-default;
 		height: 100%;
 		padding: 0 @mp-sm;
 		cursor: pointer;
 		user-select: none;
 		-moz-user-select: none;
 		-webkit-user-select: none;
-	}
-	
-	.mvi-tabbar-item-small{
-		font-size: @font-size-small;
 	}
 	
 	.mvi-tabbar-item-child{
@@ -145,10 +135,6 @@
 		vertical-align: middle;
 	}
 	
-	.mvi-tabbar-item-large{
-		font-size: @font-size-h6;
-	}
-	
 	.mvi-tabbar-item.mvi-tabbar-item-active{
 		color: @info-normal;
 	}
@@ -159,22 +145,17 @@
 		text-align: center;
 		margin: 0;
 		padding: 0;
-	}
-	
-	.mvi-tabbar-item-small .mvi-tabbar-icon .mvi-icon-url{
-		width: .32rem;
-		height: .32rem;
-	}
-	
-	.mvi-tabbar-item-large .mvi-tabbar-icon .mvi-icon-url{
-		width: .42rem;
-		height: .42rem;
+		font-size: @font-size-h4;
 	}
 	
 	.mvi-tabbar-name{
 		display: block;
 		width: 100%;
 		text-align: center;
+		font-size: @font-size-h6;
+		&.mvi-tabbar-name-small{
+			font-size: @font-size-small;
+		}
 	}
 	.mvi-tabbar-active:active::before{
 		.mvi-active();

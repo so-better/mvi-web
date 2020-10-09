@@ -195,7 +195,7 @@
 		padding: 0 @mp-sm;
 		position: relative;
 		color: @font-color-default;
-		font-size: @font-size-default;
+		font-size: @font-size-h6;
 	}
 	
 	.mvi-navbar-border{
