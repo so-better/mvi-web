@@ -1,10 +1,7 @@
 <template>
 	<div id="app" ref="app">
-		<m-button @click="change" :loading="show" type="success">
+		<m-button @click="change" type="success">
 			Button
-			<template v-slot:load>
-				<m-icon type="load-b" spin class="mvi-mr-1" /> LOADING...
-			</template>
 		</m-button>
 	</div>
 </template>
@@ -28,10 +25,7 @@
 		},
 		methods: {
 			change(value) {
-				this.show = true;
-				setTimeout(()=>{
-					this.show = false;
-				},2000)
+				
 			}
 		}
 	}

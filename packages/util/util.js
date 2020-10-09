@@ -840,7 +840,7 @@ const util = {
 	 */
 	rem2px(number) {
 		var fs = this.getCssStyle(document.documentElement, "font-size");
-		var num = number * parseInt(fs); //获得px单位的值
+		var num = number * parseFloat(fs); //获得px单位的值
 		return num;
 	},
 
@@ -850,7 +850,7 @@ const util = {
 	 */
 	px2rem(number) {
 		var fs = this.getCssStyle(document.documentElement, "font-size");
-		var num = number / parseInt(fs);
+		var num = number / parseFloat(fs);
 		return num;
 	},
 
