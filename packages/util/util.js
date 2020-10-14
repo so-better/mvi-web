@@ -1,5 +1,4 @@
 const util = {
-
 	/**
 	 * 判断是否数值
 	 */
@@ -303,14 +302,14 @@ const util = {
 				}
 				if ((_this.getScrollTop(scrollEle) + height >= _this.getScrollHeight(scrollEle)) && (height != _this.getScrollHeight(
 						scrollEle))) {
-					if(!flag){
+					if (!flag) {
 						return;
 					}
 					if (typeof(callback) == "function") {
 						flag = false;
 						callback(options);
 					}
-				}else {
+				} else {
 					flag = true;
 				}
 			}

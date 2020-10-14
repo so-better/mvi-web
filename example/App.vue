@@ -3,8 +3,8 @@
 		<m-button @click="change" type="success">
 			Button
 		</m-button>
-		<m-navbar title="用户中心" left-icon="angle-left" fixed></m-navbar>
-		<m-tabbar fixed v-model="index" :tabs="tabs"></m-tabbar>
+		<div style="height: 20rem;"></div>
+		<m-button form-control>这里是底部</m-button>
 	</div>
 </template>
 
@@ -43,7 +43,7 @@
 			}
 		},
 		mounted() {
-
+			
 		},
 		methods: {
 			change(value) {
@@ -56,17 +56,6 @@
 <style lang="less">
 	#app {
 		height: 100%;
-		overflow: hidden;
-	}
-
-	.mvi-msgbox-lk-enter,
-	.mvi-msgbox-lk-leave-to {
-		opacity: 0 !important;
-		transform: translate(-50%, -50%) scale(2) !important;
-	}
-
-	.mvi-msgbox-lk-enter-active,
-	.mvi-msgbox-lk-leave-active {
-		transition: all 500ms !important;
+		overflow: auto;
 	}
 </style>

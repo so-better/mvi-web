@@ -57,7 +57,6 @@ import imagePreview from "./imagePreview"
 import page from "./page"
 import loadingBar from "./loadingBar"
 import picker from "./picker"
-import view from "./view"
 //以下为专门针对PC端使用时设计的组件
 import layer from "./layer"
 import select from "./select"
@@ -124,7 +123,6 @@ export default {
 	page,
 	loadingBar,
 	picker,
-	view,
 	layer,
 	select,
 	autocomplete,
