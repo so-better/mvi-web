@@ -1,15 +1,14 @@
 <template>
 	<div class="mvi-panel" v-on="listeners">
-		<div :class="'mvi-panel-header'+(($slots.default || content)?' mvi-panel-header-border':'')" v-if="$slots.title || title">
+		<div :class="titleCls" v-if="$slots.title || title">
 			<slot name="title" v-if="$slots.title"></slot>
 			<span v-else v-text="title"></span>
 		</div>
-		<div class="mvi-panel-content" v-if="$slots.default || content">
+		<div :class="contentCls" v-if="$slots.default || content">
 			<slot v-if="$slots.default"></slot>
 			<span v-else v-text="content"></span>
 		</div>
-		<div :class="'mvi-panel-footer'+(($slots.default || content || $slots.title || title)?' mvi-panel-footer-border':'')" 
-		v-if="$slots.footer || footer">
+		<div :class="footerCls" v-if="$slots.footer || footer">
 			<slot name="footer" v-if="$slots.footer"></slot>
 			<span v-else v-text="footer"></span>
 		</div>
@@ -31,11 +30,50 @@
 			footer:{
 				type:String,
 				default:null
+			},
+			titleClass:{
+				type:String,
+				default:null
+			},
+			contentClass:{
+				type:String,
+				default:null
+			},
+			footerClass:{
+				type:String,
+				default:null
 			}
 		},
 		computed:{
 			listeners(){
 				return Object.assign({},this.$listeners)
+			},
+			titleCls(){
+				var cls = 'mvi-panel-header';
+				if(this.$slots.default || this.content){
+					cls += ' mvi-panel-header-border';
+				}
+				if(this.titleClass){
+					cls += ' ' + this.titleClass;
+				}
+				return cls;
+			},
+			contentCls(){
+				var cls = 'mvi-panel-content';
+				if(this.contentClass){
+					cls += ' ' + this.contentClass;
+				}
+				return cls;
+			},
+			footerCls(){
+				var cls = 'mvi-panel-footer';
+				if(this.$slots.default || content || this.$slots.title || this.title){
+					cls += ' mvi-panel-footer-border';
+				}
+				if(this.footerClass){
+					cls += ' ' + this.footerClass;
+				}
+				return cls;
 			}
 		}
 	}

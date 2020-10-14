@@ -1,10 +1,8 @@
 <template>
-	<div id="app" ref="app">
+	<div id="app" ref="app" style="padding: .4rem;">
 		<m-button @click="change" type="success">
 			Button
 		</m-button>
-		<div style="height: 20rem;"></div>
-		<m-button form-control>这里是底部</m-button>
 	</div>
 </template>
 
@@ -19,35 +17,25 @@
 				value: 0,
 				index: 0,
 				active: 2,
-				tabs: [{
-						value: 0,
-						name: '首页',
-						icon:'home'
+				options: [{
+						label: '分享到朋友圈',
+						sub:'tencent'
 					},
 					{
-						value: 1,
-						name: '附近',
-						icon:'map'
+						label: '分享给QQ好友',
 					},
 					{
-						value: 2,
-						name: '关注',
-						icon:'file'
-					},
-					{
-						value: 3,
-						name: '我的',
-						icon:'user'
+						label: '分享到QQ空间',
 					}
 				]
 			}
 		},
 		mounted() {
-			
+
 		},
 		methods: {
 			change(value) {
-
+				this.show = true;
 			}
 		}
 	}

@@ -59,6 +59,10 @@
 				type:String,
 				default:null
 			},
+			subColor:{
+				type:String,
+				default:'#fff'
+			},
 			round:{//圆形按钮
 				type:Boolean,
 				default:false
@@ -80,13 +84,13 @@
 					if(this.color){
 						obj.color = this.color;
 						obj.borderColor = this.color;
-						obj.background = "#fff";
+						obj.background = this.subColor;
 					}
 				}else{
 					if(this.color){
 						obj.background = this.color;
 						obj.borderColor = this.color;
-						obj.color = "#fff";
+						obj.color = this.subColor;
 					}
 				}
 				return obj;
