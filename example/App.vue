@@ -16,18 +16,7 @@
 				date: new Date(),
 				value: 0,
 				index: 0,
-				active: 2,
-				options: [{
-						label: '分享到朋友圈',
-						sub:'tencent'
-					},
-					{
-						label: '分享给QQ好友',
-					},
-					{
-						label: '分享到QQ空间',
-					}
-				]
+				active: 2
 			}
 		},
 		mounted() {

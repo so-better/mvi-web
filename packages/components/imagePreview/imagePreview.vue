@@ -7,7 +7,7 @@
 		 @touchmove="previewTouchMove" @touchend="previewTouchend">
 			<m-swiper-slide v-for="(item,index) in images" :key="'image-'+index">
 				<div class="mvi-image-preview-container" ref="previews">
-					<m-image @click="closeOverlay" class="mvi-image-preview" :src="item" fit="contain" ref="images"></m-image>
+					<m-image @click="closeOverlay" class="mvi-image-preview" :src="item" fit="response" ref="images"></m-image>
 				</div>
 			</m-swiper-slide>
 			<template v-slot:indicators="data">
