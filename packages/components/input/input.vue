@@ -389,12 +389,12 @@
 				},300)
 			},
 			//左侧图标点击
-			leftClick(event) {
-				this.$emit('left-click', event);
+			leftClick() {
+				this.$emit('left-click', this.value);
 			},
 			//右侧图标点击
-			rightClick(event) {
-				this.$emit('right-click', event);
+			rightClick() {
+				this.$emit('right-click', this.value);
 			},
 			//清除输入框
 			doClearValue() {
