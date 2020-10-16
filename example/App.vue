@@ -10,7 +10,7 @@
 			return {
 				show: false,
 				date: new Date(),
-				value: '',
+				value: 'ff000',
 				active:0,
 				types:['info','warn','primary','success','error','default']
 			}

@@ -10,7 +10,7 @@
 				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" />
 			</div>
 			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners"
-			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength">
+			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus">
 			<div class="mvi-field-clear" @click="doClear" v-if="clearable" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
 			</div>
@@ -150,6 +150,24 @@
 			clearable:{
 				type:Boolean,
 				default:false
+			},
+			//输入框内容对齐方式
+			align:{
+				type:String,
+				default:'left',
+				validator(value){
+					return ['left','center','right'].lastIndexOf(value)>-1;
+				}
+			},
+			//原生name
+			name:{
+				type:String,
+				default:null
+			},
+			//是否自动获取焦点
+			autofocus:{
+				type:Boolean,
+				default:false
 			}
 		},
 		computed:{
@@ -202,6 +220,9 @@
 				}
 				if(this.$slots.suffix || this.suffixType || this.suffixUrl || (this.showClearIcon && this.clearable)){
 					style.paddingRight = 0;
+				}
+				if(this.align){
+					style.textAlign = this.align;
 				}
 				return style
 			},
