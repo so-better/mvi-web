@@ -84,12 +84,16 @@
 					if(this.color){
 						obj.color = this.color;
 						obj.borderColor = this.color;
+					}
+					if(this.subColor){
 						obj.background = this.subColor;
 					}
 				}else{
 					if(this.color){
 						obj.background = this.color;
 						obj.borderColor = this.color;
+					}
+					if(this.subColor){
 						obj.color = this.subColor;
 					}
 				}

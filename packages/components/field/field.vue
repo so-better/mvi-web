@@ -9,7 +9,7 @@
 				<slot v-if="$slots.prefix" name="prefix"></slot>
 				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" />
 			</div>
-			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners"
+			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off"
 			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus">
 			<div class="mvi-field-clear" @click="doClear" v-if="clearable" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
