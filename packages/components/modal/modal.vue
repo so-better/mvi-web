@@ -6,15 +6,13 @@
 			@before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
 				<!-- 弹出层 -->
 				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" :style="wrapperStyle">
-					<div ref="header" :class="'mvi-modal-header'+(($slots.title || title)?'':' mvi-modal-no-header')" 
-					v-if="$slots.title || title || (showTimes && (iconType || iconUrl))" :style="headerStyle" >
-						<div :class="titleCls" v-if="$slots.title || title">
-							<slot name="title" v-if="$slots.title"></slot>
-							<span v-html="title" v-else-if="title"></span>
-						</div>
-						<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)" :style="'color:'+(timesColor?timesColor:'')">
-							<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" />
-						</div>
+					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)" :style="'color:'+(timesColor?timesColor:'')">
+						<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" />
+					</div>
+					<div ref="header" :class="titleCls" 
+					v-if="$slots.title || title" :style="headerStyle" >
+						<slot name="title" v-if="$slots.title"></slot>
+						<span v-html="title" v-else-if="title"></span>
 					</div>
 					<div ref="content" :class="'mvi-modal-content'+(contentClass?' '+contentClass:'')" v-if="$slots.default || content" :style="'padding:'+(contentPadding?'':'0')">
 						<slot v-if="$slots.default"></slot>
@@ -131,7 +129,7 @@
 			},
 			animation:{
 				type:String,
-				default:'scale'//'scale','translate-top','translate-bottom','translate-left','translate-right'
+				default:'narrow'//'narrow','scale','translate-top','translate-bottom','translate-left','translate-right'
 			},
 			titleEllipsis:{
 				type:Boolean,
@@ -310,26 +308,15 @@
 		color: @font-color-default;
 		border-radius: @radius-default;
 		box-shadow: @boxshadow-basic;
-	}
-	
-	.mvi-modal-header{
-		display: flex;
-		display: -webkit-flex;
-		justify-content: space-between;
-		align-items: baseline;
-		padding: @mp-md;
-		
-		&.mvi-modal-no-header{
-			justify-content: flex-end;
-		}
+		position: relative;
 	}
 	
 	.mvi-modal-title{
 		display: block;
 		width: 100%;
-		flex: 1;
 		font-weight: bold;
 		font-size: @font-size-h6;
+		padding: @mp-lg @mp-md;
 		
 		&.mvi-modal-title-ellipsis{
 			overflow: hidden;
@@ -339,8 +326,9 @@
 	}
 	
 	.mvi-modal-times{
-		padding: 0;
-		margin-left: @mp-sm;
+		position: absolute;
+		right: @mp-md;
+		top: @mp-md;
 		display: flex;
 		display: -webkit-flex;
 		justify-content: center;
@@ -352,7 +340,7 @@
 	
 	.mvi-modal-content{
 		display: block;
-		padding: @mp-md;
+		padding: @mp-lg @mp-md;
 		flex: 1;
 		overflow-x: hidden;
 		overflow-y: auto;
@@ -373,7 +361,12 @@
 		}
 	}
 	
-	.mvi-modal-scale-enter,.mvi-modal-scale-leave-to{
+	.mvi-modal-narrow-enter{
+		transform: translate3d(0,0,0) scale(1.5);
+		opacity: 0;
+	}
+	
+	.mvi-modal-scale-enter,.mvi-modal-scale-leave-to,.mvi-modal-narrow-leave-to{
 		transform:translate3d(0,0,0) scale(0.5);
 		opacity: 0;
 	}

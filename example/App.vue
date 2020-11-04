@@ -1,6 +1,10 @@
 <template>
 	<div id="app" ref="app" style="padding: 1rem;">
-		
+		<m-button form-control @click="show=!show">Modal</m-button>
+		<m-button form-control @click="change(0)">Confirm</m-button>
+		<m-button form-control @click="change(1)">Alert</m-button>
+		<m-button form-control @click="change(2)">Prompt</m-button>
+		<m-modal v-model="show" closable title="Modal" show-times title-class="mvi-text-center" content="这是一个模态框,不是一个Dialog!" footer="作者:长安月下"></m-modal>
 	</div>
 </template>
 
@@ -20,7 +24,31 @@
 		},
 		methods: {
 			change(value) {
-				
+				if(value==0){
+					this.$confirm({
+						title:'在微信中打开链接吗？',
+						message:'',
+						callback:(r)=>{
+							console.log(r)
+						}
+					})
+				}else if(value == 1){
+					this.$alert({
+						title:'在微信中打开链接吗？',
+						message:'',
+						callback:(r)=>{
+							console.log(r)
+						}
+					})
+				}else {
+					this.$prompt({
+						title:'在微信中打开链接吗？',
+						message:'',
+						callback:(r)=>{
+							console.log(r)
+						}
+					})
+				}
 			}
 		}
 	}

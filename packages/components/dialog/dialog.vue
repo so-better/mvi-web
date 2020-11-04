@@ -1,6 +1,6 @@
 <template>
 	<m-modal v-on="listeners" :show="show" :footer-padding="false" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius"
-	:local="computedLocal" :use-padding="computedUsePadding" :animation="computedAnimation" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor">
+	:local="computedLocal" :use-padding="computedUsePadding" :animation="computedAnimation" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :modal-color="computedDialogColor">
 		<template v-if="computedTitle" v-slot:title>
 			<div v-html="computedTitle" class="mvi-dialog-title"></div>
 		</template>
@@ -14,10 +14,10 @@
 		</template>
 		<template v-slot:footer>
 			<div class="mvi-dialog-footer">
-				<div class="mvi-dialog-ok" v-text="type=='alert'?computedBtnText:computedBtnText[0]" @click="okFun"
-				:style="'color:'+(type=='alert'?(computedBtnColor?computedBtnColor:''):(computedBtnColor?computedBtnColor[0]:''))"></div>
 				<div v-if="type!='alert'" class="mvi-dialog-cancel" v-text="computedBtnText[1]" @click="cancelFun"
 				:style="'color:'+(computedBtnColor?computedBtnColor[1]:'')"></div>
+				<div class="mvi-dialog-ok" v-text="type=='alert'?computedBtnText:computedBtnText[0]" @click="okFun"
+				:style="'color:'+(type=='alert'?(computedBtnColor?computedBtnColor:''):(computedBtnColor?computedBtnColor[0]:''))"></div>
 			</div>
 		</template>
 	</m-modal>
@@ -45,6 +45,7 @@
 				radius:null,//圆角
 				timeout:null,//自定义动画时间
 				overlayColor:null,//遮罩层背景色
+				dialogColor:null,//模态框背景色
 				input: {//输入框配置
 					placeholder: null, //占位符
 					type:null, //输入框类型
@@ -145,7 +146,7 @@
 				if(typeof(this.width) == "string" && this.width){
 					return this.width;
 				}else{
-					return '5rem';
+					return '5.6rem';
 				}
 			},
 			computedInput(){
@@ -218,14 +219,14 @@
 				if(typeof(this.animation) == 'string' && this.animation){
 					return this.animation;
 				}else{
-					return 'scale';
+					return 'narrow';
 				}
 			},
 			computedRadius(){
 				if(typeof(this.radius) == "string" && this.radius){
 					return this.radius;
 				}else{
-					return null;
+					return '0.2rem';
 				}
 			},
 			computedTimeout(){
@@ -240,6 +241,13 @@
 					return this.overlayColor;
 				}else{
 					return null;
+				}
+			},
+			computedDialogColor(){
+				if(typeof(this.dialogColor) == 'string' && this.dialogColor){
+					return this.dialogColor;
+				}else {
+					return null
 				}
 			},
 			contentShow(){
@@ -434,9 +442,8 @@
 		height: 100%;
 		font-size: @font-size-h6;
 		width: 50%;
-		border-left: 1px solid @border-color;
-		color: @font-color-sub;
-		font-weight: bold;
+		border-right: 1px solid @border-color;
+		color: @primary-normal;
 		cursor: pointer;
 	}
 	
