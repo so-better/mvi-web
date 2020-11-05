@@ -8,7 +8,7 @@
 			<div :class="'mvi-picker-toolbar-title'+(titleClass?' '+titleClass:'')" v-if="title" v-text="title"></div>
 			<div :class="'mvi-picker-toolbar-confirm'+(confirmClass?' '+confirmClass:'')" v-text="confirmText" @click="doConfirm"></div>
 		</div>
-		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle">
+		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
 			<div v-for="(column,index) in computedOptions" :key="'picker-column-'+index" :class="'mvi-picker-items'+(column.className?' '+column.className:'')"
 			 ref="items" :style="columnStyle(column,index)" @touchstart="touchstart($event,index)" @touchmove="touchmove"
 			 @touchend="touchend" @mousedown="mousedown($event,index)">
@@ -374,6 +374,12 @@
 				setTimeout(() => {
 					this.removeTransition(this.columnIndex);
 				}, timeout)
+			},
+			//禁用content的touchmove
+			contentTouchMove(event){
+				if(event.cancelable){
+					event.preventDefault()
+				}
 			}
 		},
 		beforeDestroy() {

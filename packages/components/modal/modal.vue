@@ -129,7 +129,7 @@
 			},
 			animation:{
 				type:String,
-				default:'narrow'//'narrow','scale','translate-top','translate-bottom','translate-left','translate-right'
+				default:'scale'//'narrow','scale','translate-top','translate-bottom','translate-left','translate-right'
 			},
 			titleEllipsis:{
 				type:Boolean,
