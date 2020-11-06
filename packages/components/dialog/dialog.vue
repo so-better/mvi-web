@@ -7,8 +7,8 @@
 		<template v-slot:default v-if="contentShow">
 			<div v-html="computedMessage" class="mvi-dialog-content" v-if="computedMessage"></div>
 			<div v-if="type=='prompt'" class="mvi-dialog-input">
-				<input ref="input" :type="computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass"
-				:autofocus="computedInput.autofocus" v-model.trim="computedValue" @input="inputFun" @focus="inputFocus" @blur="inputBlur">
+				<input ref="input" :type="computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass" :style="inputStyle"
+				:autofocus="computedInput.autofocus" v-model.trim="computedValue" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="computedInputMode">
 				<m-icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
 		</template>
@@ -52,7 +52,9 @@
 					autofocus:null,
 					maxlength:null,
 					clearable:null,
-					value:null//输入框的值
+					value:null,//输入框的值
+					mode:null,//输入框键盘类型
+					align:null,//输入框文本对齐方式
 				},
 				focus:false//输入框是否已经获得了焦点
 			}
@@ -180,6 +182,16 @@
 				}else{
 					input.clearable = false;
 				}
+				if(typeof(this.input.mode) == 'string'){
+					input.mode = this.input.mode;
+				}else {
+					input.mode = false;
+				}
+				if(typeof(this.input.align) == 'string'){
+					input.align = this.input.align;
+				}else {
+					input.align = 'left'
+				}
 				return input;
 			},
 			computedValue:{
@@ -274,12 +286,32 @@
 					cls += 'mvi-dialog-input-padding'
 				}
 				return cls
+			},
+			computedInputMode(){
+				var mode = false;
+				if(['none','text','decimal','numeric','tel','search','email','url'].includes(this.computedInput.mode)){
+					mode = this.computedInput.mode
+				}else {
+					if(this.input.type == 'number'){
+						mode = 'numeric'
+					}
+				}
+				return mode
+			},
+			inputStyle(){
+				var style = {}
+				if(['left','right','center'].includes(this.computedInput.align)){
+					style.textAlign = this.computedInput.align;
+				}
+				return style;
 			}
 		},
 		methods:{
 			//获取焦点
 			inputFocus(){
-				this.focus = true;
+				setTimeout(()=>{
+					this.focus = true;
+				},300)
 			},
 			//失去焦点
 			inputBlur(e){
@@ -290,7 +322,7 @@
 			//输入监听
 			inputFun(){
 				var value = this.computedValue;
-				if(this.input.type == 'number' || this.input.type == 'tel'){
+				if(this.input.type == 'number'){
 					value = value.replace(/\D/g, '');
 				}
 				if (this.computedInput.maxlength > 0) {
@@ -303,11 +335,7 @@
 			//清除输入框的值
 			doClear(){
 				this.computedValue = '';
-				this.$nextTick(()=>{
-					setTimeout(()=>{
-						this.$refs.input.focus();
-					},300)
-				})
+				this.$refs.input.focus();
 			},
 			//确定
 			okFun(){

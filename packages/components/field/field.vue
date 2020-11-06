@@ -9,7 +9,7 @@
 				<slot v-if="$slots.prefix" name="prefix"></slot>
 				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" />
 			</div>
-			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off"
+			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
 			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus">
 			<div class="mvi-field-clear" @click="doClear" v-if="clearable" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
@@ -113,7 +113,7 @@
 				type:String,
 				default:'info',
 				validator(value){
-					return ['info','success','warn','primary','error']
+					return ['info','success','warn','primary','error'].includes(value)
 				}
 			},
 			//点击颜色
@@ -156,7 +156,7 @@
 				type:String,
 				default:'left',
 				validator(value){
-					return ['left','center','right'].lastIndexOf(value)>-1;
+					return ['left','center','right'].includes(value);
 				}
 			},
 			//原生name
@@ -168,6 +168,13 @@
 			autofocus:{
 				type:Boolean,
 				default:false
+			},
+			inputMode:{//输入框调起移动端键盘类型
+				type:[String,Boolean],
+				default:false,
+				validator(value){
+					return ['none','text','decimal','numeric','tel','search','email','url'].includes(value)
+				}
 			}
 		},
 		computed:{
@@ -272,10 +279,22 @@
 					return this.type
 				}
 			},
+			//输入框键盘类型
+			computedInputMode(){
+				var mode = false;
+				if(this.inputMode){
+					mode = this.inputMode
+				}else {
+					if(this.type == 'number'){
+						mode = 'numeric'
+					}
+				}
+				return mode
+			},
 			//输入框的值
 			computedValue(){
 				var value = this.value.toString();
-				if(this.type == 'number' || this.type == 'tel'){
+				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
 					if(this.maxlength > 0 && value.length>this.maxlength){
 						value = value.substr(0, this.maxlength);
@@ -424,7 +443,9 @@
 		methods:{
 			//输入框获取焦点
 			inputFocus(){
-				this.focus = true;
+				setTimeout(()=>{
+					this.focus = true;
+				},300)
 			},
 			//输入框失去焦点
 			inputBlur(){
@@ -435,8 +456,8 @@
 			//输入框实时输入
 			doInput(event){
 				var value = this.$refs.input.value;
-				//数字类型或者电话类型会过滤非数字字符
-				if(this.type == 'number' || this.type == 'tel'){
+				//数字类型会过滤非数字字符
+				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
 					this.$refs.input.value = value;
 				}
@@ -474,11 +495,7 @@
 				this.$emit('model-change','');
 				this.$emit('update:value','')
 				this.$refs.input.value = ''
-				this.$nextTick(()=>{
-					setTimeout(()=>{
-						this.$refs.input.focus();
-					},300)
-				})
+				this.$refs.input.focus();
 			},
 		}
 	}

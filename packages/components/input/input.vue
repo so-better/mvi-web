@@ -15,7 +15,7 @@
 		 :autofocus="autofocus" class="mvi-textarea" v-on="listeners" :value="inputValue" @input="input" ref="textarea" :rows="rowsFilter"
 		 :name="name" :style="textareaStyle" @focus="getFocus" @blur="getBlur" autocomplete="off"></textarea>
 		<!-- 输入框 -->
-		<input v-else :type="inputType" :placeholder="placeholder" :maxlength="(isDatePicker?-1:maxlength)" :disabled="disabled"
+		<input v-else :type="inputType" :inputmode="computedInputMode" :placeholder="placeholder" :maxlength="(isDatePicker?-1:maxlength)" :disabled="disabled"
 		 :readonly="readonly || isDatePicker" :autofocus="autofocus" class="mvi-input" v-on="listeners" :value="inputValue"
 		 @click="callDate" @input="input" ref="input" :name="name" :style="inputStyle" @focus="getFocus" @blur="getBlur" autocomplete="off">
 		<!-- 清除图标 -->
@@ -169,11 +169,18 @@
 					return true;
 				}
 			},
-			inputAlign: {
+			inputAlign: {//文本对齐方式
 				type: String,
 				default: 'left',
 				validator(value) {
 					return ['left', 'center', 'right'].includes(value)
+				}
+			},
+			inputMode:{//输入框调起移动端键盘类型
+				type:[String,Boolean],
+				default:false,
+				validator(value){
+					return ['none','text','decimal','numeric','tel','search','email','url'].includes(value)
 				}
 			}
 		},
@@ -260,6 +267,17 @@
 				}
 				return type;
 			},
+			computedInputMode(){
+				var mode = false;
+				if(this.inputMode){
+					mode = this.inputMode
+				}else {
+					if(this.type == 'number'){
+						mode = 'numeric'
+					}
+				}
+				return mode
+			},
 			//datepicker组件的type值
 			dateType() {
 				var type = "date";
@@ -281,7 +299,7 @@
 				var value = this.value.toString();
 				if (this.isDatePicker) {
 					value = this.getDateValue();
-				} else if(this.type == 'number' || this.type == 'tel'){
+				} else if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
 					if(this.maxlength > 0 && value.length>this.maxlength){
 						value = value.substr(0, this.maxlength);
@@ -380,7 +398,9 @@
 		methods: {
 			//输入框或者文本域获取焦点
 			getFocus(){
-				this.focus = true;
+				setTimeout(()=>{
+					this.focus = true;
+				},300)
 			},
 			//输入框或者文本域失去焦点
 			getBlur(){
@@ -402,11 +422,7 @@
 					this.$refs.textarea.value = '';
 					this.$emit('update:value', '');
 					this.$emit('model-change', '');
-					this.$nextTick(()=>{
-						setTimeout(()=>{
-							this.$refs.textarea.focus();
-						},300)
-					})
+					this.$refs.textarea.focus();
 				} else if (this.isDatePicker) {
 					this.$refs.input.value = '';
 					this.$emit('update:date', null);
@@ -414,11 +430,7 @@
 					this.$refs.input.value = '';
 					this.$emit('update:value', '');
 					this.$emit('model-change', '');
-					this.$nextTick(()=>{
-						setTimeout(()=>{
-							this.$refs.input.focus();
-						},300)
-					})
+					this.$refs.input.focus();
 				}
 			},
 			//输入框监听
@@ -431,7 +443,7 @@
 					if (!this.isDatePicker) {
 						var value = this.$refs.input.value;
 						//数字类型或者电话类型会过滤非数字字符
-						if(this.type == 'number' || this.type == 'tel'){
+						if(this.type == 'number'){
 							value = value.replace(/\D/g, '');
 							this.$refs.input.value = value;
 						}

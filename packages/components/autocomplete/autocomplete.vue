@@ -5,7 +5,7 @@
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin"/>
 			</div>
 			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" :style="inputStyle" :name="name"
-			@focus="inputFocus" :disabled="disabled" autocomplete="off"/>
+			@focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off"/>
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<m-icon type="times-o" />
 			</div>
@@ -130,6 +130,13 @@
 			square:{//是否方形
 				type:Boolean,
 				default:false
+			},
+			align:{//对齐方式
+				type:String,
+				default:'left',
+				validator(value){
+					return ['left','right','center'].includes(value)
+				}
 			}
 		},
 		computed:{
@@ -239,6 +246,9 @@
 				}else if(this.rightIconType || this.rightIconUrl){
 					style.paddingRight = 0;
 				}
+				if(this.align){
+					style.textAlign = this.align;
+				}
 				return style
 			},
 			autocompleteClass(){
@@ -303,11 +313,18 @@
 				this.$emit('model-change',event.currentTarget.value);
 				this.$emit('update:value',event.currentTarget.value)
 			},
+			inputBlur(){
+				setTimeout(()=>{
+					this.focus = false;
+				},300)
+			},
 			inputFocus(){
 				if(this.disabled){
 					return;
 				}
-				this.focus = true;
+				setTimeout(()=>{
+					this.focus = true;
+				},300)
 				this.$nextTick(()=>{
 					this.$refs.layer.reset();
 				})
@@ -319,9 +336,7 @@
 				this.$emit('model-change','');
 				this.$emit('update:value','')
 				event.currentTarget.value = '';
-				this.$nextTick(()=>{
-					this.$refs.input.focus();
-				})
+				this.$refs.input.focus();
 			},
 			hideForWindow(event){
 				if($util.isContains(this.$el,event.target)){

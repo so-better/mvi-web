@@ -7,7 +7,7 @@
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :class="(leftIconClass?leftIconClass:'')"/>
 			</div>
 			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off"
-			:placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly"
+			:placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode"
 			:value="computedValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle">
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<m-icon type="times-o"/>
@@ -120,6 +120,13 @@
 			clearable:{//使用清除图标
 				type:Boolean,
 				default:false
+			},
+			inputMode:{//输入框调起移动端键盘类型
+				type:[String,Boolean],
+				default:false,
+				validator(value){
+					return ['none','text','decimal','numeric','tel','search','email','url']
+				}
 			}
 		},
 		computed:{
@@ -202,7 +209,7 @@
 				},
 				get(){
 					var value = this.value.toString();
-					if(this.type == 'number' || this.type == 'tel'){
+					if(this.type == 'number'){
 						value = value.replace(/\D/g, '');
 						if(this.maxlength > 0 && value.length>this.maxlength){
 							value = value.substr(0, this.maxlength);
@@ -223,6 +230,17 @@
 					return this.type;
 				}
 			},
+			computedInputMode(){
+				var mode = false;
+				if(this.inputMode){
+					mode = this.inputMode
+				}else {
+					if(this.type == 'number'){
+						mode = 'numeric'
+					}
+				}
+				return mode
+			},
 			inputStyle(){
 				var style = {}
 				if(this.align){
@@ -242,7 +260,9 @@
 		methods:{
 			//输入框获取焦点
 			getFocus(){
-				this.focus = true;
+				setTimeout(()=>{
+					this.focus = true;
+				},300)
 			},
 			//输入框失去焦点
 			getBlur(){
@@ -253,8 +273,8 @@
 			//输入监听
 			searchInput(){
 				var value = this.$refs.input.value;
-				//数字类型或者电话类型会过滤非数字字符
-				if(this.type == 'number' || this.type == 'tel'){
+				//数字类型会过滤非数字字符
+				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
 					this.$refs.input.value = value;
 				}
@@ -302,11 +322,7 @@
 				}
 				this.$refs.input.value = '';
 				this.computedValue = '';
-				this.$nextTick(()=>{
-					setTimeout(()=>{
-						this.$refs.input.focus();
-					},300)
-				})
+				this.$refs.input.focus();
 			}
 		}
 	}
