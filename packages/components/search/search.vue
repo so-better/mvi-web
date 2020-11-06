@@ -125,7 +125,7 @@
 				type:[String,Boolean],
 				default:false,
 				validator(value){
-					return ['none','text','decimal','numeric','tel','search','email','url']
+					return [false,'none','text','decimal','numeric','tel','search','email','url']
 				}
 			}
 		},

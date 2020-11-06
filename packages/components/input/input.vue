@@ -180,7 +180,7 @@
 				type:[String,Boolean],
 				default:false,
 				validator(value){
-					return ['none','text','decimal','numeric','tel','search','email','url'].includes(value)
+					return [false,'none','text','decimal','numeric','tel','search','email','url'].includes(value)
 				}
 			}
 		},

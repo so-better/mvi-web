@@ -289,7 +289,7 @@
 			},
 			computedInputMode(){
 				var mode = false;
-				if(['none','text','decimal','numeric','tel','search','email','url'].includes(this.computedInput.mode)){
+				if([false,'none','text','decimal','numeric','tel','search','email','url'].includes(this.computedInput.mode)){
 					mode = this.computedInput.mode
 				}else {
 					if(this.input.type == 'number'){
