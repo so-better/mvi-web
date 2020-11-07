@@ -74,7 +74,7 @@
 			},
 			timeout:{//动画时长
 				type:Number,
-				default:400
+				default:300
 			},
 			placement:{//弹窗的位置
 				type:String,

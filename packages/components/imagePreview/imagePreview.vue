@@ -165,6 +165,9 @@
 			//双指移动事件
 			previewTouchMove(event){
 				if(event.touches.length == 2 && this.isDoubleTouch){
+					if(event.cancelable){
+						event.preventDefault()
+					}
 					var el = this.$refs.images[this.current].$el; //图片元素
 					var container = this.$refs.previews[this.current]; //容器元素
 					var distance = this.getDistance(event.touches[0],event.touches[1])
