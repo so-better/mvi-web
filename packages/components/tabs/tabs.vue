@@ -230,7 +230,7 @@
 			//设置面板高度
 			setHeight(){
 				if(this.children[this.current] && this.$refs.content){
-					this.$refs.content.height = this.children[this.current].$el.offsetHeight + 'px';
+					this.$refs.content.style.height = this.children[this.current].$el.offsetHeight + 'px';
 				}
 			},
 			//点击头部的标题
