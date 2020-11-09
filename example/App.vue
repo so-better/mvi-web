@@ -4,7 +4,6 @@
 		<m-button form-control @click="change(0)">Confirm</m-button>
 		<m-button form-control @click="change(1)">Alert</m-button>
 		<m-button form-control @click="change(2)">Prompt</m-button>
-		<m-image-preview :images="images" show></m-image-preview>
 		<m-modal v-model="show" closable title="Modal" show-times title-class="mvi-text-center" content="这是一个模态框,不是一个Dialog!" footer="作者:长安月下"></m-modal>
 	</div>
 </template>
@@ -17,15 +16,7 @@
 				date: new Date(),
 				value: 'ff000',
 				active:0,
-				types:['info','warn','primary','success','error','default'],
-				images:[
-										'https://www.mvi-web.cn/resources/blogImages/image-1594004696016.jpg',
-										'https://www.mvi-web.cn/resources/blogImages/image-1594004502750.jpg',
-										'https://www.mvi-web.cn/resources/blogImages/image-1594004501547.jpg',
-				                   		'https://www.mvi-web.cn/resources/blogImages/image-1594004698047.jpg',
-				                   		'https://www.mvi-web.cn/resources/blogImages/image-1594004700828.jpg',
-				                   		'https://www.mvi-web.cn/resources/blogImages/image-1594004501469.jpg'
-									],
+				types:['info','warn','primary','success','error','default']
 			}
 		},
 		mounted() {

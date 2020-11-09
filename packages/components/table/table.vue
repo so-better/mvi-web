@@ -6,7 +6,7 @@
 					<col :style="colgroupStyle(index)" v-for="(item,index) in columnsData" :key="'table-header-group-'+index" />
 				</colgroup>
 				<tr ref="headRow">
-					<td :class="'mvi-table-header-td'+(rowBorder?' mvi-table-header-td-border':'')" v-for="(item,index) in columnsData"
+					<td :class="'mvi-table-header-td'+(rowBorder?' mvi-table-header-td-border':'')+(headClass?' '+headClass:'')" v-for="(item,index) in columnsData"
 					 :key="'table-column-'+index">
 						<div>
 							<m-checkbox v-if="item.key=='checkbox'" icon-size="0.24rem" :class="(item.value?'mvi-table-checkbox':'')"
@@ -39,7 +39,7 @@
 				<tbody>
 					<tr v-for="(item,index) in sortData" :key="'table-data-'+index" :class="(item.className?item.className:'')
 					+((stripe&&(index%2==1))?' mvi-table-stripe':'')">
-						<td :head-fix="''+(height?true:false)" :class="(rowBorder?'mvi-table-body-td-border':'')
+						<td :class="(rowBorder?'mvi-table-body-td-border':'')
 						+((item.cellClassName&&item.cellClassName[item2.key])?' '+item.cellClassName[item2.key]:'')
 						+(item2.className?' '+item2.className:'') + (cellClass(item,index,item2,index2)?' '+cellClass(item,index,item2,index2):'')"
 						 v-for="(item2,index2) in columnsData" :key="'table-column-data-'+index2" @click="cellClick($event,item,index,item2,index2)">
@@ -114,6 +114,10 @@
 			loadingMsg: { //加载时的文本提示
 				type: String,
 				default: "正在加载数据..."
+			},
+			headClass:{//表头样式
+				type:String,
+				default:null
 			}
 		},
 		computed: {
