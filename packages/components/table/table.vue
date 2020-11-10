@@ -66,6 +66,7 @@
 				active: -1, //排序图标的激活序列
 				checkRows: [], //选择的列
 				selectAll: false,
+				sortData:[],//渲染在表格上的数据
 			}
 		},
 		props: {
@@ -118,6 +119,14 @@
 			headClass:{//表头样式
 				type:String,
 				default:null
+			},
+			customSortAsc:{//自定义升序排序
+				type:Function,
+				default:null
+			},
+			customSortDesc:{//自定义降序排序
+				type:Function,
+				default:null
 			}
 		},
 		computed: {
@@ -133,24 +142,15 @@
 				return style;
 			},
 			colgroupStyle() {
-				return (index) => {
+				return index => {
 					var style = {};
 					if ($util.isElement(this.headRow)) {
 						var cols = this.headRow.querySelectorAll(".mvi-table-header-td");
-						var width = cols[index].offsetWidth;
+						var width = cols[index]?cols[index].offsetWidth:0;
 						style.width = width + 'px';
 					}
 					return style;
 				}
-			},
-			sortData() {
-				var arr = [];
-				this.data.forEach((row) => {
-					if (!row.hidden) {
-						arr.push(row);
-					}
-				})
-				return arr;
 			},
 			columnsData() {
 				var arr = [];
@@ -170,6 +170,14 @@
 					return text;
 				}
 			}
+		},
+		watch:{
+			data(newValue){
+				this.sortData = this.getSortData();
+			}
+		},
+		created() {
+			this.sortData = this.getSortData()
 		},
 		mounted() {
 			this.headRow = this.$refs.headRow;
@@ -217,28 +225,40 @@
 			//升序排序
 			sortAsc(column) {
 				this.active = 0;
-				var newArr = this.sortData.sort(function(a, b) {
-					var str1 = a[column.key].toString();
-					var str2 = b[column.key].toString();
-					return str1.localeCompare(str2, 'zh-CN')
-				})
-				for (var i = 0; i < newArr.length; i++) {
-					this.$set(this.sortData, i, newArr[i]);
+				if(typeof this.customSortAsc == 'function' && this.customSortAsc){
+					this.customSortAsc(column,this.sortData)
+				}else {
+					this.sortData = this.sortData.sort(function(a, b) {
+						var str1 = a[column.key].toString();
+						var str2 = b[column.key].toString();
+						return str1.localeCompare(str2, 'zh-CN')
+					})
+					this.$emit('sort-asc', this.sortData);
 				}
-				this.$emit('sort-asc', this.sortData);
 			},
 			//降序排序
 			sortDesc(column) {
 				this.active = 1;
-				var newArr = this.sortData.sort(function(a, b) {
-					var str1 = a[column.key].toString();
-					var str2 = b[column.key].toString();
-					return -str1.localeCompare(str2, 'zh-CN')
-				})
-				for (var i = 0; i < newArr.length; i++) {
-					this.$set(this.sortData, i, newArr[i]);
+				if(typeof this.customSortDesc == 'function' && this.customSortDesc){
+					this.customSortDesc(column,this.sortData)
+				}else {
+					this.sortData = this.sortData.sort(function(a, b) {
+						var str1 = a[column.key].toString();
+						var str2 = b[column.key].toString();
+						return -str1.localeCompare(str2, 'zh-CN')
+					})
+					this.$emit('sort-desc', this.sortData);
 				}
-				this.$emit('sort-desc', this.sortData);
+			},
+			//根据data获取sortData
+			getSortData(){
+				var arr = [];
+				this.data.forEach((row) => {
+					if (!row.hidden) {
+						arr.push(row);
+					}
+				})
+				return arr;
 			}
 		}
 	}
