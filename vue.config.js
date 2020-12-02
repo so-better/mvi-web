@@ -30,4 +30,6 @@ module.exports = {
 			hints: false
 		}
 	},
+	//关闭源码视图
+	productionSourceMap: false,
 }
