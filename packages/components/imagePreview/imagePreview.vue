@@ -160,6 +160,8 @@
 				if(event.touches.length == 2){
 					this.isDoubleTouch = true;
 					this.touchDistance = this.getDistance(event.touches[0],event.touches[1]);
+				}else {
+					this.isDoubleTouch = false;
 				}
 			},
 			//双指移动事件

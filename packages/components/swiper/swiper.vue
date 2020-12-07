@@ -193,6 +193,11 @@
 				}else {
 					index = this.mathPrev(Math.abs(this.transform.division(this.slideSize)));
 				}
+				if(index > this.children.length-1){
+					index = this.children.length - 1;
+				}else if(index < 0){
+					index = 0;
+				}
 				return index;
 			},
 			//激活的分页器索引(区分slide和fade)
