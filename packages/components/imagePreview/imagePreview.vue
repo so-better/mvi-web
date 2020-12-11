@@ -2,7 +2,7 @@
 	<m-overlay :show="show" v-on="listeners" color="#000" :fade="false" @showing="overlayShowing" :local="local" :z-index="zIndex"
 	 :use-padding="usePadding">
 		<m-swiper v-if="firstShow" class="mvi-image-preview-swiper" :initial-slide="active" show-indicators ref="swiper"
-		 width="100%" height="100%" @change="swiperChange" @mousedown="mouseDown" @mouseup="mouseUp" :show-control="showControl"
+		 :width="swiperWidth" :height="swiperHeight" @change="swiperChange" @mousedown="mouseDown" @mouseup="mouseUp" :show-control="showControl"
 		 :fade="fade" :touchable="!isDoubleTouch" :control-class="controlClass" @wheel="wheelImage" @touchstart="prviewTouchStart"
 		 @touchmove="previewTouchMove" @touchend="previewTouchend">
 			<m-swiper-slide v-for="(item,index) in images" :key="'image-'+index">
@@ -40,6 +40,8 @@
 				current: 0,
 				isDoubleTouch:false,//是否双指触摸
 				touchDistance:0,//双指触点距离
+				swiperWidth:'100%',
+				swiperHeight:'100%'
 			}
 		},
 		model: {
@@ -103,13 +105,25 @@
 		},
 		mounted() {
 			this.current = this.active;
+			window.addEventListener('resize',this.resize)
 		},
 		methods: {
+			//调整大小
+			resize(){
+				if(this.show){
+					this.$nextTick(()=>{
+						this.swiperWidth = this.$el.offsetWidth+'px';
+						this.swiperHeight = this.$el.offsetHeight+'px';
+					})
+				}
+			},
 			//遮罩层显示时
 			overlayShowing() {
 				if (!this.firstShow) {
 					this.firstShow = true;
 				}
+				this.swiperWidth = this.$el.offsetWidth+'px';
+				this.swiperHeight = this.$el.offsetHeight+'px';
 			},
 			//pc端鼠标按下
 			mouseDown(event) {
@@ -200,6 +214,9 @@
 				var y = p2.pageY - p1.pageY;
 				return Math.sqrt((x * x) + (y * y));
 			}
+		},
+		beforeDestroy() {
+			window.removeEventListener('resize',this.resize)
 		}
 	}
 </script>
