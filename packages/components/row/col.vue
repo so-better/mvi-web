@@ -1,0 +1,166 @@
+<template>
+	<Col :class="colStyle">
+		<slot></slot>
+	</Col>
+</template>
+
+<script>
+	import $util from "../../util/util"
+	export default {
+		name:'m-col',
+		props:{
+			span:{//栅格占据的列数
+				type:Number,
+				default:24
+			},
+			offset:{//栅格左侧的间隔格数
+				type:Number,
+				default:0
+			},
+			tag:{
+				type:String,
+				default:'div'
+			},
+			xs:{// >=0px 响应式栅格数或者栅格属性对象
+				type:[Number,Object],
+				default:null
+			},
+			sm:{// >=640px 响应式栅格数或者栅格属性对象
+				type:[Number,Object],
+				default:null
+			},
+			md:{// >=992px 响应式栅格数或者栅格属性对象
+				type:[Number,Object],
+				default:null
+			},
+			lg:{// >=1440px 响应式栅格数或者栅格属性对象
+				type:[Number,Object],
+				default:null
+			},
+			xl:{// >=1920px 响应式栅格数或者栅格属性对象
+				type:[Number,Object],
+				default:null
+			}
+		},
+		inject:['row'],
+		computed:{
+			colStyle(){
+				var cls = 'mvi-col';
+				if(this.span){
+					cls += ' mvi-col-xs-'+this.span;
+				}
+				if(this.offset){
+					cls += ' mvi-col-offset-xs-'+this.offset;
+				}
+				if($util.isObject(this.xs)){
+					if($util.isNumber(this.xs.span)){
+						cls += ' mvi-col-xs-' + this.xs.span;
+					}
+					if($util.isNumber(this.xs.offset)){
+						cls += ' mvi-col-offset-xs-' + this.xs.offset;
+					}
+				}else if($util.isNumber(this.xs)){
+					cls += ' mvi-col-xs-' + this.xs;
+				}
+				
+				if($util.isObject(this.sm)){
+					if($util.isNumber(this.sm.span)){
+						cls += ' mvi-col-sm-' + this.sm.span;
+					}
+					if($util.isNumber(this.sm.offset)){
+						cls += ' mvi-col-offset-sm-' + this.sm.offset;
+					}
+				}else if($util.isNumber(this.sm)){
+					cls += ' mvi-col-sm-' + this.sm;
+				}
+				
+				if($util.isObject(this.md)){
+					if($util.isNumber(this.md.span)){
+						cls += ' mvi-col-md-' + this.md.span;
+					}
+					if($util.isNumber(this.md.offset)){
+						cls += ' mvi-col-offset-md-' + this.md.offset;
+					}
+				}else if($util.isNumber(this.md)){
+					cls += ' mvi-col-md-' + this.md;
+				}
+				
+				if($util.isObject(this.lg)){
+					if($util.isNumber(this.lg.span)){
+						cls += ' mvi-col-lg-' + this.lg.span;
+					}
+					if($util.isNumber(this.lg.offset)){
+						cls += ' mvi-col-offset-lg-' + this.lg.offset;
+					}
+				}else if($util.isNumber(this.lg)){
+					cls += ' mvi-col-lg-' + this.lg;
+				}
+				
+				if($util.isObject(this.xl)){
+					if($util.isNumber(this.xl.span)){
+						cls += ' mvi-col-xl-' + this.xl.span;
+					}
+					if($util.isNumber(this.xl.offset)){
+						cls += ' mvi-col-offset-xl-' + this.xl.offset;
+					}
+				}else if($util.isNumber(this.xl)){
+					cls += ' mvi-col-xl-' + this.xl;
+				}
+				
+				return cls;
+			}
+		},
+		components:{
+			Col:{
+				render(createElement) {
+					return createElement(this.$parent.tag,{
+						on: Object.assign({}, this.$parent.$listeners)
+					},this.$slots.default)
+				}
+			}
+		}
+	}
+</script>
+
+<style scoped lang="less">
+	
+	.span(@num,@grid) when (@num >= 0){
+		.mvi-col-@{grid}-@{num}{
+			width:calc(~"100% / 24 * @{num}" );
+		}
+		
+		.span(@num - 1,@grid);
+	}
+	
+	.offset(@num,@grid) when (@num >= 0){
+		.mvi-col-offset-@{grid}-@{num}{
+			margin-left: calc(~"100% / 24 * @{num}");
+		}
+		
+		.offset(@num - 1,@grid);
+	}
+
+	.span(24,xs);
+	.offset(24,xs);
+	
+	
+	@media only screen and (min-width: 640px){
+		.span(24,sm);
+		.offset(24,sm);
+	}
+	
+	@media only screen and (min-width: 992px){
+		.span(24,md);
+		.offset(24,md);
+	}
+	
+	@media only screen and (min-width: 1440px){
+		.span(24,lg);
+		.offset(24,lg);
+	}
+	
+	@media only screen and (min-width: 1920px){
+		.span(24,xl);
+		.offset(24,xl);
+	}
+</style>

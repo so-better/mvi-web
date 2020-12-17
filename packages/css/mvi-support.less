@@ -393,3 +393,32 @@ textarea.mvi-default-textarea{
 .mvi-font-small{
 	font-size: @font-size-small !important;
 }
+
+//基于栅格断点的隐藏辅助类
+.mvi-hidden-xl{
+	display: none !important;
+}
+
+@media only screen and (max-width: 639px){
+	.mvi-hidden-xs{
+		display: none !important;
+	}
+}
+
+@media only screen and (max-width: 991px){
+	.mvi-hidden-sm{
+		display: none !important;
+	}
+}
+	
+@media only screen and (max-width: 1439px){
+	.mvi-hidden-md{
+		display: none !important;
+	}
+}
+
+@media only screen and (max-width: 1919px){
+	.mvi-hidden-lg{
+		display: none !important;
+	}
+}
