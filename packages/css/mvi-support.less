@@ -395,30 +395,56 @@ textarea.mvi-default-textarea{
 }
 
 //基于栅格断点的隐藏辅助类
-.mvi-hidden-xl{
+.mvi-hidden{
 	display: none !important;
 }
 
+//大于等于640px隐藏
+@media only screen and (min-width: 640px){
+	.mvi-hidden-up-sm{
+		display: none !important;
+	}
+}
+//大于等于992px隐藏
+@media only screen and (min-width: 992px){
+	.mvi-hidden-up-md{
+		display: none !important;
+	}
+}
+//大于等于1440px隐藏
+@media only screen and (min-width: 1440px){
+	.mvi-hidden-up-lg{
+		display: none !important;
+	}
+}
+//大于等于1920px隐藏
+@media only screen and (min-width: 1920px){
+	.mvi-hidden-up-xl{
+		display: none !important;
+	}
+}
+
+//小于640px隐藏
 @media only screen and (max-width: 639px){
-	.mvi-hidden-xs{
+	.mvi-hidden-down-xs{
 		display: none !important;
 	}
 }
-
-@media only screen and (max-width: 991px){
-	.mvi-hidden-sm{
+//小于992px隐藏
+@media only screen and (min-width: 991px){
+	.mvi-hidden-down-sm{
 		display: none !important;
 	}
 }
-	
-@media only screen and (max-width: 1439px){
-	.mvi-hidden-md{
+//小于1440px隐藏
+@media only screen and (min-width: 1439px){
+	.mvi-hidden-down-md{
 		display: none !important;
 	}
 }
-
-@media only screen and (max-width: 1919px){
-	.mvi-hidden-lg{
+//小于1920px隐藏
+@media only screen and (min-width: 1919px){
+	.mvi-hidden-down-lg{
 		display: none !important;
 	}
 }
