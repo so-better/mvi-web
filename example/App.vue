@@ -2,9 +2,7 @@
 	<div id="app" ref="app" style="padding: 1rem;">
 		<m-button type="success" @click="change" plain>Button</m-button>
 		<m-row>
-			<m-col style="height: 1rem;" class="mvi-bg-success mvi-mb-2"></m-col>
-			<m-col :span="4" :offset="4" :lg="{offset:0}" style="height: 1rem;" class="mvi-bg-success"></m-col>
-			<m-col :span="4" :offset="4" style="height: 1rem;" class="mvi-bg-success"></m-col>
+			<m-col  :xs="{span:20}" :sm="{span:4}" style="height: 1rem;" class="mvi-bg-success"></m-col>
 		</m-row>
 	</div>
 </template>

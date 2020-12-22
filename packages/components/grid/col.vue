@@ -45,13 +45,15 @@
 		inject:['row'],
 		computed:{
 			colStyle(){
-				var cls = 'mvi-col';
+				var cls = '';
+				
 				if(this.span){
-					cls += ' mvi-col-xs-'+this.span;
+					cls += ' mvi-col-'+this.span;
 				}
 				if(this.offset){
-					cls += ' mvi-col-offset-xs-'+this.offset;
+					cls += ' mvi-col-offset-'+this.offset;
 				}
+				
 				if($util.isObject(this.xs)){
 					if($util.isNumber(this.xs.span)){
 						cls += ' mvi-col-xs-' + this.xs.span;
@@ -124,43 +126,60 @@
 
 <style scoped lang="less">
 	
-	.span(@num,@grid) when (@num >= 0){
+	.span(@num) when (@num >= 0){
+		.mvi-col-@{num}{
+			width:calc(~"100% / 24 * @{num}" );
+		}
+		.span(@num - 1);
+	}
+	
+	.offset(@num) when (@num >= 0){
+		.mvi-col-offset-@{num}{
+			margin-left: calc(~"100% / 24 * @{num}");
+		}
+		
+		.offset(@num - 1);
+	}
+	
+	.span(24);
+	.offset(24);
+	
+	.spanResponse(@num,@grid) when (@num >= 0){
 		.mvi-col-@{grid}-@{num}{
 			width:calc(~"100% / 24 * @{num}" );
 		}
-		
-		.span(@num - 1,@grid);
+		.spanResponse(@num - 1,@grid);
 	}
 	
-	.offset(@num,@grid) when (@num >= 0){
+	.offsetResponse(@num,@grid) when (@num >= 0){
 		.mvi-col-offset-@{grid}-@{num}{
 			margin-left: calc(~"100% / 24 * @{num}");
 		}
 		
-		.offset(@num - 1,@grid);
+		.offsetResponse(@num - 1,@grid);
 	}
-
-	.span(24,xs);
-	.offset(24,xs);
+	
+	.spanResponse(24,xs);
+	.offsetResponse(24,xs);
 	
 	
 	@media only screen and (min-width: 640px){
-		.span(24,sm);
-		.offset(24,sm);
+		.spanResponse(24,sm);
+		.offsetResponse(24,sm);
 	}
 	
 	@media only screen and (min-width: 992px){
-		.span(24,md);
-		.offset(24,md);
+		.spanResponse(24,md);
+		.offsetResponse(24,md);
 	}
 	
 	@media only screen and (min-width: 1440px){
-		.span(24,lg);
-		.offset(24,lg);
+		.spanResponse(24,lg);
+		.offsetResponse(24,lg);
 	}
 	
 	@media only screen and (min-width: 1920px){
-		.span(24,xl);
-		.offset(24,xl);
+		.spanResponse(24,xl);
+		.offsetResponse(24,xl);
 	}
 </style>

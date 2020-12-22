@@ -64,7 +64,7 @@ import autocomplete from "./autocomplete"
 import dateChooser from "./dateChooser"
 import field from "./field"
 import editor from "./editor"
-import row from "./row"
+import grid from "./grid"
 
 export default {
 	anchor,
@@ -130,5 +130,5 @@ export default {
 	dateChooser,
 	editor,
 	field,
-	row
+	grid
 }
