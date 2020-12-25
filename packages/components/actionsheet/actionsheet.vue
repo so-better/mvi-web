@@ -1,6 +1,5 @@
 <template>
-	<m-popup :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout"
-	 placement="bottom" :round="round" :local="local" :use-padding="usePadding" v-on="listeners">
+	<m-popup :popup-color="backgroundColor" :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :local="local" :use-padding="usePadding" v-on="listeners">
 		<div class="mvi-acionsheet">
 			<div class="mvi-acionsheet-title" v-if="title" :style="{color:(titleColor?titleColor:'')}">
 				<span v-text="title"></span>
@@ -8,7 +7,7 @@
 			<div class="mvi-acionsheet-list">
 				<div :class="itemClass(item)" v-for="(item,index) in options" :key="'action-'+index" :style="itemStyle(item)"
 				 :disabled="itemDisabled(item)" @click="doSelect(item,index)">
-					<m-loading color="#bbb" v-if="(item.loading?item.loading:false)"></m-loading>
+					<m-loading :color="loadingColor" v-if="(item.loading?item.loading:false)"></m-loading>
 					<div class="mvi-acionsheet-content" v-else-if="item.label||item.sub || iconType(item.icon) || iconUrl(item.icon)">
 						<m-icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'"
 						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" />
@@ -19,7 +18,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="mvi-acionsheet-divider"></div>
+			<div class="mvi-acionsheet-divider" :style="{backgroundColor:(dividerColor?dividerColor:'')}"></div>
 			<div :class="'mvi-acionsheet-button'+(cancelActive?' mvi-acionsheet-active':'')" v-if="showCancel" v-text="cancelText"
 			 @click="doCancel" :style="'color:'+(cancelColor?cancelColor:'')"></div>
 		</div>
@@ -104,6 +103,30 @@
 			usePadding:{//局部显示时是否考虑滚动条影响
 				type:Boolean,
 				default: false
+			},
+			backgroundColor:{//背景色
+				type:String,
+				default:null
+			},
+			dividerColor:{//分割线颜色
+				type:String,
+				default:null
+			},
+			loadingColor:{//加载图标颜色
+				type:String,
+				default:'#bbb'
+			},
+			color:{//列表字体颜色
+				type:String,
+				default:null
+			},
+			disabledColor:{//禁用列表字体颜色
+				type:String,
+				default:null
+			},
+			borderColor:{//边框线颜色
+				type:String,
+				default:null
 			}
 		},
 		computed: {
@@ -160,8 +183,25 @@
 			itemStyle(){
 				return (item)=>{
 					var style = {};
-					if(item.color && !this.itemDisabled(item)){
-						style.color = item.color;
+					//禁用状态
+					if(this.itemDisabled(item)){
+						style.color = '#bbb';
+						if(this.disabledColor){
+							style.color = this.disabledColor;
+						}
+						if(item.disabledColor){
+							style.color = item.disabledColor;
+						}
+					}else {//非禁用状态
+						if(this.color){
+							style.color = this.color;
+						}
+						if(item.color){
+							style.color = item.color;
+						}
+					}
+					if(this.borderColor){
+						style.borderBottomColor = this.borderColor;
 					}
 					return style;
 				}
@@ -258,10 +298,6 @@
 
 	.mvi-acionsheet-active:active::before {
 		.mvi-active();
-	}
-
-	.mvi-acionsheet-item[disabled] {
-		color: @font-color-mute;
 	}
 
 	.mvi-acionsheet-content {

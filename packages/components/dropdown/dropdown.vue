@@ -1,16 +1,14 @@
 <template>
-	<m-popup :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout"
-	 :placement="placement" :round="round" v-on="listeners" :local="local" :use-padding="usePadding">
+	<m-popup :show="show" @click.native.self="hide" :popup-color="backgroundColor" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" v-on="listeners" :local="local" :use-padding="usePadding">
 		<div class="mvi-dropdown">
-			<div :disabled="item.disabled" :class="dropdownItemClass(item,index)" v-for="(item,index) in options" :key="'item-'+index" 
-			@click="doSelect(item,index)">
-				<div class="mvi-dropdown-item-label" :style="'color:'+((equalValue(item,index)&&activeColor)?activeColor:'')">
+			<div :disabled="itemDisabled(item)" :class="dropdownItemClass(item,index)" v-for="(item,index) in options" :key="'item-'+index" 
+			@click="doSelect(item,index)" :style="dropdownItemStyle(item,index)">
+				<div class="mvi-dropdown-item-label">
 					<m-icon v-if="item.icon" :type="iconType(item.icon)" :url="iconUrl(item.icon)" 
 					:spin="iconSpin(item.icon)" class="mvi-dropdown-icon" />
 					<span class="mvi-dropdown-label-text" v-text="(item.label?item.label:'')"></span>
 				</div>
-				<div v-if="equalValue(item,index)" class="mvi-dropdown-item-checked" :data-placement="placement"
-				:style="'color:'+((equalValue(item,index)&&activeColor)?activeColor:'')">
+				<div v-if="equalValue(item,index)" class="mvi-dropdown-item-checked" :data-placement="placement">
 					<m-icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" />
 				</div>
 			</div>
@@ -98,6 +96,22 @@
 			usePadding:{//局部显示时是否考虑滚动条影响
 				type:Boolean,
 				default: false
+			},
+			backgroundColor:{//背景色
+				type:String,
+				default:null
+			},
+			inactiveColor:{//未选中列表颜色
+				type:String,
+				default:null
+			},
+			disabledColor:{//禁用时列表颜色
+				type:String,
+				default:null
+			},
+			borderColor:{//下边框颜色
+				type:String,
+				default:null
 			}
 		},
 		computed:{
@@ -177,6 +191,41 @@
 					}else{
 						return this.value === index;
 					}
+				}
+			},
+			itemDisabled(){
+				return (item)=>{
+					if(typeof(item.disabled) == 'boolean'){
+						return item.disabled;
+					}else{
+						return false;
+					}
+				}
+			},
+			dropdownItemStyle(){
+				return (item,index)=>{
+					var style = {}
+					if(this.borderColor){
+						style.borderBottomColor = this.borderColor;
+					}
+					if(this.itemDisabled(item)){
+						style.color = '#bbb';
+						if(this.disabledColor){
+							style.color = this.disabledColor;
+						}
+					}else {
+						//激活选中情况下
+						if(this.equalValue(item,index)){
+							if(this.activeColor){
+								style.color = this.activeColor;
+							}
+						}else {
+							if(this.inactiveColor){
+								style.color = this.inactiveColor;
+							}
+						}
+					}
+					return style;
 				}
 			},
 			dropdownItemClass(){
@@ -284,17 +333,13 @@
 		.mvi-active();
 	}
 	
-	.mvi-dropdown-item[disabled]{
-		color: @font-color-mute;
-	}
-	
 	.mvi-dropdown-checked>.mvi-dropdown-item-checked,
 	.mvi-dropdown-checked>.mvi-dropdown-item-label{
 		color: @info-normal;
 	}
 	
 	.mvi-dropdown-item:last-child{
-		border-bottom-color: transparent;
+		border-bottom: none;
 	}
 	
 	.mvi-dropdown-item-label{
