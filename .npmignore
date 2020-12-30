@@ -7,4 +7,3 @@ vue.config.js
 babel.config.js
 *.map
 demo.html
-mvi.common.js
