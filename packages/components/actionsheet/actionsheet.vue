@@ -308,7 +308,7 @@
 		vertical-align: middle;
 
 		.mvi-icon {
-			font-size: 0.8em;
+			font-size: inherit;
 			margin-right: @mp-xs;
 			margin-left: 0;
 		}
