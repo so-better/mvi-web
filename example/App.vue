@@ -1,5 +1,7 @@
 <template>
-	<div id="app" ref="app" style="padding: 1rem;"><m-button type="success" @click="change" plain>Button</m-button></div>
+	<div id="app">
+		<m-button type="success" form-control @click="change">Button</m-button>
+	</div>
 </template>
 
 <script>
