@@ -191,7 +191,7 @@
 					style.borderRadius = this.radius;
 				}
 				if(this.modalColor){
-					style.backgroundColor = this.modalColor;
+					style.background = this.modalColor;
 				}
 				if(this.color){
 					style.color = this.color;
@@ -291,7 +291,7 @@
 		width: 6rem;
 		transform: translate(-50%,-50%);
 		-webkit-transform: translate(-50%,-50%);
-		background-color: transparent;
+		background: transparent;
 		font-size: @font-size-default;
 		color: @font-color-default;
 	}
@@ -303,7 +303,7 @@
 		-ms-flex-direction: column;
 		-webkit-flex-direction: column;
 		width: 100%;
-		background-color: @bg-color-default;
+		background: @bg-color-default;
 		font-size: @font-size-default;
 		color: @font-color-default;
 		border-radius: @radius-default;
@@ -344,6 +344,7 @@
 		flex: 1;
 		overflow-x: hidden;
 		overflow-y: auto;
+		border-radius: inherit;
 		font-size: @font-size-default;
 	}
 	

@@ -6,9 +6,9 @@
 		<transition :name="(computedSlide?'mvi-collapse':'')" @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave"
 		@afterLeave="afterLeave">
 			<div ref="wrapper" v-show="open" class="mvi-collapse-item-wrapper">
-				<div class="mvi-collapse-item-content">
+				<div :class="'mvi-collapse-item-content'+(contentClass?' '+contentClass:'')">
 					<slot v-if="$slots.default"></slot>
-					<span v-else v-text="content" :class="''+(contentClass?' '+contentClass:'')"></span>
+					<span v-else v-text="content"></span>
 				</div>
 			</div>
 		</transition>

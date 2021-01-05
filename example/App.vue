@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<m-button type="success" form-control @click="change">Button</m-button>
+		<m-button plain @click="change" type="primary">Button</m-button>
 	</div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
 			value: 1,
 			active: 0,
 			types: ['info', 'warn', 'primary', 'success', 'error', 'default']
-		};
+		}
 	},
 	mounted() {},
 	methods: {

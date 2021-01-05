@@ -289,6 +289,6 @@
 	.mvi-button-loading{
 		pointer-events: none;
 		touch-action: none;
-		opacity: .6;
+		opacity: .8;
 	}
 </style>

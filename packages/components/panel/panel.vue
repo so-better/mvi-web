@@ -67,7 +67,7 @@
 			},
 			footerCls(){
 				var cls = 'mvi-panel-footer';
-				if(this.$slots.default || content || this.$slots.title || this.title){
+				if(this.$slots.default || this.content || this.$slots.title || this.title){
 					cls += ' mvi-panel-footer-border';
 				}
 				if(this.footerClass){

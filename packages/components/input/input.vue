@@ -759,6 +759,7 @@
 		font-family: @font-family;
 		background-image: none;
 		margin: 0;
+		
 		&::-webkit-input-placeholder,&::placeholder{
 			color: inherit;
 			opacity: .5;

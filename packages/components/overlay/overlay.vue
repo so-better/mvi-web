@@ -77,7 +77,7 @@
 					style.zIndex = this.zIndex;
 				}
 				if(this.color){
-					style.backgroundColor = this.color;
+					style.background = this.color;
 				}
 				return style;
 			}
