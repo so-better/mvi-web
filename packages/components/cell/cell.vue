@@ -2,7 +2,7 @@
 	<div v-on="listeners" :class="cellClass">
 		<div class="mvi-cell-item">
 			<m-icon :class="'mvi-cell-icon'+(iconClass?' '+iconClass:'')" v-if="iconType||iconUrl" :type="iconType" :url="iconUrl"
-			 :spin="iconSpin" />
+			 :spin="iconSpin"  :size="iconSize"/>
 			<div :class="'mvi-cell-title'+(noWrap?' mvi-cell-nowrap':'')">
 				<slot name="title" v-if="$slots.title"></slot>
 				<span v-else v-text="title" :class="(titleClass?' '+titleClass:'')"></span>
@@ -12,7 +12,7 @@
 				<span v-else-if="content" v-text="content" :class="(contentClass?' '+contentClass:'')"></span>
 			</div>
 			<m-icon :class="'mvi-cell-arrow'+(arrowClass?' '+arrowClass:'')"
-			 v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl" :spin="arrowSpin" />
+			 v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl" :spin="arrowSpin" :size="arrowSize" />
 		</div>
 		<div :class="'mvi-cell-label'+(labelClass?' '+labelClass:'')" v-if="label || $slots.label" :style="labelTextStyle">
 			<slot name="label" v-if="$slots.label"></slot>
@@ -116,6 +116,15 @@
 				}
 				return spin;
 			},
+			iconSize() {
+				var size = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.size) == "string") {
+						size = this.icon.size;
+					}
+				}
+				return size;
+			},
 			arrowType() {
 				var t = null;
 				if ($util.isObject(this.arrow)) {
@@ -144,6 +153,15 @@
 					}
 				}
 				return spin;
+			},
+			arrowSize() {
+				var size = null;
+				if ($util.isObject(this.arrow)) {
+					if (typeof(this.arrow.size) == "string") {
+						size = this.arrow.size;
+					}
+				}
+				return size;
 			},
 			computedActive() {
 				if (typeof(this.active) == "boolean") {

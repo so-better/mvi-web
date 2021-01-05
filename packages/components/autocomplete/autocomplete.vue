@@ -2,7 +2,7 @@
 	<div :data-id="'mvi-autocomplete-'+_uid" :class="autocompleteClass" :disabled="disabled">
 		<div :class="targetClass" :style="targetStyle" :data-id="'mvi-autocomplete-target-'+_uid" ref="target">
 			<div @click="leftClick" v-if="leftIconType ||　leftIconUrl" class="mvi-autocomplete-left-icon">
-				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin"/>
+				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize"/>
 			</div>
 			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" :style="inputStyle" :name="name"
 			@focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off"/>
@@ -10,7 +10,7 @@
 				<m-icon type="times-o" />
 			</div>
 			<div class="mvi-autocomplete-right-icon" v-if="rightIconType ||　rightIconUrl" @click="rightClick">
-				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin"/>
+				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize"/>
 			</div>
 		</div>
 		<transition name="mvi-autocomplete">
@@ -172,6 +172,15 @@
 				}
 				return spin;
 			},
+			leftIconSize() {
+				var size = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.size) == "string") {
+						size = this.leftIcon.size;
+					}
+				}
+				return size;
+			},
 			rightIconType() {
 				var t = null;
 				if ($util.isObject(this.rightIcon)) {
@@ -200,6 +209,15 @@
 					}
 				}
 				return spin;
+			},
+			rightIconSize() {
+				var size = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.size) == "string") {
+						size = this.rightIcon.size;
+					}
+				}
+				return size;
 			},
 			showClearIcon(){
 				if(this.value &&　this.focus){

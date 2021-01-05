@@ -6,7 +6,7 @@
 		<div @click="leftClick" class="mvi-input-left-icon" v-if="$slots.left || leftIconUrl || leftIconType">
 			<slot name="left" v-if="$slots.left"></slot>
 			<m-icon v-else-if="leftIconUrl || leftIconType" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin"
-			 :class="leftIconClass?leftIconClass:''" />
+			 :class="leftIconClass?leftIconClass:''" :size="leftIconSize" />
 		</div>
 		<!-- 左侧文本 -->
 		<div :class="'mvi-input-label'+(labelClass?' '+labelClass:'')" v-if="label" :style="labelStyle" v-text="label"></div>
@@ -26,7 +26,7 @@
 		<div @click="rightClick" class="mvi-input-right-icon" v-if="$slots.right || (rightIconUrl || rightIconType)">
 			<slot name="right" v-if="$slots.right"></slot>
 			<m-icon v-else-if="rightIconUrl || rightIconType" ref="rightIcon" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin"
-			 :class="rightIconClass?rightIconClass:''" />
+			 :class="rightIconClass?rightIconClass:''"  :size="rightIconSize" />
 		</div>
 		<!-- 显示文字长度限制 -->
 		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{inputValue.length}}/{{maxlength}}</div>
@@ -228,6 +228,15 @@
 				}
 				return spin;
 			},
+			leftIconSize(){
+				var size = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.size) == "string") {
+						size = this.leftIcon.size;
+					}
+				}
+				return size;
+			},
 			rightIconType() {
 				var t = null;
 				if ($util.isObject(this.rightIcon)) {
@@ -256,6 +265,15 @@
 					}
 				}
 				return spin;
+			},
+			rightIconSize(){
+				var size = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.size) == "string") {
+						size = this.rightIcon.size;
+					}
+				}
+				return size;
 			},
 			//输入框的type值
 			inputType() {

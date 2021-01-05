@@ -7,7 +7,7 @@
 				<!-- 弹出层 -->
 				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" :style="wrapperStyle">
 					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)" :style="'color:'+(timesColor?timesColor:'')">
-						<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" />
+						<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" />
 					</div>
 					<div ref="header" :class="titleCls" 
 					v-if="$slots.title || title" :style="headerStyle" >
@@ -176,6 +176,15 @@
 					}
 				}
 				return spin;
+			},
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.timesIcon)) {
+					if (typeof(this.timesIcon.size) == "string") {
+						size = this.timesIcon.size;
+					}
+				}
+				return size;
 			},
 			modalStyle(){
 				var style = {};

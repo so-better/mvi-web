@@ -5,11 +5,11 @@
 			@click="doSelect(item,index)" :style="dropdownItemStyle(item,index)">
 				<div class="mvi-dropdown-item-label">
 					<m-icon v-if="item.icon" :type="iconType(item.icon)" :url="iconUrl(item.icon)" 
-					:spin="iconSpin(item.icon)" class="mvi-dropdown-icon" />
+					:spin="iconSpin(item.icon)" class="mvi-dropdown-icon" :size="iconSize(item.icon)"/>
 					<span class="mvi-dropdown-label-text" v-text="(item.label?item.label:'')"></span>
 				</div>
 				<div v-if="equalValue(item,index)" class="mvi-dropdown-item-checked" :data-placement="placement">
-					<m-icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" />
+					<m-icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" :size="selectIconSize"/>
 				</div>
 			</div>
 		</div>
@@ -147,6 +147,15 @@
 				}
 				return spin;
 			},
+			selectIconSize() {
+				var size = null;
+				if ($util.isObject(this.selectIcon)) {
+					if (typeof(this.selectIcon.size) == "string") {
+						size = this.selectIcon.size;
+					}
+				}
+				return size;
+			},
 			iconType(){
 				return (icon)=>{
 					var t = null;
@@ -180,6 +189,17 @@
 						}
 					}
 					return spin;
+				}
+			},
+			iconSize(){
+				return (icon)=>{
+					var size = null;
+					if ($util.isObject(icon)) {
+						if (typeof(icon.size) == "string") {
+							size = icon.size;
+						}
+					}
+					return size;
 				}
 			},
 			//判断是否选中项

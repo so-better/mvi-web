@@ -82,6 +82,15 @@
 				}
 				return spin;
 			},
+			activeIconSize(){
+				var size = null;
+				if ($util.isObject(this.activeIcon)) {
+					if (typeof(this.activeIcon.size) == "string") {
+						size = this.activeIcon.size;
+					}
+				}
+				return size;
+			},
 			inactiveIconType() {
 				var t = null;
 				if ($util.isObject(this.inactiveIcon)) {
@@ -110,6 +119,15 @@
 					}
 				}
 				return spin;
+			},
+			inactiveIconSize(){
+				var size = null;
+				if ($util.isObject(this.inactiveIcon)) {
+					if (typeof(this.inactiveIcon.size) == "string") {
+						size = this.inactiveIcon.size;
+					}
+				}
+				return size;
 			}
 		}
 	}

@@ -5,11 +5,11 @@
 		</div>
 		<div class="mvi-step-vertical-container">
 			<div class="mvi-step-vertical-icon">
-				<m-icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin"
+				<m-icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin" :size="steps.activeIconSize"
 				:style="activeIconStyle"/>
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
 				<m-icon :class="'mvi-step-icon-inactive-el'+(stepIndex<=steps.active?' mvi-step-icon-inactive-finish':'')" v-else-if="steps.inactiveIcon " :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin"
-				:style="inactiveIconStyle"/>
+				:style="inactiveIconStyle" :size="steps.inactiveIconSize"/>
 				<div :class="'mvi-step-circle'+(stepIndex<=steps.active?' mvi-step-circle-finish':'')" v-else :style="circleStyle"></div>
 			</div>
 			<div :class="'mvi-step-vertical-line'+(stepIndex == steps.children.length-1?' mvi-step-line-last':'')+(stepIndex<steps.active?' mvi-step-line-finish':'')"
@@ -24,11 +24,11 @@
 		<div class="mvi-step-container">
 			<div :class="'mvi-step-icon'+(stepIndex==steps.children.length-1?' mvi-step-icon-last':'')"
 			:style="'background-color:'+(steps.background?steps.background:'')">
-				<m-icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin"
+				<m-icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin" :size="steps.activeIconSize"
 				:style="activeIconStyle"/>
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
 				<m-icon :class="'mvi-step-icon-inactive-el'+(stepIndex<=steps.active?' mvi-step-icon-inactive-finish':'')" v-else-if="steps.inactiveIcon " :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin"
-				:style="inactiveIconStyle"/>
+				:style="inactiveIconStyle" :size="steps.inactiveIconSize"/>
 				<div :class="'mvi-step-circle'+(stepIndex<=steps.active?' mvi-step-circle-finish':'')" v-else :style="circleStyle"></div>
 			</div>
 			<div :class="'mvi-step-line'+(stepIndex == steps.children.length-1?' mvi-step-line-last':'')+(stepIndex<steps.active?' mvi-step-line-finish':'')"

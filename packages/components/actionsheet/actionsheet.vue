@@ -10,11 +10,11 @@
 					<m-loading :color="loadingColor" v-if="(item.loading?item.loading:false)"></m-loading>
 					<div class="mvi-acionsheet-content" v-else-if="item.label||item.sub || iconType(item.icon) || iconUrl(item.icon)">
 						<m-icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'"
-						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" />
+						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)"/>
 						<span v-if="item.label" v-text="item.label"></span>
 						<span v-if="item.sub" class="mvi-acionsheet-item-sub" v-text="item.sub"></span>
 						<m-icon data-placement="right" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement=='right'"
-						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" />
+						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)"/>
 					</div>
 				</div>
 			</div>
@@ -166,6 +166,17 @@
 						}
 					}
 					return spin;
+				}
+			},
+			iconSize() {
+				return (icon) => {
+					var size = null;
+					if ($util.isObject(icon)) {
+						if (typeof(icon.size) == "string") {
+							size = icon.size;
+						}
+					}
+					return size;
 				}
 			},
 			itemClass() {

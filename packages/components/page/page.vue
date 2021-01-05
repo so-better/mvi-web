@@ -2,12 +2,12 @@
 	<div class="mvi-page" v-on="listeners">
 		<div v-if="firstText || firstIconType || firstIconUrl" :disabled="page==1" @click="pageFirst" :class="'mvi-page-first'+((active&&page!=1)?' mvi-page-active':'')"
 		:style="'color:'+(page==1?'':(color?color:''))">
-			<m-icon :class="'mvi-page-icon'+(firstText?' mvi-page-margin-right':'')" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" />
+			<m-icon :class="'mvi-page-icon'+(firstText?' mvi-page-margin-right':'')" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" />
 			<span v-if="firstText" v-text="firstText"></span>
 		</div>
 		<div v-if="prevText || prevIconType || prevIconUrl" :disabled="page==1" @click="pagePrev" :class="'mvi-page-prev'+((active&&page!=1)?' mvi-page-active':'')"
 		:style="'color:'+(page==1?'':(color?color:''))">
-			<m-icon :class="'mvi-page-icon'+(prevText?' mvi-page-margin-right':'')" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl"
+			<m-icon :class="'mvi-page-icon'+(prevText?' mvi-page-margin-right':'')" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize"
 			:spin="prevIconSpin" />
 			<span v-if="prevText" v-text="prevText"></span>
 		</div>
@@ -33,13 +33,13 @@
 		<div v-if="nextText || nextIconType || nextIconUrl" :disabled="page==total" @click="pageNext" :class="'mvi-page-next'+((active&&page!=total)?' mvi-page-active':'')"
 		:style="'color:'+(page==total?'':(color?color:''))">
 			<span v-if="nextText" v-text="nextText"></span>
-			<m-icon :class="'mvi-page-icon'+(nextText?' mvi-page-margin-left':'')" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl"
+			<m-icon :class="'mvi-page-icon'+(nextText?' mvi-page-margin-left':'')" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize"
 			:spin="nextIconSpin" />
 		</div>
 		<div v-if="lastText || lastIconType || lastIconUrl" :disabled="page==total" @click="pageLast" :class="'mvi-page-last'+((active&&page!=total)?' mvi-page-active':'')"
 		:style="'color:'+(page==total?'':(color?color:''))">
 			<span v-if="lastText" v-text="lastText"></span>
-			<m-icon :class="'mvi-page-icon'+(lastText?' mvi-page-margin-left':'')" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl"
+			<m-icon :class="'mvi-page-icon'+(lastText?' mvi-page-margin-left':'')" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize"
 			:spin="lastIconSpin" />
 		</div>
 	</div>
@@ -191,6 +191,15 @@
 				}
 				return spin;
 			},
+			firstIconSize(){
+				var size = null;
+				if ($util.isObject(this.firstIcon)) {
+					if (typeof(this.firstIcon.size) == "string") {
+						size = this.firstIcon.size;
+					}
+				}
+				return size;
+			},
 			lastIconType() {
 				var t = null;
 				if ($util.isObject(this.lastIcon)) {
@@ -219,6 +228,15 @@
 					}
 				}
 				return spin;
+			},
+			lastIconSize(){
+				var size = null;
+				if ($util.isObject(this.lastIcon)) {
+					if (typeof(this.lastIcon.size) == "string") {
+						size = this.lastIcon.size;
+					}
+				}
+				return size;
 			},
 			prevIconType() {
 				var t = null;
@@ -249,6 +267,15 @@
 				}
 				return spin;
 			},
+			prevIconSize(){
+				var size = null;
+				if ($util.isObject(this.prevIcon)) {
+					if (typeof(this.prevIcon.size) == "string") {
+						size = this.prevIcon.size;
+					}
+				}
+				return size;
+			},
 			nextIconType() {
 				var t = null;
 				if ($util.isObject(this.nextIcon)) {
@@ -278,6 +305,15 @@
 				}
 				return spin;
 			},
+			nextIconSize(){
+				var size = null;
+				if ($util.isObject(this.nextIcon)) {
+					if (typeof(this.nextIcon.size) == "string") {
+						size = this.nextIcon.size;
+					}
+				}
+				return size;
+			}
 		},
 		mounted() {
 			this.el = this.$el;

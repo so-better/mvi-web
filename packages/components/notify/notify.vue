@@ -3,7 +3,7 @@
 		<div v-show="show" :class="'mvi-notify mvi-notify-'+computedType" :style="notifyStyle"
 		v-on="listeners">
 			<div class="mvi-notify-content">
-				<m-icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" />
+				<m-icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" />
 				<span v-text="computedMessage"></span>
 			</div>
 		</div>
@@ -118,6 +118,16 @@
 					}
 				}
 				return spin;
+			},
+			//图标大小
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.size) == "string") {
+						size = this.icon.size;
+					}
+				}
+				return size;
 			},
 			//通知样式
 			notifyStyle(){

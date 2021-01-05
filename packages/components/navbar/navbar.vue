@@ -3,7 +3,7 @@
 		<div @click="leftClick" :class="'mvi-navbar-left'+(leftClass?' '+leftClass:'')" :style="leftStyle" v-if="leftIconType||leftIconUrl||$slots.left||leftText">
 			<slot name="left" v-if="$slots.left"></slot>
 			<m-icon :class="(leftText?'mvi-navbar-left-icon':'')" v-if="(leftIconType||leftIconUrl) && !$slots.left" :type="leftIconType"
-			:url="leftIconUrl" :spin="leftIconSpin" />
+			:url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" />
 			<span class="mvi-navbar-left-text" v-if="leftText && !$slots.left" v-text="leftText"></span>
 		</div>
 		<div @click="titleClick" class="mvi-navbar-center" v-if="$slots.title||title">
@@ -17,7 +17,7 @@
 			<slot name="right" v-if="$slots.right"></slot>
 			<span class="mvi-navbar-right-text" v-if="rightText && !$slots.right" v-text="rightText"></span>
 			<m-icon :class="(rightText?'mvi-navbar-right-icon':'')" v-if="(rightIconType||rightIconSpin) && !$slots.right"
-			:type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" />
+			:type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" />
 		</div>
 	</div>
 </template>
@@ -127,6 +127,15 @@
 				}
 				return spin;
 			},
+			leftIconSize(){
+				var size = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.size) == "string") {
+						size = this.leftIcon.size;
+					}
+				}
+				return size;
+			},
 			rightIconType() {
 				var t = null;
 				if ($util.isObject(this.rightIcon)) {
@@ -155,6 +164,15 @@
 					}
 				}
 				return spin;
+			},
+			rightIconSize(){
+				var size = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.size) == "string") {
+						size = this.rightIcon.size;
+					}
+				}
+				return size;
 			},
 			navbarClass(){
 				var cls = 'mvi-navbar';

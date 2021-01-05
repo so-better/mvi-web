@@ -2,12 +2,12 @@
 	<div :class="fieldClass" :disabled="disabled">
 		<div class="mvi-field-prepend" v-if="prependType || prependUrl || $slots.prepend" :style="prependStyle" @click="prependClick">
 			<slot v-if="$slots.prepend" name="prepend"></slot>
-			<m-icon v-else-if="prependType || prependUrl" :type="prependType" :url="prependUrl" :spin="prependSpin" />
+			<m-icon v-else-if="prependType || prependUrl" :type="prependType" :url="prependUrl" :spin="prependSpin" :size="prependSize" />
 		</div>
 		<div :class="fieldBodyClass" :style="fieldBodyStyle">
 			<div class="mvi-field-prefix" v-if="prefixType || prefixUrl || $slots.prefix" @click="prefixClick">
 				<slot v-if="$slots.prefix" name="prefix"></slot>
-				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" />
+				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" :size="prefixSize" />
 			</div>
 			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
 			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus">
@@ -16,12 +16,12 @@
 			</div>
 			<div class="mvi-field-suffix" v-if="suffixType || suffixUrl || $slots.suffix" @click="suffixClick">
 				<slot v-if="$slots.suffix" name="suffix"></slot>
-				<m-icon v-else-if="suffixType || suffixUrl" :type="suffixType" :url="suffixUrl" :spin="suffixSpin" />
+				<m-icon v-else-if="suffixType || suffixUrl" :type="suffixType" :url="suffixUrl" :spin="suffixSpin" :size="suffixSize" />
 			</div>
 		</div>
 		<div class="mvi-field-append" v-if="appendType || appendUrl || $slots.append" :style="appendStyle" @click="appendClick">
 			<slot v-if="$slots.append" name="append"></slot>
-			<m-icon v-else-if="appendType || appendUrl" :type="appendType" :url="appendUrl" :spin="appendSpin" />
+			<m-icon v-else-if="appendType || appendUrl" :type="appendType" :url="appendUrl" :spin="appendSpin" :size="appendSize" />
 		</div>
 	</div>
 </template>
@@ -343,6 +343,16 @@
 				}
 				return spin;
 			},
+			//前置图标大小
+			prependSize() {
+				var size = null;
+				if ($util.isObject(this.prepend)) {
+					if (typeof(this.prepend.size) == "string") {
+						size = this.prepend.size;
+					}
+				}
+				return size;
+			},
 			//后置图标类型
 			appendType() {
 				var t = null;
@@ -374,6 +384,16 @@
 					}
 				}
 				return spin;
+			},
+			//后置图标大小
+			appendSize(){
+				var size = null;
+				if ($util.isObject(this.append)) {
+					if (typeof(this.append.size) == "string") {
+						size = this.append.size;
+					}
+				}
+				return size;
 			},
 			//前缀图标类型
 			prefixType() {
@@ -407,6 +427,16 @@
 				}
 				return spin;
 			},
+			//前缀图标大小
+			prefixSize() {
+				var size = null;
+				if ($util.isObject(this.prefix)) {
+					if (typeof(this.prefix.size) == "string") {
+						size = this.prefix.size;
+					}
+				}
+				return size;
+			},
 			//后缀图标类型
 			suffixType() {
 				var t = null;
@@ -438,6 +468,16 @@
 					}
 				}
 				return spin;
+			},
+			//后缀图标大小
+			suffixSize() {
+				var size = null;
+				if ($util.isObject(this.suffix)) {
+					if (typeof(this.suffix.size) == "string") {
+						size = this.suffix.size;
+					}
+				}
+				return size;
 			},
 		},
 		methods:{

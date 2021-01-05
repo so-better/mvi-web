@@ -2,7 +2,7 @@
 	<div v-on="listeners" :disabled="disabled" :class="computedClass" :style="computedStyle" @click="setActive">
 		<div class="mvi-tabbar-item-child">
 			<span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="'margin-bottom:'+(name?'':'0px')">
-				<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin"/>
+				<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize"/>
 			</span>
 			<span :class="'mvi-tabbar-name'+((iconType || iconUrl)?' mvi-tabbar-name-small':'')" v-text="name"></span>
 		</div>
@@ -64,6 +64,15 @@
 					}
 				}
 				return spin;
+			},
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.size) == "string") {
+						size = this.icon.size;
+					}
+				}
+				return size;
 			},
 			computedClass(){
 				var cls = "mvi-tabbar-item";

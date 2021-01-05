@@ -7,7 +7,7 @@
 			<div v-if="firstShow" v-show="popupShow" :class="popupClass"  :style="popupStyle" v-on="listeners">
 				<!-- 关闭图标 -->
 				<div v-if="showTimes" :class="'mvi-popup-times mvi-popup-times-'+timesPlacement" :style="'opacity:'+(iconUrl?'':'.5')">
-					<m-icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" />
+					<m-icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" />
 				</div>
 				<!-- 正文内容 -->
 				<div :class="'mvi-popup-content'+(showTimes?' mvi-popup-content-padding':'')">
@@ -132,6 +132,15 @@
 					}
 				}
 				return spin;
+			},
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.timesIcon)) {
+					if (typeof(this.timesIcon.size) == "string") {
+						size = this.timesIcon.size;
+					}
+				}
+				return size;
 			},
 			//弹出层类
 			popupClass(){

@@ -3,7 +3,7 @@
 	 @mousedown="startPull2">
 		<div v-show="elShow" ref="refresh" class="mvi-pull-refresh-el" :style="elStyle">
 			<slot name="el" v-if="$scopedSlots.el" :status="status"></slot>
-			<m-icon v-if="!$scopedSlots.el" :type="icon.type" :spin="icon.spin" />
+			<m-icon v-if="!$scopedSlots.el" :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" />
 			<span v-if="!$scopedSlots.el" class="mvi-pull-refresh-text" v-text="message"></span>
 		</div>
 		<slot></slot>
@@ -120,19 +120,22 @@
 					return {
 						type: this.pullingIconType,
 						spin: this.pullingIconSpin,
-						url: this.pullingIconUrl
+						url: this.pullingIconUrl,
+						size:this.pullingIconSize
 					}
 				} else if (this.status == 1) {
 					return {
 						type: this.loosingIconType,
 						spin: this.loosingIconSpin,
-						url: this.loosingIconUrl
+						url: this.loosingIconUrl,
+						size:this.loosingIconSize
 					}
 				} else if (this.status == 2) {
 					return {
 						type: this.loadingIconType,
 						spin: this.loadingIconSpin,
-						url: this.loadingIconUrl
+						url: this.loadingIconUrl,
+						size:this.loadingIconSize
 					}
 				}
 			},
@@ -174,6 +177,15 @@
 				}
 				return spin;
 			},
+			pullingIconSize(){
+				var size = null;
+				if ($util.isObject(this.pullingIcon)) {
+					if (typeof(this.pullingIcon.size) == "string") {
+						size = this.pullingIcon.size;
+					}
+				}
+				return size;
+			},
 			loosingIconType() {
 				var t = null;
 				if ($util.isObject(this.loosingIcon)) {
@@ -202,6 +214,15 @@
 					}
 				}
 				return spin;
+			},
+			loosingIconSize(){
+				var size = null;
+				if ($util.isObject(this.loosingIcon)) {
+					if (typeof(this.loosingIcon.size) == "string") {
+						size = this.loosingIcon.size;
+					}
+				}
+				return size;
 			},
 			loadingIconType() {
 				var t = null;
@@ -232,6 +253,15 @@
 				}
 				return spin;
 			},
+			loadingIconSize(){
+				var size = null;
+				if ($util.isObject(this.loadingIcon)) {
+					if (typeof(this.loadingIcon.size) == "string") {
+						size = this.loadingIcon.size;
+					}
+				}
+				return size;
+			}
 		},
 		mounted() {
 			this.statusInit();

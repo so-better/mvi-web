@@ -4,7 +4,7 @@
 		<div :class="'mvi-search-input-container'+(round?' mvi-search-input-round':'')" :style="'backgroundColor:'+
 		(background?background:'')+';color:'+(color?color:'')">
 			<div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
-				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :class="(leftIconClass?leftIconClass:'')"/>
+				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :class="(leftIconClass?leftIconClass:'')"/>
 			</div>
 			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off"
 			:placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode"
@@ -13,7 +13,7 @@
 				<m-icon type="times-o"/>
 			</div>
 			<div v-if="rightIconType || rightIconUrl" class="mvi-search-right-icon" @click="rightClick">
-				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :class="(rightIconClass?rightIconClass:'')" />
+				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :class="(rightIconClass?rightIconClass:'')" />
 			</div>
 		</div>
 		<div v-if="showCancel" v-text="cancelText" :class="'mvi-search-cancel'+(cancelClass?' '+cancelClass:'')" @click="doCancel"></div>
@@ -173,6 +173,15 @@
 				}
 				return spin;
 			},
+			leftIconSize(){
+				var size = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.size) == "string") {
+						size = this.leftIcon.size;
+					}
+				}
+				return size;
+			},
 			rightIconType() {
 				var t = null;
 				if ($util.isObject(this.rightIcon)) {
@@ -201,6 +210,15 @@
 					}
 				}
 				return spin;
+			},
+			rightIconSize(){
+				var size = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.size) == "string") {
+						size = this.rightIcon.size;
+					}
+				}
+				return size;
 			},
 			computedValue:{
 				set(value){

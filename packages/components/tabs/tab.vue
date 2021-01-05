@@ -95,6 +95,15 @@
 				}
 				return spin;
 			},
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.size) == "string") {
+						size = this.icon.size;
+					}
+				}
+				return size;
+			},
 			//tab在tabs中的序列值
 			tabIndex() {
 				var index = 0;

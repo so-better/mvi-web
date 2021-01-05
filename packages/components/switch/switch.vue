@@ -2,7 +2,7 @@
 	<label :class="'mvi-switch'+(checked?' mvi-switch-checked':'')" :style="switchStyle" v-on="listeners"
 	 :disabled="disabled">
 		<span :class="'mvi-switch-el'+(checked?' mvi-switch-el-checked':'')" :style="elStyle">
-			<m-icon v-if="loading" :type="iconType" :spin="iconSpin" :url="iconUrl" :style="loadStyle"/>
+			<m-icon v-if="loading" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :style="loadStyle"/>
 		</span>
 		<input @change="change" type="checkbox" :checked="checked" :disabled="disabled || loading"/>
 	</label>
@@ -48,10 +48,6 @@
 			iconColor: {
 				type: String,
 				default: null
-			},
-			iconSize: {
-				type: String,
-				default: null
 			}
 		},
 		methods: {
@@ -95,6 +91,15 @@
 				}
 				return spin;
 			},
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.size) == "string") {
+						size = this.icon.size;
+					}
+				}
+				return size;
+			},
 			switchStyle() {
 				var style = {};
 				if (this.inactiveColor && !this.checked) {
@@ -124,9 +129,6 @@
 				var style = {};
 				if (this.iconColor) {
 					style.color = this.iconColor;
-				}
-				if (this.iconSize) {
-					style.fontSize = this.iconSize;
 				}
 				return style;
 			}
