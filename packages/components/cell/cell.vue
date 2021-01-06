@@ -253,14 +253,18 @@
 	}
 
 	.mvi-cell-title {
-		display: block;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
 		width: 100%;
 		font-size: @font-size-default;
 		word-wrap:break-word;
 	}
 
 	.mvi-cell-content {
-		display: block;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
 		position: relative;
 		width: 100%;
 		text-align: right;
