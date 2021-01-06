@@ -53,10 +53,12 @@
 	@import "../../css/mvi-icon.less";
 	
 	.mvi-icon {
-		display:inline-block;
+		display:inline-flex;
 		font-family: "mvi-icon" !important;
 		font-style: normal;
 		vertical-align: middle;
+		justify-content: center;
+		align-items: center;
 		font-size: inherit;
 		line-height: 1;
 	}
