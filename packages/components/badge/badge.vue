@@ -8,11 +8,6 @@
 	import $util from "../../util/util.js"
 	export default {
 		name: "m-badge",
-		data() {
-			return {
-				ele: null
-			}
-		},
 		props: {
 			background: {
 				type: String,

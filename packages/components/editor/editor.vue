@@ -570,6 +570,11 @@ export default {
 			default: function() {
 				return false;
 			}
+		},
+		//激活颜色设定
+		activeColor:{
+			type:String,
+			default:null
 		}
 	},
 	computed: {

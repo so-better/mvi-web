@@ -278,12 +278,16 @@ const util = {
 		//滑动到底部时是否触发回调函数的标识，解决ios系统下多次触发回调的bug
 		var flag = true;
 		scrollEle.addEventListener('scroll', function(e) {
-			if (_this.getScrollTop(scrollEle) == 0) { //滑动到顶部
+			if (_this.getScrollTop(scrollEle) <= 0) { //滑动到顶部
 				var options = {
 					state: "top",
 					target: scrollEle
 				}
+				if(!flag){
+					return;
+				}
 				if (typeof(callback) == "function") {
+					flag = false;
 					callback(options);
 				}
 

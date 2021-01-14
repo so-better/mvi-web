@@ -224,6 +224,7 @@
 		padding: 0;
 		line-height: 1;
 		color:transparent;
+		transition: color 100ms;
 	}
 	
 	.mvi-radio-icon.mvi-radio-icon-check{
@@ -238,6 +239,7 @@
 		vertical-align: middle;
 		font-size: @font-size-default;
 		color: @font-color-default;
+		user-select: none;
 		
 		&[data-placement='left']{
 			margin-right: @mp-xs;
@@ -245,9 +247,10 @@
 		&[data-placement='right']{
 			margin-left: @mp-xs;
 		}
+		&[disabled]{
+			color: @font-color-mute;
+		}
 	}
 	
-	.mvi-radio-label[disabled]{
-		color: @font-color-mute;
-	}
+	
 </style>

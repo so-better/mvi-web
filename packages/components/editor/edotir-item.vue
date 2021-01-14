@@ -3,13 +3,12 @@
 		<m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
 		 :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout"
 		 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor">
-			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
-			 :data-id="`mvi-editor-target-${_uid}-${value}`">
+			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"  :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
 				<m-icon :type="editor.defaultMenuIcons[this.value]" />
 			</div>
 		</m-tooltip>
-		<div v-else :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled"
-		 :data-id="`mvi-editor-target-${_uid}-${value}`">
+		<div v-else :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
+		 :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
 			<m-icon :type="editor.defaultMenuIcons[this.value]" />
 		</div>
 		<transition name="mvi-editor-layer" v-if="hasSelect">
@@ -18,32 +17,32 @@
 			 :root="`[data-id='mvi-editor-root-${_uid}-${value}']`">
 				<!-- 插入图片或者视频 -->
 				<div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
-					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
+					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" :active-color="(editor.activeColor?editor.activeColor:'#0b73de')" inactive-color="#808080">
 						<m-tab v-for="(item,index) in menu" :key="'mvi-editor-media-tab-'+index" :title="item.label">
 							<div ref="upload" class="mvi-editor-upload" v-if="item.value == 'upload'">
 								<m-icon type='upload-square' />
 							</div>
 							<div v-if="item.value == 'remote'" class="mvi-editor-remote">
-								<input class="mvi-editor-remote-input" v-model.trim="remoteUrl" :placeholder="value=='image'?'图片链接':'视频链接'"
+								<input class="mvi-editor-remote-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="remoteUrl" :placeholder="value=='image'?'图片链接':'视频链接'"
 								 type="text" />
-								<div class="mvi-editor-remote-insert" @click="insertRemote">插入</div>
+								<div class="mvi-editor-remote-insert" :style="activeColorStyle" @click="insertRemote">插入</div>
 							</div>
 						</m-tab>
 					</m-tabs>
 				</div>
 				<!-- 插入链接 -->
 				<div v-else-if="value == 'link'" class="mvi-editor-links">
-					<m-tabs flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
+					<m-tabs flex="flex-start" offset="0.4rem" :active-color="(editor.activeColor?editor.activeColor:'#0b73de')" inactive-color="#808080">
 						<m-tab :title="menu[0].label">
 							<div v-if="menu[0].value == 'link'" class="mvi-editor-link">
-								<input ref="linkText" class="mvi-editor-link-input" v-model.trim="linkText" placeholder="链接文字" type="text" />
-								<input ref="linkUrl" class="mvi-editor-link-input" v-model.trim="linkUrl" placeholder="链接地址" type="text">
+								<input ref="linkText" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkText" placeholder="链接文字" type="text" />
+								<input ref="linkUrl" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkUrl" placeholder="链接地址" type="text">
 								<div class="mvi-editor-link-footer">
 									<m-checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" label-color="#808080"
-									 fill-color="#0b73de" :checked.sync="linkTarget"></m-checkbox>
+									 :fill-color="(editor.activeColor?editor.activeColor:'#0b73de')" :checked.sync="linkTarget"></m-checkbox>
 									<div class="mvi-editor-link-operation">
 										<span class="mvi-editor-link-delete" v-if="menuActive" @click="deleteLink">删除链接</span>
-										<span class="mvi-editor-link-insert" @click="insertLink">插入</span>
+										<span class="mvi-editor-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
 									</div>
 								</div>
 							</div>
@@ -60,22 +59,22 @@
 				</div>
 				<!-- 插入表格 -->
 				<div v-else-if="value == 'table'" class="mvi-editor-tables">
-					<m-tabs flex="flex-start" offset="0.4rem" active-color="#0b73de" inactive-color="#808080">
+					<m-tabs flex="flex-start" offset="0.4rem" :active-color="(editor.activeColor?editor.activeColor:'#0b73de')" inactive-color="#808080">
 						<m-tab :title="menuActive?'编辑表格':menu[0].label">
 							<div v-if="menu[0].value == 'table'" class="mvi-editor-table">
 								<div class="mvi-editor-table-edit" v-if="menuActive">
-									<span @click="addTableRow" class="mvi-editor-table-add">增加行</span>
+									<span @click="addTableRow" class="mvi-editor-table-add" :style="activeColorStyle">增加行</span>
 									<span @click="removeTableRow" class="mvi-editor-table-delete">删除行</span>
-									<span @click="addTableColumn" class="mvi-editor-table-add">增加列</span>
+									<span @click="addTableColumn" class="mvi-editor-table-add" :style="activeColorStyle">增加列</span>
 									<span @click="removeTableColumn" class="mvi-editor-table-delete">删除列</span>
 								</div>
 								<div class="mvi-editor-table-create" v-else>
-									创建<input ref="rowsInput" class="mvi-editor-table-input" v-model.trim.number="tableRows" />
-									行<input ref="columnsInput" class="mvi-editor-table-input" v-model.trim.number="tableColumns" />列的表格
+									创建<input ref="rowsInput" class="mvi-editor-table-input" @focus="inputFocus" @blur="inputBlur" v-model.trim.number="tableRows" />
+									行<input ref="columnsInput" class="mvi-editor-table-input" @focus="inputFocus" @blur="inputBlur" v-model.trim.number="tableColumns" />列的表格
 								</div>
 								<div class="mvi-editor-table-footer">
 									<span class="mvi-editor-table-delete" v-if="menuActive" @click="deleteTable">删除表格</span>
-									<span class="mvi-editor-table-insert" v-else @click="insertTable">插入</span>
+									<span class="mvi-editor-table-insert" :style="activeColorStyle" v-else @click="insertTable">插入</span>
 								</div>
 							</div>
 						</m-tab>
@@ -135,6 +134,22 @@
 		},
 		inject: ['editor'],
 		computed: {
+			//激活颜色设置
+			activeColorStyle(){
+				var style = {}
+				if(this.editor.activeColor){
+					style.color = this.editor.activeColor;
+				}
+				return style;
+			},
+			//菜单项样式
+			editorTargetStyle(){
+				var style = {}
+				if(this.editor.activeColor && this.menuActive){
+					style.color = this.editor.activeColor;
+				}
+				return style
+			},
 			//是否为下拉
 			hasSelect() {
 				return Array.isArray(this.menu)
@@ -212,6 +227,18 @@
 			}
 		},
 		methods: {
+			//输入框获取焦点
+			inputFocus(event){
+				if(this.editor.activeColor){
+					event.currentTarget.style.borderColor = this.editor.activeColor;
+				}
+			},
+			//输入框失去焦点
+			inputBlur(event){
+				if(this.editor.activeColor){
+					event.currentTarget.style.borderColor = '';
+				}
+			},
 			//菜单项下拉选择
 			doSelect(item) {
 				if (this.editor.disabled) {
@@ -753,19 +780,11 @@
 
 			&[disabled] {
 				opacity: .6;
-			}
-
-			&[disabled]:hover {
-				cursor: not-allowed;
 				color: @font-color-sub;
 			}
 
 			&.mvi-editor-active {
 				color: @primary-normal;
-
-				&:hover {
-					color: @primary-normal;
-				}
 			}
 		}
 

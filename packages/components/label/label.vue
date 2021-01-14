@@ -61,6 +61,10 @@
 			closable:{//是否可关闭
 				type:Boolean,
 				default:false
+			},
+			reverse:{//标记样式时是否反向
+				type:Boolean,
+				default:false
 			}
 		},
 		computed:{
@@ -83,6 +87,9 @@
 				}
 				if(this.mark){
 					cls += ' mvi-label-mark';
+					if(this.reverse){
+						cls += ' mvi-label-reverse';
+					}
 				}
 				return cls;
 			},
@@ -122,7 +129,6 @@
 		align-items: center;
 		border-radius: @radius-default;
 		border: 1px solid transparent;
-		border-radius: @radius-default;
 		margin: 0;
 	}
 	.mvi-label-medium{
@@ -174,9 +180,10 @@
 	}
 	
 	.mvi-label-mark{
-		border-radius: @radius-round;
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
+		border-radius: 0 @radius-round @radius-round 0;
+	}
+	.mvi-label-mark.mvi-label-reverse{
+		border-radius: @radius-round 0 0 @radius-round;
 	}
 	
 	.mvi-label-plain{

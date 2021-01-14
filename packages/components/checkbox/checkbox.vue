@@ -129,14 +129,13 @@
 				var style = {};
 				if(this.disabled){
 					style.color = '';
-					style.fontSize = '';
 				}else {
 					if(this.labelColor){
 						style.color = this.labelColor;
 					}
-					if(this.labelSize){
-						style.fontSize = this.labelSize;
-					}
+				}
+				if(this.labelSize){
+					style.fontSize = this.labelSize;
 				}
 				return style;
 			},
@@ -250,6 +249,7 @@
 		padding: 0;
 		line-height: 1;
 		color:transparent;
+		transition: color 100ms;
 	}
 	
 	.mvi-checkbox-icon.mvi-checkbox-icon-check{
@@ -264,15 +264,16 @@
 		vertical-align: middle;
 		font-size: @font-size-default;
 		color: @font-color-default;
-	}
-	.mvi-checkbox-label[data-placement='left']{
-		margin-right: @mp-sm;
-	}
-	.mvi-checkbox-label[data-placement='right']{
-		margin-left: @mp-sm;
-	}
-	
-	.mvi-checkbox-label[disabled]{
-		color: @font-color-mute;
+		user-select: none;
+		
+		&[data-placement='left']{
+			margin-right: @mp-sm;
+		}
+		&[data-placement='right']{
+			margin-left: @mp-sm;
+		}
+		&[disabled]{
+			color: @font-color-mute;
+		}
 	}
 </style>

@@ -2,7 +2,7 @@
 	<Button :disabled="disabled" :class="buttonClass" :style="btnStyle">
 		<slot name="load" v-if="loading && $slots.load"></slot>
 		<span v-else-if="loading">
-			<m-icon type="load-e" spin class="mvi-button-load-icon"/>
+			<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" class="mvi-button-load-icon"/>
 			{{loadText}}
 		</span>
 		<slot v-else></slot>
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+	import $util from "../../util/util"
 	export default {
 		name:"m-button",
 		props:{
@@ -61,7 +62,7 @@
 			},
 			subColor:{
 				type:String,
-				default:'#fff'
+				default:null
 			},
 			round:{//圆形按钮
 				type:Boolean,
@@ -74,9 +75,51 @@
 			active:{//是否显示点击态
 				type:Boolean,
 				default:true
+			},
+			loadIcon:{
+				type:[String,Object],
+				default:null
 			}
 		},
 		computed:{
+			iconType(){
+				var type = 'load-e';
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.type) == "string") {
+						type = this.loadIcon.type;
+					}
+				} else if (typeof(this.loadIcon) == "string") {
+					type = this.loadIcon;
+				}
+				return type;
+			},
+			iconUrl(){
+				var url = null;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.url) == "string") {
+						url = this.loadIcon.url;
+					}
+				}
+				return url;
+			},
+			iconSpin(){
+				var spin = true;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.spin) == "boolean") {
+						spin = this.loadIcon.spin;
+					}
+				}
+				return spin;
+			},
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.size) == "string") {
+						size = this.loadIcon.size;
+					}
+				}
+				return size;
+			},
 			btnStyle(){
 				var obj = {};
 				//单色
@@ -171,15 +214,11 @@
 
 	// 按钮情景样式
 	.mvi-button.mvi-button-default{
-		background: #6c757d;
-		border-color: #6c757d;
-		color: #fff;
-	}
-	.mvi-button.mvi-button-default.mvi-button-plain{
 		background: #fff;
 		border-color: @border-color;
 		color: @font-color-default;
 	}
+	
 	.mvi-button.mvi-button-warn{
 		background: @warn-normal;
 		border-color: @warn-normal;
@@ -190,6 +229,7 @@
 		background: #fff;
 		color: @warn-normal;
 	}
+	
 	.mvi-button.mvi-button-error{
 		background: @error-normal;
 		color: #fff;
@@ -200,6 +240,7 @@
 		background: #fff;
 		color: @error-normal;
 	}
+	
 	.mvi-button.mvi-button-success{
 		background: @success-normal;
 		border-color: @success-normal;
@@ -210,6 +251,7 @@
 		background: #fff;
 		color: @success-normal;
 	}
+	
 	.mvi-button.mvi-button-info{
 		background: @info-normal;
 		color: #fff;
@@ -220,6 +262,7 @@
 		color: @info-normal;
 		background: #fff;
 	}
+	
 	.mvi-button.mvi-button-primary{
 		background: @primary-normal;
 		color: #fff;
@@ -259,15 +302,17 @@
 	}
 	
 	//按钮圆角
-	.mvi-button-radius-round{
+	.mvi-button.mvi-button-radius-round{
 		border-radius: @radius-round;
 	}
+	
 	//方形按钮
-	.mvi-button-radius-square{
+	.mvi-button.mvi-button-radius-square{
 		border-radius: 0;
 	}
+	
 	//点击态
-	.mvi-button-active:active::before{
+	.mvi-button.mvi-button-active:active::before{
 		.mvi-active();
 	}
 	
@@ -278,15 +323,14 @@
 	}
 	
 	//独占一行的按钮
-	.mvi-button-form-control{
+	.mvi-button.mvi-button-form-control{
 		display: flex;
 		display: -webkit-flex;
 		width: 100%;
-		margin: @mp-sm 0;
 	}
 	
 	//加载状态
-	.mvi-button-loading{
+	.mvi-button.mvi-button-loading{
 		pointer-events: none;
 		touch-action: none;
 		opacity: .8;

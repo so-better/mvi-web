@@ -2,7 +2,7 @@
 	<label :class="'mvi-switch'+(checked?' mvi-switch-checked':'')" :style="switchStyle" v-on="listeners"
 	 :disabled="disabled">
 		<span :class="'mvi-switch-el'+(checked?' mvi-switch-el-checked':'')" :style="elStyle">
-			<m-icon v-if="loading" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :style="loadStyle"/>
+			<m-icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :style="loadStyle"/>
 		</span>
 		<input @change="change" type="checkbox" :checked="checked" :disabled="disabled || loading"/>
 	</label>
@@ -164,7 +164,7 @@
 	}
 
 	.mvi-switch[disabled] {
-		opacity: .5;
+		opacity: .6;
 	}
 
 	.mvi-switch.mvi-switch-checked {

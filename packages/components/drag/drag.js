@@ -75,6 +75,7 @@ class Drag {
 			touchX = e.targetTouches[0].pageX - $util.getElementPoint(this.$el, this.$container).left;
 			touchY = e.targetTouches[0].pageY - $util.getElementPoint(this.$el, this.$container).top;
 			this.draggable = true;
+			this.$el.style.cursor = 'move'
 			//监听事件，监听刚开始拖动触发
 			this.beforedrag({
 				target: this.$el,
@@ -111,6 +112,7 @@ class Drag {
 		this.$el.addEventListener('touchend',(e)=>{
 			if (this.draggable) {
 				this.draggable = false;
+				this.$el.style.cursor = ''
 				//监听事件
 				this.dragged({
 					target: this.$el,
@@ -128,6 +130,7 @@ class Drag {
 			mouseX = e.pageX - $util.getElementPoint(this.$el, this.$container).left;
 			mouseY = e.pageY - $util.getElementPoint(this.$el, this.$container).top;
 			this.draggable = true;
+			this.$el.style.cursor = 'move'
 			//监听事件，监听刚开始拖动触发
 			this.beforedrag({
 				target: this.$el,
@@ -161,6 +164,7 @@ class Drag {
 		document.body.addEventListener('mouseup',(e)=>{
 			if (this.draggable) {
 				this.draggable = false;
+				this.$el.style.cursor = ''
 				//监听事件
 				this.dragged({
 					target: this.$el,
