@@ -1,9 +1,9 @@
 <template>
-	<transition :name="animation" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave"
+	<transition :name="(animation?animation:'mvi-layer')" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave"
 	@before-leave="beforeLeave" @after-leave="afterLeave">
 		<div v-if="firstShow" v-show="layerShow" v-on="listeners" :class="'mvi-layer'+(fixed?' mvi-layer-fixed':'')" :style="layerStyle">
-			<div :class="wrapperCls">
-				<m-triangle v-if="showTriangle" ref="triangle" class="mvi-layer-triangle" :placement="trianglePlacement" :background="triangleBackground" :border-color="triangleBorder" :size="triangleSize"></m-triangle>
+			<div :class="wrapperCls" :style="wrapperStyle">
+				<m-triangle v-if="showTriangle" ref="triangle" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="(border&&borderColor?borderColor:background)" size="0.14rem"></m-triangle>
 				<slot></slot>
 			</div>
 		</div>
@@ -91,20 +91,37 @@
 				type:Boolean,
 				default:false
 			},
-			//三角配置
-			triangle:{
-				type:Object,
-				default:function(){
-					return {}
-				}
-			},
 			//自定义动画
 			animation:{
 				type:String,
-				default:'mvi-layer'
+				default:null
+			},
+			//是否显示阴影
+			shadow:{
+				type:Boolean,
+				default:true
+			},
+			//是否显示边框
+			border:{
+				type:Boolean,
+				default:false
+			},
+			//边框颜色
+			borderColor:{
+				type:String,
+				default:'#eee'
+			},
+			//背景色
+			background:{
+				type:String,
+				default:'#fff'
 			}
 		},
 		watch:{
+			placement(newValue){
+				this.reset();
+				this.resetTriangle()
+			},
 			show(newValue){
 				if(newValue){
 					if(!this.firstShow){
@@ -117,33 +134,6 @@
 		computed: {
 			listeners(){
 				return Object.assign({},this.$listeners);
-			},
-			triangleBackground(){
-				var background = "#fff";
-				if($util.isObject(this.triangle)){
-					if(typeof this.triangle.background == 'string'){
-						background = this.triangle.background;
-					}
-				}
-				return background;
-			},
-			triangleBorder(){
-				var color = 'rgba(0, 0, 0, 0.01)';
-				if($util.isObject(this.triangle)){
-					if(typeof this.triangle.borderColor == 'string'){
-						color = this.triangle.borderColor;
-					}
-				}
-				return color;
-			},
-			triangleSize(){
-				var size = '0.14rem';
-				if($util.isObject(this.triangle)){
-					if(typeof this.triangle.size == 'string'){
-						size = this.triangle.size;
-					}
-				}
-				return size;
 			},
 			trianglePlacement(){
 				if(this.placement == 'bottom-start' || this.placement == 'bottom' || this.placement == 'bottom-end'){
@@ -158,10 +148,26 @@
 			},
 			wrapperCls(){
 				var cls = 'mvi-layer-wrapper';
+				if(this.shadow){
+					cls += ' mvi-layer-shadow';
+				}
+				if(this.border){
+					cls += ' mvi-layer-border';
+				}
 				if(this.wrapperClass){
 					cls += ' '+this.wrapperClass;
 				}
 				return cls;
+			},
+			wrapperStyle(){
+				var style = {}
+				if(this.border && this.borderColor){
+					style.borderColor = this.borderColor;
+				}
+				if(this.background){
+					style.background = this.background;
+				}
+				return style;
 			},
 			layerStyle(){
 				var style = {};
@@ -172,8 +178,8 @@
 					style.width = this.width;
 				}
 				if(this.timeout){
-					style.transition = this.timeout + 'ms';
-					style.webkitTransition = this.timeout + 'ms';
+					style.transition = 'transform ' + this.timeout + 'ms,opacity ' + this.timeout + 'ms';
+					style.webkitTransition = 'transform ' + this.timeout + 'ms,opacity ' + this.timeout + 'ms';
 				}
 				if(!this.showTriangle){
 					if(this.placement == 'bottom-start' || this.placement == 'bottom' || this.placement == 'bottom-end'){
@@ -448,10 +454,17 @@
 			display: block;
 			position: relative;
 			width: 100%;
-			background-color: #fff;
 			color: @font-color-default;
-			border-radius: @radius-default;
-			box-shadow: @boxshadow-light;
+			border-radius: @radius-default;	
+			
+			&.mvi-layer-shadow{
+				box-shadow: 0 0.04rem 0.24rem 0 rgba(0,0,0,.1);
+				-webkit-box-shadow: 0 0.04rem 0.24rem 0 rgba(0,0,0,.1);
+			}
+			
+			&.mvi-layer-border{
+				border: 1px solid #eee;
+			}
 			
 			.mvi-layer-triangle{
 				position: absolute;

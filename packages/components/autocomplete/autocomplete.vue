@@ -4,8 +4,8 @@
 			<div @click="leftClick" v-if="leftIconType ||　leftIconUrl" class="mvi-autocomplete-left-icon">
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize"/>
 			</div>
-			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" :style="inputStyle" :name="name"
-			@focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off"/>
+			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" 
+			:style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off"/>
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<m-icon type="times-o" />
 			</div>
@@ -13,14 +13,14 @@
 				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize"/>
 			</div>
 		</div>
-		<transition name="mvi-autocomplete">
-			<m-layer v-show="focus && computedFilter.length!=0" :target="`[data-id='mvi-autocomplete-target-${_uid}']`" :root="`[data-id='mvi-autocomplete-${_uid}']`" 
-			:placement="placement" :offset="offset" :fixed="fixed" class="mvi-autocomplete-menu" :z-index="zIndex" ref="layer"
-			:style="layerStyle">
-				<div class="mvi-autocomplete-list" v-for="(item,index) in computedFilter" :key="'mvi-autocomplete-list-'+index" v-text="item"
-				@click="doSelect(item)" @mouseenter="listEnter" @mouseleave="listLeave"></div>
-			</m-layer>
-		</transition>
+		<m-layer :show="show" :target="`[data-id='mvi-autocomplete-target-${_uid}']`" 
+		:root="`[data-id='mvi-autocomplete-${_uid}']`" :placement="placement" :offset="offset" :fixed="fixed" :z-index="zIndex" 
+		ref="layer" :wrapper-class="wrapperClass" :animation="animation" shadow :border="false" :timeout="timeout" :closable="false" :show-triangle="false">
+			<div class="mvi-autocomplete-menu" :style="menuStyle">
+				<div class="mvi-autocomplete-list" v-for="(item,index) in computedFilter" :key="'mvi-autocomplete-list-'+index" 
+				v-text="item" @click="doSelect(item)" @mouseenter="listEnter" @mouseleave="listLeave"></div>
+			</div>
+		</m-layer>
 	</div>
 </template>
 
@@ -32,6 +32,7 @@
 			return {
 				focus:false,
 				target:null
+				//focus && computedFilter.length!=0
 			}
 		},
 		model:{
@@ -107,6 +108,18 @@
 				type:String,
 				default:'0.1rem'
 			},
+			wrapperClass:{//layer的额外样式
+				type:String,
+				default:null
+			},
+			animation:{//layer显示与隐藏动画
+				type:String,
+				default:null
+			},
+			timeout:{//layer动画时间
+				type:Number,
+				default:200
+			},
 			name:{//原生name
 				type:String,
 				default:null
@@ -142,6 +155,9 @@
 		computed:{
 			listeners(){
 				return Object.assign({},this.$listeners)
+			},
+			show(){
+				return this.focus && this.computedFilter.length != 0
 			},
 			leftIconType() {
 				var t = null;
@@ -233,7 +249,7 @@
 				}
 				return style
 			},
-			layerStyle(){
+			menuStyle(){
 				var style = {};
 				if(this.height){
 					style.maxHeight = this.height;
@@ -295,7 +311,6 @@
 		},
 		mounted() {
 			this.target = this.$refs.target;
-			window.addEventListener('click',this.hideForWindow);
 		},
 		methods:{
 			rightClick(e){
@@ -326,7 +341,9 @@
 				}
 				this.focus = true;
 				this.$nextTick(()=>{
-					this.$refs.layer.reset();
+					setTimeout(()=>{
+						this.$refs.layer.reset();
+					},10)
 				})
 				this.$emit('model-change',event.currentTarget.value);
 				this.$emit('update:value',event.currentTarget.value)
@@ -334,7 +351,7 @@
 			inputBlur(){
 				setTimeout(()=>{
 					this.focus = false;
-				},300)
+				},200)
 			},
 			inputFocus(){
 				if(this.disabled){
@@ -342,10 +359,7 @@
 				}
 				setTimeout(()=>{
 					this.focus = true;
-				},300)
-				this.$nextTick(()=>{
-					this.$refs.layer.reset();
-				})
+				},200)
 			},
 			doClear(){
 				if(this.disabled){
@@ -355,12 +369,6 @@
 				this.$emit('update:value','')
 				event.currentTarget.value = '';
 				this.$refs.input.focus();
-			},
-			hideForWindow(event){
-				if($util.isContains(this.$el,event.target)){
-					return;
-				}
-				this.focus = false;
 			},
 			doSelect(item){
 				this.$emit('model-change',item);
@@ -379,9 +387,6 @@
 				}
 				return arr;
 			}
-		},
-		beforeDestroy(){
-			window.removeEventListener('click',this.hideForWindow);
 		}
 	}
 </script>
@@ -550,28 +555,11 @@
 			border-color: @error-normal;
 		}
 	}
-	
-	.mvi-autocomplete-enter-active,.mvi-autocomplete-leave-active{
-		transition: transform 200ms,opacity 200ms;
-		-webkit-transition: transform 200ms,opacity 200ms;
-		-moz-transition: transform 200ms,opacity 200ms;
-		-ms-transition: transform 200ms,opacity 200ms;
-	}
-	
-	.mvi-autocomplete-enter,.mvi-autocomplete-leave-to{
-		transform: translateY(0.4rem);
-		opacity: 0;
-	}
-	
+
 	//悬浮层
 	.mvi-autocomplete-menu{
 		display: block;
-		background-color: inherit;
-		color: inherit;
 		padding: @mp-xs 0;
-		border-radius: @radius-default;
-		border: 1px solid rgba(0,0,0,.1);
-		box-shadow: 0 0.04rem 0.24rem 0 rgba(0,0,0,.1);
 		overflow: auto;
 		overflow-x: hidden;
 		

@@ -66,7 +66,7 @@
 			},
 			timeout:{//动画时长
 				type:Number,
-				default:500,
+				default:200,
 			},
 			closable:{//点击背景是否可关闭
 				type:Boolean,

@@ -2,7 +2,8 @@
 	<div class="mvi-eitor-item" :data-id="`mvi-editor-root-${_uid}-${value}`">
 		<m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
 		 :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout"
-		 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor">
+		 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor"
+		 :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :wrapper-class="editor.defaultTooltipProps.wrapperClass" :animation="editor.defaultTooltipProps.animation">
 			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"  :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
 				<m-icon :type="editor.defaultMenuIcons[this.value]" />
 			</div>
@@ -11,10 +12,16 @@
 		 :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
 			<m-icon :type="editor.defaultMenuIcons[this.value]" />
 		</div>
-		<transition name="mvi-editor-layer" v-if="hasSelect">
-			<m-layer v-if="layerFirstShow" v-show="layerShow" ref="layer" class="mvi-editor-layer" :placement="editor.defaultLayerProps.placement"
-			 :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" offset="0rem" :target="`[data-id='mvi-editor-target-${_uid}-${value}']`"
-			 :root="`[data-id='mvi-editor-root-${_uid}-${value}']`">
+		<m-layer v-model="layerShow" ref="layer" :placement="editor.defaultLayerProps.placement"
+		 :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" 
+		 :offset="editor.defaultLayerProps.offset" :wrapper-class="editor.defaultLayerProps.wrapperClass"
+		 :timeout="editor.defaultLayerProps.timeout" :show-triangle="editor.defaultLayerProps.showTriangle"
+		 :animation="editor.defaultLayerProps.animation" :shadow="editor.defaultLayerProps.shadow" 
+		 :border="editor.defaultLayerProps.border" :border-color="editor.defaultLayerProps.borderColor"
+		 :background="editor.defaultLayerProps.background" :closable="(editor.trigger=='click'?true:false)" 
+		 :target="`[data-id='mvi-editor-target-${_uid}-${value}']`"
+		 :root="`[data-id='mvi-editor-root-${_uid}-${value}']`">
+			<div class="mvi-editor-layer">
 				<!-- 插入图片或者视频 -->
 				<div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
 					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" :active-color="(editor.activeColor?editor.activeColor:'#0b73de')" inactive-color="#808080">
@@ -53,7 +60,8 @@
 				<div class="mvi-editor-colors" v-else-if="value == 'foreColor' || value == 'backColor'">
 					<m-tooltip :disabled="!(item.label && editor.useTooltip)" trigger="hover" :title="item.label" v-for="(item,index) in menu"
 					 :key="'mvi-editor-color-'+index" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout"
-					 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor">
+					 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor"
+					 :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :wrapper-class="editor.defaultTooltipProps.wrapperClass" :animation="editor.defaultTooltipProps.animation">
 						<span @click="doSelect(item)" class="mvi-editor-color" :style="{backgroundColor:item.value}"></span>
 					</m-tooltip>
 				</div>
@@ -87,8 +95,8 @@
 						<span v-text="item.label"></span>
 					</div>
 				</div>
-			</m-layer>
-		</transition>
+			</div>
+		</m-layer>
 		<!-- table模板 -->
 		<table v-if="value == 'table'" style="display: none;" ref="table" class="mvi-editor-table-demo" cellpadding="0"
 		 cellspacing="0" mvi-editor-insert-table>
@@ -121,7 +129,6 @@
 		data() {
 			return {
 				layerShow: false, //layer开关
-				layerFirstShow: false, //layer是否第一次打开
 				tabIndex: 0, //媒体layer浮层默认显示的tab序列
 				remoteUrl: '', //插入的网络图片或者视频地址
 				linkUrl: '', //插入的链接
@@ -222,8 +229,6 @@
 			if (this.editor.trigger == 'hover') {
 				this.$el.addEventListener('mouseenter', this.showLayer);
 				this.$el.addEventListener('mouseleave', this.hideLayer);
-			} else if (this.editor.trigger == 'click') {
-				window.addEventListener('click', this.hideLayerForWindow);
 			}
 		},
 		methods: {
@@ -295,12 +300,8 @@
 					return;
 				}
 				if (this.hasSelect) {
-					if (!this.layerFirstShow) {
-						this.layerFirstShow = true;
-					}
 					this.layerShow = true;
 					this.$nextTick(() => {
-						this.$refs.layer.reset()
 						if (this.editor.range) {
 							if (this.value == 'link') {
 								this.linkInsertSet();
@@ -422,13 +423,6 @@
 							})
 					}
 				}
-			},
-			//点击窗口隐藏浮窗
-			hideLayerForWindow(event) {
-				if ($util.isContains(this.$el, event.target)) {
-					return;
-				}
-				this.hideLayer();
 			},
 			//插入远程图片或者视频
 			insertRemote() {
@@ -746,8 +740,6 @@
 			if (this.editor.trigger == 'hover') {
 				this.$el.removeEventListener('mouseenter', this.showLayer);
 				this.$el.removeEventListener('mouseleave', this.hideLayer);
-			} else if (this.editor.trigger == 'click') {
-				window.removeEventListener('click', this.hideLayerForWindow);
 			}
 		}
 	}
@@ -790,9 +782,6 @@
 
 		.mvi-editor-layer {
 			display: block;
-			background-color: #fff;
-			box-shadow: @boxshadow-basic;
-			-webkit-box-shadow: @boxshadow-basic;
 
 			&>div {
 				display: block;
@@ -1066,17 +1055,5 @@
 				}
 			}
 		}
-	}
-
-	.mvi-editor-layer-enter-active {
-		transition: transform 100ms, opacity 100ms;
-		-webkit-transition: transform 100ms, opacity 100ms;
-		-moz-transition: transform 100ms, opacity 100ms;
-		-ms-transition: transform 100ms, opacity 100ms;
-	}
-
-	.mvi-editor-layer-enter {
-		transform: translateY(0.2rem);
-		opacity: 0;
 	}
 </style>

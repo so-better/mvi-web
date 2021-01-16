@@ -3,15 +3,12 @@
 		<m-cell class="mvi-collapse-cell" :icon="icon" :content="label" :title="title" :border="cellBorder" :arrow="arrow" 
 		:title-class="titleClass" :content-class="labelClass" :icon-class="iconClass" @click="changeCollapse" :active="computedActive" 
 		 :disabled="disabled || collapse.disabled" :no-wrap="computedNoWrap" :arrow-class="computedArrowClass"></m-cell>
-		<transition :name="(computedSlide?'mvi-collapse':'')" @before-enter="beforeEnter" @after-enter="afterEnter" @before-leave="beforeLeave"
-		@afterLeave="afterLeave">
-			<div ref="wrapper" v-show="open" class="mvi-collapse-item-wrapper">
-				<div :class="'mvi-collapse-item-content'+(contentClass?' '+contentClass:'')">
-					<slot v-if="$slots.default"></slot>
-					<span v-else v-text="content"></span>
-				</div>
+		<m-transition-slide :expand="open" :timeout="computedTimeout" @slide-up="slideUp" @before-slide-down="beforeSlideDown">
+			<div :class="'mvi-collapse-item-content'+(contentClass?' '+contentClass:'')">
+				<slot v-if="$slots.default"></slot>
+				<span v-else v-text="content"></span>
 			</div>
-		</transition>
+		</m-transition-slide>
 	</div>
 </template>
 
@@ -25,7 +22,6 @@
 		data() {
 			return {
 				open:true,
-				needAnimation:true,
 				cellBorder:false
 			}
 		},
@@ -94,10 +90,6 @@
 				type:String,
 				default:null
 			},
-			slide:{//折叠或展开是否使用动画
-				type:Boolean,
-				default: null
-			},
 			timeout:{//折叠或者展开的动画时长,单位ms
 				type:Number,
 				default: null
@@ -106,13 +98,10 @@
 		inject: ['collapse'],
 		mounted() {
 			this.cellBorder = this.computedInBorder;
-			this.setSelfHeight();
-			this.needAnimation = false;
 			this.isNeedHideSelf();
 		},
 		watch:{
 			'collapse.openIndex':function(newValue,oldValue){
-				this.needAnimation = true;
 				this.isNeedHideSelf();
 			}
 		},
@@ -189,58 +178,26 @@
 					return this.collapse.active;
 				}
 			},
-			//是否使用动画
-			computedSlide(){
-				if (typeof(this.slide) == "boolean") {
-					return this.slide;
-				} else {
-					return this.collapse.slide;
-				}
-			},
-			//定义动画的时长
-			computedTimeout(){
-				if (typeof(this.timeout) == "boolean") {
+			//折叠面板显示隐藏动画时长
+			computedTimeout() {
+				if (typeof(this.timeout) == "number") {
 					return this.timeout;
 				} else {
 					return this.collapse.timeout;
 				}
-			}
+			},
 		},
 		methods: {
-			//折叠面板打开之前
-			beforeEnter(el){
-				if(this.needAnimation && this.computedSlide){
-					el.style.transition = 'height ' + this.computedTimeout + 'ms';
-					el.style.webkitTransition = 'height ' + this.computedTimeout + 'ms';
-				}
-				this.cellBorder = this.computedInBorder;
-			},
-			//折叠面板打开后
-			afterEnter(el){
-				if(this.needAnimation && this.computedSlide){
-					el.style.transition = '';
-					el.style.webkitTransition = '';
+			//面板展开前触发
+			beforeSlideDown(){
+				if(this.computedInBorder){
+					this.cellBorder = true;
 				}
 			},
-			//折叠面板关闭前
-			beforeLeave(el){
-				if(this.needAnimation && this.computedSlide){
-					el.style.transition = 'height ' + this.computedTimeout + 'ms';
-					el.style.webkitTransition = 'height ' + this.computedTimeout + 'ms';
-				}
-			},
-			//折叠面板关闭后
-			afterLeave(el){
-				if(this.needAnimation && this.computedSlide){
-					el.style.transition = '';
-					el.style.webkitTransition = '';
-				}
-				this.cellBorder = false;
-			},
-			//初始化时设置自身高度
-			setSelfHeight(){
-				if(this.$refs.wrapper && this.computedSlide){
-					this.$refs.wrapper.style.height = this.$refs.wrapper.offsetHeight + 'px';
+			//面板收起后触发
+			slideUp(){
+				if(this.computedInBorder){
+					this.cellBorder = false;
 				}
 			},
 			//判断是否需要隐藏此折叠面板
@@ -346,12 +303,6 @@
 		background-color: inherit;
 		color: inherit;
 		cursor: pointer;
-	}
-	
-	.mvi-collapse-item-wrapper {
-		display: block;
-		width: 100%;
-		overflow: hidden;
 	}
 
 	.mvi-collapse-item-content {

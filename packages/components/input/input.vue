@@ -200,15 +200,15 @@
 				return Object.assign({}, this.$listeners)
 			},
 			leftIconType() {
-				var t = null;
+				var type = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.type) == "string") {
-						t = this.leftIcon.type;
+						type = this.leftIcon.type;
 					}
 				} else if (typeof(this.leftIcon) == "string") {
-					t = this.leftIcon;
+					type = this.leftIcon;
 				}
-				return t;
+				return type;
 			},
 			leftIconUrl() {
 				var url = null;
@@ -238,15 +238,15 @@
 				return size;
 			},
 			rightIconType() {
-				var t = null;
+				var type = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.type) == "string") {
-						t = this.rightIcon.type;
+						type = this.rightIcon.type;
 					}
 				} else if (typeof(this.rightIcon) == "string") {
-					t = this.rightIcon;
+					type = this.rightIcon;
 				}
-				return t;
+				return type;
 			},
 			rightIconUrl() {
 				var url = null;

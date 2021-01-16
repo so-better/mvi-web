@@ -56,11 +56,20 @@ export default {
 			html: '', //html内容
 			text: '', //text内容
 			isModelChange:false,//是否双向绑定改变值
+			//默认菜单浮层配置
 			defaultLayerProps: {
-				//默认菜单浮层配置
 				fixed: false, //是否fixed
 				placement: 'bottom-start', //位置
-				zIndex: 400 //浮层z-index
+				zIndex: 400 ,//浮层z-index
+				offset:'0.1rem',
+				wrapperClass:null,
+				timeout:200,
+				showTriangle:false,
+				animation:null,
+				shadow:true,
+				border:true,
+				borderColor:'#eee',
+				background:'#fff'
 			},
 			defaultMenus: {
 				//默认菜单配置
@@ -378,7 +387,13 @@ export default {
 				timeout: 400,
 				color: '#333',
 				textColor: '#fff',
-				borderColor: '#333'
+				borderColor: '#333',
+				offset:'0.1rem',
+				zIndex:100,
+				fixed:false,
+				width:null,
+				wrapperClass:null,
+				animation:null
 			},
 			defaultUploadImageProps: {
 				//默认上传图片配置
@@ -412,7 +427,7 @@ export default {
 				undo: 'undo',
 				redo: 'redo',
 				removeFormat: 'clear',
-				selectAll: 'check',
+				selectAll: 'check-square',
 				divider: 'divider',
 				tag: 'font-title',
 				bold: 'bold',

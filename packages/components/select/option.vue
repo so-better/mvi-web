@@ -1,6 +1,9 @@
 <template>
 	<div v-on="listeners" :class="'mvi-option mvi-option-'+this.select.size" @click="optionClick" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
-		<slot></slot>
+		<div class="mvi-option-value">
+			<slot></slot>
+		</div>
+		<m-icon v-if="isSelect" :type="iconType" :spin="iconSpin" :size="iconSize" :url="iconUrl" />
 	</div>
 </template>
 
@@ -28,6 +31,51 @@
 					}
 				})
 				return html;
+			},
+			isSelect(){
+				if(this.select.multiple && this.select.showSelectIcon && this.select.value.includes(this.value)){
+					return true;
+				}else {
+					return false;
+				}
+			},
+			iconType(){
+				var type = null;
+				if ($util.isObject(this.select.selectedIcon)) {
+					if (typeof(this.select.selectedIcon.type) == "string") {
+						type = this.select.selectedIcon.type;
+					}
+				} else if (typeof(this.select.selectedIcon) == "string") {
+					type = this.select.selectedIcon;
+				}
+				return type;
+			},
+			iconSize(){
+				var size = null;
+				if ($util.isObject(this.select.selectedIcon)) {
+					if (typeof(this.select.selectedIcon.size) == "string") {
+						size = this.select.selectedIcon.size;
+					}
+				}
+				return size;
+			},
+			iconUrl(){
+				var url = null;
+				if ($util.isObject(this.select.selectedIcon)) {
+					if (typeof(this.select.selectedIcon.url) == "string") {
+						url = this.select.selectedIcon.url;
+					}
+				}
+				return url;
+			},
+			iconSpin(){
+				var spin = false;
+				if ($util.isObject(this.select.selectedIcon)) {
+					if (typeof(this.select.selectedIcon.spin) == "boolean") {
+						spin = this.select.selectedIcon.spin;
+					}
+				}
+				return spin;
 			}
 		},
 		inject:['select'],
@@ -80,7 +128,7 @@
 	.mvi-option{
 		display: flex;
 		display: -webkit-flex;
-		justify-content: flex-start;
+		justify-content: space-between;
 		align-items: center;
 		
 		&.mvi-option-small{
@@ -102,5 +150,12 @@
 	.mvi-option:hover{
 		cursor: pointer;
 		background-color: @bg-color-default;
+	}
+	
+	.mvi-option-value{
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
 	}
 </style>

@@ -14,14 +14,13 @@ const util = {
 	 * 判断两个参数是否相等
 	 */
 	equal(a, b) {
-		var _this = this;
 		if (!a || !b) {
 			return false;
 		}
 		if (typeof(a) !== typeof(b)) {
 			return false;
 		}
-		if (_this.isObject(a) && _this.isObject(b)) {
+		if (this.isObject(a) && this.isObject(b)) {
 			var aProps = Object.getOwnPropertyNames(a);
 			var bProps = Object.getOwnPropertyNames(b);
 			if (aProps.length != bProps.length) {
@@ -32,7 +31,7 @@ const util = {
 				var propName = aProps[i];
 				var propA = a[propName];
 				var propB = b[propName];
-				if (_this.isObject(propA)) {
+				if (this.isObject(propA)) {
 					if (this.equal(propA, propB)) {
 						return true;
 					} else {
@@ -52,8 +51,7 @@ const util = {
 	 * 判断是否空对象
 	 */
 	isEmptyObject(obj) {
-		var _this = this;
-		if (_this.isObject(obj)) {
+		if (this.isObject(obj)) {
 			if (Object.keys(obj).length == 0) {
 				return true;
 			} else {
@@ -204,7 +202,6 @@ const util = {
 	 * 判断字符串属于哪种选择器
 	 */
 	getCssSelector(selectorName) {
-		var _this = this;
 		var type = 0;
 		var value = "";
 		//id选择器，以#开头的字符串
@@ -228,7 +225,7 @@ const util = {
 		//属性选择器，以[]包裹的字符串
 		if (/^\[(.+)\]$/.test(selectorName)) {
 			type = "attribute";
-			var attribute = _this.trim(selectorName, true).substring(1, _this.trim(selectorName, true).length - 1);
+			var attribute = this.trim(selectorName, true).substring(1, this.trim(selectorName, true).length - 1);
 			var arry = attribute.split("=");
 			if (arry.length == 1) {
 				value = arry[0];
@@ -267,9 +264,8 @@ const util = {
 	 * 监听元素滚动条滚动到顶部和滚动到底部
 	 */
 	scrollTopBottomTrigger(element, callback) {
-		var _this = this;
 		var scrollEle = window;
-		if (_this.isElement(element) && element != document.body && element != document.documentElement) {
+		if (this.isElement(element) && element != document.body && element != document.documentElement) {
 			scrollEle = element;
 		}
 		if (typeof(element) == "function") {
@@ -277,13 +273,13 @@ const util = {
 		}
 		//滑动到底部时是否触发回调函数的标识，解决ios系统下多次触发回调的bug
 		var flag = true;
-		scrollEle.addEventListener('scroll', function(e) {
-			if (_this.getScrollTop(scrollEle) <= 0) { //滑动到顶部
+		scrollEle.addEventListener('scroll', e => {
+			if (this.getScrollTop(scrollEle) <= 0) { //滑动到顶部
 				var options = {
 					state: "top",
 					target: scrollEle
 				}
-				if(!flag){
+				if (!flag) {
 					return;
 				}
 				if (typeof(callback) == "function") {
@@ -300,11 +296,11 @@ const util = {
 				if (scrollEle == window) {
 					height = window.innerHeight;
 				} else {
-					var borderTop = parseFloat(_this.getCssStyle(scrollEle, 'border-top-width'))
-					var borderBottom = parseFloat(_this.getCssStyle(scrollEle, 'border-bottom-width'))
+					var borderTop = parseFloat(this.getCssStyle(scrollEle, 'border-top-width'))
+					var borderBottom = parseFloat(this.getCssStyle(scrollEle, 'border-bottom-width'))
 					height = scrollEle.offsetHeight - borderTop - borderBottom;
 				}
-				if ((_this.getScrollTop(scrollEle) + height >= _this.getScrollHeight(scrollEle)) && (height != _this.getScrollHeight(
+				if ((this.getScrollTop(scrollEle) + height >= this.getScrollHeight(scrollEle)) && (height != this.getScrollHeight(
 						scrollEle))) {
 					if (!flag) {
 						return;
@@ -375,14 +371,13 @@ const util = {
 	 * root:祖先元素,未指定则为document.body
 	 */
 	getElementPoint(element, root) {
-		var _this = this;
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		if (!_this.isElement(root)) {
+		if (!this.isElement(root)) {
 			root = document.body;
 		} else {
-			var position = _this.getCssStyle(root, "position");
+			var position = this.getCssStyle(root, "position");
 			var flag = false;
 			if (position === "static") {
 				root.style.position = "relative";
@@ -390,7 +385,7 @@ const util = {
 			}
 		}
 
-		if (!_this.isContains(root, element)) {
+		if (!this.isContains(root, element)) {
 			throw new Error('root与element无层级关系');
 		}
 
@@ -398,7 +393,7 @@ const util = {
 		var offsetTop = 0;
 		var offsetLeft = 0;
 		//判断是否有定位父容器，如果存在则累加其边距
-		while (_this.isElement(element) && _this.isContains(root, element) && root !== element) {
+		while (this.isElement(element) && this.isContains(root, element) && root !== element) {
 			offsetTop += element.offsetTop; //叠加父容器的上边距
 			offsetLeft += element.offsetLeft; //叠加父容器的左边距
 			element = element.offsetParent;
@@ -432,10 +427,9 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	getScrollTop(element) {
-		var _this = this;
 		var scrollTop = 0;
 		//如果是元素节点
-		if (_this.isElement(element) && element != document.body && element != document.documentElement && element != window) {
+		if (this.isElement(element) && element != document.body && element != document.documentElement && element != window) {
 			scrollTop = element.scrollTop;
 		} else {
 			if (document.documentElement.scrollTop == 0 || document.body.scrollTop == 0) {
@@ -453,7 +447,6 @@ const util = {
 	 * options:el(滚动条所在元素,未指定则为document.documentElement),number(距离值),time(动画时间间隔)
 	 */
 	setScrollTop(options) {
-		var _this = this;
 		var isWindow = false;
 		var element = options.el;
 		if (typeof(element) == 'string' && element) {
@@ -461,11 +454,11 @@ const util = {
 		}
 		var number = options.number || 0;
 		var time = options.time || 0;
-		if (!_this.isElement(element) || element == document.body || element == document.documentElement || element ==
+		if (!this.isElement(element) || element == document.body || element == document.documentElement || element ==
 			window) {
 			isWindow = true;
 		}
-		return new Promise(function(reslove, reject) {
+		return new Promise((reslove, reject) => {
 			if (time <= 0) {
 				if (isWindow) {
 					document.documentElement.scrollTop = document.body.scrollTop = number;
@@ -477,9 +470,9 @@ const util = {
 				var spacingTime = 10; // 设置循环的间隔时间  值越小消耗性能越高
 				var spacingIndex = time / spacingTime; // 计算循环的次数
 				// 获取当前滚动条位置
-				var nowTop = _this.getScrollTop(element);
+				var nowTop = this.getScrollTop(element);
 				var everTop = (number - nowTop) / spacingIndex; // 计算每次滑动的距离
-				var scrollTimer = setInterval(function() {
+				var scrollTimer = setInterval(() => {
 					if (spacingIndex > 0) {
 						spacingIndex--;
 						if (isWindow) {
@@ -501,10 +494,9 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	getScrollLeft(element) {
-		var _this = this;
 		var scrollLeft = 0;
 		//如果是元素节点
-		if (_this.isElement(element) && element != document.body && element != document.documentElement && element != window) {
+		if (this.isElement(element) && element != document.body && element != document.documentElement && element != window) {
 			scrollLeft = element.scrollLeft;
 		} else {
 			if (document.documentElement.scrollLeft == 0 || document.body.scrollLeft == 0) {
@@ -522,7 +514,6 @@ const util = {
 	 * options:el(滚动条所在元素,未指定则为document.documentElement),number(距离值),time(动画时间间隔)
 	 */
 	setScrollLeft(options) {
-		var _this = this;
 		var isWindow = false;
 		var element = options.el;
 		if (typeof(element) == 'string' && element) {
@@ -530,11 +521,11 @@ const util = {
 		}
 		var number = options.number || 0;
 		var time = options.time || 0;
-		if (!_this.isElement(element) || element == document.body || element == document.documentElement || element ==
+		if (!this.isElement(element) || element == document.body || element == document.documentElement || element ==
 			window) {
 			isWindow = true;
 		}
-		return new Promise(function(reslove, reject) {
+		return new Promise((reslove, reject) => {
 			if (time <= 0) {
 				if (isWindow) {
 					document.documentElement.scrollLeft = document.body.scrollLeft = number;
@@ -546,9 +537,9 @@ const util = {
 				var spacingTime = 10; // 设置循环的间隔时间  值越小消耗性能越高
 				var spacingIndex = time / spacingTime; // 计算循环的次数
 				// 获取当前滚动条位置
-				var nowLeft = _this.getScrollLeft(element);
+				var nowLeft = this.getScrollLeft(element);
 				var everLeft = (number - nowLeft) / spacingIndex; // 计算每次滑动的距离
-				var scrollTimer = setInterval(function() {
+				var scrollTimer = setInterval(() => {
 					if (spacingIndex > 0) {
 						spacingIndex--;
 						if (isWindow) {
@@ -570,9 +561,8 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	getScrollHeight(element) {
-		var _this = this;
 		var scrollHeight = 0;
-		if (_this.isElement(element) && element != document.documentElement && element != document.body && element != window) {
+		if (this.isElement(element) && element != document.documentElement && element != document.body && element != window) {
 			scrollHeight = element.scrollHeight;
 		} else {
 			if (document.documentElement.scrollHeight == 0 || document.body.scrollHeight == 0) {
@@ -589,9 +579,8 @@ const util = {
 	 * 获取文档或元素的总宽度
 	 */
 	getScrollWidth(element) {
-		var _this = this;
 		var scrollWidth = 0;
-		if (_this.isElement(element) && element != document.documentElement && element != document.body && element != window) {
+		if (this.isElement(element) && element != document.documentElement && element != document.body && element != window) {
 			scrollWidth = element.scrollWidth;
 		} else {
 			if (document.documentElement.scrollWidth == 0 || document.body.scrollWidth == 0) {
@@ -610,9 +599,8 @@ const util = {
 	 * cssName:样式名称,css名称
 	 */
 	getCssStyle(element, cssName) {
-		var _this = this;
 		//元素不是节点
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		if (element) {
@@ -634,15 +622,14 @@ const util = {
 	 * className支持多类,以空格划分
 	 */
 	hasClass(element, className) {
-		var _this = this;
 		//元素不是节点
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		var classList = element.classList;
-		var classArray = _this.trim(className).split(/\s+/); //按照空格划分
+		var classArray = this.trim(className).split(/\s+/); //按照空格划分
 		var flag = true;
-		classArray.forEach(function(item, index) {
+		classArray.forEach((item, index) => {
 			if (!classList.contains(item)) {
 				flag = false;
 			}
@@ -656,14 +643,13 @@ const util = {
 	 * className支持多类,以空格划分
 	 */
 	addClass(element, className) {
-		var _this = this;
 		//元素不是节点
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		var classList = element.classList;
-		var classArray = _this.trim(className).split(/\s+/); //按照空格划分
-		classArray.forEach(function(item, index) {
+		var classArray = this.trim(className).split(/\s+/); //按照空格划分
+		classArray.forEach((item, index) => {
 			classList.add(item);
 		});
 	},
@@ -674,14 +660,13 @@ const util = {
 	 * className支持多类,以空格划分
 	 */
 	removeClass(element, className) {
-		var _this = this;
 		//元素不是节点
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		var classList = element.classList;
-		var classArray = _this.trim(className).split(/\s+/); //按照空格划分
-		classArray.forEach(function(item, index) {
+		var classArray = this.trim(className).split(/\s+/); //按照空格划分
+		classArray.forEach((item, index) => {
 			classList.remove(item);
 		});
 	},
@@ -692,11 +677,10 @@ const util = {
 	 * parentNode和childNode如果未指定,则表示document.body
 	 */
 	isContains(parentNode, childNode) {
-		var _this = this;
-		if (!_this.isElement(parentNode)) {
+		if (!this.isElement(parentNode)) {
 			parentNode = document.body;
 		}
-		if (!_this.isElement(childNode)) {
+		if (!this.isElement(childNode)) {
 			childNode = document.body;
 		}
 		if (parentNode === childNode) {
@@ -719,11 +703,10 @@ const util = {
 	 * parentNode和childNode如果为指定,则表示document.body
 	 */
 	isParentNode(parentNode, childNode) {
-		var _this = this;
-		if (!_this.isElement(parentNode)) {
+		if (!this.isElement(parentNode)) {
 			parentNode = document.body;
 		}
-		if (!_this.isElement(childNode)) {
+		if (!this.isElement(childNode)) {
 			childNode = document.body;
 		}
 		if (parentNode === childNode) {
@@ -742,9 +725,8 @@ const util = {
 	 * 如果element未指定则为document.body
 	 */
 	children(element, selector) {
-		var _this = this;
 		//元素不是节点
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		var result = new Array(); //存放结果的数组
@@ -757,22 +739,22 @@ const util = {
 			return result;
 		}
 		//selector参数存在时，根据空格划分选择器
-		var selectors = _this.trim(selector).split(/\s+/);
-		selectors.forEach(function(sc) {
+		var selectors = this.trim(selector).split(/\s+/);
+		selectors.forEach(sc=>{
 			//判断选择器类型
-			var selector_type = _this.getCssSelector(sc).type;
-			var selector_value = _this.getCssSelector(sc).value;
+			var selector_type = this.getCssSelector(sc).type;
+			var selector_value = this.getCssSelector(sc).value;
 			switch (selector_type) {
 				case "id": //ID
 					for (var i = 0; i < childNodes.length; i++) {
-						if (_this.trim(childNodes[i].getAttribute("id"), false) == selector_value) {
+						if (this.trim(childNodes[i].getAttribute("id"), false) == selector_value) {
 							result.push(childNodes[i]);
 						}
 					}
 					break;
 				case "class": //类名
 					for (var i = 0; i < childNodes.length; i++) {
-						if (_this.hasClass(childNodes[i], selector_value)) {
+						if (this.hasClass(childNodes[i], selector_value)) {
 							result.push(childNodes[i]);
 						}
 					}
@@ -835,9 +817,8 @@ const util = {
 	 * 如果element未指定则为document.body
 	 */
 	siblings(element, selector) {
-		var _this = this;
 		//元素不是节点
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		var siblingsArray = [];
@@ -854,21 +835,21 @@ const util = {
 		}
 		var selectors = selector.split(/\s+/);
 		var result = new Array();
-		selectors.forEach(function(sc) {
+		selectors.forEach(sc=> {
 			//判断选择器类型
-			var selector_type = _this.getCssSelector(sc).type;
-			var selector_value = _this.getCssSelector(sc).value;
+			var selector_type = this.getCssSelector(sc).type;
+			var selector_value = this.getCssSelector(sc).value;
 			switch (selector_type) {
 				case "id": //ID
 					for (var i = 0; i < siblingsArray.length; i++) {
-						if (_this.trim(siblingsArray[i].getAttribute("id"), false) == selector_value) {
+						if (this.trim(siblingsArray[i].getAttribute("id"), false) == selector_value) {
 							result.push(siblingsArray[i]);
 						}
 					}
 					break;
 				case "class": //类名
 					for (var i = 0; i < siblingsArray.length; i++) {
-						if (_this.hasClass(siblingsArray[i], selector_value)) {
+						if (this.hasClass(siblingsArray[i], selector_value)) {
 							result.push(siblingsArray[i]);
 						}
 					}
@@ -935,7 +916,7 @@ const util = {
 	 */
 	judgeAccessTerminalBrowser(params) {
 		var browser = {
-			versions: function() {
+			versions: function(){
 				var u = navigator.userAgent;
 				var app = navigator.appVersion;
 				return {
@@ -1150,10 +1131,10 @@ const util = {
 	 * 通过then方法回调,参数为base64字符串
 	 */
 	dataFileToBase64(file) {
-		return new Promise(function(reslove, reject) {
+		return new Promise((reslove, reject)=>{
 			var reader = new FileReader();
 			reader.readAsDataURL(file); // 读出 base64
-			reader.onloadend = function() {
+			reader.onloadend = ()=> {
 				// 图片的 base64 格式, 可以直接当成 img 的 src 属性值        
 				var dataURL = reader.result;
 				// 下面逻辑处理
@@ -1187,13 +1168,12 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	width(element) {
-		var _this = this;
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		var clientWidth = element.clientWidth; //获取元素包括内边距在内的宽度
-		var paddingLeft_width = parseFloat(_this.getCssStyle(element, "padding-left")); //左内边距
-		var paddingRight_width = parseFloat(_this.getCssStyle(element, "padding-right")); //右内边距宽度
+		var paddingLeft_width = parseFloat(this.getCssStyle(element, "padding-left")); //左内边距
+		var paddingRight_width = parseFloat(this.getCssStyle(element, "padding-right")); //右内边距宽度
 		return clientWidth - paddingLeft_width - paddingRight_width;
 	},
 
@@ -1203,13 +1183,12 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	height(element) {
-		var _this = this;
-		if (!_this.isElement(element)) {
+		if (!this.isElement(element)) {
 			element = document.body;
 		}
 		var clientHeight = element.clientHeight; //获取元素包括内边距在内的高度
-		var paddingTop_height = parseFloat(_this.getCssStyle(element, "padding-top")); //上内边距
-		var paddingBottom_height = parseFloat(_this.getCssStyle(element, "padding-bottom")); //下内边距宽度
+		var paddingTop_height = parseFloat(this.getCssStyle(element, "padding-top")); //上内边距
+		var paddingBottom_height = parseFloat(this.getCssStyle(element, "padding-bottom")); //下内边距宽度
 		return clientHeight - paddingTop_height - paddingBottom_height;
 	},
 

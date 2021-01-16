@@ -1,17 +1,17 @@
 <template>
-	<div class="mvi-tooltip" v-on="listeners">
-		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle">
+	<div class="mvi-tooltip" v-on="listeners" :data-id="'mvi-tooltip-' + _uid">
+		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-target-' + _uid">
 			<slot></slot>
 		</div>
-		<transition name="mvi-tooltip">
-			<div v-show="show" v-if="firstShow" class="mvi-tooltip-wrapper" :data-placement="placement" :style="wrapperStyle" ref="wrapper">
-				<div class="mvi-tooltip-content" ref="content" :style="contentStyle">
-					<m-triangle :placement="trianglePlacemnet" :size="size" :background="(color?color:'#333')" :border-color="(borderColor?borderColor:'#333')" :style="triangleStyle"></m-triangle>
-					<slot v-if="$slots.title" name="title"></slot>
-					<span v-else v-text="title"></span>
-				</div>
+		<m-layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable show-triangle
+		:z-index="zIndex" :target="`[data-id='mvi-tooltip-target-${_uid}']`" :root="`[data-id='mvi-tooltip-${_uid}']`"
+		:placement="placement" :fixed="fixed" :width="width" :wrapper-class="wrapperClass" :timeout="timeout" 
+		:animation="animation?animation:'mvi-tooltip'" :shadow="false" >
+			<div class="mvi-tooltip-content" ref="content" :style="contentStyle">
+				<slot v-if="$slots.title" name="title"></slot>
+				<span v-else v-text="title"></span>
 			</div>
-		</transition>
+		</m-layer>
 	</div>
 </template>
 
@@ -21,10 +21,7 @@
 		name:"m-tooltip",
 		data(){
 			return {
-				size:'0.14rem',
-				show:false,
-				firstShow:false,
-				offset:'',
+				show:false
 			}
 		},
 		props:{
@@ -38,7 +35,8 @@
 				validator(value){
 					return ['bottom','bottom-start','bottom-end',
 							'top','top-start','top-end',
-							'left','right'].indexOf(value)>-1;
+							'left','left-start','left-end',
+							'right','right-start','right-end'].indexOf(value)>-1;
 				}
 			},
 			disabled:{
@@ -51,15 +49,15 @@
 			},
 			borderColor:{
 				type:String,
-				default:null
+				default:'#333'
 			},
 			color:{
 				type:String,
-				default:null
+				default:'#333'
 			},
 			textColor:{
 				type:String,
-				default:null
+				default:'#fff'
 			},
 			trigger:{
 				type:String,
@@ -67,97 +65,45 @@
 				validator(value){
 					return ['hover','click','custom'].includes(value)
 				}
+			},
+			offset:{
+				type:String,
+				default:'0.1rem'
+			},
+			zIndex:{
+				type:Number,
+				default:20
+			},
+			fixed:{
+				type:Boolean,
+				default:false
+			},
+			width:{
+				type:String,
+				default:null
+			},
+			wrapperClass:{
+				type:String,
+				default:null
+			},
+			animation:{
+				type:String,
+				default:null
 			}
 		},
 		computed:{
-			trianglePlacemnet(){
-				if(this.placement == "bottom" || this.placement == "bottom-start" || this.placement == "bottom-end"){
-					return "top";
-				}else if(this.placement == "top" || this.placement == "top-start" || this.placement == "top-end"){
-					return "bottom";
-				}else if(this.placement == "left"){
-					return "right";
-				}else if(this.placement == "right"){
-					return "left";
-				}
-			},
 			listeners(){
 				return Object.assign({},this.$listeners);
 			},
-			wrapperStyle(){
-				var style = {};
-				style.transition = 'opacity '+this.timeout+'ms';
-				style.webkitTransition = 'opacity '+this.timeout+'ms';
-				return style;
-			},
 			contentStyle(){
 				var style = {};
-				if(this.color){
-					style.backgroundColor = this.color;
-				}
 				if(this.textColor){
 					style.color = this.textColor;
 				}
-				if(this.borderColor){
-					style.borderColor = this.borderColor;
-				}
 				return style;
-			},
-			triangleStyle(){
-				var style = {};
-				if(this.placement == 'bottom'){
-					style.left = `calc(50% - ${this.size})`;
-					style.bottom = '100%';
-					style.right = 'auto';
-					style.top = 'auto';
-				}else if(this.placement == 'top'){
-					style.left = `calc(50% - ${this.size})`;
-					style.top = '100%';
-					style.right = 'auto';
-					style.bottom = 'auto';
-				}else if(this.placement == 'left'){
-					style.top = `calc(50% - ${this.size})`;
-					style.left = '100%';
-					style.right = 'auto';
-					style.bottom = 'auto';
-				}else if(this.placement == 'right'){
-					style.top = `calc(50% - ${this.size})`;
-					style.right = '100%';
-					style.left = 'auto';
-					style.bottom = 'auto';
-				}else if(this.placement == 'bottom-start' || this.placement == 'bottom-end'){
-					style.left = this.offset;
-					style.bottom = '100%';
-					style.right = 'auto';
-					style.top = 'auto';
-				}else if(this.placement == 'top-start' || this.placement == 'top-end'){
-					style.left = this.offset;
-					style.top = '100%';
-					style.right = 'auto';
-					style.bottom = 'auto';
-				}
-				return style;
-			}
-		},
-		mounted() {
-			document.documentElement.addEventListener('click',this.hideListener);
-		},
-		watch:{
-			placement(newValue){
-				if(this.firstShow && this.show){
-					this.setOffset();
-				}
 			}
 		},
 		methods:{
-			setOffset(){
-				//设置三角形箭头的偏移
-				if(this.placement == "bottom-start" || this.placement == "top-start"){
-					this.offset = `calc(${this.$refs.toggle.offsetWidth/2}px - ${this.size}/2)`;
-				}else if(this.placement == "bottom-end" || this.placement == "top-end"){
-					this.offset = `calc(${this.$refs.content.offsetWidth-this.$refs.toggle.offsetWidth/2}px - ${this.size}/2)`;
-				}
-			},
 			//鼠标进入显示
 			hoverShowTooltip(){
 				if(this.trigger == 'hover'){
@@ -186,12 +132,6 @@
 					return;
 				}
 				this.show = true;
-				if(!this.firstShow){
-					this.firstShow = true;
-				}
-				this.$nextTick(()=>{
-					this.setOffset();
-				})
 			},
 			//隐藏
 			hideTooltip(){
@@ -199,17 +139,7 @@
 					return;
 				}
 				this.show = false;
-			},
-			//点击屏幕隐藏
-			hideListener(e){
-				if(e.target == this.$el || $util.isContains(this.$el,e.target)){
-					return;
-				}
-				this.hideTooltip();
 			}
-		},
-		beforeDestroy() {
-			document.documentElement.removeEventListener('click',this.hideListener);
 		}
 	}
 </script>
@@ -226,87 +156,19 @@
 		position: relative;
 		display: inline-block;
 	}
-	
-	.mvi-tooltip-wrapper{
-		position: absolute;
-		z-index: 20;
-		display: block;
-	}
-	
+
 	.mvi-tooltip-content{
 		position: relative;
 		display: block;
-		background-color: #333;
 		padding: @mp-sm;
-		color: #fff;
-		border-radius: @radius-default;
 		font-size: @font-size-small;
-		border: 1px solid @font-color-default;
 		margin: 0;
 		white-space: nowrap;
 		line-height: 1;
-		
-		&>.mvi-triangle{
-			position: absolute;
-		}
+		text-align: center;
 	}
-	
-	.mvi-tooltip-wrapper[data-placement="bottom"]{
-		padding-top: @mp-sm;
-		top:100%;
-		left: 50%;
-		transform: translateX(-50%);
-		-webkit-transform: translateX(-50%);
-	}
-	
-	.mvi-tooltip-wrapper[data-placement="bottom-start"]{
-		padding-top: @mp-sm;
-		top: 100%;
-		left: 0;
-	}
-	
-	.mvi-tooltip-wrapper[data-placement="bottom-end"]{
-		padding-top: @mp-sm;
-		top: 100%;
-		right: 0;
-	}
-	
-	.mvi-tooltip-wrapper[data-placement="top"]{
-		bottom: 100%;
-		left: 50%;
-		transform: translateX(-50%);
-		-webkit-transform: translateX(-50%);
-		padding-bottom: @mp-sm;
-	}
-	
-	.mvi-tooltip-wrapper[data-placement="top-start"]{
-		bottom: 100%;
-		left: 0;
-		padding-bottom: @mp-sm;
-	}
-	
-	.mvi-tooltip-wrapper[data-placement="top-end"]{
-		bottom: 100%;
-		right: 0;
-		padding-bottom: @mp-sm;
-	}
-	
-	.mvi-tooltip-wrapper[data-placement="left"]{
-		right: 100%;
-		top: 50%;
-		transform: translateY(-50%);
-		-webkit-transform: translateY(-50%);
-		padding-right: @mp-sm;
-	}
-	
-	.mvi-tooltip-wrapper[data-placement="right"]{
-		left: 100%;
-		top: 50%;
-		transform: translateY(-50%);
-		-webkit-transform: translateY(-50%);
-		padding-left: @mp-sm;
-	}
-	
+</style>
+<style lang="less">
 	.mvi-tooltip-enter,.mvi-tooltip-leave-to{
 		opacity: 0;
 	}

@@ -1,109 +1,113 @@
 <template>
 	<div class="mvi-date-chooser" :data-id="`mvi-date-chooser-${_uid}`" v-on="listeners">
 		<div class="mvi-date-chooser-target" :data-id="`mvi-date-chooser-target-${_uid}`" ref="target" @click="clickCalendar"><slot></slot></div>
-		<transition name="mvi-date-chooser">
-			<m-layer
-				:target="`[data-id='mvi-date-chooser-target-${_uid}']`"
-				:root="`[data-id='mvi-date-chooser-${_uid}']`"
-				v-if="firstShow"
-				v-show="show"
-				class="mvi-date-chooser-layer"
-				:placement="placement"
-				:fixed="fixed"
-				offset="0rem"
-				:z-index="zIndex"
-				:style="layerStyle"
-				ref="layer"
-			>
-				<div class="mvi-date-chooser-layer-wrapper">
-					<div class="mvi-date-chooser-header">
-						<div class="mvi-date-chooser-header-left">
-							<span
-								@mouseenter="hoverHeader(true, 0)"
-								@mouseleave="hoverHeader(false, 0)"
-								@click="goPrevYear"
-								:class="headerItemClass(0)"
-								:disabled="prevYearDisabled"
-							>
-								<m-icon type="angle-double-left" />
-							</span>
-							<span
-								@mouseenter="hoverHeader(true, 1)"
-								@mouseleave="hoverHeader(false, 1)"
-								@click="goPrevMonth"
-								:class="headerItemClass(1)"
-								:disabled="value.getFullYear() <= startYear && value.getMonth() == 0"
-								v-if="view == 'date'"
-							>
-								<m-icon type="angle-left" />
-							</span>
-						</div>
-						<div class="mvi-date-chooser-header-center">
-							<span
-								v-if="view != 'year'"
-								@mouseenter="hoverHeader(true, 2)"
-								@mouseleave="hoverHeader(false, 2)"
-								v-text="currentYear"
-								:class="headerItemClass(2)"
-								@click="jumpViewYear"
-							></span>
-							<span
-								v-if="view == 'date'"
-								@mouseenter="hoverHeader(true, 3)"
-								@mouseleave="hoverHeader(false, 3)"
-								v-text="currentMonth"
-								:class="headerItemClass(3)"
-								@click="jumpViewMonth"
-							></span>
-							<span
-								v-if="view == 'year'"
-								@mouseenter="hoverHeader(true, 4)"
-								@mouseleave="hoverHeader(false, 4)"
-								v-text="currentYears"
-								:class="headerItemClass(4)"
-							></span>
-						</div>
-						<div class="mvi-date-chooser-header-right">
-							<span
-								@mouseenter="hoverHeader(true, 5)"
-								@mouseleave="hoverHeader(false, 5)"
-								@click="goNextMonth"
-								:class="headerItemClass(5)"
-								:disabled="value.getFullYear() >= endYear && value.getMonth() == 11"
-								v-if="view == 'date'"
-							>
-								<m-icon type="angle-right" />
-							</span>
-							<span
-								@mouseenter="hoverHeader(true, 6)"
-								@mouseleave="hoverHeader(false, 6)"
-								@click="goNextYear"
-								:class="headerItemClass(6)"
-								:disabled="nextYearDisabled"
-							>
-								<m-icon type="angle-double-right" />
-							</span>
-						</div>
+		<m-layer
+			:target="`[data-id='mvi-date-chooser-target-${_uid}']`"
+			:root="`[data-id='mvi-date-chooser-${_uid}']`"
+			v-model="show"
+			:placement="placement"
+			:fixed="fixed"
+			:offset="offset"
+			:z-index="zIndex"
+			:wrapper-class="wrapperClass"
+			:shadow="shadow"
+			:border="border"
+			:animation="animation"
+			:border-color="borderColor"
+			:timeout="timeout"
+			:closable="closable"
+			:show-triangle="false"
+			ref="layer"
+		>
+			<div class="mvi-date-chooser-layer" :style="layerStyle">
+				<div class="mvi-date-chooser-header">
+					<div class="mvi-date-chooser-header-left">
+						<span
+							@mouseenter="hoverHeader(true, 0)"
+							@mouseleave="hoverHeader(false, 0)"
+							@click="goPrevYear"
+							:class="headerItemClass(0)"
+							:disabled="prevYearDisabled"
+						>
+							<m-icon type="angle-double-left" />
+						</span>
+						<span
+							@mouseenter="hoverHeader(true, 1)"
+							@mouseleave="hoverHeader(false, 1)"
+							@click="goPrevMonth"
+							:class="headerItemClass(1)"
+							:disabled="value.getFullYear() <= startYear && value.getMonth() == 0"
+							v-if="view == 'date'"
+						>
+							<m-icon type="angle-left" />
+						</span>
 					</div>
-					<m-calendar
-						:view="view"
-						:date="value"
-						:month-text="monthText"
-						:week-text="weekText"
-						:start-year="startYear"
-						:end-year="endYear"
-						:now-class="nowClass"
-						:current-class="currentClass"
-						:non-current-click="false"
-						:active="active"
-						@date-click="dateClick"
-						@month-click="monthClick"
-						@year-click="yearClick"
-						ref="calendar"
-					></m-calendar>
+					<div class="mvi-date-chooser-header-center">
+						<span
+							v-if="view != 'year'"
+							@mouseenter="hoverHeader(true, 2)"
+							@mouseleave="hoverHeader(false, 2)"
+							v-text="currentYear"
+							:class="headerItemClass(2)"
+							@click="jumpViewYear"
+						></span>
+						<span
+							v-if="view == 'date'"
+							@mouseenter="hoverHeader(true, 3)"
+							@mouseleave="hoverHeader(false, 3)"
+							v-text="currentMonth"
+							:class="headerItemClass(3)"
+							@click="jumpViewMonth"
+						></span>
+						<span
+							v-if="view == 'year'"
+							@mouseenter="hoverHeader(true, 4)"
+							@mouseleave="hoverHeader(false, 4)"
+							v-text="currentYears"
+							:class="headerItemClass(4)"
+						></span>
+					</div>
+					<div class="mvi-date-chooser-header-right">
+						<span
+							@mouseenter="hoverHeader(true, 5)"
+							@mouseleave="hoverHeader(false, 5)"
+							@click="goNextMonth"
+							:class="headerItemClass(5)"
+							:disabled="value.getFullYear() >= endYear && value.getMonth() == 11"
+							v-if="view == 'date'"
+						>
+							<m-icon type="angle-right" />
+						</span>
+						<span
+							@mouseenter="hoverHeader(true, 6)"
+							@mouseleave="hoverHeader(false, 6)"
+							@click="goNextYear"
+							:class="headerItemClass(6)"
+							:disabled="nextYearDisabled"
+						>
+							<m-icon type="angle-double-right" />
+						</span>
+					</div>
 				</div>
-			</m-layer>
-		</transition>
+				<m-calendar
+					:view="view"
+					:date="value"
+					:month-text="monthText"
+					:week-text="weekText"
+					:start-year="startYear"
+					:end-year="endYear"
+					:now-class="nowClass"
+					:current-class="currentClass"
+					:non-current-click="false"
+					:active="active"
+					@date-click="dateClick"
+					@month-click="monthClick"
+					@year-click="yearClick"
+					ref="calendar"
+				></m-calendar>
+			</div>
+		
+		</m-layer>
 	</div>
 </template>
 
@@ -115,7 +119,6 @@ export default {
 		return {
 			target: null,
 			layer:null,
-			firstShow:false,
 			show: false,
 			view: 'date',
 			hover: [false, false, false, false, false, false, false]
@@ -162,6 +165,41 @@ export default {
 		offset: {
 			type: String,
 			default: '0.2rem'
+		},
+		//layer的额外样式
+		wrapperClass:{
+			type:String,
+			default:null
+		},
+		//layer是否显示阴影
+		shadow:{
+			type:Boolean,
+			default:true
+		},
+		//layer是否有边框
+		border:{
+			type:Boolean,
+			default:false
+		},
+		//layer的边框颜色
+		borderColor:{
+			type:String,
+			default:'#eee'
+		},
+		//layer显示与隐藏动画
+		animation:{
+			type:String,
+			default:null
+		},
+		//layer动画时长
+		timeout:{
+			type:Number,
+			default:200
+		},
+		//点击其他地方是否关闭日历
+		closable:{
+			type:Boolean,
+			default:true
 		},
 		//触发方法
 		trigger: {
@@ -253,17 +291,6 @@ export default {
 			} else if (this.target) {
 				style.width = this.$refs.target.offsetWidth + 'px';
 			}
-			if (this.offset) {
-				if(this.placement == 'top' || this.placement == 'top-start' || this.placement == 'top-end'){
-					style.paddingBottom = this.offset;
-				}else if(this.placement == 'bottom' || this.placement == 'bottom-start' || this.placement == 'bottom-end'){
-					style.paddingTop = this.offset;
-				}else if(this.placement == 'left' || this.placement == 'left-start' || this.placement == 'left-end'){
-					style.paddingRight = this.offset;
-				}else if(this.placement == 'right' || this.placement == 'right-start' || this.placement == 'right-end'){
-					style.paddingLeft = this.offset;
-				}
-			}
 			return style;
 		},
 		currentYear() {
@@ -327,39 +354,18 @@ export default {
 	mounted() {
 		this.view = this.mode;
 		this.target = this.$refs.target;
-		if(this.trigger == 'click'){
-			window.addEventListener('click', this.hideForWindow);
-		}else if(this.trigger == 'hover'){
+		if(this.trigger == 'hover'){
 			this.$el.addEventListener('mouseenter',this.openCalendar)
 			this.$el.addEventListener('mouseleave',this.closeCalendar)
 		}
 	},
 	methods: {
-		//点击窗口其他地方
-		hideForWindow(event) {
-			if(this.disabled){
-				return;
-			}
-			if ($util.isContains(this.$el, event.target)) {
-				return;
-			}
-			this.closeCalendar()
-		},
 		//打开日期选择弹窗
 		openCalendar(){
 			if(this.disabled){
 				return;
 			}
-			if(!this.firstShow){
-				this.firstShow = true;
-			}
 			this.show = true;
-			this.$nextTick(()=>{
-				if(!this.layer){
-					this.layer = this.$refs.layer
-				}
-				this.$refs.layer.reset();
-			})
 		},
 		//关闭日期选择弹窗
 		closeCalendar(){
@@ -521,9 +527,7 @@ export default {
 		}
 	},
 	beforeDestroy() {
-		if(this.trigger == 'click'){
-			window.removeEventListener('click', this.hideForWindow);
-		}else if(this.trigger == 'hover'){
+		if(this.trigger == 'hover'){
 			this.$el.removeEventListener('mouseenter',this.openCalendar)
 			this.$el.removeEventListener('mouseleave',this.closeCalendar)
 		}
@@ -542,34 +546,13 @@ export default {
 	display: inline-block;
 }
 
-.mvi-date-chooser-enter-active,
-.mvi-date-chooser-leave-active {
-	transition: transform 200ms, opacity 200ms;
-	-webkit-transition: transform 200ms, opacity 200ms;
-	-moz-transition: transform 200ms, opacity 200ms;
-	-ms-transition: transform 200ms, opacity 200ms;
-}
-
-.mvi-date-chooser-enter,
-.mvi-date-chooser-leave-to {
-	transform: translateY(0.4rem);
-	opacity: 0;
-}
-
-.mvi-date-chooser-layer {
-	display: block;
-	background-color: transparent;
-	border: none;
-}
-
-.mvi-date-chooser-layer-wrapper {
+.mvi-date-chooser-layer{
 	display: block;
 	width: 100%;
 	position: relative;
-	border-radius: @radius-default;
-	box-shadow: @boxshadow-basic;
-	-webkit-box-shadow: @boxshadow-basic;
 	overflow: hidden;
+	background-color: #fff;
+	border-radius: inherit;
 }
 
 .mvi-date-chooser-header {
@@ -579,7 +562,6 @@ export default {
 	width: 100%;
 	padding: 0 @mp-md;
 	height: 0.88rem;
-	background-color: #fff;
 
 	.mvi-date-chooser-header-left,
 	.mvi-date-chooser-header-right,

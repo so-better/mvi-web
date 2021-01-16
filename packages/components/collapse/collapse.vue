@@ -57,10 +57,6 @@
 				type:String,
 				default:null
 			},
-			slide:{//折叠或展开是否使用动画
-				type:Boolean,
-				default:true
-			},
 			timeout:{//折叠或者展开的动画时长,单位ms
 				type:Number,
 				default:300

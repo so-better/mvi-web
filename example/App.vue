@@ -1,17 +1,15 @@
 <template>
-	<div id="app" class="mvi-p-4">
-		<div class="mvi-mb-4">
-			<m-button @click="change">Button</m-button>
-		</div>
-		<div class="mvi-ml-20" style="position: relative" id="root">
-		    <m-button id="btn" type="success" @click="show=!show">Button</m-button>
-		    <m-layer v-model="show" ref="layer" target="#btn" root="#root" width="3rem" placement="bottom" closable
-			show-triangle>
-		        <div class="mvi-p-2" style="height: 4rem;">
-					这是一个悬浮层
-				</div>
-		    </m-layer>
-		</div>
+	<div id="app">
+		<div class="mvi-mb-4"><m-button @click="change">Button</m-button></div>
+		<m-collapse v-model="active" accordion>
+		    <m-collapse-item title="标题1" label="这是一个简单的标题">
+		        风萧萧兮易水寒
+		    </m-collapse-item>
+		    <m-collapse-item title="标题2" label="这是一个简单的标题" content="风萧萧兮易水寒,壮士一去兮不复还"></m-collapse-item>
+		    <m-collapse-item title="标题3" label="这是一个简单的标题">
+		        <div class="mvi-bg-error" v-prop="0.5"></div>
+		    </m-collapse-item>
+		</m-collapse>
 	</div>
 </template>
 
@@ -19,20 +17,32 @@
 export default {
 	data() {
 		return {
+			arr: [1],
 			show: false,
-			date: new Date(),
+			date: null,
 			value: '',
 			active: 0,
-			disabled:false,
-			types: ['info', 'warn', 'primary', 'success', 'error', 'default']
-		}
+			disabled: false,
+			types: ['info', 'warn', 'primary', 'success', 'error', 'default'],
+			placement: 'bottom',
+			list: ['MVI', 'Bootstrap', 'Vue'],
+			options: [
+				{
+					label: '分享到朋友圈'
+				},
+				{
+					label: '分享给QQ好友'
+				},
+				{
+					label: '分享到QQ空间'
+				}
+			]
+		};
 	},
-	mounted() {
-		
-	},
+	mounted() {},
 	methods: {
 		change() {
-			this.show = !this.show
+			this.show = !this.show;
 		}
 	}
 };
