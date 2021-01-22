@@ -194,7 +194,7 @@ export default {
 		//layer动画时长
 		timeout:{
 			type:Number,
-			default:200
+			default:300
 		},
 		//点击其他地方是否关闭日历
 		closable:{

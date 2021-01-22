@@ -107,7 +107,7 @@ export default {
 		//layer动画时长
 		timeout:{
 			type:Number,
-			default:200
+			default:300
 		},
 		//输入框激活样式
 		activeType: {

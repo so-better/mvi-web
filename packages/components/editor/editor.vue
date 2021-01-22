@@ -796,10 +796,10 @@ export default {
 			if (this.disabled) {
 				return;
 			}
-			this.range = null;
 			var selection = window.getSelection();
 			if (selection.getRangeAt && selection.rangeCount) {
 				this.range = selection.getRangeAt(0);
+				console.log(this.range)
 			}
 		},
 		//恢复选区，可对外提供

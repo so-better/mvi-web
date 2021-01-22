@@ -1,5 +1,5 @@
 <template>
-	<m-popup :popup-color="backgroundColor" :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :local="local" :use-padding="usePadding" v-on="listeners">
+	<m-popup popup-color="#fff" :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :local="local" :use-padding="usePadding" v-on="listeners">
 		<div class="mvi-acionsheet">
 			<div class="mvi-acionsheet-title" v-if="title" :style="{color:(titleColor?titleColor:'')}">
 				<span v-text="title"></span>
@@ -7,7 +7,7 @@
 			<div class="mvi-acionsheet-list">
 				<div :class="itemClass(item)" v-for="(item,index) in options" :key="'action-'+index" :style="itemStyle(item)"
 				 :disabled="itemDisabled(item)" @click="doSelect(item,index)">
-					<m-loading :color="loadingColor" v-if="(item.loading?item.loading:false)"></m-loading>
+					<m-loading :size="(size=='large'?'0.4rem':'0.36rem')" color="#bbb" v-if="(item.loading?item.loading:false)"></m-loading>
 					<div class="mvi-acionsheet-content" v-else-if="item.label||item.sub || iconType(item.icon) || iconUrl(item.icon)">
 						<m-icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'"
 						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)"/>
@@ -18,8 +18,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="mvi-acionsheet-divider" :style="{backgroundColor:(dividerColor?dividerColor:'')}"></div>
-			<div :class="'mvi-acionsheet-button'+(cancelActive?' mvi-acionsheet-active':'')" v-if="showCancel" v-text="cancelText"
+			<div class="mvi-acionsheet-divider"></div>
+			<div :class="'mvi-acionsheet-button'+(active?' mvi-acionsheet-active':'')" v-if="showCancel" v-text="cancelText"
 			 @click="doCancel" :style="'color:'+(cancelColor?cancelColor:'')"></div>
 		</div>
 	</m-popup>
@@ -48,7 +48,7 @@
 			},
 			timeout: {
 				type: Number,
-				default: 400
+				default: 300
 			},
 			round: {
 				type: Boolean,
@@ -84,11 +84,7 @@
 				type: String,
 				default: null
 			},
-			cancelActive: { //取消按钮是否显示点击态
-				type: Boolean,
-				default: true
-			},
-			optionActive: { //列表选项是否显示点击态
+			active: { //列表和取消按钮是否显示点击态
 				type: Boolean,
 				default: true
 			},
@@ -104,29 +100,16 @@
 				type:Boolean,
 				default: false
 			},
-			backgroundColor:{//背景色
-				type:String,
-				default:null
-			},
-			dividerColor:{//分割线颜色
-				type:String,
-				default:null
-			},
-			loadingColor:{//加载图标颜色
-				type:String,
-				default:'#bbb'
-			},
 			color:{//列表字体颜色
 				type:String,
 				default:null
 			},
-			disabledColor:{//禁用列表字体颜色
+			size:{//尺寸
 				type:String,
-				default:null
-			},
-			borderColor:{//边框线颜色
-				type:String,
-				default:null
+				default:'medium',
+				validator(value){
+					return ['medium','large'].lastIndexOf(value)>-1
+				}
 			}
 		},
 		computed: {
@@ -181,11 +164,11 @@
 			},
 			itemClass() {
 				return (item) => {
-					var cls = "mvi-acionsheet-item";
+					var cls = "mvi-acionsheet-item mvi-actionsheet-item-"+this.size;
 					if (item.class) {
 						cls += ' ' + item.class;
 					}
-					if (this.optionActive && !item.loading && !item.disabled) {
+					if (this.active && !item.loading && !item.disabled) {
 						cls += ' mvi-acionsheet-active';
 					}
 					return cls;
@@ -194,25 +177,13 @@
 			itemStyle(){
 				return (item)=>{
 					var style = {};
-					//禁用状态
-					if(this.itemDisabled(item)){
-						style.color = '#bbb';
-						if(this.disabledColor){
-							style.color = this.disabledColor;
-						}
-						if(item.disabledColor){
-							style.color = item.disabledColor;
-						}
-					}else {//非禁用状态
-						if(this.color){
-							style.color = this.color;
-						}
+					//非禁用状态
+					if(!this.itemDisabled(item)){
 						if(item.color){
 							style.color = item.color;
+						}else if(this.color){
+							style.color = this.color;
 						}
-					}
-					if(this.borderColor){
-						style.borderBottomColor = this.borderColor;
 					}
 					return style;
 				}
@@ -299,16 +270,28 @@
 		position: relative;
 		justify-content: center;
 		align-items: center;
-		height: @medium-height;
 		border-bottom: 1px solid @border-color;
-		font-size: @font-size-default;
 		color: @font-color-default;
 		padding: 0 @mp-md;
 		cursor: pointer;
+		
+		&.mvi-actionsheet-item-medium{
+			height: @medium-height;
+			font-size: @font-size-default;
+		}
+		
+		&.mvi-actionsheet-item-large{
+			height: @large-height;
+			font-size: @font-size-h6;
+		}
 	}
 
 	.mvi-acionsheet-active:active::before {
 		.mvi-active();
+	}
+	
+	.mvi-acionsheet-item[disabled]{
+		color:@font-color-mute;
 	}
 
 	.mvi-acionsheet-content {
@@ -349,7 +332,7 @@
 		display: block;
 		width: 100%;
 		height: 0.3rem;
-		background-color: #eee;
+		background-color: @bg-color-default;
 	}
 
 	.mvi-acionsheet-button {

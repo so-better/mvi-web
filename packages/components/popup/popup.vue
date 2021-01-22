@@ -243,7 +243,7 @@
 	
 	.mvi-popup{
 		position:absolute;
-		background-color: @bg-color-default;
+		background-color: #fff;
 		overflow-x: hidden;
 		overflow-y: auto;
 		transition-timing-function:linear;

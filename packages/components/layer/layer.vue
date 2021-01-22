@@ -17,7 +17,8 @@
 		data(){
 			return {
 				layerShow:false,
-				firstShow:false
+				firstShow:false,
+				realPlacement:'bottom'
 			}
 		},
 		model:{
@@ -79,7 +80,7 @@
 			//悬浮层显示与隐藏动画时长
 			timeout:{
 				type:Number,
-				default:200
+				default:300
 			},
 			//点击触发元素和悬浮层以外的元素是否关闭悬浮层
 			closable:{
@@ -119,8 +120,7 @@
 		},
 		watch:{
 			placement(newValue){
-				this.reset();
-				this.resetTriangle()
+				this.realPlacement = newValue;
 			},
 			show(newValue){
 				if(newValue){
@@ -129,6 +129,10 @@
 					}
 				}
 				this.layerShow = newValue;
+			},
+			realPlacement(newValue){
+				this.reset();
+				this.resetTriangle()
 			}
 		},
 		computed: {
@@ -136,13 +140,13 @@
 				return Object.assign({},this.$listeners);
 			},
 			trianglePlacement(){
-				if(this.placement == 'bottom-start' || this.placement == 'bottom' || this.placement == 'bottom-end'){
+				if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom' || this.realPlacement == 'bottom-end'){
 					return 'top'
-				}else if(this.placement == 'top-start' || this.placement == 'top' || this.placement == 'top-end'){
+				}else if(this.realPlacement == 'top-start' || this.realPlacement == 'top' || this.realPlacement == 'top-end'){
 					return 'bottom'
-				}else if(this.placement == 'left-start' || this.placement == 'left' || this.placement == 'left-end'){
+				}else if(this.realPlacement == 'left-start' || this.placement == 'left' || this.placement == 'left-end'){
 					return 'right'
-				}else if(this.placement == 'right-start' || this.placement == 'right' || this.placement == 'right-end'){
+				}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
 					return 'left'
 				}
 			},
@@ -182,13 +186,13 @@
 					style.webkitTransition = 'transform ' + this.timeout + 'ms,opacity ' + this.timeout + 'ms';
 				}
 				if(!this.showTriangle){
-					if(this.placement == 'bottom-start' || this.placement == 'bottom' || this.placement == 'bottom-end'){
+					if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom' || this.realPlacement == 'bottom-end'){
 						style.paddingTop = this.offset;
-					}else if(this.placement == 'top-start' || this.placement == 'top' || this.placement == 'top-end'){
+					}else if(this.realPlacement == 'top-start' || this.realPlacement == 'top' || this.realPlacement == 'top-end'){
 						style.paddingBottom = this.offset;
-					}else if(this.placement == 'left-start' || this.placement == 'left' || this.placement == 'left-end'){
+					}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
 						style.paddingRight = this.offset;
-					}else if(this.placement == 'right-start' || this.placement == 'right' || this.placement == 'right-end'){
+					}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
 						style.paddingLeft = this.offset;
 					}
 				}
@@ -196,6 +200,7 @@
 			}
 		},
 		mounted() {
+			this.realPlacement = this.placement;
 			//初始化时是否显示
 			if(this.show){
 				if(!this.firstShow){
@@ -205,6 +210,87 @@
 			}
 		},
 		methods: {
+			//悬浮层显示位置智能化
+			autoAdjust(){
+				var point = $util.getElementPoint(this.$el);
+				if(point.right < 0){
+					if(point.top < 0){
+						if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
+							this.realPlacement = 'bottom-end'
+						}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
+							this.realPlacement = 'left-start';
+						}
+					}else if(point.bottom < 0){
+						if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
+							this.realPlacement = 'top-end'
+						}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
+							this.realPlacement = 'left-end';
+						}
+					}else {
+						if(this.realPlacement == 'top-start' || this.realPlacement == 'top'){
+							this.realPlacement = 'top-end'
+						}else if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom'){
+							this.realPlacement = 'bottom-end'
+						}else if(this.realPlacement == 'right-start'){
+							this.realPlacement = 'left-start'
+						}else if(this.realPlacement == 'right'){
+							this.realPlacement = 'left'
+						}else if(this.realPlacement == 'right-end'){
+							this.realPlacement = 'left-end';
+						}
+					}
+				}else if(point.left < 0){
+					if(point.top < 0){
+						if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
+							this.realPlacement = 'bottom-start'
+						}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
+							this.realPlacement = 'right-start';
+						}
+					}else if(point.bottom < 0){
+						if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
+							this.realPlacement = 'top-start'
+						}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
+							this.realPlacement = 'right-end';
+						}
+					}else {
+						if(this.realPlacement == 'top-end' || this.realPlacement == 'top'){
+							this.realPlacement = 'top-start'
+						}else if(this.realPlacement == 'bottom-end' || this.realPlacement == 'bottom'){
+							this.realPlacement = 'bottom-start'
+						}else if(this.realPlacement == 'left-start'){
+							this.realPlacement = 'right-start'
+						}else if(this.realPlacement == 'right'){
+							this.realPlacement = 'right'
+						}else if(this.realPlacement == 'right-end'){
+							this.realPlacement = 'right-end';
+						}
+					}
+				}else if(point.top < 0){
+					if(this.realPlacement == 'right-end' || this.realPlacement == 'right'){
+						this.realPlacement = 'right-start'
+					}else if(this.realPlacement == 'left-end' || this.realPlacement == 'left'){
+						this.realPlacement = 'left-start'
+					}else if(this.realPlacement == 'top-start'){
+						this.realPlacement = 'bottom-start'
+					}else if(this.realPlacement == 'top'){
+						this.realPlacement = 'bottom'
+					}else if(this.realPlacement == 'top-end'){
+						this.realPlacement = 'bottom-end'
+					}
+				}else if(point.bottom < 0){
+					if(this.realPlacement == 'right-start' || this.realPlacement == 'right'){
+						this.realPlacement = 'right-end'
+					}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left'){
+						this.realPlacement = 'left-end'
+					}else if(this.realPlacement == 'bottom-start'){
+						this.realPlacement = 'top-start'
+					}else if(this.realPlacement == 'bottom'){
+						this.realPlacement = 'top'
+					}else if(this.realPlacement == 'bottom-end'){
+						this.realPlacement = 'top-end'
+					}
+				}
+			},
 			//点击他处关闭悬浮层
 			hideLayer(event){
 				if($util.isContains(this.$el,event.target) || $util.isContains(this.getTargetEl(),event.target)){
@@ -222,6 +308,7 @@
 				this.$nextTick(()=>{
 					this.reset();
 					this.resetTriangle();
+					this.autoAdjust();
 					window.addEventListener('resize',this.reset);
 					window.addEventListener('resize',this.resetTriangle);
 					if(this.closable){
@@ -258,159 +345,175 @@
 				}
 				if(this.fixed){
 					var pt = this.getTargetEl().getBoundingClientRect();//获取绑定元素相对视窗的位置信息
-					if(this.placement == 'bottom' || this.placement == 'bottom-start' || this.placement == 'bottom-end'){
+					if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
 						this.$el.style.top = pt.bottom + 'px';
-						if(this.placement == 'bottom'){
+						this.$el.style.bottom = 'auto';
+						if(this.realPlacement == 'bottom'){
 							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.placement == 'bottom-start'){
+						}else if(this.realPlacement == 'bottom-start'){
 							this.$el.style.left = pt.left + 'px';
-						}else if(this.placement == 'bottom-end'){
+						}else if(this.realPlacement == 'bottom-end'){
 							this.$el.style.left = pt.right - this.$el.offsetWidth + 'px';
 						}
-					}else if(this.placement == 'top' || this.placement == 'top-start' || this.placement == 'top-end'){
+						this.$el.style.right = 'auto';
+					}else if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
 						this.$el.style.bottom = (document.body.clientHeight - pt.top) + 'px';
-						if(this.placement == 'top'){
+						this.$el.style.top = 'auto';
+						if(this.realPlacement == 'top'){
 							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.placement == 'top-start'){
+						}else if(this.realPlacement == 'top-start'){
 							this.$el.style.left = pt.left + 'px';
-						}else if(this.placement == 'top-end'){
+						}else if(this.realPlacement == 'top-end'){
 							this.$el.style.left = pt.right - this.$el.offsetWidth + 'px';
 						}
-					}else if(this.placement == 'left' || this.placement == 'left-start' || this.placement == 'left-end'){
+						this.$el.style.right = 'auto';
+					}else if(this.realPlacement == 'left' || this.realPlacement == 'left-start' || this.realPlacement == 'left-end'){
 						this.$el.style.right = (document.body.clientWidth - pt.left) + 'px';
-						if(this.placement == 'left'){
+						this.$el.style.left = 'auto';
+						if(this.realPlacement == 'left'){
 							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.placement == 'left-start'){
+						}else if(this.realPlacement == 'left-start'){
 							this.$el.style.top = pt.top + 'px';
-						}else if(this.placement == 'left-end'){
+						}else if(this.realPlacement == 'left-end'){
 							this.$el.style.top = pt.bottom - this.$el.offsetHeight + 'px';
 						}
-					}else if(this.placement == 'right' || this.placement == 'right-start' || this.placement == 'right-end'){
+						this.$el.style.bottom = 'auto';
+					}else if(this.realPlacement == 'right' || this.realPlacement == 'right-start' || this.realPlacement == 'right-end'){
 						this.$el.style.left = pt.right + 'px';
-						if(this.placement == 'right'){
+						this.$el.style.right = 'auto';
+						if(this.realPlacement == 'right'){
 							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.placement == 'right-start'){
+						}else if(this.realPlacement == 'right-start'){
 							this.$el.style.top = pt.top + 'px';
-						}else if(this.placement == 'right-end'){
+						}else if(this.realPlacement == 'right-end'){
 							this.$el.style.top = pt.bottom - this.$el.offsetHeight + 'px';
 						}
+						this.$el.style.bottom = 'auto';
 					}
 				}else{
 					var pt = $util.getElementPoint(this.getTargetEl(),this.getRootEl())
-					if(this.placement == 'bottom' || this.placement == 'bottom-start' || this.placement == 'bottom-end'){
+					if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
 						this.$el.style.top = (pt.top + this.getTargetEl().offsetHeight) + 'px';
-						if(this.placement == 'bottom'){
+						this.$el.style.bottom = 'auto';
+						if(this.realPlacement == 'bottom'){
 							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.placement == 'bottom-start'){
+						}else if(this.realPlacement == 'bottom-start'){
 							this.$el.style.left = pt.left + 'px';
-						}else if(this.placement == 'bottom-end'){
+						}else if(this.realPlacement == 'bottom-end'){
 							this.$el.style.left = this.getTargetEl().offsetWidth + pt.left - this.$el.offsetWidth + 'px';
 						}
-					}else if(this.placement == 'top' || this.placement == 'top-start' || this.placement == 'top-end'){
+						this.$el.style.right = 'auto';
+					}else if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
 						this.$el.style.bottom = (this.getRootEl().offsetHeight - pt.top) + 'px';
-						if(this.placement == 'top'){
+						this.$el.style.top = 'auto';
+						if(this.realPlacement == 'top'){
 							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.placement == 'top-start'){
+						}else if(this.realPlacement == 'top-start'){
 							this.$el.style.left = pt.left + 'px';
-						}else if(this.placement == 'top-end'){
+						}else if(this.realPlacement == 'top-end'){
 							this.$el.style.left = this.getTargetEl().offsetWidth + pt.left - this.$el.offsetWidth + 'px';
 						}
-					}else if(this.placement == 'left' || this.placement == 'left-start' || this.placement == 'left-end'){
+						this.$el.style.right = 'auto';
+					}else if(this.realPlacement == 'left' || this.realPlacement == 'left-start' || this.realPlacement == 'left-end'){
 						this.$el.style.right = (this.getRootEl().offsetWidth - pt.left) + 'px';
-						if(this.placement == 'left'){
+						this.$el.style.left = 'auto';
+						if(this.realPlacement == 'left'){
 							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.placement == 'left-start'){
+						}else if(this.realPlacement == 'left-start'){
 							this.$el.style.top = pt.top + 'px';
-						}else if(this.placement == 'left-end'){
+						}else if(this.realPlacement == 'left-end'){
 							this.$el.style.top = this.getTargetEl().offsetHeight + pt.top - this.$el.offsetHeight + 'px';
 						}
-					}else if(this.placement == 'right' || this.placement == 'right-start' || this.placement == 'right-end'){
+						this.$el.style.bottom = 'auto';
+					}else if(this.realPlacement == 'right' || this.realPlacement == 'right-start' || this.realPlacement == 'right-end'){
 						this.$el.style.left = (pt.left + this.getTargetEl().offsetWidth) + 'px';
-						if(this.placement == 'right'){
+						this.$el.style.right = 'auto';
+						if(this.realPlacement == 'right'){
 							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.placement == 'right-start'){
+						}else if(this.realPlacement == 'right-start'){
 							this.$el.style.top = pt.top + 'px';
-						}else if(this.placement == 'right-end'){
+						}else if(this.realPlacement == 'right-end'){
 							this.$el.style.top = this.getTargetEl().offsetHeight + pt.top - this.$el.offsetHeight + 'px';
 						}
+						this.$el.style.bottom = 'auto';
 					}
 					
 				}
 				
 				//设置offset
 				if(this.showTriangle){
-					if(this.placement == 'bottom-start' || this.placement == 'bottom' || this.placement == 'bottom-end'){
+					if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom' || this.realPlacement == 'bottom-end'){
 						this.$el.style.paddingTop = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetHeight}px)`;
-					}else if(this.placement == 'top-start' || this.placement == 'top' || this.placement == 'top-end'){
+					}else if(this.realPlacement == 'top-start' || this.realPlacement == 'top' || this.realPlacement == 'top-end'){
 						this.$el.style.paddingBottom = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetHeight}px)`;
-					}else if(this.placement == 'left-start' || this.placement == 'left' || this.placement == 'left-end'){
+					}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
 						this.$el.style.paddingRight = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetWidth}px)`;
-					}else if(this.placement == 'right-start' || this.placement == 'right' || this.placement == 'right-end'){
+					}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
 						this.$el.style.paddingLeft = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetWidth}px)`;
 					}
 				}
 			},
 			//重置三角位置
 			resetTriangle(){
-				if(!this.showTriangle){
+				if(!this.showTriangle || (this.$refs.triangle && !this.$refs.triangle.$el)){
 					return;
 				}
-				if(this.placement == 'bottom-start'){
+				if(this.realPlacement == 'bottom-start'){
 					this.$refs.triangle.$el.style.top = 'auto';
 					this.$refs.triangle.$el.style.right = 'auto';
 					this.$refs.triangle.$el.style.bottom = '100%';
 					this.$refs.triangle.$el.style.left = (this.getTargetEl().offsetWidth / 2 - this.$refs.triangle.$el.offsetWidth /2)+ 'px';
-				}else if(this.placement == 'bottom'){
+				}else if(this.realPlacement == 'bottom'){
 					this.$refs.triangle.$el.style.top = 'auto';
 					this.$refs.triangle.$el.style.right = 'auto';
 					this.$refs.triangle.$el.style.bottom = '100%';
 					this.$refs.triangle.$el.style.left = (this.$el.offsetWidth/2 - this.$refs.triangle.$el.offsetWidth /2) + 'px';
-				}else if(this.placement == 'bottom-end'){
+				}else if(this.realPlacement == 'bottom-end'){
 					this.$refs.triangle.$el.style.top = 'auto';
 					this.$refs.triangle.$el.style.left = 'auto';
 					this.$refs.triangle.$el.style.bottom = '100%';
 					this.$refs.triangle.$el.style.right = (this.getTargetEl().offsetWidth / 2 - this.$refs.triangle.$el.offsetWidth /2) + 'px';
-				}else if(this.placement == 'top-start'){
+				}else if(this.realPlacement == 'top-start'){
 					this.$refs.triangle.$el.style.top = '100%';
 					this.$refs.triangle.$el.style.right = 'auto';
 					this.$refs.triangle.$el.style.bottom = 'auto';
 					this.$refs.triangle.$el.style.left = (this.getTargetEl().offsetWidth / 2 - this.$refs.triangle.$el.offsetWidth /2)+ 'px';
-				}else if(this.placement == 'top'){
+				}else if(this.realPlacement == 'top'){
 					this.$refs.triangle.$el.style.top = '100%';
 					this.$refs.triangle.$el.style.right = 'auto';
 					this.$refs.triangle.$el.style.bottom = 'auto';
 					this.$refs.triangle.$el.style.left = (this.$el.offsetWidth/2 - this.$refs.triangle.$el.offsetWidth /2) + 'px';
-				}else if(this.placement == 'top-end'){
+				}else if(this.realPlacement == 'top-end'){
 					this.$refs.triangle.$el.style.top = '100%';
 					this.$refs.triangle.$el.style.left = 'auto';
 					this.$refs.triangle.$el.style.bottom = 'auto';
 					this.$refs.triangle.$el.style.right = (this.getTargetEl().offsetWidth / 2 - this.$refs.triangle.$el.offsetWidth /2) + 'px';
-				}else if(this.placement == 'left-start'){
+				}else if(this.realPlacement == 'left-start'){
 					this.$refs.triangle.$el.style.left = '100%';
 					this.$refs.triangle.$el.style.right = 'auto';
 					this.$refs.triangle.$el.style.top = (this.getTargetEl().offsetHeight / 2 - this.$refs.triangle.$el.offsetHeight /2) + 'px';
 					this.$refs.triangle.$el.style.bottom = 'auto';
-				}else if(this.placement == 'left'){
+				}else if(this.realPlacement == 'left'){
 					this.$refs.triangle.$el.style.left = '100%';
 					this.$refs.triangle.$el.style.right = 'auto';
 					this.$refs.triangle.$el.style.top = (this.$el.offsetHeight/2 - this.$refs.triangle.$el.offsetHeight /2) + 'px';
 					this.$refs.triangle.$el.style.bottom = 'auto';
-				}else if(this.placement == 'left-end'){
+				}else if(this.realPlacement == 'left-end'){
 					this.$refs.triangle.$el.style.left = '100%';
 					this.$refs.triangle.$el.style.right = 'auto';
 					this.$refs.triangle.$el.style.bottom = (this.getTargetEl().offsetHeight / 2 - this.$refs.triangle.$el.offsetHeight /2) + 'px';
 					this.$refs.triangle.$el.style.top = 'auto';
-				}else if(this.placement == 'right-start'){
+				}else if(this.realPlacement == 'right-start'){
 					this.$refs.triangle.$el.style.right = '100%';
 					this.$refs.triangle.$el.style.left = 'auto';
 					this.$refs.triangle.$el.style.top = (this.getTargetEl().offsetHeight / 2 - this.$refs.triangle.$el.offsetHeight /2) + 'px';
 					this.$refs.triangle.$el.style.bottom = 'auto';
-				}else if(this.placement == 'right'){
+				}else if(this.realPlacement == 'right'){
 					this.$refs.triangle.$el.style.right = '100%';
 					this.$refs.triangle.$el.style.left = 'auto';
 					this.$refs.triangle.$el.style.top = (this.$el.offsetHeight/2 - this.$refs.triangle.$el.offsetHeight /2) + 'px';
 					this.$refs.triangle.$el.style.bottom = 'auto';
-				}else if(this.placement == 'right-end'){
+				}else if(this.realPlacement == 'right-end'){
 					this.$refs.triangle.$el.style.right = '100%';
 					this.$refs.triangle.$el.style.left = 'auto';
 					this.$refs.triangle.$el.style.bottom = (this.getTargetEl().offsetHeight / 2 - this.$refs.triangle.$el.offsetHeight /2) + 'px';

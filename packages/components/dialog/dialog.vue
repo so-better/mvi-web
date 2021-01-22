@@ -1,6 +1,6 @@
 <template>
 	<m-modal v-on="listeners" :show="show" :footer-padding="false" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius"
-	:local="computedLocal" :use-padding="computedUsePadding" :animation="computedAnimation" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor" :modal-color="computedDialogColor">
+	:local="computedLocal" :use-padding="computedUsePadding" :animation="computedAnimation" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor">
 		<template v-if="computedTitle" v-slot:title>
 			<div v-html="computedTitle" class="mvi-dialog-title"></div>
 		</template>
@@ -45,7 +45,6 @@
 				radius:null,//圆角
 				timeout:null,//自定义动画时间
 				overlayColor:null,//遮罩层背景色
-				dialogColor:null,//模态框背景色
 				input: {//输入框配置
 					placeholder: null, //占位符
 					type:null, //输入框类型
@@ -255,13 +254,6 @@
 					return null;
 				}
 			},
-			computedDialogColor(){
-				if(typeof(this.dialogColor) == 'string' && this.dialogColor){
-					return this.dialogColor;
-				}else {
-					return null
-				}
-			},
 			contentShow(){
 				if(this.type == "alert" || this.type == 'confirm'){
 					if(this.computedMessage){
@@ -384,7 +376,7 @@
 	}
 	.mvi-dialog-content{
 		text-align: center;
-		color:@font-color-sub;
+		color:@font-color-default;
 		line-height: 1.5;
 		font-size: @font-size-default;
 	}
@@ -406,7 +398,7 @@
 		line-height: 1.5;
 		border-radius: @radius-default;
 		border: 1px solid @border-color;
-		color: @font-color-sub;
+		color: @font-color-default;
 		font-size: @font-size-default;
 		padding: 0 @mp-sm 0 @mp-sm;
 		background-color: #fff;
@@ -471,7 +463,7 @@
 		font-size: @font-size-h6;
 		width: 50%;
 		border-right: 1px solid @border-color;
-		color: @primary-normal;
+		color: @font-color-default;
 		cursor: pointer;
 	}
 	

@@ -118,7 +118,7 @@
 			},
 			timeout:{//layer动画时间
 				type:Number,
-				default:200
+				default:300
 			},
 			name:{//原生name
 				type:String,

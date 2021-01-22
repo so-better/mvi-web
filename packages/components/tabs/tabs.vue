@@ -62,7 +62,7 @@
 			},
 			timeout:{//当animation为slide或者fade时的动画时长
 				type:Number,
-				default:400
+				default:300
 			},
 			activeColor:{//激活的标签标题颜色
 				type:String,
@@ -199,6 +199,7 @@
 							style.borderRightColor = this.activeBackground;
 						}
 					}
+					style.maxWidth = `calc(100% / ${this.children.length})`
 					return style;
 				}
 			},

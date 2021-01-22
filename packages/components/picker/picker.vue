@@ -419,16 +419,28 @@
 		padding: 0;
 	}
 
-	.mvi-picker-toolbar-cancel,
 	.mvi-picker-toolbar-confirm {
 		display: flex;
 		display: -webkit-flex;
 		position: relative;
 		justify-content: center;
 		align-items: center;
-		font-size: @font-size-default;
+		font-size: @font-size-h6;
 		color: @primary-normal;
 		font-weight: bold;
+		height: 100%;
+		padding: 0 @mp-sm;
+		cursor: pointer;
+	}
+	
+	.mvi-picker-toolbar-cancel{
+		display: flex;
+		display: -webkit-flex;
+		position: relative;
+		justify-content: center;
+		align-items: center;
+		font-size: @font-size-h6;
+		color: @font-color-sub;
 		height: 100%;
 		padding: 0 @mp-sm;
 		cursor: pointer;

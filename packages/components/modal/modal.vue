@@ -312,7 +312,7 @@
 		-ms-flex-direction: column;
 		-webkit-flex-direction: column;
 		width: 100%;
-		background: @bg-color-default;
+		background: #fff;
 		font-size: @font-size-default;
 		color: @font-color-default;
 		border-radius: @radius-default;

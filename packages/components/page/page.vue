@@ -376,6 +376,7 @@
 		height: @medium-height;
 		border: 1px solid @border-color;
 		font-size: @font-size-default;
+		border-radius: @radius-default;
 	}
 	
 	.mvi-page-first{

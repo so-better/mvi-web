@@ -3,7 +3,8 @@
 		<m-cell class="mvi-collapse-cell" :icon="icon" :content="label" :title="title" :border="cellBorder" :arrow="arrow" 
 		:title-class="titleClass" :content-class="labelClass" :icon-class="iconClass" @click="changeCollapse" :active="computedActive" 
 		 :disabled="disabled || collapse.disabled" :no-wrap="computedNoWrap" :arrow-class="computedArrowClass"></m-cell>
-		<m-transition-slide :expand="open" :timeout="computedTimeout" @slide-up="slideUp" @before-slide-down="beforeSlideDown">
+		<m-transition-slide :expand="open" :timeout="computedTimeout" @before-slide-up="beforeSlideUp" @slide-up="slideUp" 
+		@before-slide-down="beforeSlideDown" @slide-down="slideDown">
 			<div :class="'mvi-collapse-item-content'+(contentClass?' '+contentClass:'')">
 				<slot v-if="$slots.default"></slot>
 				<span v-else v-text="content"></span>
@@ -190,15 +191,25 @@
 		methods: {
 			//面板展开前触发
 			beforeSlideDown(){
+				this.collapse.$emit('before-slide-down',this.itemIndex)
 				if(this.computedInBorder){
 					this.cellBorder = true;
 				}
+			},
+			//面板展开后触发
+			slideDown(){
+				this.collapse.$emit('slide-down',this.itemIndex);
+			},
+			//面板收起前触发
+			beforeSlideUp(){
+				this.collapse.$emit('before-slide-up',this.itemIndex)
 			},
 			//面板收起后触发
 			slideUp(){
 				if(this.computedInBorder){
 					this.cellBorder = false;
 				}
+				this.collapse.$emit('slide-up',this.itemIndex);
 			},
 			//判断是否需要隐藏此折叠面板
 			isNeedHideSelf(){

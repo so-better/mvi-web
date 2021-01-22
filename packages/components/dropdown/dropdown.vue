@@ -1,5 +1,5 @@
 <template>
-	<m-popup :show="show" @click.native.self="hide" :popup-color="backgroundColor" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" v-on="listeners" :local="local" :use-padding="usePadding">
+	<m-popup :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" :placement="placement" :round="round" v-on="listeners" :local="local" :use-padding="usePadding">
 		<div class="mvi-dropdown">
 			<div :disabled="itemDisabled(item)" :class="dropdownItemClass(item,index)" v-for="(item,index) in options" :key="'item-'+index" 
 			@click="doSelect(item,index)" :style="dropdownItemStyle(item,index)">
@@ -70,7 +70,7 @@
 			},
 			timeout:{
 				type:Number,
-				default:400
+				default:300
 			},
 			round:{
 				type:Boolean,
@@ -97,19 +97,7 @@
 				type:Boolean,
 				default: false
 			},
-			backgroundColor:{//背景色
-				type:String,
-				default:null
-			},
 			inactiveColor:{//未选中列表颜色
-				type:String,
-				default:null
-			},
-			disabledColor:{//禁用时列表颜色
-				type:String,
-				default:null
-			},
-			borderColor:{//下边框颜色
 				type:String,
 				default:null
 			}
@@ -225,15 +213,7 @@
 			dropdownItemStyle(){
 				return (item,index)=>{
 					var style = {}
-					if(this.borderColor){
-						style.borderBottomColor = this.borderColor;
-					}
-					if(this.itemDisabled(item)){
-						style.color = '#bbb';
-						if(this.disabledColor){
-							style.color = this.disabledColor;
-						}
-					}else {
+					if(!this.itemDisabled(item)){
 						//激活选中情况下
 						if(this.equalValue(item,index)){
 							if(this.activeColor){
@@ -353,9 +333,12 @@
 		.mvi-active();
 	}
 	
-	.mvi-dropdown-checked>.mvi-dropdown-item-checked,
-	.mvi-dropdown-checked>.mvi-dropdown-item-label{
+	.mvi-dropdown-item.mvi-dropdown-checked{
 		color: @info-normal;
+	}
+	
+	.mvi-dropdown-item[disabled]{
+		color: @font-color-mute;
 	}
 	
 	.mvi-dropdown-item:last-child{
