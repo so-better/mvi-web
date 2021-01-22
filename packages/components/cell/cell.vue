@@ -253,18 +253,19 @@
 	}
 
 	.mvi-cell-title {
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
+		display: block;
 		width: 100%;
 		font-size: @font-size-default;
 		word-wrap:break-word;
+		vertical-align: middle;
+		
+		*{
+			vertical-align: middle;
+		}
 	}
 
 	.mvi-cell-content {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
+		display: block;
 		position: relative;
 		width: 100%;
 		text-align: right;
@@ -272,6 +273,10 @@
 		overflow: hidden;
 		word-wrap:break-word;
 		color: @font-color-sub;
+		
+		*{
+			vertical-align: middle;
+		}
 	}
 	
 	.mvi-cell-nowrap{
