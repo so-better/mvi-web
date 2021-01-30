@@ -131,8 +131,12 @@
 				this.layerShow = newValue;
 			},
 			realPlacement(newValue){
-				this.reset();
-				this.resetTriangle()
+				if(this.layerShow && this.firstShow){
+					this.reset();
+					this.$nextTick(()=>{
+						this.resetTriangle()
+					})
+				}
 			}
 		},
 		computed: {
@@ -186,6 +190,7 @@
 					style.webkitTransition = 'transform ' + this.timeout + 'ms,opacity ' + this.timeout + 'ms';
 				}
 				if(!this.showTriangle){
+					style.padding = 0;
 					if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom' || this.realPlacement == 'bottom-end'){
 						style.paddingTop = this.offset;
 					}else if(this.realPlacement == 'top-start' || this.realPlacement == 'top' || this.realPlacement == 'top-end'){
@@ -210,6 +215,13 @@
 			}
 		},
 		methods: {
+			//窗口变化时处理
+			resizeSet(){
+				this.reset();
+				this.$nextTick(()=>{
+					this.resetTriangle()
+				})
+			},
 			//悬浮层显示位置智能化
 			autoAdjust(){
 				var point = $util.getElementPoint(this.$el);
@@ -307,10 +319,11 @@
 			enter(el){
 				this.$nextTick(()=>{
 					this.reset();
-					this.resetTriangle();
-					this.autoAdjust();
-					window.addEventListener('resize',this.reset);
-					window.addEventListener('resize',this.resetTriangle);
+					this.$nextTick(()=>{
+						this.resetTriangle()
+						this.autoAdjust();
+					})
+					window.addEventListener('resize',this.resizeSet);
 					if(this.closable){
 						window.addEventListener('click',this.hideLayer);
 					}
@@ -327,8 +340,7 @@
 			},
 			//悬浮层隐藏时
 			leave(el){
-				window.removeEventListener('resize',this.reset)
-				window.removeEventListener('resize',this.resetTriangle)
+				window.removeEventListener('resize',this.resizeSet)
 				if(this.closable){
 					window.removeEventListener('click',this.hideLayer)
 				}
@@ -343,6 +355,20 @@
 				if(!$util.isElement(this.$el)){
 					return;
 				}
+				//设置offset
+				if(this.showTriangle){
+					this.$el.style.padding = 0;
+					if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom' || this.realPlacement == 'bottom-end'){
+						this.$el.style.paddingTop = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetHeight}px)`;
+					}else if(this.realPlacement == 'top-start' || this.realPlacement == 'top' || this.realPlacement == 'top-end'){
+						this.$el.style.paddingBottom = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetHeight}px)`;
+					}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
+						this.$el.style.paddingRight = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetWidth}px)`;
+					}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
+						this.$el.style.paddingLeft = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetWidth}px)`;
+					}
+				}
+				
 				if(this.fixed){
 					var pt = this.getTargetEl().getBoundingClientRect();//获取绑定元素相对视窗的位置信息
 					if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
@@ -438,19 +464,6 @@
 						this.$el.style.bottom = 'auto';
 					}
 					
-				}
-				
-				//设置offset
-				if(this.showTriangle){
-					if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom' || this.realPlacement == 'bottom-end'){
-						this.$el.style.paddingTop = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetHeight}px)`;
-					}else if(this.realPlacement == 'top-start' || this.realPlacement == 'top' || this.realPlacement == 'top-end'){
-						this.$el.style.paddingBottom = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetHeight}px)`;
-					}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
-						this.$el.style.paddingRight = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetWidth}px)`;
-					}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
-						this.$el.style.paddingLeft = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetWidth}px)`;
-					}
 				}
 			},
 			//重置三角位置

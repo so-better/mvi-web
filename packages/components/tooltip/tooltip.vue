@@ -3,9 +3,9 @@
 		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-target-' + _uid">
 			<slot></slot>
 		</div>
-		<m-layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable show-triangle
+		<m-layer v-model="show" :offset="offset" :background="color" border :border-color="borderColor" closable :show-triangle="showTriangle"
 		:z-index="zIndex" :target="`[data-id='mvi-tooltip-target-${_uid}']`" :root="`[data-id='mvi-tooltip-${_uid}']`"
-		:placement="placement" :fixed="fixed" :width="width" :wrapper-class="wrapperClass" :timeout="timeout" 
+		:placement="placement" :fixed="fixed" :width="width" :timeout="timeout" 
 		:animation="animation?animation:'mvi-tooltip'" :shadow="false" >
 			<div class="mvi-tooltip-content" ref="content" :style="contentStyle">
 				<slot v-if="$slots.title" name="title"></slot>
@@ -82,13 +82,13 @@
 				type:String,
 				default:null
 			},
-			wrapperClass:{
-				type:String,
-				default:null
-			},
 			animation:{
 				type:String,
 				default:null
+			},
+			showTriangle:{
+				type:Boolean,
+				default:true
 			}
 		},
 		computed:{
@@ -99,6 +99,9 @@
 				var style = {};
 				if(this.textColor){
 					style.color = this.textColor;
+				}
+				if(this.width){
+					style.whiteSpace = 'normal';
 				}
 				return style;
 			}

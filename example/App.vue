@@ -23,7 +23,9 @@ export default {
 			}
 		};
 	},
-	mounted() {},
+	mounted() {
+		
+	},
 	methods: {
 		change() {
 			this.show = !this.show;
@@ -38,5 +40,10 @@ export default {
 	overflow: auto;
 	overflow-x: hidden;
 	position: relative;
+}
+
+.scale-enter,.scale-leave-to{
+	opacity: 0;
+	transform: scale(0.6) translateX(0.5rem);
 }
 </style>
