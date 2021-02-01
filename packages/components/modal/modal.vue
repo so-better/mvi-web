@@ -336,8 +336,8 @@
 	
 	.mvi-modal-times{
 		position: absolute;
-		right: @mp-md;
-		top: @mp-md;
+		right: @mp-sm;
+		top: @mp-sm;
 		display: flex;
 		display: -webkit-flex;
 		justify-content: center;

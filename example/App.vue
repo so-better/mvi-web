@@ -1,10 +1,6 @@
 <template>
 	<div id="app">
 		<div class="mvi-mb-4"><m-button @click="change">Button</m-button></div>
-		<div class="mvi-p-2">
-			<m-editor v-model="value" placeholder="请输入内容"></m-editor>
-			<div v-text="value" class="mvi-mt-2"></div>
-		</div>
 	</div>
 </template>
 
