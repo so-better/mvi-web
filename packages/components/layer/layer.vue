@@ -574,8 +574,7 @@
 			border-radius: @radius-default;	
 			
 			&.mvi-layer-shadow{
-				box-shadow: 0 0.04rem 0.24rem 0 rgba(0,0,0,.1);
-				-webkit-box-shadow: 0 0.04rem 0.24rem 0 rgba(0,0,0,.1);
+				box-shadow:@boxshadow;
 			}
 			
 			&.mvi-layer-border{

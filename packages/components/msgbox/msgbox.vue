@@ -145,8 +145,8 @@
 		padding: @mp-sm @mp-lg;
 		background-color: rgba(0,0,0,.7);
 		color: #fff;
-		box-shadow: @boxshadow-light;
-		-webkit-box-shadow: @boxshadow-light;
+		box-shadow: @boxshadow;
+		-webkit-box-shadow: @boxshadow;
 		
 		&.mvi-msgbox-translate{
 			top: auto;

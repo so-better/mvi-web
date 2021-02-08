@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<div class="mvi-mb-4"><m-button @click="change">Button</m-button></div>
+		<m-button id="btn" @click="change">Button</m-button>
 	</div>
 </template>
 

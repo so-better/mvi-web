@@ -289,9 +289,8 @@
 		min-width: .4rem;
 		min-height: .4rem;
 		background-color: #fff;
-		border: 1px solid @border-color;
-		box-shadow: @boxshadow-basic;
-		-webkit-box-shadow: @boxshadow-basic;
+		box-shadow: @boxshadow;
+		-webkit-box-shadow: @boxshadow;
 		border-radius: @radius-circle;
 	}
 </style>

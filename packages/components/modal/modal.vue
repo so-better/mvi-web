@@ -316,7 +316,7 @@
 		font-size: @font-size-default;
 		color: @font-color-default;
 		border-radius: @radius-default;
-		box-shadow: @boxshadow-basic;
+		box-shadow: @boxshadow;
 		position: relative;
 	}
 	

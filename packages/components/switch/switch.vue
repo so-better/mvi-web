@@ -181,7 +181,7 @@
 		width: .4rem;
 		height: .4rem;
 		border-radius: @radius-circle;
-		box-shadow: @boxshadow-basic;
+		box-shadow: @boxshadow;
 		background-color: #fff;
 		margin: 0;
 		padding: 0;

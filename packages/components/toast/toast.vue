@@ -1,5 +1,5 @@
 <template>
-	<m-overlay color="rgba(10,20,30,.2)" @hidden="toastHidden" :show="show" :use-padding="toastUsePadding"
+	<m-overlay class="mvi-toast-overlay" @hidden="toastHidden" :show="show" :use-padding="toastUsePadding"
 	:zIndex="toastZIndex" :local="toastLocal">
 		<div class="mvi-toast" :style="toastStyle" v-on="listeners">
 			<div v-if="toastIcon" class="mvi-toast-icon" :style="'margin-bottom:'+(toastMessage?'':'0')">
@@ -168,6 +168,10 @@
 <style scoped lang="less">	
 	@import "../../css/mvi-basic.less";
 	
+	.mvi-toast-overlay{
+		background-color: rgba(rgba(0,10,20,.05));
+	}
+	
 	.mvi-toast{
 		display: flex;
 		display: -webkit-flex;
@@ -185,8 +189,8 @@
 		margin: 0;
 		padding: @mp-md @mp-md*2;
 		border-radius: @radius-default;
-		box-shadow: @boxshadow-light;
-		-webkit-box-shadow: @boxshadow-light;
+		box-shadow: @boxshadow;
+		-webkit-box-shadow: @boxshadow;
 		background-color: rgba(0,0,0,.7);
 		word-break: keep-all;
 		word-wrap: break-word;
