@@ -1,19 +1,6 @@
 <template>
 	<div id="app">
 		<m-button id="btn" @click="change">Button</m-button>
-		<m-icon class="mvi-text-success mvi-m-1" type="weibo"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="wx"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="apple"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="set"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="weibo-square"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="wx-square"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="qq"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="android"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="wx-pay"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="ali-pay"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="wx-o"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="windows"></m-icon>
-		<m-icon class="mvi-text-success mvi-m-1" type="douyin"></m-icon>
 	</div>
 </template>
 
