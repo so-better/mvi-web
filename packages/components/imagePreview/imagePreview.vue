@@ -3,12 +3,11 @@
 	 :use-padding="usePadding">
 		<m-swiper v-if="firstShow" class="mvi-image-preview-swiper" :initial-slide="active" show-indicators ref="swiper"
 		 :width="swiperWidth" :height="swiperHeight" @change="swiperChange" @mousedown="mouseDown" @mouseup="mouseUp" :show-control="showControl"
-		 :fade="fade" :touchable="!isDoubleTouch" :control-class="controlClass" @wheel="wheelImage" @touchstart="prviewTouchStart"
-		 @touchmove="previewTouchMove" @touchend="previewTouchend">
-			<m-swiper-slide v-for="(item,index) in images" :key="'image-'+index">
-				<div class="mvi-image-preview-container" ref="previews">
-					<m-image @click="closeOverlay" class="mvi-image-preview" :src="item" fit="response" ref="images"></m-image>
-				</div>
+		 :fade="fade" :touchable="!isDoubleTouch" :control-class="controlClass">
+			<m-swiper-slide v-for="(item,index) in images" :key="'image-'+index" @wheel="wheelImage(index,$event)" 
+			@touchstart="prviewTouchStart(index,$event)" @touchmove="previewTouchMove(index,$event)" 
+			@touchend="previewTouchend(index,$event)" :id="'mvi-preview-slide-'+index" class="mvi-preview-container">
+				<m-image @click="closeOverlay" class="mvi-image-preview" :src="item" fit="response" ref="images"></m-image>
 			</m-swiper-slide>
 			<template v-slot:indicators="data">
 				<div class="mvi-image-preview-page" v-if="showPage">
@@ -37,11 +36,11 @@
 				firstShow: false,
 				start: 0,
 				end: 0,
-				current: 0,
 				isDoubleTouch:false,//是否双指触摸
 				touchDistance:0,//双指触点距离
-				swiperWidth:'100%',
-				swiperHeight:'100%'
+				swiperWidth:'100%',//轮播图宽度
+				swiperHeight:'100%',//轮播图高度
+				scale:1,//缩放比例
 			}
 		},
 		model: {
@@ -104,7 +103,6 @@
 			}
 		},
 		mounted() {
-			this.current = this.active;
 			window.addEventListener('resize',this.resize)
 		},
 		methods: {
@@ -122,8 +120,10 @@
 				if (!this.firstShow) {
 					this.firstShow = true;
 				}
-				this.swiperWidth = this.$el.offsetWidth+'px';
-				this.swiperHeight = this.$el.offsetHeight+'px';
+				this.$nextTick(()=>{
+					this.swiperWidth = this.$el.offsetWidth+'px';
+					this.swiperHeight = this.$el.offsetHeight+'px';
+				})
 			},
 			//pc端鼠标按下
 			mouseDown(event) {
@@ -138,39 +138,39 @@
 				if (this.start != this.end) {
 					return;
 				}
+				this.scale = 1;
 				this.$refs.images.forEach((image)=>{
-					image.$el.style.width = '';
+					image.$el.style.transform = '';
 				})
 				this.$emit('model-change', false);
 				this.$emit('update:show', false);
 			},
 			//图片变更
 			swiperChange(active) {
-				this.current = active;
+				this.scale = 1;
 				this.$refs.images.forEach((image)=>{
-					image.$el.style.width = '';
+					image.$el.style.transform = '';
 				})
 				this.$emit('change', active);
 			},
 			//滚轮
-			wheelImage(event) {
+			wheelImage(index,event) {
 				var deltaY = event.deltaY; //正值向下滚，负值向上滚
-				var el = this.$refs.images[this.current].$el; //图片元素
-				var container = this.$refs.previews[this.current]; //容器元素
+				var el = this.$refs.images[index].$el; //图片元素
 				if (deltaY > 0) { //向下滚，缩小图片
-					if(el.offsetWidth <= container.offsetWidth / 4){
-						return;
+					if(this.scale > 0.5){
+						this.scale -= 0.1;
 					}
-					el.style.width = el.offsetWidth * 0.8 + 'px';
 				} else { //向上滚，放大图片
-					if(el.offsetWidth >= container.offsetWidth * 4){
-						return;
+					if(this.scale < 2){
+						this.scale += 0.1;
 					}
-					el.style.width = el.offsetWidth * 1.2 + 'px';
+					
 				}
+				el.style.transform = `scale(${this.scale})`;
 			},
 			//双指触摸事件
-			prviewTouchStart(event){
+			prviewTouchStart(index,event){
 				if(event.touches.length == 2){
 					this.isDoubleTouch = true;
 					this.touchDistance = this.getDistance(event.touches[0],event.touches[1]);
@@ -179,29 +179,28 @@
 				}
 			},
 			//双指移动事件
-			previewTouchMove(event){
+			previewTouchMove(index,event){
 				if(event.touches.length == 2 && this.isDoubleTouch){
 					if(event.cancelable){
 						event.preventDefault()
 					}
-					var el = this.$refs.images[this.current].$el; //图片元素
-					var container = this.$refs.previews[this.current]; //容器元素
+					var el = this.$refs.images[index].$el; //图片元素
 					var distance = this.getDistance(event.touches[0],event.touches[1])
 					if(distance < this.touchDistance){//缩小
-						if(el.offsetWidth <= container.offsetWidth / 4){
-							return;
+						if(this.scale > 0.5){
+							this.scale += (distance - this.touchDistance) / el.offsetWidth;
 						}
 					}else {//放大
-						if(el.offsetWidth >= container.offsetWidth * 4){
-							return;
+						if(this.scale < 2){
+							this.scale += (distance - this.touchDistance) / el.offsetWidth;
 						}
 					}
-					el.style.width = el.offsetWidth +　(distance - this.touchDistance) + 'px';
+					el.style.transform = `scale(${this.scale})`;
 					this.touchDistance = distance;
 				}
 			},
 			//双指触摸松开事件
-			previewTouchend(event){
+			previewTouchend(index,event){
 				if(this.isDoubleTouch){
 					setTimeout(()=>{
 						this.isDoubleTouch = false;
@@ -227,20 +226,11 @@
 	.mvi-image-preview-swiper {
 		background-color: #000;
 
-		.mvi-image-preview-container {
-			padding: 0 @mp-xs;
-			display: block;
-			width: 100%;
-			height: 100%;
-			position: relative;
+		.mvi-preview-container{
 			overflow: hidden;
 		}
 
 		.mvi-image-preview {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			transform: translate(-50%, -50%);
 			width: 100%;
 			height: 100%;
 		}
