@@ -1,6 +1,7 @@
 <template>
 	<div id="app">
 		<m-button id="btn" @click="change">Button</m-button>
+		<m-field v-model="value" type="textarea" :autosize="{minRows:3,maxRows:10}"></m-field>
 	</div>
 </template>
 
@@ -11,7 +12,7 @@ export default {
 			arr: [1],
 			show: false,
 			date: new Date(),
-			value: 'https://www.mvi-web.cn/resources/blogImages/KdnnVU16mC4UYjROoAya5025.jfif',
+			value: '',
 			active: 1,
 			disabled: false,
 			types: ['info', 'warn', 'primary', 'success', 'error', 'default'],
