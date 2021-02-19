@@ -1,7 +1,6 @@
 <template>
 	<div id="app">
 		<m-button id="btn" @click="change">Button</m-button>
-		<m-image-preview v-model="show" :images="images" :descriptions="descriptions"></m-image-preview>
 	</div>
 </template>
 
@@ -12,7 +11,7 @@ export default {
 			arr: [1],
 			show: false,
 			date: new Date(),
-			value: '',
+			value: 'https://www.mvi-web.cn/resources/blogImages/KdnnVU16mC4UYjROoAya5025.jfif',
 			active: 1,
 			disabled: false,
 			types: ['info', 'warn', 'primary', 'success', 'error', 'default'],

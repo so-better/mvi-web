@@ -411,6 +411,13 @@
 				if (this.$refs.textarea) {
 					this.setMaxMinHeight();
 				}
+			},
+			showClear(newValue){
+				this.$nextTick(()=>{
+					if (this.$refs.textarea && (this.autosize == true || $util.isObject(this.autosize))) {
+						this.autosizeSet();
+					}
+				})
 			}
 		},
 		methods: {
@@ -481,7 +488,7 @@
 			autosizeSet() {
 				this.$refs.textarea.style.height = 'auto';
 				this.$refs.textarea.scrollTop = 0;
-				this.$refs.textarea.style.height = this.$refs.textarea.scrollHeight + 'px';
+				this.$refs.textarea.style.height = $util.getScrollHeight(this.$refs.textarea) + 'px';
 			},
 			//行数转为高度
 			rows2Height(rows) {
@@ -789,12 +796,12 @@
 
 	//不同大小的文本域
 	.mvi-input-container.mvi-input-container-medium .mvi-textarea {
-		line-height: 1.5;
+		line-height: .48rem;
 		font-size: @font-size-default;
 	}
 
 	.mvi-input-container.mvi-input-container-large .mvi-textarea {
-		line-height: 1.67;
+		line-height: .6rem;
 		font-size: @font-size-h6;
 	}
 

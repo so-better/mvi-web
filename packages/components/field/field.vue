@@ -1,25 +1,30 @@
 <template>
-	<div :class="fieldClass" :disabled="disabled">
-		<div class="mvi-field-prepend" v-if="prependType || prependUrl || $slots.prepend" :style="prependStyle" @click="prependClick">
+	<div :class="fieldClass" :disabled="disabled" :data-type="type">
+		<div class="mvi-field-prepend" v-if="(prependType || prependUrl || $slots.prepend) && type!='textarea'" :style="prependStyle" 
+		@click="prependClick">
 			<slot v-if="$slots.prepend" name="prepend"></slot>
 			<m-icon v-else-if="prependType || prependUrl" :type="prependType" :url="prependUrl" :spin="prependSpin" :size="prependSize" />
 		</div>
 		<div :class="fieldBodyClass" :style="fieldBodyStyle">
-			<div class="mvi-field-prefix" v-if="prefixType || prefixUrl || $slots.prefix" @click="prefixClick">
+			<div class="mvi-field-prefix" v-if="(prefixType || prefixUrl || $slots.prefix) && type!='textarea'" @click="prefixClick">
 				<slot v-if="$slots.prefix" name="prefix"></slot>
 				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" :size="prefixSize" />
 			</div>
-			<input ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
+			<textarea ref="textarea" v-if="type=='textarea'" :disabled="disabled" :readonly="readonly" class="mvi-field-input" 
+			:style="inputStyle" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" @focus="inputFocus"
+			 @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter"></textarea>
+			<input v-else ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
 			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus">
-			<div class="mvi-field-clear" @click="doClear" v-if="clearable" v-show="showClearIcon" :style="clearStyle">
+			<div class="mvi-field-clear" @click="doClear" v-if="clearable && type!='textarea'" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
 			</div>
-			<div class="mvi-field-suffix" v-if="suffixType || suffixUrl || $slots.suffix" @click="suffixClick">
+			<div class="mvi-field-suffix" v-if="(suffixType || suffixUrl || $slots.suffix) && type!='textarea'" @click="suffixClick">
 				<slot v-if="$slots.suffix" name="suffix"></slot>
 				<m-icon v-else-if="suffixType || suffixUrl" :type="suffixType" :url="suffixUrl" :spin="suffixSpin" :size="suffixSize" />
 			</div>
 		</div>
-		<div class="mvi-field-append" v-if="appendType || appendUrl || $slots.append" :style="appendStyle" @click="appendClick">
+		<div class="mvi-field-append" v-if="(appendType || appendUrl || $slots.append) && type!='textarea'" :style="appendStyle" 
+		@click="appendClick">
 			<slot v-if="$slots.append" name="append"></slot>
 			<m-icon v-else-if="appendType || appendUrl" :type="appendType" :url="appendUrl" :spin="appendSpin" :size="appendSize" />
 		</div>
@@ -169,12 +174,23 @@
 				type:Boolean,
 				default:false
 			},
-			inputMode:{//输入框调起移动端键盘类型
+			//输入框调起移动端键盘类型
+			inputMode:{
 				type:[String,Boolean],
 				default:false,
 				validator(value){
 					return [false,'none','text','decimal','numeric','tel','search','email','url'].includes(value)
 				}
+			},
+			//文本域行数
+			rows:{
+				type:Number,
+				default:1
+			},
+			//文本域高度自适应
+			autosize:{
+				type:[Boolean,Object],
+				default:false
 			}
 		},
 		computed:{
@@ -192,7 +208,7 @@
 			//清除图标样式
 			clearStyle(){
 				var style = {}
-				if(this.suffixType || this.suffixUrl || this.$slots.suffix){
+				if((this.suffixType || this.suffixUrl || this.$slots.suffix) && this.type != 'textarea'){
 					style.borderRadius = 0;
 				}
 				return style
@@ -222,10 +238,11 @@
 			//输入框样式
 			inputStyle(){
 				var style = {}
-				if(this.$slots.prefix || this.prefixType || this.prefixUrl){
+				if((this.$slots.prefix || this.prefixType || this.prefixUrl) && this.type !='textarea'){
 					style.paddingLeft = 0;
 				}
-				if(this.$slots.suffix || this.suffixType || this.suffixUrl || (this.showClearIcon && this.clearable)){
+				if((this.$slots.suffix || this.suffixType || this.suffixUrl || (this.showClearIcon && this.clearable)) && 
+				this.type!='textarea'){
 					style.paddingRight = 0;
 				}
 				if(this.align){
@@ -250,10 +267,10 @@
 			//输入框父容器样式类
 			fieldBodyClass(){
 				var cls = 'mvi-field-body';
-				if(this.prependType || this.prependUrl || this.$slots.prepend){
+				if((this.prependType || this.prependUrl || this.$slots.prepend) && this.type!='textarea'){
 					cls += ' mvi-field-body-left';
 				}
-				if(this.appendType || this.appendUrl || this.$slots.append){
+				if((this.appendType || this.appendUrl || this.$slots.append) && this.type!='textarea'){
 					cls += ' mvi-field-body-right';
 				}
 				if(!this.activeColor && this.activeType && this.focus){
@@ -264,7 +281,7 @@
 			//输入框组件样式类
 			fieldClass(){
 				var cls = 'mvi-field mvi-field-'+this.size;
-				if(this.round){
+				if(this.round && this.type!='textarea'){
 					cls += ' mvi-field-round';
 				}else if(this.square){
 					cls += ' mvi-field-square';
@@ -479,33 +496,109 @@
 				}
 				return size;
 			},
+			//文本域的rows
+			rowsFilter() {
+				var rows = this.rows;
+				if ($util.isObject(this.autosize)) {
+					if ($util.isNumber(this.autosize.minRows)) {
+						if (this.rows < this.autosize.minRows) {
+							rows = this.autosize.minRows;
+						}
+					}
+					if ($util.isNumber(this.autosize.maxRows)) {
+						if (this.rows > this.autosize.maxRows) {
+							rows = this.autosize.maxRows;
+						}
+					}
+				}
+				return rows;
+			},
+		},
+		watch:{
+			value(newValue) {
+				this.$nextTick(()=>{
+					if (this.$refs.textarea && (this.autosize == true || $util.isObject(this.autosize))) {
+						this.autosizeSet();
+					}
+				})
+			},
+			rows(newValue) {
+				this.$nextTick(()=>{
+					if (this.$refs.textarea) {
+						this.setMaxMinHeight();
+					}
+				})
+			},
+			autosize(newValue) {
+				this.$nextTick(()=>{
+					if (this.$refs.textarea) {
+						this.setMaxMinHeight();
+					}
+				})
+			}
+		},
+		mounted() {
+			if (this.$refs.textarea) {
+				this.setMaxMinHeight();
+				if (this.autosize == true || $util.isObject(this.autosize)) {
+					this.autosizeSet();
+				}
+			}
 		},
 		methods:{
+			//高度自适应设置
+			autosizeSet() {
+				this.$refs.textarea.style.height = 'auto';
+				this.$refs.textarea.scrollTop = 0;
+				this.$refs.textarea.style.height = $util.getScrollHeight(this.$refs.textarea) + 'px';
+			},
+			//行数转为高度
+			rows2Height(rows) {
+				var lineHeight = Math.floor(parseFloat($util.getCssStyle(this.$refs.textarea, 'line-height')));
+				return rows * lineHeight;
+			},
+			//设置最大高度和最小高度
+			setMaxMinHeight() {
+				if ($util.isObject(this.autosize)) {
+					if ($util.isNumber(this.autosize.maxRows)) {
+						var maxHeight = this.rows2Height(this.autosize.maxRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
+						this.$refs.textarea.style.maxHeight = maxHeight + "px";
+					}
+					if ($util.isNumber(this.autosize.minRows)) {
+						var minHeight = this.rows2Height(this.autosize.minRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
+						this.$refs.textarea.style.minHeight = minHeight + "px";
+					}
+				} else {
+					this.$refs.textarea.style.maxHeight = "";
+					this.$refs.textarea.style.minHeight = "";
+				}
+			},
 			//输入框获取焦点
 			inputFocus(){
 				setTimeout(()=>{
 					this.focus = true;
-				},300)
+				},200)
 			},
 			//输入框失去焦点
 			inputBlur(){
 				setTimeout(()=>{
 					this.focus = false;
-				},300)
+				},200)
 			},
 			//输入框实时输入
 			doInput(event){
-				var value = this.$refs.input.value;
+				var el = this.$refs.input || this.$refs.textarea;
+				var value = el.value;
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
-					this.$refs.input.value = value;
+					el.value = value;
 				}
 				//如果设置了maxlength，则进行字符串截取
 				if (this.maxlength > 0) {
 					if (value.length > this.maxlength) {
 						value = value.substr(0, this.maxlength);
-						this.$refs.input.value = value;
+						el.value = value;
 					}
 				}
 				this.$emit('update:value', value);
@@ -534,8 +627,9 @@
 				}
 				this.$emit('model-change','');
 				this.$emit('update:value','')
-				this.$refs.input.value = ''
-				this.$refs.input.focus();
+				var el = this.$refs.input || this.$refs.textarea;
+				el.value = ''
+				el.focus();
 			},
 		}
 	}
@@ -556,26 +650,42 @@
 		
 		&.mvi-field-small{
 			font-size: @font-size-small;
-			height: @small-height;
 			
-			.mvi-field-input{
-				padding: 0 @mp-sm;
+			&:not([data-type='textarea']){
+				height: @small-height;
+				
+				.mvi-field-input{
+					padding: 0 @mp-sm;
+				}
 			}
 			
-			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix,.mvi-field-clear{
-				padding: 0 @mp-xs * 2.4;
+			&[data-type="textarea"] .mvi-field-input{
+				padding:@mp-sm;
+				line-height:.28rem;
+			}
+			
+			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix{
+				padding: 0 @mp-sm;
 			}
 		}
 		
 		&.mvi-field-medium{
 			font-size: @font-size-default;
-			height: @medium-height;
 			
-			.mvi-field-input{
-				padding: 0 @mp-md;
+			&:not([data-type='textarea']){
+				height: @medium-height;
+				
+				.mvi-field-input{
+					padding: 0 @mp-sm;
+				}
 			}
 			
-			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix,.mvi-field-clear{
+			&[data-type="textarea"] .mvi-field-input{
+				padding: @mp-sm;
+				line-height:.44rem;
+			}
+			
+			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix{
 				padding: 0 @mp-md;
 			}
 			
@@ -583,14 +693,22 @@
 		
 		&.mvi-field-large{
 			font-size: @font-size-h6;
-			height: @large-height;
 			
-			.mvi-field-input{
-				padding: 0 @mp-lg;
+			&:not([data-type='textarea']){
+				height: @large-height;
+				
+				.mvi-field-input{
+					padding: 0 @mp-sm;
+				}
 			}
 			
-			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix,.mvi-field-clear{
-				padding: 0 @mp-xs*3.4;
+			&[data-type="textarea"] .mvi-field-input{
+				padding: @mp-sm;
+				line-height: .56rem;
+			}
+			
+			.mvi-field-prepend,.mvi-field-append,.mvi-field-prefix,.mvi-field-suffix{
+				padding: 0 @mp-lg;
 			}
 		}
 		
@@ -661,6 +779,7 @@
 		
 		.mvi-field-clear{
 			opacity: .6;
+			padding: 0 @mp-sm;
 		}
 		
 		.mvi-field-prefix{
@@ -689,6 +808,9 @@
 			font-size: inherit;
 			vertical-align: middle;
 			height: 100%;
+			line-height: 1.5;
+			resize: none;
+			font-family: inherit;
 			
 			&::-webkit-input-placeholder,&::placeholder,&::-moz-placeholder,&:-ms-input-placeholder{
 				color: inherit;
