@@ -120,7 +120,13 @@
 		},
 		watch:{
 			placement(newValue){
-				this.realPlacement = newValue;
+				if(this.layerShow && this.firstShow){
+					this.autoAdjust()
+					this.reset()
+					this.$nextTick(()=>{
+						this.resetTriangle()
+					})
+				}
 			},
 			show(newValue){
 				if(newValue){
@@ -130,14 +136,6 @@
 				}
 				this.layerShow = newValue;
 			},
-			realPlacement(newValue){
-				if(this.layerShow && this.firstShow){
-					this.reset();
-					this.$nextTick(()=>{
-						this.resetTriangle()
-					})
-				}
-			}
 		},
 		computed: {
 			listeners(){
@@ -148,7 +146,7 @@
 					return 'top'
 				}else if(this.realPlacement == 'top-start' || this.realPlacement == 'top' || this.realPlacement == 'top-end'){
 					return 'bottom'
-				}else if(this.realPlacement == 'left-start' || this.placement == 'left' || this.placement == 'left-end'){
+				}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
 					return 'right'
 				}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
 					return 'left'
@@ -175,15 +173,15 @@
 				if(this.background){
 					style.background = this.background;
 				}
+				if(this.width){
+					style.width = this.width;
+				}
 				return style;
 			},
 			layerStyle(){
 				var style = {};
 				if(this.zIndex){
 					style.zIndex = this.zIndex;
-				}
-				if(this.width){
-					style.width = this.width;
 				}
 				if(this.timeout){
 					style.transition = 'transform ' + this.timeout + 'ms,opacity ' + this.timeout + 'ms';
@@ -205,7 +203,6 @@
 			}
 		},
 		mounted() {
-			this.realPlacement = this.placement;
 			//初始化时是否显示
 			if(this.show){
 				if(!this.firstShow){
@@ -217,89 +214,224 @@
 		methods: {
 			//窗口变化时处理
 			resizeSet(){
-				this.reset();
-				this.$nextTick(()=>{
-					this.resetTriangle()
-				})
+				if(this.layerShow && this.firstShow){
+					this.autoAdjust()
+					this.reset()
+					this.$nextTick(()=>{
+						this.resetTriangle()
+					})
+				}
 			},
 			//悬浮层显示位置智能化
 			autoAdjust(){
-				var point = $util.getElementPoint(this.$el);
-				if(point.right < 0){
-					if(point.top < 0){
-						if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
-							this.realPlacement = 'bottom-end'
-						}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
-							this.realPlacement = 'left-start';
-						}
-					}else if(point.bottom < 0){
-						if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
-							this.realPlacement = 'top-end'
-						}else if(this.realPlacement == 'right-start' || this.realPlacement == 'right' || this.realPlacement == 'right-end'){
-							this.realPlacement = 'left-end';
-						}
-					}else {
-						if(this.realPlacement == 'top-start' || this.realPlacement == 'top'){
-							this.realPlacement = 'top-end'
-						}else if(this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom'){
-							this.realPlacement = 'bottom-end'
-						}else if(this.realPlacement == 'right-start'){
-							this.realPlacement = 'left-start'
-						}else if(this.realPlacement == 'right'){
-							this.realPlacement = 'left'
-						}else if(this.realPlacement == 'right-end'){
-							this.realPlacement = 'left-end';
-						}
-					}
-				}else if(point.left < 0){
-					if(point.top < 0){
-						if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
-							this.realPlacement = 'bottom-start'
-						}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
-							this.realPlacement = 'right-start';
-						}
-					}else if(point.bottom < 0){
-						if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
-							this.realPlacement = 'top-start'
-						}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left' || this.realPlacement == 'left-end'){
-							this.realPlacement = 'right-end';
-						}
-					}else {
-						if(this.realPlacement == 'top-end' || this.realPlacement == 'top'){
-							this.realPlacement = 'top-start'
-						}else if(this.realPlacement == 'bottom-end' || this.realPlacement == 'bottom'){
-							this.realPlacement = 'bottom-start'
-						}else if(this.realPlacement == 'left-start'){
-							this.realPlacement = 'right-start'
-						}else if(this.realPlacement == 'right'){
-							this.realPlacement = 'right'
-						}else if(this.realPlacement == 'right-end'){
-							this.realPlacement = 'right-end';
-						}
-					}
-				}else if(point.top < 0){
-					if(this.realPlacement == 'right-end' || this.realPlacement == 'right'){
-						this.realPlacement = 'right-start'
-					}else if(this.realPlacement == 'left-end' || this.realPlacement == 'left'){
-						this.realPlacement = 'left-start'
-					}else if(this.realPlacement == 'top-start'){
-						this.realPlacement = 'bottom-start'
-					}else if(this.realPlacement == 'top'){
-						this.realPlacement = 'bottom'
-					}else if(this.realPlacement == 'top-end'){
-						this.realPlacement = 'bottom-end'
-					}
-				}else if(point.bottom < 0){
-					if(this.realPlacement == 'right-start' || this.realPlacement == 'right'){
-						this.realPlacement = 'right-end'
-					}else if(this.realPlacement == 'left-start' || this.realPlacement == 'left'){
-						this.realPlacement = 'left-end'
-					}else if(this.realPlacement == 'bottom-start'){
-						this.realPlacement = 'top-start'
-					}else if(this.realPlacement == 'bottom'){
+				//获取绑定元素位置
+				var point = $util.getElementPoint(this.getTargetEl());
+				var $target = this.getTargetEl();
+				this.realPlacement = this.placement;
+				if(this.placement == 'bottom'){
+					if(point.bottom < this.$el.offsetHeight && point.top > this.$el.offsetHeight){
 						this.realPlacement = 'top'
-					}else if(this.realPlacement == 'bottom-end'){
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-start'
+						}
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-end'
+						}
+					}else {
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-start'
+						}
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-end'
+						}
+					}
+				}else if(this.placement == 'bottom-start'){
+					if(point.bottom < this.$el.offsetHeight && point.top > this.$el.offsetHeight){
+						this.realPlacement = 'top-start'
+						if(point.right + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'top'
+						}
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-end'
+						}
+					}else {
+						if(point.right + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'bottom'
+						}
+						
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-end'
+						}
+					}
+				}else if(this.placement == 'bottom-end'){
+					if(point.bottom < this.$el.offsetHeight && point.top > this.$el.offsetHeight){
 						this.realPlacement = 'top-end'
+						if(point.left + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'top'
+						}
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-start'
+						}
+					}else {
+						if(point.left + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'bottom'
+						}
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-start'
+						}
+					}
+				}else if(this.placement == 'top'){
+					if(point.top < this.$el.offsetHeight && point.bottom > this.$el.offsetHeight){
+						this.realPlacement = 'bottom'
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-start'
+						}
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-end'
+						}
+					}else {
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-start'
+						}
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-end'
+						}
+					}
+				}else if(this.placement == 'top-start'){
+					if(point.top < this.$el.offsetHeight && point.bottom > this.$el.offsetHeight){
+						this.realPlacement = 'bottom-start'
+						if(point.right + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'bottom'
+						}
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-end'
+						}
+					}else {
+						if(point.right + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'top'
+						}
+						if(point.right + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-end'
+						}
+					}
+				}else if(this.placement == 'top-end'){
+					if(point.top < this.$el.offsetHeight && point.bottom > this.$el.offsetHeight){
+						this.realPlacement = 'bottom-end'
+						if(point.left + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'bottom'
+						}
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'bottom-start'
+						}
+					}else {
+						if(point.left + $target.offsetWidth < this.$el.offsetWidth){
+							this.realPlacement = 'top'
+						}
+						if(point.left + $target.offsetWidth/2 < this.$el.offsetWidth/2){
+							this.realPlacement = 'top-start'
+						}
+					}
+				}else if(this.placement == 'left'){
+					if(point.left < this.$el.offsetWidth && point.right > this.$el.offsetWidth){
+						this.realPlacement = 'right'
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-start'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-end'
+						}
+					}else {
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-start'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-end'
+						}
+					}
+				}else if(this.placement == 'left-start'){
+					if(point.left < this.$el.offsetWidth && point.right > this.$el.offsetWidth){
+						this.realPlacement = 'right-start'
+						if(point.bottom + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'right'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-end'
+						}
+					}else {
+						if(point.bottom + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'left'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-end'
+						}
+					}
+				}else if(this.placement == 'left-end'){
+					if(point.left < this.$el.offsetWidth && point.right > this.$el.offsetWidth){
+						this.realPlacement = 'right-end'
+						if(point.top + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'right'
+						}
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-start'
+						}
+					}else {
+						if(point.top + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'left'
+						}
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-start'
+						}
+					}
+				}else if(this.placement == 'right'){
+					if(point.right < this.$el.offsetWidth && point.left > this.$el.offsetWidth){
+						this.realPlacement = 'left'
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-start'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-end'
+						}
+					}else {
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-start'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-end'
+						}
+					}
+				}else if(this.placement == 'right-start'){
+					if(point.right < this.$el.offsetWidth && point.left > this.$el.offsetWidth){
+						this.realPlacement = 'left-start'
+						if(point.bottom + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'left'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-end'
+						}
+					}else {
+						if(point.bottom + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'right'
+						}
+						if(point.bottom + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-end'
+						}
+					}
+				}else if(this.placement == 'right-end'){
+					if(point.right < this.$el.offsetWidth && point.left > this.$el.offsetWidth){
+						this.realPlacement = 'left-end'
+						if(point.top + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'left'
+						}
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'left-start'
+						}
+					}else {
+						if(point.top + $target.offsetHeight < this.$el.offsetHeight){
+							this.realPlacement = 'right'
+						}
+						if(point.top + $target.offsetHeight/2 < this.$el.offsetHeight/2){
+							this.realPlacement = 'right-start'
+						}
 					}
 				}
 			},
@@ -318,13 +450,18 @@
 			//悬浮层显示时
 			enter(el){
 				this.$nextTick(()=>{
+					//智能修改位置
+					this.autoAdjust()
+					//根据位置设置
 					this.reset();
+					//设置三角
 					this.$nextTick(()=>{
 						this.resetTriangle()
-						this.autoAdjust();
 					})
+					window.removeEventListener('resize',this.resizeSet);
 					window.addEventListener('resize',this.resizeSet);
 					if(this.closable){
+						window.removeEventListener('click',this.hideLayer);
 						window.addEventListener('click',this.hideLayer);
 					}
 					this.$emit('showing',el)

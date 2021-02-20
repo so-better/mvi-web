@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
-		<m-button id="btn" @click="change">Button</m-button>
-		<m-field v-model="value" type="textarea" :autosize="{minRows:3,maxRows:10}"></m-field>
+		<m-button style="margin-left:1.4rem;margin-top:1rem;" id="btn" @click="change">Button</m-button>
+		<m-layer v-model="show" root="#app" target="#btn" placement="top" show-triangle width="3rem">
+			<div style="height: 3rem;"></div>
+		</m-layer>
 	</div>
 </template>
 
