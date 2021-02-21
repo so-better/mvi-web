@@ -225,8 +225,8 @@
 			//悬浮层显示位置智能化
 			autoAdjust(){
 				//获取绑定元素位置
-				var point = $util.getElementPoint(this.getTargetEl());
 				var $target = this.getTargetEl();
+				var point = $util.getElementBounding($target);
 				this.realPlacement = this.placement;
 				if(this.placement == 'bottom'){
 					if(point.bottom < this.$el.offsetHeight && point.top > this.$el.offsetHeight){

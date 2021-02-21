@@ -1,4 +1,22 @@
 const util = {
+	
+	/**
+	 * 获取元素距离可视窗口的位置
+	 */
+	getElementBounding(element){
+		if (!this.isElement(element)) {
+			element = document.body;
+		}
+		let point = element.getBoundingClientRect();
+		let top = point.top;//元素顶部距离可视窗口上边的距离
+		let bottom = window.innerHeight - point.bottom;//元素底部距离可视窗口底部的距离
+		let left = point.left;//元素左侧距离可视窗口左边的距离
+		let right = window.innerWidth - point.right;//元素右侧距离可视窗口右边的距离
+		return {
+			top,bottom,left,right
+		}
+	},
+	
 	/**
 	 * 判断是否数值
 	 */
@@ -21,16 +39,16 @@ const util = {
 			return false;
 		}
 		if (this.isObject(a) && this.isObject(b)) {
-			var aProps = Object.getOwnPropertyNames(a);
-			var bProps = Object.getOwnPropertyNames(b);
+			let aProps = Object.getOwnPropertyNames(a);
+			let bProps = Object.getOwnPropertyNames(b);
 			if (aProps.length != bProps.length) {
 				return false;
 			}
-			var length = aProps.length;
-			for (var i = 0; i < length; i++) {
-				var propName = aProps[i];
-				var propA = a[propName];
-				var propB = b[propName];
+			let length = aProps.length;
+			for (let i = 0; i < length; i++) {
+				let propName = aProps[i];
+				let propA = a[propName];
+				let propB = b[propName];
 				if (this.isObject(propA)) {
 					if (this.equal(propA, propB)) {
 						return true;
@@ -66,10 +84,10 @@ const util = {
 	 * rgb值转16进制
 	 */
 	rgb2hex(rgb) {
-		var r = rgb[0];
-		var g = rgb[1];
-		var b = rgb[2];
-		var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+		let r = rgb[0];
+		let g = rgb[1];
+		let b = rgb[2];
+		let hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 		return hex;
 	},
 
@@ -77,21 +95,21 @@ const util = {
 	 * 16进制颜色转rgb
 	 */
 	hex2rgb(hex) {
-		var color = hex.toLowerCase();
+		let color = hex.toLowerCase();
 		//十六进制颜色值的正则表达式
-		var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+		let reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
 		// 如果是16进制颜色
 		if (color && reg.test(color)) {
 			if (color.length === 4) {
-				var colorNew = "#";
-				for (var i = 1; i < 4; i += 1) {
+				let colorNew = "#";
+				for (let i = 1; i < 4; i += 1) {
 					colorNew += color.slice(i, i + 1).concat(color.slice(i, i + 1));
 				}
 				color = colorNew;
 			}
 			//处理六位的颜色值
-			var colorChange = [];
-			for (var i = 1; i < 7; i += 2) {
+			let colorChange = [];
+			for (let i = 1; i < 7; i += 2) {
 				colorChange.push(parseInt("0x" + color.slice(i, i + 2)));
 			}
 			return colorChange;
@@ -104,21 +122,21 @@ const util = {
 	 * hsv:[30,40,20]第一个为deg
 	 */
 	hsv2rgb(hsv) {
-		var h = (hsv[0] >= 360 || hsv[0] <= 0) ? 0 : hsv[0];
-		var s = hsv[1] >= 100 ? 100 : hsv[1];
+		let h = (hsv[0] >= 360 || hsv[0] <= 0) ? 0 : hsv[0];
+		let s = hsv[1] >= 100 ? 100 : hsv[1];
 		s = s <= 0 ? 0 : s;
-		var v = hsv[2] >= 100 ? 100 : hsv[2];
+		let v = hsv[2] >= 100 ? 100 : hsv[2];
 		v = v <= 0 ? 0 : v;
 		s = s / 100;
 		v = v / 100;
-		var r = 0;
-		var g = 0;
-		var b = 0;
-		var i = parseInt((h / 60) % 6);
-		var f = h / 60 - i;
-		var p = v * (1 - s);
-		var q = v * (1 - f * s);
-		var t = v * (1 - (1 - f) * s);
+		let r = 0;
+		let g = 0;
+		let b = 0;
+		let i = parseInt((h / 60) % 6);
+		let f = h / 60 - i;
+		let p = v * (1 - s);
+		let q = v * (1 - f * s);
+		let t = v * (1 - (1 - f) * s);
 		switch (i) {
 			case 0:
 				r = v;
@@ -164,17 +182,17 @@ const util = {
 	 * rgb:[20,20,20]：三个值都是0-255的值
 	 */
 	rgb2hsv(rgb) {
-		var h = 0;
-		var s = 0;
-		var v = 0;
-		var r = rgb[0] >= 255 ? 255 : rgb[0];
-		var g = rgb[1] >= 255 ? 255 : rgb[1];
-		var b = rgb[2] >= 255 ? 255 : rgb[2];
+		let h = 0;
+		let s = 0;
+		let v = 0;
+		let r = rgb[0] >= 255 ? 255 : rgb[0];
+		let g = rgb[1] >= 255 ? 255 : rgb[1];
+		let b = rgb[2] >= 255 ? 255 : rgb[2];
 		r = r <= 0 ? 0 : r;
 		g = g <= 0 ? 0 : g;
 		b = b <= 0 ? 0 : b;
-		var max = Math.max(r, g, b);
-		var min = Math.min(r, g, b);
+		let max = Math.max(r, g, b);
+		let min = Math.min(r, g, b);
 		v = max / 255;
 		if (max === 0) {
 			s = 0;
@@ -202,8 +220,8 @@ const util = {
 	 * 判断字符串属于哪种选择器
 	 */
 	getCssSelector(selectorName) {
-		var type = 0;
-		var value = "";
+		let type = 0;
+		let value = "";
 		//id选择器，以#开头的字符串
 		if (/^#{1}/.test(selectorName)) {
 			type = "id";
@@ -225,8 +243,8 @@ const util = {
 		//属性选择器，以[]包裹的字符串
 		if (/^\[(.+)\]$/.test(selectorName)) {
 			type = "attribute";
-			var attribute = this.trim(selectorName, true).substring(1, this.trim(selectorName, true).length - 1);
-			var arry = attribute.split("=");
+			let attribute = this.trim(selectorName, true).substring(1, this.trim(selectorName, true).length - 1);
+			let arry = attribute.split("=");
 			if (arry.length == 1) {
 				value = arry[0];
 			}
@@ -264,7 +282,7 @@ const util = {
 	 * 监听元素滚动条滚动到顶部和滚动到底部
 	 */
 	scrollTopBottomTrigger(element, callback) {
-		var scrollEle = window;
+		let scrollEle = window;
 		if (this.isElement(element) && element != document.body && element != document.documentElement) {
 			scrollEle = element;
 		}
@@ -272,10 +290,10 @@ const util = {
 			callback = element;
 		}
 		//滑动到底部时是否触发回调函数的标识，解决ios系统下多次触发回调的bug
-		var flag = true;
+		let flag = true;
 		scrollEle.addEventListener('scroll', e => {
 			if (this.getScrollTop(scrollEle) <= 0) { //滑动到顶部
-				var options = {
+				let options = {
 					state: "top",
 					target: scrollEle
 				}
@@ -288,16 +306,16 @@ const util = {
 				}
 
 			} else { //滑动到底部
-				var options = {
+				let options = {
 					state: "bottom",
 					target: scrollEle
 				}
-				var height = 0;
+				let height = 0;
 				if (scrollEle == window) {
 					height = window.innerHeight;
 				} else {
-					var borderTop = parseFloat(this.getCssStyle(scrollEle, 'border-top-width'))
-					var borderBottom = parseFloat(this.getCssStyle(scrollEle, 'border-bottom-width'))
+					let borderTop = parseFloat(this.getCssStyle(scrollEle, 'border-top-width'))
+					let borderBottom = parseFloat(this.getCssStyle(scrollEle, 'border-bottom-width'))
 					height = scrollEle.offsetHeight - borderTop - borderBottom;
 				}
 				if ((this.getScrollTop(scrollEle) + height >= this.getScrollHeight(scrollEle)) && (height != this.getScrollHeight(
@@ -323,9 +341,7 @@ const util = {
 	 * index:插入的位置
 	 */
 	insertStr(original, str, index) {
-		var newStr = "";
-		newStr = original.substr(0, index) + str + original.substring(index, original.length);
-		return newStr;
+		return original.substr(0, index) + str + original.substring(index, original.length);
 	},
 
 	/**
@@ -335,8 +351,7 @@ const util = {
 	 * num:删除的字符串长度
 	 */
 	deleteStr(original, index, num) {
-		original = original.substr(0, index) + original.substring(index + num, original.length);
-		return original;
+		return original.substr(0, index) + original.substring(index + num, original.length);
 	},
 
 	/**
@@ -358,7 +373,7 @@ const util = {
 		if (typeof(str) != "string") {
 			return "";
 		}
-		var result = str.replace(/(^\s+)|(\s+$)/g, "");
+		let result = str.replace(/(^\s+)|(\s+$)/g, "");
 		if (is_global) {
 			result = result.replace(/\s/g, "");
 		}
@@ -374,11 +389,11 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
+		let flag = false;
 		if (!this.isElement(root)) {
 			root = document.body;
 		} else {
-			var position = this.getCssStyle(root, "position");
-			var flag = false;
+			let position = this.getCssStyle(root, "position");
 			if (position === "static") {
 				root.style.position = "relative";
 				flag = true;
@@ -389,17 +404,17 @@ const util = {
 			throw new Error('root与element无层级关系');
 		}
 
-		var obj = element;
-		var offsetTop = 0;
-		var offsetLeft = 0;
+		let obj = element;
+		let offsetTop = 0;
+		let offsetLeft = 0;
 		//判断是否有定位父容器，如果存在则累加其边距
 		while (this.isElement(element) && this.isContains(root, element) && root !== element) {
 			offsetTop += element.offsetTop; //叠加父容器的上边距
 			offsetLeft += element.offsetLeft; //叠加父容器的左边距
 			element = element.offsetParent;
 		}
-		var offsetRight = root.offsetWidth - offsetLeft - obj.offsetWidth;
-		var offsetBottom = root.offsetHeight - offsetTop - obj.offsetHeight;
+		let offsetRight = root.offsetWidth - offsetLeft - obj.offsetWidth;
+		let offsetBottom = root.offsetHeight - offsetTop - obj.offsetHeight;
 		if (flag) {
 			root.style.position = "static";
 		}
@@ -427,7 +442,7 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	getScrollTop(element) {
-		var scrollTop = 0;
+		let scrollTop = 0;
 		//如果是元素节点
 		if (this.isElement(element) && element != document.body && element != document.documentElement && element != window) {
 			scrollTop = element.scrollTop;
@@ -447,13 +462,13 @@ const util = {
 	 * options:el(滚动条所在元素,未指定则为document.documentElement),number(距离值),time(动画时间间隔)
 	 */
 	setScrollTop(options) {
-		var isWindow = false;
-		var element = options.el;
+		let isWindow = false;
+		let element = options.el;
 		if (typeof(element) == 'string' && element) {
 			element = document.body.querySelector(element);
 		}
-		var number = options.number || 0;
-		var time = options.time || 0;
+		let number = options.number || 0;
+		let time = options.time || 0;
 		if (!this.isElement(element) || element == document.body || element == document.documentElement || element ==
 			window) {
 			isWindow = true;
@@ -467,12 +482,12 @@ const util = {
 				}
 				reslove();
 			} else {
-				var spacingTime = 10; // 设置循环的间隔时间  值越小消耗性能越高
-				var spacingIndex = time / spacingTime; // 计算循环的次数
+				let spacingTime = 10; // 设置循环的间隔时间  值越小消耗性能越高
+				let spacingIndex = time / spacingTime; // 计算循环的次数
 				// 获取当前滚动条位置
-				var nowTop = this.getScrollTop(element);
-				var everTop = (number - nowTop) / spacingIndex; // 计算每次滑动的距离
-				var scrollTimer = setInterval(() => {
+				let nowTop = this.getScrollTop(element);
+				let everTop = (number - nowTop) / spacingIndex; // 计算每次滑动的距离
+				let scrollTimer = setInterval(() => {
 					if (spacingIndex > 0) {
 						spacingIndex--;
 						if (isWindow) {
@@ -494,7 +509,7 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	getScrollLeft(element) {
-		var scrollLeft = 0;
+		let scrollLeft = 0;
 		//如果是元素节点
 		if (this.isElement(element) && element != document.body && element != document.documentElement && element != window) {
 			scrollLeft = element.scrollLeft;
@@ -514,13 +529,13 @@ const util = {
 	 * options:el(滚动条所在元素,未指定则为document.documentElement),number(距离值),time(动画时间间隔)
 	 */
 	setScrollLeft(options) {
-		var isWindow = false;
-		var element = options.el;
+		let isWindow = false;
+		let element = options.el;
 		if (typeof(element) == 'string' && element) {
 			element = document.body.querySelector(element);
 		}
-		var number = options.number || 0;
-		var time = options.time || 0;
+		let number = options.number || 0;
+		let time = options.time || 0;
 		if (!this.isElement(element) || element == document.body || element == document.documentElement || element ==
 			window) {
 			isWindow = true;
@@ -534,12 +549,12 @@ const util = {
 				}
 				reslove();
 			} else {
-				var spacingTime = 10; // 设置循环的间隔时间  值越小消耗性能越高
-				var spacingIndex = time / spacingTime; // 计算循环的次数
+				let spacingTime = 10; // 设置循环的间隔时间  值越小消耗性能越高
+				let spacingIndex = time / spacingTime; // 计算循环的次数
 				// 获取当前滚动条位置
-				var nowLeft = this.getScrollLeft(element);
-				var everLeft = (number - nowLeft) / spacingIndex; // 计算每次滑动的距离
-				var scrollTimer = setInterval(() => {
+				let nowLeft = this.getScrollLeft(element);
+				let everLeft = (number - nowLeft) / spacingIndex; // 计算每次滑动的距离
+				let scrollTimer = setInterval(() => {
 					if (spacingIndex > 0) {
 						spacingIndex--;
 						if (isWindow) {
@@ -561,7 +576,7 @@ const util = {
 	 * element未指定则表示document.body
 	 */
 	getScrollHeight(element) {
-		var scrollHeight = 0;
+		let scrollHeight = 0;
 		if (this.isElement(element) && element != document.documentElement && element != document.body && element != window) {
 			scrollHeight = element.scrollHeight;
 		} else {
@@ -579,7 +594,7 @@ const util = {
 	 * 获取文档或元素的总宽度
 	 */
 	getScrollWidth(element) {
-		var scrollWidth = 0;
+		let scrollWidth = 0;
 		if (this.isElement(element) && element != document.documentElement && element != document.body && element != window) {
 			scrollWidth = element.scrollWidth;
 		} else {
@@ -605,7 +620,7 @@ const util = {
 		}
 		if (element) {
 			if (typeof cssName == "string") {
-				var cssText = "";
+				let cssText = "";
 				if (document.defaultView && document.defaultView.getComputedStyle) { //兼容IE9-IE11、chrome、firefox、safari、opera；不兼容IE7-IE8
 					cssText = document.defaultView.getComputedStyle(element)[cssName];
 				} else { //兼容IE7-IE11；不兼容chrome、firefox、safari、opera
@@ -626,9 +641,9 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		var classList = element.classList;
-		var classArray = this.trim(className).split(/\s+/); //按照空格划分
-		var flag = true;
+		let classList = element.classList;
+		let classArray = this.trim(className).split(/\s+/); //按照空格划分
+		let flag = true;
 		classArray.forEach((item, index) => {
 			if (!classList.contains(item)) {
 				flag = false;
@@ -647,8 +662,8 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		var classList = element.classList;
-		var classArray = this.trim(className).split(/\s+/); //按照空格划分
+		let classList = element.classList;
+		let classArray = this.trim(className).split(/\s+/); //按照空格划分
 		classArray.forEach((item, index) => {
 			classList.add(item);
 		});
@@ -664,8 +679,8 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		var classList = element.classList;
-		var classArray = this.trim(className).split(/\s+/); //按照空格划分
+		let classList = element.classList;
+		let classArray = this.trim(className).split(/\s+/); //按照空格划分
 		classArray.forEach((item, index) => {
 			classList.remove(item);
 		});
@@ -729,38 +744,38 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		var result = new Array(); //存放结果的数组
-		var childNodes = element.children; //子元素数组
+		let result = new Array(); //存放结果的数组
+		let childNodes = element.children; //子元素数组
 		//selector参数不存在时，查找他的所有子元素
 		if (selector == "" || selector == undefined || selector == null || typeof(selector) != "string") {
-			for (var i = 0; i < childNodes.length; i++) {
+			for (let i = 0; i < childNodes.length; i++) {
 				result.push(childNodes[i]);
 			}
 			return result;
 		}
 		//selector参数存在时，根据空格划分选择器
-		var selectors = this.trim(selector).split(/\s+/);
+		let selectors = this.trim(selector).split(/\s+/);
 		selectors.forEach(sc=>{
 			//判断选择器类型
-			var selector_type = this.getCssSelector(sc).type;
-			var selector_value = this.getCssSelector(sc).value;
+			let selector_type = this.getCssSelector(sc).type;
+			let selector_value = this.getCssSelector(sc).value;
 			switch (selector_type) {
 				case "id": //ID
-					for (var i = 0; i < childNodes.length; i++) {
+					for (let i = 0; i < childNodes.length; i++) {
 						if (this.trim(childNodes[i].getAttribute("id"), false) == selector_value) {
 							result.push(childNodes[i]);
 						}
 					}
 					break;
 				case "class": //类名
-					for (var i = 0; i < childNodes.length; i++) {
+					for (let i = 0; i < childNodes.length; i++) {
 						if (this.hasClass(childNodes[i], selector_value)) {
 							result.push(childNodes[i]);
 						}
 					}
 					break;
 				case "attribute": //属性
-					for (var i = 0; i < childNodes.length; i++) {
+					for (let i = 0; i < childNodes.length; i++) {
 						if (typeof(selector_value) == 'object') {
 							if (childNodes[i].hasAttribute(selector_value.attributeName)) {
 								if (childNodes[i].getAttribute(selector_value.attributeName) == selector_value.attributeValue) {
@@ -776,7 +791,7 @@ const util = {
 					}
 					break;
 				default: //标签名
-					for (var i = 0; i < childNodes.length; i++) {
+					for (let i = 0; i < childNodes.length; i++) {
 						if (childNodes[i].tagName.toUpperCase() == selector_value.toUpperCase()) {
 							result.push(childNodes[i]);
 						}
@@ -784,8 +799,8 @@ const util = {
 			}
 		});
 		//删除重复的元素
-		for (var i = 0; i < result.length; i++) {
-			for (var j = i + 1; j < result.length; j++) {
+		for (let i = 0; i < result.length; i++) {
+			for (let j = i + 1; j < result.length; j++) {
 				if (result[i] == result[j]) {
 					result.splice(i, 1);
 					break;
@@ -802,7 +817,7 @@ const util = {
 		if (typeof(str) != "string") {
 			str = "";
 		}
-		var parentEle = document.createElement("div");
+		let parentEle = document.createElement("div");
 		parentEle.innerHTML = str;
 		if (parentEle.children.length == 1) {
 			return parentEle.children[0];
@@ -821,9 +836,9 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		var siblingsArray = [];
-		var childNodes = element.parentNode.children; //获取父节点的所有子节点
-		for (var i = 0; i < childNodes.length; i++) {
+		let siblingsArray = [];
+		let childNodes = element.parentNode.children; //获取父节点的所有子节点
+		for (let i = 0; i < childNodes.length; i++) {
 			if (childNodes[i] !== element) {
 				siblingsArray.push(childNodes[i]);
 			}
@@ -833,29 +848,29 @@ const util = {
 		if (selector == "" || selector == undefined || selector == null || typeof(selector) != "string") {
 			return siblingsArray;
 		}
-		var selectors = selector.split(/\s+/);
-		var result = new Array();
+		let selectors = selector.split(/\s+/);
+		let result = new Array();
 		selectors.forEach(sc=> {
 			//判断选择器类型
-			var selector_type = this.getCssSelector(sc).type;
-			var selector_value = this.getCssSelector(sc).value;
+			let selector_type = this.getCssSelector(sc).type;
+			let selector_value = this.getCssSelector(sc).value;
 			switch (selector_type) {
 				case "id": //ID
-					for (var i = 0; i < siblingsArray.length; i++) {
+					for (let i = 0; i < siblingsArray.length; i++) {
 						if (this.trim(siblingsArray[i].getAttribute("id"), false) == selector_value) {
 							result.push(siblingsArray[i]);
 						}
 					}
 					break;
 				case "class": //类名
-					for (var i = 0; i < siblingsArray.length; i++) {
+					for (let i = 0; i < siblingsArray.length; i++) {
 						if (this.hasClass(siblingsArray[i], selector_value)) {
 							result.push(siblingsArray[i]);
 						}
 					}
 					break;
 				case "attribute": //属性
-					for (var i = 0; i < siblingsArray.length; i++) {
+					for (let i = 0; i < siblingsArray.length; i++) {
 						if (typeof(selector_value) == 'object') {
 							if (siblingsArray[i].hasAttribute(selector_value.attributeName)) {
 								if (siblingsArray[i].getAttribute(selector_value.attributeName) == selector_value.attributeValue) {
@@ -870,7 +885,7 @@ const util = {
 					}
 					break;
 				default: //标签名
-					for (var i = 0; i < siblingsArray.length; i++) {
+					for (let i = 0; i < siblingsArray.length; i++) {
 						if (siblingsArray[i].tagName.toUpperCase() == selector_value.toUpperCase()) {
 							result.push(siblingsArray[i]);
 						}
@@ -879,8 +894,8 @@ const util = {
 			}
 		});
 		//删除重复的元素
-		for (var i = 0; i < result.length; i++) {
-			for (var j = i + 1; j < result.length; j++) {
+		for (let i = 0; i < result.length; i++) {
+			for (let j = i + 1; j < result.length; j++) {
 				if (result[i] == result[j]) {
 					result.splice(i, 1);
 					break;
@@ -895,8 +910,8 @@ const util = {
 	 * 参数number:rem数值
 	 */
 	rem2px(number) {
-		var fs = this.getCssStyle(document.documentElement, "font-size");
-		var num = number * parseFloat(fs); //获得px单位的值
+		let fs = this.getCssStyle(document.documentElement, "font-size");
+		let num = number * parseFloat(fs); //获得px单位的值
 		return num;
 	},
 
@@ -905,8 +920,8 @@ const util = {
 	 * 参数number:px数值
 	 */
 	px2rem(number) {
-		var fs = this.getCssStyle(document.documentElement, "font-size");
-		var num = number / parseFloat(fs);
+		let fs = this.getCssStyle(document.documentElement, "font-size");
+		let num = number / parseFloat(fs);
 		return num;
 	},
 
@@ -915,10 +930,10 @@ const util = {
 	 * params:访问终端名称
 	 */
 	judgeAccessTerminalBrowser(params) {
-		var browser = {
+		let browser = {
 			versions: function(){
-				var u = navigator.userAgent;
-				var app = navigator.appVersion;
+				let u = navigator.userAgent;
+				let app = navigator.appVersion;
 				return {
 					trident: u.indexOf('Trident') > -1, //IE内核
 					presto: u.indexOf('Presto') > -1, //opera内核
@@ -952,7 +967,7 @@ const util = {
 			}(),
 			language: (navigator.browserLanguage || navigator.language).toLowerCase()
 		}
-		var flag = false;
+		let flag = false;
 		if (params != null && params != undefined && typeof(params) == "string") {
 			if (params.toLowerCase() == "ie") { //IE内核
 				flag = browser.versions.trident;
@@ -1018,7 +1033,7 @@ const util = {
 	 * 参数:text为要判断的字符串,params为判断的类型字符串
 	 */
 	matchingText(text, params) {
-		var reg = null;
+		let reg = null;
 		//判断text是否为中文
 		if (params == "Chinese") {
 			reg = /^[\u4e00-\u9fa5]+$/;
@@ -1112,11 +1127,11 @@ const util = {
 	 * 返回值为File类型数据
 	 */
 	dataBase64toFile(base64String, filename) {
-		var arr = base64String.split(',');
-		var mime = arr[0].match(/:(.*?);/)[1];
-		var bstr = atob(arr[1]);
-		var n = bstr.length;
-		var u8arr = new Uint8Array(n);
+		let arr = base64String.split(',');
+		let mime = arr[0].match(/:(.*?);/)[1];
+		let bstr = atob(arr[1]);
+		let n = bstr.length;
+		let u8arr = new Uint8Array(n);
 		while (n--) {
 			u8arr[n] = bstr.charCodeAt(n);
 		}
@@ -1132,11 +1147,11 @@ const util = {
 	 */
 	dataFileToBase64(file) {
 		return new Promise((reslove, reject)=>{
-			var reader = new FileReader();
+			let reader = new FileReader();
 			reader.readAsDataURL(file); // 读出 base64
 			reader.onloadend = ()=> {
 				// 图片的 base64 格式, 可以直接当成 img 的 src 属性值        
-				var dataURL = reader.result;
+				let dataURL = reader.result;
 				// 下面逻辑处理
 				reslove(dataURL);
 			};
@@ -1147,15 +1162,15 @@ const util = {
 	 * 根据参数名获取地址栏参数值
 	 */
 	getUrlParams(name) {
-		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-		var search = window.location.search.substr(1);
+		let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		let search = window.location.search.substr(1);
 		if (!search) {
-			var arr = window.location.hash.split("?");
+			let arr = window.location.hash.split("?");
 			if (arr.length == 2) {
 				search = arr[1]
 			}
 		}
-		var r = search.match(reg);
+		let r = search.match(reg);
 		if (r) {
 			return unescape(r[2])
 		}
@@ -1171,9 +1186,9 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		var clientWidth = element.clientWidth; //获取元素包括内边距在内的宽度
-		var paddingLeft_width = parseFloat(this.getCssStyle(element, "padding-left")); //左内边距
-		var paddingRight_width = parseFloat(this.getCssStyle(element, "padding-right")); //右内边距宽度
+		let clientWidth = element.clientWidth; //获取元素包括内边距在内的宽度
+		let paddingLeft_width = parseFloat(this.getCssStyle(element, "padding-left")); //左内边距
+		let paddingRight_width = parseFloat(this.getCssStyle(element, "padding-right")); //右内边距宽度
 		return clientWidth - paddingLeft_width - paddingRight_width;
 	},
 
@@ -1186,9 +1201,9 @@ const util = {
 		if (!this.isElement(element)) {
 			element = document.body;
 		}
-		var clientHeight = element.clientHeight; //获取元素包括内边距在内的高度
-		var paddingTop_height = parseFloat(this.getCssStyle(element, "padding-top")); //上内边距
-		var paddingBottom_height = parseFloat(this.getCssStyle(element, "padding-bottom")); //下内边距宽度
+		let clientHeight = element.clientHeight; //获取元素包括内边距在内的高度
+		let paddingTop_height = parseFloat(this.getCssStyle(element, "padding-top")); //上内边距
+		let paddingBottom_height = parseFloat(this.getCssStyle(element, "padding-bottom")); //下内边距宽度
 		return clientHeight - paddingTop_height - paddingBottom_height;
 	},
 
@@ -1203,17 +1218,17 @@ const util = {
 	 * 获取前N个月的日期
 	 */
 	getPrevMonths(n, date) {
-		var dateArray = new Array(); //日期数组
-		var dd = date;
+		let dateArray = new Array(); //日期数组
+		let dd = date;
 		dateArray.push(dd); //存放指定日期
-		for (var i = 0; i < n - 1; i++) {
-			var y = dd.getFullYear(); //获取年份
-			var m = dd.getMonth(); //获取月份
+		for (let i = 0; i < n - 1; i++) {
+			let y = dd.getFullYear(); //获取年份
+			let m = dd.getMonth(); //获取月份
 			if (m == 0) {
 				m = 12;
 				y--;
 			}
-			var d = new Date();
+			let d = new Date();
 			d.setMonth(m - 1);
 			d.setFullYear(y);
 			dateArray.push(d);
@@ -1226,17 +1241,17 @@ const util = {
 	 * 获取后N个月的日期
 	 */
 	getNextMonths(n, date) {
-		var dd = date;
-		var dateArray = new Array(); //日期数组
+		let dd = date;
+		let dateArray = new Array(); //日期数组
 		dateArray.push(dd);
-		for (var i = 0; i < n - 1; i++) {
-			var y = dd.getFullYear(); //获取年份
-			var m = dd.getMonth(); //获取月份
+		for (let i = 0; i < n - 1; i++) {
+			let y = dd.getFullYear(); //获取年份
+			let m = dd.getMonth(); //获取月份
 			if (m == 11) {
 				m = -1;
 				y++;
 			}
-			var d = new Date();
+			let d = new Date();
 			d.setMonth(m + 1);
 			d.setFullYear(y);
 			dateArray.push(d);
@@ -1249,14 +1264,14 @@ const util = {
 	 * 显示当前日期的前一天日期以及后一天日期
 	 */
 	showTime(date, param) {
-		var trans_day = null;
-		var cur_date = date;
-		var cur_year = cur_date.getFullYear();
-		var cur_month = cur_date.getMonth() + 1;
-		var real_date = cur_date.getDate();
+		let trans_day = null;
+		let cur_date = date;
+		let cur_year = cur_date.getFullYear();
+		let cur_month = cur_date.getMonth() + 1;
+		let real_date = cur_date.getDate();
 		cur_month = cur_month > 9 ? cur_month : ("0" + cur_month);
 		real_date = real_date > 9 ? real_date : ("0" + real_date);
-		var eT = cur_year + "-" + cur_month + "-" + real_date;
+		let eT = cur_year + "-" + cur_month + "-" + real_date;
 		if (param == 1) {
 			trans_day = addByTransDate(eT, 1);
 		} else if (param == -1) {
@@ -1264,12 +1279,12 @@ const util = {
 		}
 
 		function addByTransDate(dateParameter, num) {
-			var translateDate = "",
+			let translateDate = "",
 				dateString = "",
 				monthString = "",
 				dayString = "";
 			translateDate = dateParameter.replace("-", "/").replace("-", "/");
-			var newDate = new Date(translateDate);
+			let newDate = new Date(translateDate);
 			newDate = newDate.valueOf();
 			newDate = newDate + num * 24 * 60 * 60 * 1000;
 			newDate = new Date(newDate);
@@ -1290,12 +1305,12 @@ const util = {
 		}
 
 		function reduceByTransDate(dateParameter, num) {
-			var translateDate = "",
+			let translateDate = "",
 				dateString = "",
 				monthString = "",
 				dayString = "";
 			translateDate = dateParameter.replace("-", "/").replace("-", "/");
-			var newDate = new Date(translateDate);
+			let newDate = new Date(translateDate);
 			newDate = newDate.valueOf();
 			newDate = newDate - num * 24 * 60 * 60 * 1000;
 			newDate = new Date(newDate);
@@ -1327,7 +1342,7 @@ const util = {
 	getDays(year, month) {
 		year = parseInt(year);
 		month = parseInt(month);
-		var d = new Date(year, month, 0);
+		let d = new Date(year, month, 0);
 		return d.getDate();
 	}
 

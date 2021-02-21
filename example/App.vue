@@ -1,9 +1,11 @@
 <template>
 	<div id="app">
-		<m-button style="margin-left:1.4rem;margin-top:1rem;" id="btn" @click="change">Button</m-button>
-		<m-layer v-model="show" root="#app" target="#btn" placement="top" show-triangle width="3rem">
+		<div style="height: 10rem;"></div>
+		<m-button style="margin-left:5.4rem;margin-top:1rem;" id="btn" @click="change">Button</m-button>
+		<m-layer v-model="show" root="#app" target="#btn" placement="left-end" show-triangle width="3rem">
 			<div style="height: 3rem;"></div>
 		</m-layer>
+		<div style="height: 20rem;"></div>
 	</div>
 </template>
 
