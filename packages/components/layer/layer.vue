@@ -505,102 +505,56 @@
 						this.$el.style.paddingLeft = `calc(${this.offset} + ${this.$refs.triangle.$el.offsetWidth}px)`;
 					}
 				}
-				
+				let $target = this.getTargetEl();
+				let $root = this.getRootEl();
+				let pt = $util.getElementPoint($target,$root);
 				if(this.fixed){
-					var pt = this.getTargetEl().getBoundingClientRect();//获取绑定元素相对视窗的位置信息
-					if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
-						this.$el.style.top = pt.bottom + 'px';
-						this.$el.style.bottom = 'auto';
-						if(this.realPlacement == 'bottom'){
-							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.realPlacement == 'bottom-start'){
-							this.$el.style.left = pt.left + 'px';
-						}else if(this.realPlacement == 'bottom-end'){
-							this.$el.style.left = pt.right - this.$el.offsetWidth + 'px';
-						}
-						this.$el.style.right = 'auto';
-					}else if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
-						this.$el.style.bottom = (document.body.clientHeight - pt.top) + 'px';
-						this.$el.style.top = 'auto';
-						if(this.realPlacement == 'top'){
-							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.realPlacement == 'top-start'){
-							this.$el.style.left = pt.left + 'px';
-						}else if(this.realPlacement == 'top-end'){
-							this.$el.style.left = pt.right - this.$el.offsetWidth + 'px';
-						}
-						this.$el.style.right = 'auto';
-					}else if(this.realPlacement == 'left' || this.realPlacement == 'left-start' || this.realPlacement == 'left-end'){
-						this.$el.style.right = (document.body.clientWidth - pt.left) + 'px';
-						this.$el.style.left = 'auto';
-						if(this.realPlacement == 'left'){
-							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.realPlacement == 'left-start'){
-							this.$el.style.top = pt.top + 'px';
-						}else if(this.realPlacement == 'left-end'){
-							this.$el.style.top = pt.bottom - this.$el.offsetHeight + 'px';
-						}
-						this.$el.style.bottom = 'auto';
-					}else if(this.realPlacement == 'right' || this.realPlacement == 'right-start' || this.realPlacement == 'right-end'){
-						this.$el.style.left = pt.right + 'px';
-						this.$el.style.right = 'auto';
-						if(this.realPlacement == 'right'){
-							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.realPlacement == 'right-start'){
-							this.$el.style.top = pt.top + 'px';
-						}else if(this.realPlacement == 'right-end'){
-							this.$el.style.top = pt.bottom - this.$el.offsetHeight + 'px';
-						}
-						this.$el.style.bottom = 'auto';
+					pt = $util.getElementBounding($target)
+				}
+				if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
+					this.$el.style.top = (pt.top + $target.offsetHeight) + 'px';
+					this.$el.style.bottom = 'auto';
+					if(this.realPlacement == 'bottom'){
+						this.$el.style.left = pt.left + $target.offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
+					}else if(this.realPlacement == 'bottom-start'){
+						this.$el.style.left = pt.left + 'px';
+					}else if(this.realPlacement == 'bottom-end'){
+						this.$el.style.left = $target.offsetWidth + pt.left - this.$el.offsetWidth + 'px';
 					}
-				}else{
-					var pt = $util.getElementPoint(this.getTargetEl(),this.getRootEl())
-					if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
-						this.$el.style.top = (pt.top + this.getTargetEl().offsetHeight) + 'px';
-						this.$el.style.bottom = 'auto';
-						if(this.realPlacement == 'bottom'){
-							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.realPlacement == 'bottom-start'){
-							this.$el.style.left = pt.left + 'px';
-						}else if(this.realPlacement == 'bottom-end'){
-							this.$el.style.left = this.getTargetEl().offsetWidth + pt.left - this.$el.offsetWidth + 'px';
-						}
-						this.$el.style.right = 'auto';
-					}else if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
-						this.$el.style.bottom = (this.getRootEl().offsetHeight - pt.top) + 'px';
-						this.$el.style.top = 'auto';
-						if(this.realPlacement == 'top'){
-							this.$el.style.left = pt.left + this.getTargetEl().offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
-						}else if(this.realPlacement == 'top-start'){
-							this.$el.style.left = pt.left + 'px';
-						}else if(this.realPlacement == 'top-end'){
-							this.$el.style.left = this.getTargetEl().offsetWidth + pt.left - this.$el.offsetWidth + 'px';
-						}
-						this.$el.style.right = 'auto';
-					}else if(this.realPlacement == 'left' || this.realPlacement == 'left-start' || this.realPlacement == 'left-end'){
-						this.$el.style.right = (this.getRootEl().offsetWidth - pt.left) + 'px';
-						this.$el.style.left = 'auto';
-						if(this.realPlacement == 'left'){
-							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.realPlacement == 'left-start'){
-							this.$el.style.top = pt.top + 'px';
-						}else if(this.realPlacement == 'left-end'){
-							this.$el.style.top = this.getTargetEl().offsetHeight + pt.top - this.$el.offsetHeight + 'px';
-						}
-						this.$el.style.bottom = 'auto';
-					}else if(this.realPlacement == 'right' || this.realPlacement == 'right-start' || this.realPlacement == 'right-end'){
-						this.$el.style.left = (pt.left + this.getTargetEl().offsetWidth) + 'px';
-						this.$el.style.right = 'auto';
-						if(this.realPlacement == 'right'){
-							this.$el.style.top = pt.top + this.getTargetEl().offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
-						}else if(this.realPlacement == 'right-start'){
-							this.$el.style.top = pt.top + 'px';
-						}else if(this.realPlacement == 'right-end'){
-							this.$el.style.top = this.getTargetEl().offsetHeight + pt.top - this.$el.offsetHeight + 'px';
-						}
-						this.$el.style.bottom = 'auto';
+					this.$el.style.right = 'auto';
+				}else if(this.realPlacement == 'top' || this.realPlacement == 'top-start' || this.realPlacement == 'top-end'){
+					this.$el.style.bottom = (this.fixed?(pt.bottom + $target.offsetHeight):($root.clientHeight - pt.top)) + 'px';
+					this.$el.style.top = 'auto';
+					if(this.realPlacement == 'top'){
+						this.$el.style.left = pt.left + $target.offsetWidth/2 - this.$el.offsetWidth/2 + 'px';
+					}else if(this.realPlacement == 'top-start'){
+						this.$el.style.left = pt.left + 'px';
+					}else if(this.realPlacement == 'top-end'){
+						this.$el.style.left = $target.offsetWidth + pt.left - this.$el.offsetWidth + 'px';
 					}
-					
+					this.$el.style.right = 'auto';
+				}else if(this.realPlacement == 'left' || this.realPlacement == 'left-start' || this.realPlacement == 'left-end'){
+					this.$el.style.right = (this.fixed?(pt.right + $target.offsetWidth):($root.clientWidth - pt.left)) + 'px';
+					this.$el.style.left = 'auto';
+					if(this.realPlacement == 'left'){
+						this.$el.style.top = pt.top + $target.offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
+					}else if(this.realPlacement == 'left-start'){
+						this.$el.style.top = pt.top + 'px';
+					}else if(this.realPlacement == 'left-end'){
+						this.$el.style.top = $target.offsetHeight + pt.top - this.$el.offsetHeight + 'px';
+					}
+					this.$el.style.bottom = 'auto';
+				}else if(this.realPlacement == 'right' || this.realPlacement == 'right-start' || this.realPlacement == 'right-end'){
+					this.$el.style.left = (pt.left + $target.offsetWidth) + 'px';
+					this.$el.style.right = 'auto';
+					if(this.realPlacement == 'right'){
+						this.$el.style.top = pt.top + $target.offsetHeight/2 - this.$el.offsetHeight/2 + 'px';
+					}else if(this.realPlacement == 'right-start'){
+						this.$el.style.top = pt.top + 'px';
+					}else if(this.realPlacement == 'right-end'){
+						this.$el.style.top = $target.offsetHeight + pt.top - this.$el.offsetHeight + 'px';
+					}
+					this.$el.style.bottom = 'auto';
 				}
 			},
 			//重置三角位置
@@ -681,7 +635,7 @@
 			//获取根元素
 			getRootEl(){
 				if(this.fixed){
-					return null;
+					return document.body;
 				}
 				if(this.root){
 					return document.body.querySelector(this.root) || document.body;

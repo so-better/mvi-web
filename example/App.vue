@@ -1,11 +1,11 @@
 <template>
 	<div id="app">
-		<div style="height: 10rem;"></div>
-		<m-button style="margin-left:5.4rem;margin-top:1rem;" id="btn" @click="change">Button</m-button>
-		<m-layer v-model="show" root="#app" target="#btn" placement="left-end" show-triangle width="3rem">
+		<m-button style="margin-left:3.4rem;margin-top: 4rem;" id="btn" @click="change">Button</m-button>
+		<m-layer offset="0rem" v-model="show" root="#app" target="#btn" placement="top" width="3rem">
 			<div style="height: 3rem;"></div>
 		</m-layer>
-		<div style="height: 20rem;"></div>
+		<div style="height: 10rem;"></div>
+		<div style="width: 20rem;height: 1px;"></div>
 	</div>
 </template>
 
@@ -42,11 +42,15 @@ export default {
 </script>
 
 <style lang="less">
+body{
+	height: 10rem !important;
+}
 #app {
 	height: 100%;
 	overflow: auto;
-	overflow-x: hidden;
+	overflow-x: auto;
 	position: relative;
+	width: 100%;
 }
 
 .scale-enter,.scale-leave-to{

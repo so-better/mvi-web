@@ -9,9 +9,9 @@ const util = {
 		}
 		let point = element.getBoundingClientRect();
 		let top = point.top;//元素顶部距离可视窗口上边的距离
-		let bottom = window.innerHeight - point.bottom;//元素底部距离可视窗口底部的距离
+		let bottom = (document.documentElement.clientHeight || window.innerHeight) - point.bottom;//元素底部距离可视窗口底部的距离
 		let left = point.left;//元素左侧距离可视窗口左边的距离
-		let right = window.innerWidth - point.right;//元素右侧距离可视窗口右边的距离
+		let right = (document.documentElement.clientWidth || window.innerWidth) - point.right;//元素右侧距离可视窗口右边的距离
 		return {
 			top,bottom,left,right
 		}
