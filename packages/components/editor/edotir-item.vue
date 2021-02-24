@@ -3,8 +3,9 @@
 		<m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
 		 :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout"
 		 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor"
-		 :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :wrapper-class="editor.defaultTooltipProps.wrapperClass" :animation="editor.defaultTooltipProps.animation">
-			<div :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"  :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
+		 :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :width="editor.defaultTooltipProps.width" :animation="editor.defaultTooltipProps.animation"
+		 :show-triangle="editor.defaultTooltipProps.showTriangle">
+			<div class="mvi-editor-target" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"  :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
 				<m-icon :type="editor.defaultMenuIcons[this.value]" />
 			</div>
 		</m-tooltip>
@@ -24,7 +25,7 @@
 			<div class="mvi-editor-layer">
 				<!-- 插入图片或者视频 -->
 				<div class="mvi-editor-medias" v-if="value == 'image' || value == 'video' ">
-					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" :active-color="(editor.activeColor?editor.activeColor:'#0b73de')" inactive-color="#808080">
+					<m-tabs v-model="tabIndex" flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
 						<m-tab v-for="(item,index) in menu" :key="'mvi-editor-media-tab-'+index" :title="item.label">
 							<div ref="upload" class="mvi-editor-upload" v-if="item.value == 'upload'">
 								<m-icon type='upload-square' />
@@ -39,14 +40,14 @@
 				</div>
 				<!-- 插入链接 -->
 				<div v-else-if="value == 'link'" class="mvi-editor-links">
-					<m-tabs flex="flex-start" offset="0.4rem" :active-color="(editor.activeColor?editor.activeColor:'#0b73de')" inactive-color="#808080">
+					<m-tabs flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
 						<m-tab :title="menu[0].label">
 							<div v-if="menu[0].value == 'link'" class="mvi-editor-link">
 								<input ref="linkText" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkText" placeholder="链接文字" type="text" />
 								<input ref="linkUrl" class="mvi-editor-link-input" @focus="inputFocus" @blur="inputBlur" v-model.trim="linkUrl" placeholder="链接地址" type="text">
 								<div class="mvi-editor-link-footer">
 									<m-checkbox label="新窗口打开" label-placement="right" icon-size="0.24rem" label-size="0.24rem" label-color="#808080"
-									 :fill-color="(editor.activeColor?editor.activeColor:'#0b73de')" :checked.sync="linkTarget"></m-checkbox>
+									 :fill-color="editor.activeColor" :checked.sync="linkTarget"></m-checkbox>
 									<div class="mvi-editor-link-operation">
 										<span class="mvi-editor-link-delete" v-if="menuActive" @click="deleteLink">删除链接</span>
 										<span class="mvi-editor-link-insert" :style="activeColorStyle" @click="insertLink">插入</span>
@@ -67,7 +68,7 @@
 				</div>
 				<!-- 插入表格 -->
 				<div v-else-if="value == 'table'" class="mvi-editor-tables">
-					<m-tabs flex="flex-start" offset="0.4rem" :active-color="(editor.activeColor?editor.activeColor:'#0b73de')" inactive-color="#808080">
+					<m-tabs flex="flex-start" offset="0.4rem" :active-color="editor.activeColor" inactive-color="#808080">
 						<m-tab :title="menuActive?'编辑表格':menu[0].label">
 							<div v-if="menu[0].value == 'table'" class="mvi-editor-table">
 								<div class="mvi-editor-table-edit" v-if="menuActive">
@@ -774,10 +775,6 @@
 				opacity: .6;
 				color: @font-color-sub;
 			}
-
-			&.mvi-editor-active {
-				color: @primary-normal;
-			}
 		}
 
 		.mvi-editor-layer {
@@ -866,10 +863,6 @@
 						transition: border-color 400ms;
 						-moz-transition: border-color 400ms;
 						-webkit-transition: border-color 400ms;
-
-						&:focus {
-							border-color: @primary-normal;
-						}
 					}
 
 					.mvi-editor-remote-insert {
@@ -911,10 +904,6 @@
 						transition: border-color 400ms;
 						-moz-transition: border-color 400ms;
 						-webkit-transition: border-color 400ms;
-
-						&:focus {
-							border-color: @primary-normal;
-						}
 					}
 
 					.mvi-editor-link-footer {
@@ -986,10 +975,6 @@
 							transition: border-color 400ms;
 							-moz-transition: border-color 400ms;
 							-webkit-transition: border-color 400ms;
-
-							&:focus {
-								border-color: @primary-normal;
-							}
 						}
 					}
 

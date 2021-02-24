@@ -1,11 +1,10 @@
 <template>
 	<div id="app">
-		<m-button style="margin-left:3.4rem;margin-top: 4rem;" id="btn" @click="change">Button</m-button>
-		<m-layer offset="0rem" v-model="show" root="#app" target="#btn" placement="top" width="3rem">
-			<div style="height: 3rem;"></div>
-		</m-layer>
-		<div style="height: 10rem;"></div>
-		<div style="width: 20rem;height: 1px;"></div>
+		<m-button id="btn" @click="change">Button</m-button>
+		<div class="mvi-m-4">
+			<m-editor v-model="value" placeholder="请输入正文内容..." 
+			active-color="#108282" ></m-editor>
+		</div>
 	</div>
 </template>
 
@@ -42,9 +41,6 @@ export default {
 </script>
 
 <style lang="less">
-body{
-	height: 10rem !important;
-}
 #app {
 	height: 100%;
 	overflow: auto;

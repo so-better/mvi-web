@@ -26,8 +26,8 @@
 			<div
 				v-else
 				ref="content"
-				@blur="changeActive"
-				@focus="changeActive"
+				@blur="contentBlur"
+				@focus="contentFocus"
 				@click="changeActive"
 				@input="contentInput"
 				:class="contentClass"
@@ -392,13 +392,13 @@ export default {
 				zIndex:100,
 				fixed:false,
 				width:null,
-				wrapperClass:null,
-				animation:null
+				animation:null,
+				showTriangle:true
 			},
 			defaultUploadImageProps: {
 				//默认上传图片配置
 				multiple: false, //是否多选
-				allowedFileType: ['jpg', 'png', 'JPG', 'PNG', 'JPEG', 'jpeg', 'gif', 'GIF'], //限定格式
+				allowedFileType: ['jpg', 'png', 'JPG', 'PNG', 'JPEG', 'jpeg', 'gif', 'GIF','jfif','JFIF'], //限定格式
 				accept: 'image', //限制类型
 				minSize: -1, //限制单个图片最小值，单位kb
 				maxSize: -1, //限定单个图片最大值，单位kb
@@ -589,7 +589,7 @@ export default {
 		//激活颜色设定
 		activeColor:{
 			type:String,
-			default:null
+			default:'#0b73de'
 		}
 	},
 	computed: {
@@ -756,6 +756,9 @@ export default {
 				return;
 			}
 			document.execCommand('insertHtml', false, `<img src="${url}" class="mvi-editor-image" />`);
+			this.$refs.content.querySelectorAll('.mvi-editor-image').forEach((image,index)=>{
+				image.removeEventListener('click')
+			})
 		},
 		//对外提供的用以插入视频的api
 		insertVideo(url) {
@@ -957,6 +960,20 @@ export default {
 						item.menuActive = this.customActive(item.value, node) || false;
 				}
 			});
+		},
+		//编辑区域获取焦点
+		contentFocus(){
+			if(this.border && this.activeColor){
+				this.$refs.content.style.borderColor = this.activeColor
+			}
+			this.changeActive()
+		},
+		//编辑区域失去焦点
+		contentBlur(){
+			if(this.border && this.activeColor){
+				this.$refs.content.style.borderColor = ''
+			}
+			this.changeActive()
 		},
 		//输入框输入
 		contentInput() {
@@ -1211,6 +1228,7 @@ export default {
 		overflow-y: auto;
 		font-size: @font-size-default;
 		color: @font-color-default;
+		transition: border-color 600ms;
 
 		&.mvi-editor-content-auto {
 			height: auto;

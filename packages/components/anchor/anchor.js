@@ -68,7 +68,7 @@ class Anchor {
 				}).then(()=>{
 					var top = (scrollTop - $util.rem2px(this.distance)) <= 0 ? 0 : (scrollTop - $util.rem2px(this.distance));
 					this.callback(top);
-				});;
+				})
 			})
 		}
 	}

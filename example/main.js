@@ -4,7 +4,7 @@ Vue.config.productionTip = false
 import mvi from "../packages"
 Vue.use(mvi)
 import RemFit from "rem-fit"
-var remFit = new RemFit(15.6,true);
+var remFit = new RemFit(28,true);
 remFit.set();
 window.addEventListener('resize',()=>{
 	remFit.set()

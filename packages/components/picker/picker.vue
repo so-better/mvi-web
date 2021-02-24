@@ -285,7 +285,7 @@
 			},
 			//触摸结束
 			touchend(event) {
-				this.endTimeStamp = Date.now();;
+				this.endTimeStamp = Date.now();
 				var moveTotal = event.changedTouches[0].pageY - this.startY2;
 				var totalTimeStamp = this.endTimeStamp - this.StartTimeStamp;//时间差
 				if(totalTimeStamp < 300 &&　Math.abs(moveTotal)>this.computedHeight){//惯性滑动
