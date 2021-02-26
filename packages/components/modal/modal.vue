@@ -1,11 +1,11 @@
 <template>
 	<m-overlay ref="overlay" :show="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding"
 	 :z-index="zIndex" @click.self="hide" :color="overlayColor" :timeout="timeout" :local="local">
-		<div class="mvi-modal" :style="modalStyle" v-on="listeners">
+		<div ref="modal" class="mvi-modal" :style="modalStyle" v-on="listeners">
 			<transition :name="'mvi-modal-'+animation"  @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter"
 			@before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
 				<!-- 弹出层 -->
-				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" :style="wrapperStyle">
+				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" ref="wrapper" :style="wrapperStyle">
 					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)" :style="'color:'+(timesColor?timesColor:'')">
 						<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" />
 					</div>
@@ -127,19 +127,23 @@
 				type:Boolean,
 				default:false
 			},
-			animation:{
+			animation:{//动画
 				type:String,
 				default:'scale'//'narrow','scale','translate-top','translate-bottom','translate-left','translate-right'
 			},
-			titleEllipsis:{
+			titleEllipsis:{//标题是否只一行，超出省略
 				type:Boolean,
 				default:false
 			},
-			timesColor:{
+			timesColor:{//关闭图标颜色
 				type:String,
 				default:null
 			},
-			usePadding:{
+			usePadding:{//局部显示是否考虑PC端滚动条影响
+				type:Boolean,
+				default:false
+			},
+			fullScreen:{//是否全屏
 				type:Boolean,
 				default:false
 			}
@@ -188,9 +192,6 @@
 			},
 			modalStyle(){
 				var style = {};
-				if(this.width){
-					style.width = this.width;
-				}
 				style.zIndex = this.zIndex + 10;
 				return style;
 			},
@@ -204,11 +205,6 @@
 				}
 				if(this.color){
 					style.color = this.color;
-				}
-				if(this.local){
-					style.maxHeight = this.$el.parentNode.offsetHeight * 0.96 + 'px';
-				}else{
-					style.maxHeight = window.innerHeight * 0.96 + 'px';
 				}
 				style.transition = 'all '+ this.timeout + 'ms';
 				style.webkitTransition = 'all '+this.timeout + 'ms';
@@ -236,7 +232,38 @@
 				return style;
 			}
 		},
+		watch:{
+			fullScreen(newValue){
+				this.modalSize()
+			}
+		},
 		methods:{
+			//模态框宽高设置
+			modalSize(){
+				//如果是全屏显示
+				if(this.fullScreen){
+					if(this.local){
+						this.$refs.modal.style.width = this.$el.offsetParent.offsetWidth + 'px';
+						this.$refs.wrapper.style.height = this.$el.offsetParent.offsetHeight + 'px';
+					}else {
+						this.$refs.modal.style.width = window.innerWidth + 'px';
+						this.$refs.wrapper.style.height = window.innerHeight + 'px';
+					}
+					this.$refs.wrapper.style.maxHeight = ''
+				}else {
+					if(this.width){
+						this.$refs.modal.style.width = this.width;
+					}else {
+						this.$refs.modal.style.width = '';
+					}
+					if(this.local){
+						this.$refs.wrapper.style.maxHeight = this.$el.offsetParent.offsetHeight * 0.96 + 'px';
+					}else {
+						this.$refs.wrapper.style.maxHeight = window.innerHeight * 0.96 + 'px';
+					}
+					this.$refs.wrapper.style.height = ''
+				}
+			},
 			//遮罩层显示前
 			overlayShow(el){
 				if(!this.firstShow){
@@ -265,6 +292,7 @@
 			},
 			//弹出层显示时
 			enter(el){
+				this.modalSize();
 				this.$emit('showing',el);
 			},
 			//弹出层显示后

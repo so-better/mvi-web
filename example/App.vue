@@ -1,10 +1,6 @@
 <template>
 	<div id="app">
 		<m-button id="btn" @click="change">Button</m-button>
-		<div class="mvi-m-4">
-			<m-editor v-model="value" placeholder="请输入正文内容..." 
-			active-color="#108282" ></m-editor>
-		</div>
 	</div>
 </template>
 
@@ -17,7 +13,7 @@ export default {
 			date: new Date(),
 			value: '',
 			active: 1,
-			disabled: false,
+			disabled: true,
 			types: ['info', 'warn', 'primary', 'success', 'error', 'default'],
 			placement: 'bottom',
 			list: ['MVI', 'Bootstrap', 'Vue'],

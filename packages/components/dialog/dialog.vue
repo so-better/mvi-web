@@ -1,473 +1,513 @@
 <template>
-	<m-modal v-on="listeners" :show="show" :footer-padding="false" @hidden="modalHidden" :width="computedWidth" :z-index="computedZIndex" :radius="computedRadius"
-	:local="computedLocal" :use-padding="computedUsePadding" :animation="computedAnimation" @shown="modalShown" :timeout="computedTimeout" :overlay-color="computedOverlayColor">
+	<m-modal
+		v-on="listeners"
+		:show="show"
+		:footer-padding="false"
+		@hidden="modalHidden"
+		:width="computedWidth"
+		:z-index="computedZIndex"
+		:radius="computedRadius"
+		:local="computedLocal"
+		:use-padding="computedUsePadding"
+		:animation="computedAnimation"
+		@shown="modalShown"
+		:timeout="computedTimeout"
+		:overlay-color="computedOverlayColor"
+	>
 		<template v-if="computedTitle" v-slot:title>
 			<div v-html="computedTitle" class="mvi-dialog-title"></div>
 		</template>
 		<template v-slot:default v-if="contentShow">
 			<div v-html="computedMessage" class="mvi-dialog-content" v-if="computedMessage"></div>
-			<div v-if="type=='prompt'" class="mvi-dialog-input">
-				<input ref="input" :type="computedInput.type" :placeholder="computedInput.placeholder" :maxlength="computedInput.maxlength" :class="inputClass" :style="inputStyle"
-				:autofocus="computedInput.autofocus" v-model.trim="computedValue" @input="inputFun" @focus="inputFocus" @blur="inputBlur" :inputmode="computedInputMode">
+			<div v-if="type == 'prompt'" class="mvi-dialog-input">
+				<input
+					ref="input"
+					:type="computedInput.type"
+					:placeholder="computedInput.placeholder"
+					:maxlength="computedInput.maxlength"
+					:class="inputClass"
+					:style="inputStyle"
+					:autofocus="computedInput.autofocus"
+					v-model.trim="computedValue"
+					@input="inputFun"
+					@focus="inputFocus"
+					@blur="inputBlur"
+					:inputmode="computedInputMode"
+				/>
 				<m-icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
 		</template>
 		<template v-slot:footer>
 			<div class="mvi-dialog-footer">
-				<div v-if="type!='alert'" class="mvi-dialog-cancel" v-text="computedBtnText[1]" @click="cancelFun"
-				:style="'color:'+(computedBtnColor?computedBtnColor[1]:'')"></div>
-				<div class="mvi-dialog-ok" v-text="type=='alert'?computedBtnText:computedBtnText[0]" @click="okFun"
-				:style="'color:'+(type=='alert'?(computedBtnColor?computedBtnColor:''):(computedBtnColor?computedBtnColor[0]:''))"></div>
+				<div
+					v-if="type != 'alert'"
+					class="mvi-dialog-cancel"
+					v-text="computedBtnText[1]"
+					@click="cancelFun"
+					:style="'color:' + (computedBtnColor ? computedBtnColor[1] : '')"
+				></div>
+				<div
+					class="mvi-dialog-ok"
+					v-text="type == 'alert' ? computedBtnText : computedBtnText[0]"
+					@click="okFun"
+					:style="'color:' + (type == 'alert' ? (computedBtnColor ? computedBtnColor : '') : computedBtnColor ? computedBtnColor[0] : '')"
+				></div>
 			</div>
 		</template>
 	</m-modal>
 </template>
 
 <script>
-	import $util from "../../util/util"
-	export default {
-		name:"m-dialog",
-		data(){
-			return {
-				ok:false,//点击的是否是确定按钮
-				show: true,//对话框是否打开，默认为true，即挂载就显示
-				type: "alert",//弹窗类型
-				title: null,//标题
-				message: null,//描述
-				btnText: null,//按钮文本
-				btnColor:null,//按钮文字颜色
-				width:null,//模态框宽度
-				callback: null,//回调函数
-				zIndex:null,//遮罩z-index
-				animation:null,//动画
-				local:null,//是否局部
-				usePadding:null,//局部显示时是否考虑滚动条影响
-				radius:null,//圆角
-				timeout:null,//自定义动画时间
-				overlayColor:null,//遮罩层背景色
-				input: {//输入框配置
-					placeholder: null, //占位符
-					type:null, //输入框类型
-					autofocus:null,
-					maxlength:null,
-					clearable:null,
-					value:null,//输入框的值
-					mode:null,//输入框键盘类型
-					align:null,//输入框文本对齐方式
-				},
-				focus:false//输入框是否已经获得了焦点
+import $util from '../../util/util';
+export default {
+	name: 'm-dialog',
+	data() {
+		return {
+			ok: false, //点击的是否是确定按钮
+			show: true, //对话框是否打开，默认为true，即挂载就显示
+			type: 'alert', //弹窗类型
+			title: null, //标题
+			message: null, //描述
+			btnText: null, //按钮文本
+			btnColor: null, //按钮文字颜色
+			width: null, //模态框宽度
+			callback: null, //回调函数
+			zIndex: null, //遮罩z-index
+			animation: null, //动画
+			local: null, //是否局部
+			usePadding: null, //局部显示时是否考虑滚动条影响
+			radius: null, //圆角
+			timeout: null, //自定义动画时间
+			overlayColor: null, //遮罩层背景色
+			input: {
+				//输入框配置
+				placeholder: null, //占位符
+				type: null, //输入框类型
+				autofocus: null,
+				maxlength: null,
+				clearable: null,
+				value: null, //输入框的值
+				mode: null, //输入框键盘类型
+				align: null //输入框文本对齐方式
+			},
+			focus: false //输入框是否已经获得了焦点
+		};
+	},
+	computed: {
+		listeners() {
+			return Object.assign({}, this.$listeners);
+		},
+		computedTitle() {
+			if (typeof this.title == 'string') {
+				return this.title;
+			} else {
+				return '提示';
 			}
 		},
-		computed:{
-			listeners(){
-				return Object.assign({},this.$listeners);
-			},
-			computedTitle(){
-				if(typeof(this.title) == 'string'){
-					return this.title;
-				}else{
-					return '提示';
+		computedMessage() {
+			if (typeof this.message == 'string') {
+				return this.message;
+			} else if ($util.isObject(this.message)) {
+				return JSON.stringify(this.message);
+			} else if ($util.isNumber(this.message)) {
+				return this.message.toString();
+			} else if (this.message) {
+				return String(this.message);
+			} else {
+				return '';
+			}
+		},
+		computedBtnText() {
+			var bt = null;
+			if (this.type == 'alert') {
+				if (typeof this.btnText == 'string') {
+					bt = this.btnText;
+				} else {
+					bt = '确定';
 				}
-			},
-			computedMessage(){
-				if(typeof(this.message) == "string"){
-					return this.message;
-				}else if($util.isObject(this.message)){
-					return JSON.stringify(this.message);
-				}else if($util.isNumber(this.message)){
-					return this.message.toString();
-				}else if(this.message){
-					return String(this.message);
-				}else{
-					return '';
-				}
-			},
-			computedBtnText(){
-				var bt = null;
-				if (this.type == "alert") {
-					if (typeof(this.btnText) == "string") {
-						bt = this.btnText;
+			} else {
+				bt = [];
+				if (this.btnText instanceof Array) {
+					if (typeof this.btnText[0] == 'string') {
+						bt[0] = this.btnText[0];
 					} else {
-						bt = "确定";
+						bt[0] = '确定';
+					}
+					if (typeof this.btnText[1] == 'string') {
+						bt[1] = this.btnText[1];
+					} else {
+						bt[1] = '取消';
 					}
 				} else {
-					bt = [];
-					if (this.btnText instanceof Array) {
-						if (typeof(this.btnText[0]) == "string") {
-							bt[0] = this.btnText[0];
-						} else {
-							bt[0] = '确定';
-						}
-						if (typeof(this.btnText[1]) == "string") {
-							bt[1] = this.btnText[1];
-						} else {
-							bt[1] = '取消';
-						}
-					} else {
-						bt = ['确定', '取消'];
-					}
+					bt = ['确定', '取消'];
 				}
-				return bt;
-			},
-			computedBtnColor(){
-				var bt = null;
-				if (this.type == "alert") {
-					if (typeof(this.btnColor) == "string") {
-						bt = this.btnColor;
+			}
+			return bt;
+		},
+		computedBtnColor() {
+			var bt = null;
+			if (this.type == 'alert') {
+				if (typeof this.btnColor == 'string') {
+					bt = this.btnColor;
+				} else {
+					bt = null;
+				}
+			} else {
+				bt = [];
+				if (this.btnColor instanceof Array) {
+					if (typeof this.btnColor[0] == 'string') {
+						bt[0] = this.btnColor[0];
 					} else {
-						bt = null;
+						bt[0] = null;
+					}
+					if (typeof this.btnColor[1] == 'string') {
+						bt[1] = this.btnColor[1];
+					} else {
+						bt[1] = null;
 					}
 				} else {
-					bt = [];
-					if (this.btnColor instanceof Array) {
-						if (typeof(this.btnColor[0]) == "string") {
-							bt[0] = this.btnColor[0];
-						} else {
-							bt[0] = null;
-						}
-						if (typeof(this.btnColor[1]) == "string") {
-							bt[1] = this.btnColor[1];
-						} else {
-							bt[1] = null;
-						}
-					} else {
-						bt = [null,null];
-					}
+					bt = [null, null];
 				}
-				return bt;
-			},
-			computedCallback(){
-				if(typeof(this.callback) == "function"){
-					return this.callback;
-				}else{
-					return function(){};
-				}
-			},
-			computedWidth(){
-				if(typeof(this.width) == "string" && this.width){
-					return this.width;
-				}else{
-					return '5.6rem';
-				}
-			},
-			computedInput(){
-				var input = {};
-				if(typeof(this.input.placeholder) == "string"){
-					input.placeholder = this.input.placeholder;
-				}else{
-					input.placeholder = '';
-				}
-				if(typeof(this.input.type) == "string"){
-					if(this.input.type == 'number'){
-						input.type = 'text';
-					}else{
-						input.type = this.input.type;
-					}
-				}else{
+			}
+			return bt;
+		},
+		computedCallback() {
+			if (typeof this.callback == 'function') {
+				return this.callback;
+			} else {
+				return function() {};
+			}
+		},
+		computedWidth() {
+			if (typeof this.width == 'string' && this.width) {
+				return this.width;
+			} else {
+				return '5.6rem';
+			}
+		},
+		computedInput() {
+			var input = {};
+			if (typeof this.input.placeholder == 'string') {
+				input.placeholder = this.input.placeholder;
+			} else {
+				input.placeholder = '';
+			}
+			if (typeof this.input.type == 'string') {
+				if (this.input.type == 'number') {
 					input.type = 'text';
+				} else {
+					input.type = this.input.type;
 				}
-				if(typeof(this.input.autofocus) == "boolean"){
-					input.autofocus = this.input.autofocus;
-				}else{
-					input.autofocus = true;
-				}	
-				if($util.isNumber(this.input.maxlength)){
-					input.maxlength = this.input.maxlength;
-				}else{
-					input.maxlength = -1;
+			} else {
+				input.type = 'text';
+			}
+			if (typeof this.input.autofocus == 'boolean') {
+				input.autofocus = this.input.autofocus;
+			} else {
+				input.autofocus = true;
+			}
+			if ($util.isNumber(this.input.maxlength)) {
+				input.maxlength = this.input.maxlength;
+			} else {
+				input.maxlength = -1;
+			}
+			if (typeof this.input.clearable == 'boolean') {
+				input.clearable = this.input.clearable;
+			} else {
+				input.clearable = false;
+			}
+			if (typeof this.input.mode == 'string') {
+				input.mode = this.input.mode;
+			} else {
+				input.mode = false;
+			}
+			if (typeof this.input.align == 'string') {
+				input.align = this.input.align;
+			} else {
+				input.align = 'left';
+			}
+			return input;
+		},
+		computedValue: {
+			get() {
+				var value = '';
+				if (typeof this.input.value == 'string' && this.input.value) {
+					value = this.input.value;
 				}
-				if(typeof(this.input.clearable) == 'boolean'){
-					input.clearable = this.input.clearable;
-				}else{
-					input.clearable = false;
-				}
-				if(typeof(this.input.mode) == 'string'){
-					input.mode = this.input.mode;
-				}else {
-					input.mode = false;
-				}
-				if(typeof(this.input.align) == 'string'){
-					input.align = this.input.align;
-				}else {
-					input.align = 'left'
-				}
-				return input;
+				return value;
 			},
-			computedValue:{
-				get(){
-					var value = '';
-					if(typeof(this.input.value) == "string" && this.input.value){
-						value = this.input.value;
-					}
-					return value;
-				},
-				set(value){
-					this.input.value = value;
-				}
-			},
-			computedZIndex(){
-				if($util.isNumber(this.zIndex)){
-					return this.zIndex;
-				}else{
-					return 1000;
-				}
-			},
-			computedLocal(){
-				if((typeof(this.local) == 'string' && this.local) || $util.isElement(this.local)){
-					return true;
-				}else{
-					return false;
-				}
-			},
-			computedUsePadding(){
-				if(typeof(this.usePadding) == 'boolean'){
-					return this.usePadding;
-				}else{
-					return false;
-				}
-			},
-			computedAnimation(){
-				if(typeof(this.animation) == 'string' && this.animation){
-					return this.animation;
-				}else{
-					return 'narrow';
-				}
-			},
-			computedRadius(){
-				if(typeof(this.radius) == "string" && this.radius){
-					return this.radius;
-				}else{
-					return '0.2rem';
-				}
-			},
-			computedTimeout(){
-				if($util.isNumber(this.timeout)){
-					return this.timeout;
-				}else{
-					return 300;
-				}
-			},
-			computedOverlayColor(){
-				if(typeof(this.overlayColor) == 'string' && this.overlayColor){
-					return this.overlayColor;
-				}else{
-					return null;
-				}
-			},
-			contentShow(){
-				if(this.type == "alert" || this.type == 'confirm'){
-					if(this.computedMessage){
-						return true;
-					}else{
-						return false;
-					}
-				}else{
-					return true;
-				}
-			},
-			showClear(){
-				if(this.focus && this.computedValue){
-					return true;
-				}else{
-					return false;
-				}
-			},
-			inputClass(){
-				var cls = '';
-				if(this.showClear && this.computedInput.clearable){
-					cls += 'mvi-dialog-input-padding'
-				}
-				return cls
-			},
-			computedInputMode(){
-				var mode = false;
-				if([false,'none','text','decimal','numeric','tel','search','email','url'].includes(this.computedInput.mode)){
-					mode = this.computedInput.mode
-				}else {
-					if(this.input.type == 'number'){
-						mode = 'numeric'
-					}
-				}
-				return mode
-			},
-			inputStyle(){
-				var style = {}
-				if(['left','right','center'].includes(this.computedInput.align)){
-					style.textAlign = this.computedInput.align;
-				}
-				return style;
+			set(value) {
+				this.input.value = value;
 			}
 		},
-		methods:{
-			//获取焦点
-			inputFocus(){
-				setTimeout(()=>{
-					this.focus = true;
-				},300)
-			},
-			//失去焦点
-			inputBlur(e){
-				setTimeout(()=>{
-					this.focus = false;
-				},300)
-			},
-			//输入监听
-			inputFun(){
-				var value = this.computedValue;
-				if(this.input.type == 'number'){
-					value = value.replace(/\D/g, '');
+		computedZIndex() {
+			if ($util.isNumber(this.zIndex)) {
+				return this.zIndex;
+			} else {
+				return 1000;
+			}
+		},
+		computedLocal() {
+			if ((typeof this.local == 'string' && this.local) || $util.isElement(this.local)) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		computedUsePadding() {
+			if (typeof this.usePadding == 'boolean') {
+				return this.usePadding;
+			} else {
+				return false;
+			}
+		},
+		computedAnimation() {
+			if (typeof this.animation == 'string' && this.animation) {
+				return this.animation;
+			} else {
+				return 'narrow';
+			}
+		},
+		computedRadius() {
+			if (typeof this.radius == 'string' && this.radius) {
+				return this.radius;
+			} else {
+				return '0.2rem';
+			}
+		},
+		computedTimeout() {
+			if ($util.isNumber(this.timeout)) {
+				return this.timeout;
+			} else {
+				return 300;
+			}
+		},
+		computedOverlayColor() {
+			if (typeof this.overlayColor == 'string' && this.overlayColor) {
+				return this.overlayColor;
+			} else {
+				return null;
+			}
+		},
+		contentShow() {
+			if (this.type == 'alert' || this.type == 'confirm') {
+				if (this.computedMessage) {
+					return true;
+				} else {
+					return false;
 				}
-				if (this.computedInput.maxlength > 0) {
-					if (value.length > this.computedInput.maxlength) {
-						value = value.substr(0, this.computedInput.maxlength);
-					}
+			} else {
+				return true;
+			}
+		},
+		showClear() {
+			if (this.focus && this.computedValue) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		inputClass() {
+			var cls = '';
+			if (this.showClear && this.computedInput.clearable) {
+				cls += 'mvi-dialog-input-padding';
+			}
+			return cls;
+		},
+		computedInputMode() {
+			var mode = false;
+			if ([false, 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'].includes(this.computedInput.mode)) {
+				mode = this.computedInput.mode;
+			} else {
+				if (this.input.type == 'number') {
+					mode = 'numeric';
 				}
-				this.computedValue = value;
-			},
-			//清除输入框的值
-			doClear(){
-				this.computedValue = '';
+			}
+			return mode;
+		},
+		inputStyle() {
+			var style = {};
+			if (['left', 'right', 'center'].includes(this.computedInput.align)) {
+				style.textAlign = this.computedInput.align;
+			}
+			return style;
+		}
+	},
+	methods: {
+		//获取焦点
+		inputFocus() {
+			setTimeout(() => {
+				this.focus = true;
+			}, 300);
+		},
+		//失去焦点
+		inputBlur(e) {
+			setTimeout(() => {
+				this.focus = false;
+			}, 300);
+		},
+		//输入监听
+		inputFun() {
+			var value = this.computedValue;
+			if (this.input.type == 'number') {
+				value = value.replace(/\D/g, '');
+			}
+			if (this.computedInput.maxlength > 0) {
+				if (value.length > this.computedInput.maxlength) {
+					value = value.substr(0, this.computedInput.maxlength);
+				}
+			}
+			this.computedValue = value;
+		},
+		//清除输入框的值
+		doClear() {
+			this.computedValue = '';
+			this.$refs.input.focus();
+		},
+		//确定
+		okFun() {
+			this.show = false;
+			this.ok = true;
+		},
+		//取消
+		cancelFun() {
+			this.show = false;
+			this.ok = false;
+		},
+		//模态框隐藏后
+		modalHidden() {
+			if (this.type == 'alert') {
+				this.computedCallback();
+			} else if (this.type == 'confirm') {
+				this.computedCallback(this.ok);
+			} else if (this.type == 'prompt') {
+				this.computedCallback(this.ok, this.input.value);
+			}
+			this.$el.remove();
+			this.$destroy();
+		},
+		//模态框显示后
+		modalShown() {
+			//输入框获取焦点
+			if (this.type == 'prompt' && this.computedInput.autofocus) {
 				this.$refs.input.focus();
-			},
-			//确定
-			okFun(){
-				this.show = false;
-				this.ok = true;
-			},
-			//取消
-			cancelFun(){
-				this.show = false;
-				this.ok = false;
-			},
-			//模态框隐藏后
-			modalHidden(){
-				if(this.type == 'alert'){
-					this.computedCallback();
-				}else if(this.type == 'confirm'){
-					this.computedCallback(this.ok);
-				}else if(this.type == 'prompt'){
-					this.computedCallback(this.ok,this.input.value);
-				}
-				this.$el.remove();
-				this.$destroy();
-			},
-			//模态框显示后
-			modalShown(){
-				//输入框获取焦点
-				if(this.type == 'prompt' && this.computedInput.autofocus){
-					this.$refs.input.focus();
-				}
 			}
 		}
 	}
+};
 </script>
 
 <style scoped lang="less">
-	@import "../../css/mvi-basic.less";
-	
-	.mvi-dialog-title{
-		display: block;
-		width: 100%;
-		text-align: center;
-		font-size: @font-size-h6;
-		color:@font-color-default;
-		font-weight: bold;
-		line-height: 1.5;
-	}
-	.mvi-dialog-content{
-		text-align: center;
-		color:@font-color-default;
-		line-height: 1.5;
-		font-size: @font-size-default;
-	}
-	
-	.mvi-dialog-input{
-		display: block;
-		width: 100%;
-		margin-top: @mp-md;
-		position: relative;
-	}
-	
-	.mvi-dialog-input>input{
-		display: block;
-		appearance: none;
-		-moz-appearance: none;
-		-webkit-appearance: none;
-		width: 90%;
-		height: @small-height;
-		line-height: 1.5;
-		border-radius: @radius-default;
-		border: 1px solid @border-color;
-		color: @font-color-default;
-		font-size: @font-size-default;
-		padding: 0 @mp-sm 0 @mp-sm;
-		background-color: #fff;
+@import '../../css/mvi-basic.less';
+
+.mvi-dialog-title {
+	display: block;
+	width: 100%;
+	text-align: center;
+	font-size: @font-size-h6;
+	color: @font-color-default;
+	font-weight: bold;
+	line-height: 1.5;
+}
+.mvi-dialog-content {
+	text-align: center;
+	color: @font-color-default;
+	line-height: 1.5;
+	font-size: @font-size-default;
+}
+
+.mvi-dialog-input {
+	display: block;
+	width: 100%;
+	margin-top: @mp-md;
+	position: relative;
+}
+
+.mvi-dialog-input > input {
+	display: block;
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	width: 90%;
+	height: @small-height;
+	line-height: 1.5;
+	border-radius: @radius-default;
+	border: 1px solid @border-color;
+	color: @font-color-default;
+	font-size: @font-size-default;
+	padding: 0 @mp-sm 0 @mp-sm;
+	background-color: #fff;
+	vertical-align: middle;
+	margin-left: 5%;
+
+	&::placeholder,
+	&::-webkit-input-placeholder,
+	&:-moz-placeholder,
+	&::-moz-placeholder,
+	&:-ms-input-placeholder {
+		opacity: 0.5;
+		font-family: inherit;
+		font-size: inherit;
+		color: inherit;
+		opacity: 0.5;
 		vertical-align: middle;
-		margin-left: 5%;
-		
-		&::placeholder,&::-webkit-input-placeholder,&:-moz-placeholder,&::-moz-placeholder,&:-ms-input-placeholder{
-			opacity: .5;
-			font-family: inherit;
-			font-size: inherit;
-			color:inherit;
-			opacity: .5;
-			vertical-align: middle;
-		}
-		
-		&.mvi-dialog-input-padding{
-			padding-right: @mp-sm * 3;
-		}
 	}
-	
-	.mvi-dialog-times{
-		position: absolute;
-		top:50%;
-		right:~'calc(5% + @{mp-sm})';
-		transform: translateY(-50%);
-		-webkit-transform: translateY(-50%);
-		-moz-transform: translateY(-50%);
-		-ms-transform: translateY(-50%);
-		color: @font-color-mute;
-		cursor: pointer;
+
+	&.mvi-dialog-input-padding {
+		padding-right: @mp-sm * 3;
 	}
-	
-	.mvi-dialog-footer{
-		height: .88rem;
-		width: 100%;
-		display: flex;
-		display: -webkit-flex;
-		justify-content:space-between;
-	}
-	
-	.mvi-dialog-ok{
-		position: relative;
-		display: flex;
-		display: -webkit-flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		font-size: @font-size-h6;
-		color: @primary-normal;
-		flex: 1;
-		cursor: pointer;
-		font-weight:bold;
-	}
-	
-	.mvi-dialog-cancel{
-		position: relative;
-		display: flex;
-		display: -webkit-flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		font-size: @font-size-h6;
-		width: 50%;
-		border-right: 1px solid @border-color;
-		color: @font-color-default;
-		cursor: pointer;
-	}
-	
-	.mvi-dialog-ok:active::before,.mvi-dialog-cancel:active::before{
-		.mvi-active()
-	}
+}
+
+.mvi-dialog-times {
+	position: absolute;
+	top: 50%;
+	right: ~'calc(5% + @{mp-sm})';
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	color: @font-color-mute;
+	cursor: pointer;
+}
+
+.mvi-dialog-footer {
+	height: 0.88rem;
+	width: 100%;
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+}
+
+.mvi-dialog-ok {
+	position: relative;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-size: @font-size-h6;
+	color: @primary-normal;
+	flex: 1;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.mvi-dialog-cancel {
+	position: relative;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	font-size: @font-size-h6;
+	width: 50%;
+	border-right: 1px solid @border-color;
+	color: @font-color-default;
+	cursor: pointer;
+}
+
+.mvi-dialog-ok:active::before,
+.mvi-dialog-cancel:active::before {
+	.mvi-active();
+}
 </style>
