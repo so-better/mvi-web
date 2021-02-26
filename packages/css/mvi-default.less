@@ -83,7 +83,7 @@ pre {
 	line-height: 1.5;
 	color: @font-color-default;
 	background-color: #fafafa;
-	border: 1px solid #eaeefb;
+	border: 1px solid @light-default;
 	border-radius: @radius-default;
 	overflow: auto;
 }
@@ -115,12 +115,13 @@ li {
 
 blockquote {
 	display: block;
-	border-left: 0.16rem solid @info-normal;
-	padding: @mp-xs @mp-sm;
+	border-left: 0.1rem solid @light-default;
+	padding: @mp-xs @mp-sm @mp-xs @mp-md;
 	margin: 0 0 @mp-sm 0;
 	line-height: 1.5;
 	font-size: @font-size-default;
-	background-color: @bg-color-dark;
+	color: @font-color-sub;
+	border-radius: 0;
 }
 
 hr{
@@ -128,8 +129,8 @@ hr{
 	width: 100%;
 	margin: 0;
 	padding: 0;
-	margin-bottom: @mp-sm;
-	height: 1px;
+	margin: @mp-sm 0;
+	height: 0.02rem;
 	background-color: @bg-color-dark;
 	border: none;
 }
