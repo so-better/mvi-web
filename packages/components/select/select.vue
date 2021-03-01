@@ -188,11 +188,6 @@ export default {
 			default: 'success'
 		}
 	},
-	provide() {
-		return {
-			select: this
-		};
-	},
 	computed: {
 		listeners() {
 			return Object.assign({}, this.$listeners);
