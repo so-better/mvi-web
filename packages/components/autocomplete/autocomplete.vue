@@ -15,8 +15,8 @@
 		</div>
 		<m-layer :show="show" :target="`[data-id='mvi-autocomplete-target-${_uid}']`" 
 		:root="`[data-id='mvi-autocomplete-${_uid}']`" :placement="placement" :offset="offset" :fixed="fixed" :z-index="zIndex" 
-		ref="layer" :wrapper-class="wrapperClass" :animation="animation" shadow :border="false" :timeout="timeout" :closable="false" :show-triangle="false">
-			<div class="mvi-autocomplete-menu" :style="menuStyle">
+		ref="layer" :wrapper-class="wrapperClass" :animation="animation" shadow :border="false" :timeout="timeout" :closable="false" :show-triangle="false" @showing="layerShow">
+			<div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
 				<div class="mvi-autocomplete-list" v-for="(item,index) in computedFilter" :key="'mvi-autocomplete-list-'+index" 
 				v-text="item" @click="doSelect(item)" @mouseenter="listEnter" @mouseleave="listLeave"></div>
 			</div>
@@ -254,11 +254,6 @@
 				if(this.height){
 					style.maxHeight = this.height;
 				}
-				if(this.width){
-					style.width = this.width;
-				}else if(this.target){
-					style.width = this.$refs.target.offsetWidth + 'px';
-				}
 				return style;
 			},
 			computedFilter(){
@@ -309,10 +304,14 @@
 				return cls
 			}
 		},
-		mounted() {
-			this.target = this.$refs.target;
-		},
 		methods:{
+			layerShow(){
+				if(this.width){
+					this.$refs.menu.style.width = this.width;
+				}else {
+					this.$refs.menu.style.width = this.$refs.target.offsetWidth + 'px';
+				}
+			},
 			rightClick(e){
 				if(this.disabled){
 					return;

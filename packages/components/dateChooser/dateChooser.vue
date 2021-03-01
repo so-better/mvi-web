@@ -17,9 +17,10 @@
 			:timeout="timeout"
 			:closable="closable"
 			:show-triangle="false"
+			@showing="layerShow"
 			ref="layer"
 		>
-			<div class="mvi-date-chooser-layer" :style="layerStyle">
+			<div class="mvi-date-chooser-layer" ref="panel">
 				<div class="mvi-date-chooser-header">
 					<div class="mvi-date-chooser-header-left">
 						<span
@@ -288,16 +289,6 @@ export default {
 		listeners() {
 			return Object.assign({}, this.$listeners);
 		},
-		layerStyle() {
-			//layer样式
-			var style = {};
-			if (this.width) {
-				style.width = this.width;
-			} else if (this.target) {
-				style.width = this.$refs.target.offsetWidth + 'px';
-			}
-			return style;
-		},
 		currentYear() {
 			//当前年份显示值
 			return this.value.getFullYear() + ' 年';
@@ -358,13 +349,20 @@ export default {
 	},
 	mounted() {
 		this.view = this.mode;
-		this.target = this.$refs.target;
 		if(this.trigger == 'hover'){
 			this.$el.addEventListener('mouseenter',this.openCalendar)
 			this.$el.addEventListener('mouseleave',this.closeCalendar)
 		}
 	},
 	methods: {
+		//悬浮层显示时
+		layerShow(){
+			if (this.width) {
+				this.$refs.panel.style.width = this.width;
+			} else{
+				this.$refs.panel.style.width = this.$refs.target.offsetWidth + 'px';
+			}
+		},
 		//打开日期选择弹窗
 		openCalendar(){
 			if(this.disabled){

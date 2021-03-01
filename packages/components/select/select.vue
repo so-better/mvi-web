@@ -3,7 +3,7 @@
 		<div :data-id="'mvi-select-target-' + _uid" :class="targetClass" :style="targetStyle" ref="target" @click="trigger" :disabled="disabled">
 			<span :class="'mvi-select-label' + (selectLabel ? '' : ' mvi-select-label-placeholder')" :data-placeholder="placeholder" v-html="selectLabel"></span>
 			<!-- 下拉图标 -->
-			<m-icon :class="iconClass" :type="icon" :style="iconStyle" />
+			<m-icon :class="iconClass" :type="icon" />
 		</div>
 		<m-layer
 			v-model="focus"
@@ -15,15 +15,26 @@
 			:z-index="zIndex"
 			closable
 			:show-triangle="false"
-			:wrapper-class="wrapperClass" 
+			:wrapper-class="wrapperClass"
 			:animation="animation"
 			:timeout="timeout"
 			shadow
 			:border="false"
+			@showing="layerShow"
 			ref="layer"
 		>
-			<div class="mvi-select-menu" :style="menuStyle">
-				<slot></slot>
+			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
+				<div
+					:class="'mvi-option mvi-option-' + size"
+					@click="optionClick(item)"
+					@mouseenter="mouseEnter($event, item)"
+					@mouseleave="mouseLeave($event, item)"
+					v-for="(item, index) in options"
+					:key="'mvi-select-option-' + index"
+				>
+					<div class="mvi-option-value" v-html="item.label"></div>
+					<m-icon v-if="isSelect(item)" :type="selectedIconType" :spin="selectedIconSpin" :size="selectedIconSize" :url="selectedIconUrl" />
+				</div>
 			</div>
 		</m-layer>
 		<input type="hidden" :value="value" :name="name" />
@@ -40,12 +51,16 @@ export default {
 	},
 	data() {
 		return {
-			focus: true, //是否点击达到了获取焦点效果
-			target: null,
-			childrenOptions: []
+			focus: false, //是否点击达到了获取焦点效果
+			target: null
 		};
 	},
 	props: {
+		//选项
+		options: {
+			type: Array,
+			default: []
+		},
 		//选择的值
 		value: {
 			type: [String, Number, Array],
@@ -95,19 +110,19 @@ export default {
 			default: null
 		},
 		//layer的额外样式
-		wrapperClass:{
-			type:String,
-			default:null
+		wrapperClass: {
+			type: String,
+			default: null
 		},
 		//layer显示与隐藏动画
-		animation:{
-			type:String,
-			default:null
+		animation: {
+			type: String,
+			default: null
 		},
 		//layer动画时长
-		timeout:{
-			type:Number,
-			default:300
+		timeout: {
+			type: Number,
+			default: 300
 		},
 		//输入框激活样式
 		activeType: {
@@ -131,11 +146,6 @@ export default {
 		icon: {
 			type: String,
 			default: 'caret-down'
-		},
-		//下拉图标的颜色
-		iconColor: {
-			type: String,
-			default: null
 		},
 		//原生name属性
 		name: {
@@ -168,14 +178,14 @@ export default {
 			default: null
 		},
 		//是否显示已选择的icon
-		showSelectIcon:{
-			type:Boolean,
-			default:true
+		showSelectIcon: {
+			type: Boolean,
+			default: true
 		},
 		//已选择标志icon
-		selectedIcon:{
-			type:[String,Object],
-			default:'success'
+		selectedIcon: {
+			type: [String, Object],
+			default: 'success'
 		}
 	},
 	provide() {
@@ -189,11 +199,6 @@ export default {
 		},
 		menuStyle() {
 			var style = {};
-			if (this.width) {
-				style.width = this.width;
-			} else if (this.target) {
-				style.width = this.$refs.target.offsetWidth + 'px';
-			}
 			if (this.height) {
 				style.maxHeight = this.height;
 			}
@@ -229,17 +234,10 @@ export default {
 			}
 			return cls;
 		},
-		iconStyle() {
-			var style = {};
-			if (this.iconColor) {
-				style.color = this.iconColor;
-			}
-			return style;
-		},
 		selectLabel() {
 			if (this.multiple) {
 				var labels = [];
-				this.childrenOptions.forEach((item, index) => {
+				this.options.forEach((item, index) => {
 					if (this.value.includes(item.value)) {
 						labels.push(item.label);
 					}
@@ -251,7 +249,7 @@ export default {
 				}
 			} else {
 				var label = '';
-				this.childrenOptions.forEach((item, index) => {
+				this.options.forEach((item, index) => {
 					if (item.value == this.value) {
 						label = item.label;
 					}
@@ -262,18 +260,108 @@ export default {
 					return label;
 				}
 			}
+		},
+		isSelect() {
+			return item => {
+				if (this.multiple && this.showSelectIcon && this.value.includes(item.value)) {
+					return true;
+				} else {
+					return false;
+				}
+			};
+		},
+		selectedIconType() {
+			var type = null;
+			if ($util.isObject(this.selectedIcon)) {
+				if (typeof this.selectedIcon.type == 'string') {
+					type = this.selectedIcon.type;
+				}
+			} else if (typeof this.selectedIcon == 'string') {
+				type = this.selectedIcon;
+			}
+			return type;
+		},
+		selectedIconSize() {
+			var size = null;
+			if ($util.isObject(this.selectedIcon)) {
+				if (typeof this.selectedIcon.size == 'string') {
+					size = this.selectedIcon.size;
+				}
+			}
+			return size;
+		},
+		selectedIconUrl() {
+			var url = null;
+			if ($util.isObject(this.selectedIcon)) {
+				if (typeof this.selectedIcon.url == 'string') {
+					url = this.selectedIcon.url;
+				}
+			}
+			return url;
+		},
+		selectedIconSpin() {
+			var spin = false;
+			if ($util.isObject(this.selectedIcon)) {
+				if (typeof this.selectedIcon.spin == 'boolean') {
+					spin = this.selectedIcon.spin;
+				}
+			}
+			return spin;
 		}
 	},
-	mounted() {
-		this.focus = false;
-		this.target = this.$refs.target;
-	},
 	methods: {
+		//layer显示
+		layerShow() {
+			if (this.width) {
+				this.$refs.menu.style.width = this.width;
+			} else {
+				this.$refs.menu.style.width = this.$refs.target.offsetWidth + 'px';
+			}
+		},
+		//鼠标移入选项
+		mouseEnter(e, item) {
+			if (this.hoverClass) {
+				$util.addClass(e.currentTarget, this.hoverClass);
+			}
+		},
+		//鼠标移出选项
+		mouseLeave(e, item) {
+			if (this.hoverClass) {
+				$util.removeClass(e.currentTarget, this.hoverClass);
+			}
+		},
+		//点击选项
+		optionClick(item) {
+			if (this.multiple) {
+				var arr = this.value;
+				if (arr.includes(item.value)) {
+					arr.splice(this.getIndexOfArray(arr, item.value), 1);
+				} else {
+					arr.push(item.value);
+				}
+				this.$emit('model-change', arr);
+				this.$emit('update:value', arr);
+			} else {
+				this.$emit('model-change', item.value);
+				this.$emit('update:value', item.value);
+			}
+			this.trigger();
+		},
 		trigger() {
 			if (this.disabled) {
 				return;
 			}
-			this.focus = !this.focus
+			this.focus = !this.focus;
+		},
+		getIndexOfArray(arr, value) {
+			var index = 0;
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i] == value) {
+					index = i;
+					break;
+				}
+			}
+			return index;
 		}
 	}
 };
@@ -423,5 +511,39 @@ export default {
 	overflow: auto;
 	overflow-x: hidden;
 	padding: @mp-xs 0;
+}
+
+.mvi-option {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&.mvi-option-small {
+		padding: @mp-xs @mp-sm;
+		font-size: @font-size-small;
+	}
+
+	&.mvi-option-medium {
+		padding: @mp-sm @mp-md;
+		font-size: @font-size-default;
+	}
+
+	&.mvi-option-large {
+		font-size: @font-size-h6;
+		padding: @mp-md @mp-lg;
+	}
+}
+
+.mvi-option:hover {
+	cursor: pointer;
+	background-color: @bg-color-default;
+}
+
+.mvi-option-value {
+	display: flex;
+	display: -webkit-flex;
+	justify-content: flex-start;
+	align-items: center;
 }
 </style>
