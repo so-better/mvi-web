@@ -11,7 +11,7 @@ export default {
 			arr: [1],
 			show: false,
 			date: new Date(),
-			value: '',
+			value: 'MVI',
 			active: 1,
 			disabled: true,
 			types: ['info', 'warn', 'primary', 'success', 'error', 'default'],

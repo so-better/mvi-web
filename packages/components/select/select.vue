@@ -40,7 +40,7 @@ export default {
 	},
 	data() {
 		return {
-			focus: false, //是否点击达到了获取焦点效果
+			focus: true, //是否点击达到了获取焦点效果
 			target: null,
 			childrenOptions: []
 		};
@@ -265,6 +265,7 @@ export default {
 		}
 	},
 	mounted() {
+		this.focus = false;
 		this.target = this.$refs.target;
 	},
 	methods: {
