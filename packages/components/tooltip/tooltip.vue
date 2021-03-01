@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-tooltip" v-on="listeners" :data-id="'mvi-tooltip-' + _uid">
+	<div :class="'mvi-tooltip'+(block?' mvi-tooltip-block':'')" v-on="listeners" :data-id="'mvi-tooltip-' + _uid">
 		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-target-' + _uid">
 			<slot></slot>
 		</div>
@@ -89,6 +89,10 @@
 			showTriangle:{
 				type:Boolean,
 				default:true
+			},
+			block:{
+				type:Boolean,
+				default:false
 			}
 		},
 		computed:{
@@ -153,11 +157,19 @@
 	.mvi-tooltip{
 		display: inline-block;
 		position: relative;
-	}
-	
-	.mvi-tooltip-toggle{
-		position: relative;
-		display: inline-block;
+		
+		.mvi-tooltip-toggle{
+			position: relative;
+			display: inline-block;
+		}
+		
+		&.mvi-tooltip-block{
+			display: block;
+			
+			.mvi-tooltip-toggle{
+				display: block;
+			}
+		}
 	}
 
 	.mvi-tooltip-content{

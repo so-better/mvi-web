@@ -25,7 +25,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 var all = Object.assign({install},components)
 
-let version = '4.1.6';
+let version = '4.1.7';
 console.log('%cThe version of MVI you are currently using is %c'+version,'color:#077d72;font-size:12px;',
 'color:#ff3300;font-size:14px;font-weight:bold')
 

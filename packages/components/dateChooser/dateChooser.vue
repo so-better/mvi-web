@@ -1,5 +1,5 @@
 <template>
-	<div class="mvi-date-chooser" :data-id="`mvi-date-chooser-${_uid}`" v-on="listeners">
+	<div :class="'mvi-date-chooser'+(block?' mvi-date-chooser-block':'')" :data-id="`mvi-date-chooser-${_uid}`" v-on="listeners">
 		<div class="mvi-date-chooser-target" :data-id="`mvi-date-chooser-target-${_uid}`" ref="target" @click="clickCalendar"><slot></slot></div>
 		<m-layer
 			:target="`[data-id='mvi-date-chooser-target-${_uid}']`"
@@ -277,6 +277,11 @@ export default {
 		headerHoverClass: {
 			type: String,
 			default: null
+		},
+		//是否块级
+		block:{
+			type:Boolean,
+			default:false
 		}
 	},
 	computed: {
@@ -539,11 +544,20 @@ export default {
 @import '../../css/mvi-basic.less';
 .mvi-date-chooser {
 	position: relative;
-	display: inline-block
-}
-
-.mvi-date-chooser-target{
 	display: inline-block;
+	
+	.mvi-date-chooser-target{
+		position: relative;
+		display: inline-block;
+	}
+	
+	&.mvi-date-chooser-block{
+		display: block;
+		
+		.mvi-date-chooser-target{
+			display: block;
+		}
+	}
 }
 
 .mvi-date-chooser-layer{
