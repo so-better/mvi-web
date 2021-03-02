@@ -76,6 +76,24 @@
 		watch:{
 			value(newValue){
 				this.draw()
+			},
+			fontSize(newValue){
+				this.draw()
+			},
+			number(newValue){
+				this.draw()
+			},
+			space(newValue){
+				this.draw()
+			},
+			offset(newValue){
+				this.draw()
+			},
+			lineCounts(newValue){
+				this.draw()
+			},
+			codes(newValue){
+				this.draw()
 			}
 		},
 		methods: {

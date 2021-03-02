@@ -3,7 +3,7 @@
 		<!-- 加载中 -->
 		<div v-if="(loading || lazying)&&showLoading" class="mvi-image-loading">
 			<slot name="loading" v-if="$slots.loading"></slot>
-			<m-icon v-else :type="loadingIconType" :url="loadingIconUrl" :spin="loadingIconSpin" :size="loadingIconSize" />
+			<m-icon v-else :type="loadIconType" :url="loadIconUrl" :spin="loadIconSpin" :size="loadIconSize" />
 		</div>
 		<!-- 加载失败 -->
 		<div v-else-if="error&&showError" class="mvi-image-error" ref="error">
@@ -60,7 +60,7 @@
 				type: String,
 				default: null
 			},
-			loadingIcon:{
+			loadIcon:{
 				type:[String,Object],
 				default:null
 			},
@@ -85,40 +85,40 @@
 			listeners() {
 				return Object.assign({}, this.$listeners);
 			},
-			loadingIconType(){
+			loadIconType(){
 				var type = 'image-alt';
-				if ($util.isObject(this.loadingIcon)) {
-					if (typeof(this.loadingIcon.type) == "string") {
-						type = this.loadingIcon.type;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.type) == "string") {
+						type = this.loadIcon.type;
 					}
-				} else if (typeof(this.loadingIcon) == "string") {
-					type = this.loadingIcon;
+				} else if (typeof(this.loadIcon) == "string") {
+					type = this.loadIcon;
 				}
 				return type;
 			},
-			loadingIconUrl(){
+			loadIconUrl(){
 				var url = null;
-				if ($util.isObject(this.loadingIcon)) {
-					if (typeof(this.loadingIcon.url) == "string") {
-						url = this.loadingIcon.url;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.url) == "string") {
+						url = this.loadIcon.url;
 					}
 				}
 				return url;
 			},
-			loadingIconSpin(){
+			loadIconSpin(){
 				var spin = false;
-				if ($util.isObject(this.loadingIcon)) {
-					if (typeof(this.loadingIcon.spin) == "boolean") {
-						spin = this.loadingIcon.spin;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.spin) == "boolean") {
+						spin = this.loadIcon.spin;
 					}
 				}
 				return spin;
 			},
-			loadingIconSize(){
+			loadIconSize(){
 				var size = null;
-				if ($util.isObject(this.loadingIcon)) {
-					if (typeof(this.loadingIcon.size) == "string") {
-						size = this.loadingIcon.size;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.size) == "string") {
+						size = this.loadIcon.size;
 					}
 				}
 				return size;

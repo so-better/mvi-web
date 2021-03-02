@@ -298,9 +298,9 @@ class Resize {
 
 	//移动端触摸滑动或者PC端鼠标拖动
 	_move(e,endX,endY) {
-		var moveX = endX - this.startX;
-		var moveY = endY - this.startY;
 		if (this.draggable) {
+			var moveX = endX - this.startX;
+			var moveY = endY - this.startY;
 			//宽高都可以改
 			if (this.draggableX && this.draggableY) {
 				if (this._getIsInRange(this.startX, this.startY, this.leftTopRange)) { //左上区域内

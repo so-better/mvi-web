@@ -1,17 +1,21 @@
 import Vue from 'vue'
 import App from './App.vue'
 Vue.config.productionTip = false
+
+import './rem-fit'
+
 import mvi from "../packages"
 Vue.use(mvi)
-import RemFit from "rem-fit"
-var remFit = new RemFit(20,true);
-remFit.set();
-window.addEventListener('resize',()=>{
-	remFit.set()
-})
+
 import Ruax from "ruax"
 var ruax = new Ruax();
 Vue.prototype.$ruax = ruax
+
+import router from "./router"
+
+
+
 new Vue({
-  render: h => h(App),
+	router,
+	render: h => h(App),
 }).$mount('#app')

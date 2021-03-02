@@ -17,7 +17,7 @@
 		provide(){
 			return {
 				'tabbar':this
-			};
+			}
 		},
 		model:{
 			prop:'value',
@@ -88,7 +88,7 @@
 		align-items: center;
 		width: 100%;
 		height: @mini-height*2;
-		padding: 0 @mp-md;
+		padding: 0 @mp-sm;
 		background-color: #fff;
 		color: @font-color-default;
 	}

@@ -91,7 +91,7 @@
 					this.leftShow = true;
 					this.$nextTick(()=>{
 						if(this.transformX >= this.$refs.left.offsetWidth){
-							this.amounts+=3;
+							this.amounts+=4;
 							this.transformX += moveX/this.amounts;
 						}else{
 							this.transformX += moveX;
@@ -101,7 +101,7 @@
 					this.rightShow = true;
 					this.$nextTick(()=>{
 						if(this.transformX <= -this.$refs.right.offsetWidth){
-							this.amounts+=3;
+							this.amounts+=4;
 							this.transformX += moveX/this.amounts;
 						}else{
 							this.transformX += moveX;

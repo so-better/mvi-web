@@ -26,6 +26,10 @@
 				type: Number,
 				default: 0
 			},
+			min:{
+				type:Number,
+				default:0
+			},
 			max: {
 				type: Number,
 				default: 100
@@ -100,7 +104,8 @@
 				if (this.tipText) {
 					return this.tipText;
 				} else {
-					return Math.round((this.value > this.max ? this.max : this.value) / this.max * 100) + "%";
+					let value = this.value > this.max ? this.max : (this.value < this.min ? this.min : this.value);
+					return Math.round((value - this.min) / (this.max - this.min) * 100) + "%";
 				}
 			},
 			barStyle() {
@@ -124,7 +129,8 @@
 				}
 				//计算进度
 				var circleLength = Number((this.pathSize * Math.PI).toFixed(2)); //圆周长
-				var valueLength = Number((((this.value > this.max ? this.max : this.value) / this.max) * circleLength).toFixed(2)); //进度长度
+				let value = this.value > this.max ? this.max : (this.value < this.min ? this.min : this.value);
+				var valueLength = Number((((value - this.min) / (this.max - this.min)) * circleLength).toFixed(2)); //进度长度
 				style.strokeDasharray = valueLength + ',' + (circleLength - valueLength);
 				return style;
 			},

@@ -11,7 +11,7 @@
 					<div class="mvi-acionsheet-content" v-else-if="item.label||item.sub || iconType(item.icon) || iconUrl(item.icon)">
 						<m-icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'"
 						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)"/>
-						<span v-if="item.label" v-text="item.label"></span>
+						<span v-if="item.label" class="mvi-actionsheet-item-label" v-text="item.label"></span>
 						<span v-if="item.sub" class="mvi-acionsheet-item-sub" v-text="item.sub"></span>
 						<m-icon data-placement="right" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement=='right'"
 						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)"/>
@@ -295,11 +295,11 @@
 	}
 
 	.mvi-acionsheet-content {
-		display: block;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		vertical-align: middle;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
 
 		.mvi-icon {
 			font-size: inherit;
@@ -312,16 +312,24 @@
 			margin-right: 0;
 		}
 
-		&>span {
-			vertical-align: middle;
-		}
-
+	}
+	
+	.mvi-actionsheet-item-label{
+		display: inline-block;
+		max-width: 80%;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.mvi-acionsheet-item-sub {
 		font-size: @font-size-small;
 		margin-left: @mp-xs;
 		opacity:.6;
+		max-width: 15%;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	.mvi-acionsheet-item:last-child {

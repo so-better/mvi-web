@@ -241,6 +241,8 @@
 	.mvi-cell-item {
 		display: flex;
 		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
 		width: 100%;
 		padding: 0;
 		position: relative;
@@ -249,7 +251,6 @@
 	
 	.mvi-cell-icon {
 		margin-right: @mp-xs;
-		line-height: 1.5;
 	}
 
 	.mvi-cell-title {
@@ -258,10 +259,6 @@
 		font-size: @font-size-default;
 		word-wrap:break-word;
 		vertical-align: middle;
-		
-		*{
-			vertical-align: middle;
-		}
 	}
 
 	.mvi-cell-content {
@@ -273,10 +270,10 @@
 		overflow: hidden;
 		word-wrap:break-word;
 		color: @font-color-sub;
-		
-		*{
-			vertical-align: middle;
-		}
+	}
+	
+	.mvi-cell-title + .mvi-cell-content{
+		margin-left: @mp-sm;
 	}
 	
 	.mvi-cell-nowrap{
@@ -290,7 +287,6 @@
 	.mvi-cell-arrow {
 		margin-left: @mp-xs;
 		color: @font-color-sub;
-		line-height: 1.5;
 	}
 
 	.mvi-cell-label {

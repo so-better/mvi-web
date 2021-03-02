@@ -23,7 +23,7 @@
 				type: Number,
 				default: 0,
 				validator(value) {
-					return value >= 0 && value <= 1;
+					return value == 0 || value == 1;
 				}
 			}
 		},

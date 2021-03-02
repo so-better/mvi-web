@@ -1,6 +1,6 @@
 <template>
 	<Button :disabled="disabled" :class="buttonClass" :style="btnStyle">
-		<slot name="load" v-if="loading && $slots.load"></slot>
+		<slot name="loading" v-if="loading && $slots.loading"></slot>
 		<span v-else-if="loading">
 			<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" class="mvi-button-load-icon"/>
 			{{loadText}}
@@ -127,17 +127,13 @@
 					if(this.color){
 						obj.color = this.color;
 						obj.borderColor = this.color;
-					}
-					if(this.subColor){
-						obj.background = this.subColor;
+						obj.background = (this.subColor?this.subColor:'#fff');
 					}
 				}else{
 					if(this.color){
 						obj.background = this.color;
 						obj.borderColor = this.color;
-					}
-					if(this.subColor){
-						obj.color = this.subColor;
+						obj.color = (this.subColor?this.subColor:'#fff');
 					}
 				}
 				return obj;

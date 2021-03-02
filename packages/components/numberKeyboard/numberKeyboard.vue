@@ -31,7 +31,6 @@
 			return {
 				firstShow:false,//第一次显示进行渲染
 				keyboardShow:false,//键盘是否显示
-				
 				numbers:['1','2','3','4','5','6','7','8','9','0','.'],
 			}
 		},

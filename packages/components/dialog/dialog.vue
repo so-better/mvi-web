@@ -490,6 +490,7 @@ export default {
 	flex: 1;
 	cursor: pointer;
 	font-weight: bold;
+	user-select: none;
 }
 
 .mvi-dialog-cancel {
@@ -504,6 +505,7 @@ export default {
 	border-right: 1px solid @border-color;
 	color: @font-color-default;
 	cursor: pointer;
+	user-select: none;
 }
 
 .mvi-dialog-ok:active::before,

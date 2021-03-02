@@ -94,7 +94,7 @@
 				if(this.value == this.max){
 					style.borderRadius = 'inherit';
 				}
-				style.width = `calc(${this.value / (this.max - this.min)} * 100%)`;
+				style.width = `calc(${(this.value - this.min < 0 ? 0 : this.value - this.min) / (this.max - this.min)} * 100%)`;
 				
 				return style;
 			},
@@ -102,7 +102,7 @@
 				if(this.tipText){
 					return this.tipText;
 				}else{
-					return Math.round((this.value / (this.max - this.min))*100)+"%";
+					return Math.round(((this.value - this.min < 0 ? 0 : this.value - this.min) / (this.max - this.min))*100)+"%";
 				}
 			},
 			tipStyle(){

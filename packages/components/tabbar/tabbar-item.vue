@@ -126,7 +126,7 @@
 		align-items: center;
 		vertical-align: middle;
 		height: 100%;
-		padding: 0 @mp-sm;
+		padding: 0 @mp-lg;
 		cursor: pointer;
 		user-select: none;
 		-moz-user-select: none;
@@ -162,6 +162,8 @@
 		width: 100%;
 		text-align: center;
 		font-size: @font-size-h6;
+		white-space: nowrap;
+		
 		&.mvi-tabbar-name-small{
 			font-size: @font-size-small;
 		}

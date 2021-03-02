@@ -43,7 +43,7 @@ class Anchor {
 			this.callback = function(){};
 		}
 		if(!$util.isNumber(this.distance)){
-			this.distance = 0.05;
+			this.distance = 0.1;
 		}
 		
 		if ($util.isElement(this.$root)) {

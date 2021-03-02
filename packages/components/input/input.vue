@@ -9,7 +9,9 @@
 			 :class="leftIconClass?leftIconClass:''" :size="leftIconSize" />
 		</div>
 		<!-- 左侧文本 -->
-		<div :class="'mvi-input-label'+(labelClass?' '+labelClass:'')" v-if="label" :style="labelStyle" v-text="label"></div>
+		<div :class="'mvi-input-label'+(labelClass?' '+labelClass:'')" v-if="label" :style="labelStyle">
+			<span v-text="label"></span>
+		</div>
 		<!-- 文本域 -->
 		<textarea v-if="type=='textarea'" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly"
 		 :autofocus="autofocus" class="mvi-textarea" v-on="listeners" :value="inputValue" @input="input" ref="textarea" :rows="rowsFilter"
@@ -602,7 +604,7 @@
 		margin: 0;
 		vertical-align: middle;
 		width: 100%;
-		padding: @mp-sm @mp-sm;
+		padding: @mp-sm @mp-md;
 	}
 
 	//是否显示边框
@@ -620,14 +622,15 @@
 	//必填标识
 	.mvi-input-container.mvi-input-required::before {
 		position: absolute;
-		left: @mp-xs/2;
-		top: @mp-sm;
+		left: @mp-xs;
+		top: 50%;
+		transform: translateY(-50%);
 		display: flex;
 		display: -webkit-flex;
 		justify-content: center;
 		align-items: center;
 		content: '*';
-		font-family: '宋体';
+		font-family: '宋体','SimSun';
 		color: @error-normal;
 	}
 	//必填标志大小
@@ -654,9 +657,14 @@
 		position: relative;
 		width: 1rem;
 		vertical-align: middle;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		overflow: hidden;
+		
+		span{
+			display: block;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			vertical-align: middle;
+		}
 	}
 
 	//左侧图标样式

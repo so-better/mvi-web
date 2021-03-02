@@ -78,23 +78,23 @@
 			},
 			leftStyle(){
 				var style = {};
-				if((this.title || this.$slots.title) && (this.rightIconType||this.rightIconUrl||this.$slots.right||this.rightText)){
-					style.maxWidth = '25%';
-				}else if((this.title || this.$slots.title) || (this.rightIconType||this.rightIconUrl||this.$slots.right||this.rightText)){
-					style.maxWidth = '50%';
+				if(this.title || this.$slots.title){
+					style.width = '20%';
+				}else if(this.rightIconType||this.rightIconUrl||this.$slots.right||this.rightText){
+					style.width = '50%';
 				}else{
-					style.maxWidth = '100%';
+					style.width = '100%';
 				}
 				return style;
 			},
 			rightStyle(){
 				var style = {};
-				if((this.title || this.$slots.title) && (this.leftIconType||this.leftIconUrl||this.$slots.left||this.leftText)){
-					style.maxWidth = '25%';
-				}else if((this.title || this.$slots.title) || (this.leftIconType||this.leftIconUrl||this.$slots.left||this.leftText)){
-					style.maxWidth = '50%';
+				if(this.title || this.$slots.title){
+					style.width = '20%';
+				}else if(this.leftIconType||this.leftIconUrl||this.$slots.left||this.leftText){
+					style.width = '50%';
 				}else{
-					style.maxWidth = '100%';
+					style.width = '100%';
 				}
 				return style;
 			},
@@ -256,7 +256,7 @@
 		display:flex;
 		display: -webkit-flex;
 		align-items: center;
-		max-width: 50%;
+		width: 60%;
 		height: 100%;	
 	}
 	.mvi-navbar-title{
