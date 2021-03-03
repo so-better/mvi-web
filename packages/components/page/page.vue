@@ -80,19 +80,19 @@
 			},
 			prevText: { //上一页显示文字
 				type: String,
-				default: '上一页'
+				default: null
 			},
 			nextText: { //下一页显示文字
 				type: String,
-				default: '下一页'
+				default: null
 			},
 			prevIcon:{
 				type:[String,Object],
-				default:null
+				default:'angle-left'
 			},
 			nextIcon:{
 				type:[String,Object],
-				default:null
+				default:'angle-right'
 			},
 			simple: { //简单模式
 				type: Boolean,
@@ -108,11 +108,11 @@
 			},
 			firstIcon:{
 				type:[Object,String],
-				default:null
+				default:'angle-double-left'
 			},
 			lastIcon:{
 				type:[Object,String],
-				default:null
+				default:'angle-double-right'
 			},
 			color:{//自定义字体颜色及选中的背景色
 				type:String,

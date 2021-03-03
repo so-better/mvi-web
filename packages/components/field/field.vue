@@ -548,6 +548,7 @@
 		methods:{
 			//高度自适应设置
 			autosizeSet() {
+				this.$refs.textarea.style.overflow = 'hidden';
 				this.$refs.textarea.style.height = 'auto';
 				this.$refs.textarea.scrollTop = 0;
 				this.$refs.textarea.style.height = $util.getScrollHeight(this.$refs.textarea) + 'px';

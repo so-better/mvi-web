@@ -53,6 +53,9 @@
 				if(this.swiper.useOpacity){
 					el.style.transition = 'opacity '+this.swiper.speed + 'ms';
 					el.style.webkitTransition = 'opacity '+this.swiper.speed + 'ms';
+				}else {
+					el.style.transition = '';
+					el.style.webkitTransition = '';
 				}
 			},
 			removeTransition(el){

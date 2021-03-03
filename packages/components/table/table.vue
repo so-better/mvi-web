@@ -11,8 +11,9 @@
 						<div>
 							<m-checkbox v-if="item.key=='checkbox'" icon-size="0.24rem" :class="(item.value?'mvi-table-checkbox':'')"
 							 :checked.sync="selectAll" @model-change="allSelect" :icon-type="(item.iconType?item.iconType:'success')"
-							 :icon-color="(item.iconColor?item.iconColor:null)" :fill-color="(item.fillColor?item.fillColor:null)"></m-checkbox>
-							<span v-if="item.value" v-html="item.value"></span>
+							 :icon-color="(item.iconColor?item.iconColor:null)" :fill-color="(item.fillColor?item.fillColor:null)"
+							 :label="item.value?item.value:''"></m-checkbox>
+							<span v-else-if="item.value" v-html="item.value"></span>
 							<span class="mvi-table-sortable" v-if="item.sortable">
 								<m-icon @click="sortAsc(item)" :class="'mvi-table-sortable-icon'+(active==0?' mvi-table-sortable-icon-active':'')"
 								 type="caret-up" />
@@ -27,7 +28,7 @@
 		<div v-if="loading" class="mvi-table-loading">
 			<div>
 				<m-loading color="#c8c9cc" size="0.3rem"></m-loading>
-				<div class="mvi-table-loading-text" v-html="loadingMsg"></div>
+				<div class="mvi-table-loading-text" v-html="loadText"></div>
 			</div>
 		</div>
 		<div v-else-if="sortData.length == 0" class="mvi-table-no-data" v-html="noDataMsg"></div>
@@ -112,7 +113,7 @@
 				type: Boolean,
 				default: false
 			},
-			loadingMsg: { //加载时的文本提示
+			loadText: { //加载时的文本提示
 				type: String,
 				default: "正在加载数据..."
 			},
@@ -206,7 +207,17 @@
 				} else {
 					this.selectAll = false;
 				}
-				this.$emit('check', this.checkRows);
+				var checkRowsData = []
+				var length = this.sortData.length;
+				this.checkRows.forEach(item=>{
+					for(var i = 0;i < length;i++){
+						if(i == item){
+							checkRowsData.push(this.sortData[i]);
+							break;
+						}
+					}
+				})
+				this.$emit('check', checkRowsData);
 			},
 			//复选框全选
 			allSelect(value) {
@@ -220,7 +231,17 @@
 				} else {
 					this.checkRows = [];
 				}
-				this.$emit('check', this.checkRows);
+				var checkRowsData = []
+				var length = this.sortData.length;
+				this.checkRows.forEach(item=>{
+					for(var i = 0;i < length;i++){
+						if(i == item){
+							checkRowsData.push(this.sortData[i]);
+							break;
+						}
+					}
+				})
+				this.$emit('check', checkRowsData);
 			},
 			//升序排序
 			sortAsc(column) {

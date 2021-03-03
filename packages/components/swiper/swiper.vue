@@ -7,10 +7,9 @@
 		@touchend="swiperTouchEnd" @mousedown="swiperMouseDown">
 			<slot></slot>
 		</div>
-		<slot name="indicators" :active="(loop?(indicatorsIndex-1):indicatorsIndex)" :total="(loop?(children.length-2):children.length)" 
-		v-if="$scopedSlots.indicators"></slot>
+		<slot name="indicators" :active="indicatorsIndex" :total="indicatorsTotal" v-if="$scopedSlots.indicators"></slot>
 		<div v-else-if="showIndicators" class="mvi-swiper-indicators">
-			<div :class="'mvi-swiper-indicator'+(index==indicatorsIndex?' mvi-swiper-indicator-active':'')" :style="indicatorStyle(index)" 
+			<div :class="'mvi-swiper-indicator'+(isIndicatorActive(index)?' mvi-swiper-indicator-active':'')" :style="indicatorStyle(index)" 
 			v-for="(item,index) in children" :key="'indicator-'+index" v-if="indicatorShow(index)"	@click="slideTo((fade?index:(loop?(index - 1):index)))"></div>
 		</div>
 		<div :class="controlsClass" v-if="showControl" :style="controlStyle(0)" @click="slidePrev">
@@ -34,7 +33,7 @@
 				transform:0,//平移值
 				timer:null,//计时器
 				totalMove:0,//每次触摸的总位移量
-				oldIndex:0,//上一个被激活的序列
+				oldIndex:-1,//非fade模式下记录被被激活的序列
 				amounts:0,//滑动系数
 				mouseDown:false,//是否鼠标按下
 				fadeActiveIndex:0,//fade模式下被激活的序列
@@ -90,7 +89,7 @@
 				type:Boolean,
 				default:true
 			},
-			showControl:{//时候显示上一张下一张控制器
+			showControl:{//是否显示上一张下一张控制器
 				type:Boolean,
 				default:false
 			},
@@ -116,7 +115,7 @@
 			indicatorStyle(){
 				return (index)=>{
 					var style = {};
-					if(index == this.indicatorsIndex){
+					if(this.isIndicatorActive(index)){
 						if(this.activeColor){
 							style.backgroundColor = this.activeColor;
 						}
@@ -185,7 +184,7 @@
 				}
 				return width;
 			},
-			//激活的轮播序列(非fade)
+			//激活的轮播序列(非fade，数值从0开始，循环模式下包含复制的)
 			activeIndex(){
 				var index = 0;
 				if(this.totalMove <= 0){
@@ -200,7 +199,7 @@
 				}
 				return index;
 			},
-			//激活的分页器索引(区分slide和fade)
+			//激活的分页器索引(区分slide和fade，数值是从0开始)
 			indicatorsIndex(){
 				var index = 0;
 				if(this.fade){
@@ -208,11 +207,11 @@
 				}else{
 					if(this.loop){
 						if(this.activeIndex == this.children.length-1){
-							index = 1;
+							index = 0;
 						}else if(this.activeIndex == 0){
-							index = this.children.length - 2;
+							index = this.children.length - 3;
 						}else {
-							index = this.activeIndex;
+							index = this.activeIndex - 1;
 						}
 					}else{
 						index = this.activeIndex;
@@ -261,6 +260,32 @@
 						return true;
 					}else{
 						return this.loop?(index != 0 && index!= this.children.length-1):true;
+					}
+				}
+			},
+			//分页器总数
+			indicatorsTotal(){
+				if(this.fade){
+					return this.children.length;
+				}else {
+					if(this.loop){
+						return this.children.length-2;
+					}else{
+						return this.children.length;
+					}
+				}
+			},
+			//判断分页器是否激活
+			isIndicatorActive(){
+				return index=>{
+					if(this.fade){
+						return this.indicatorsIndex == index;
+					}else {
+						if(this.loop){
+							return this.indicatorsIndex + 1 == index;
+						}else {
+							return this.indicatorsIndex == index;
+						}
 					}
 				}
 			}
@@ -313,6 +338,11 @@
 					this.timer = setInterval(()=>{
 						this.slideNext();
 					},this.interval)
+				}else {
+					if(this.timer){
+						clearInterval(this.timer);
+						this.timer = null;
+					}
 				}
 			},
 			//触摸开始(非fade)
@@ -467,7 +497,7 @@
 						this.$nextTick(()=>{
 							setTimeout(()=>{
 								this.addTransition().then(()=>{
-									this.oldIndex = this.indicatorsIndex-1;
+									this.oldIndex = this.initialSlide;
 									this.setAutoplay();
 								});
 							},50)
@@ -505,9 +535,9 @@
 							this.$nextTick(()=>{
 								setTimeout(()=>{
 									this.addTransition().then(()=>{
-										if(this.indicatorsIndex - 1 != this.oldIndex){
-											this.oldIndex = this.indicatorsIndex-1;
-											this.$emit('change',this.indicatorsIndex-1);
+										if(this.indicatorsIndex != this.oldIndex){
+											this.oldIndex = this.indicatorsIndex;
+											this.$emit('change',this.indicatorsIndex);
 										}
 										this.setAutoplay();
 									})
@@ -520,9 +550,9 @@
 							this.$nextTick(()=>{
 								setTimeout(()=>{
 									this.addTransition().then(()=>{
-										if(this.indicatorsIndex - 1 != this.oldIndex){
-											this.oldIndex = this.indicatorsIndex-1;
-											this.$emit('change',this.indicatorsIndex-1);
+										if(this.indicatorsIndex != this.oldIndex){
+											this.oldIndex = this.indicatorsIndex;
+											this.$emit('change',this.indicatorsIndex);
 										}
 										this.setAutoplay();
 									})
@@ -530,9 +560,9 @@
 							})
 						})
 					}else{
-						if(this.indicatorsIndex - 1 != this.oldIndex){
-							this.oldIndex = this.indicatorsIndex-1;
-							this.$emit('change',this.indicatorsIndex-1);
+						if(this.indicatorsIndex != this.oldIndex){
+							this.oldIndex = this.indicatorsIndex;
+							this.$emit('change',this.indicatorsIndex);
 						}
 						this.setAutoplay();
 					}
@@ -549,26 +579,36 @@
 				return new Promise((resolve,reject)=>{
 					if(this.fade){
 						if(this.loop){
+							this.$emit('before-change',this.fadeActiveIndex)
 							//最后一个
 							if(this.fadeActiveIndex == this.children.length-1){
 								this.fadeActiveIndex = 0;//变为第一个
 							}else{
 								this.fadeActiveIndex++;
 							}
+							setTimeout(()=>{
+								this.$emit('change',this.fadeActiveIndex);
+								resolve();
+							},this.speed)
 						}else{
 							//不是最后一个
 							if(this.fadeActiveIndex != this.children.length-1){
+								this.$emit('before-change',this.fadeActiveIndex)
 								this.fadeActiveIndex++;
+								setTimeout(()=>{
+									this.$emit('change',this.fadeActiveIndex);
+									resolve();
+								},this.speed)
+							}else {
+								resolve()
 							}
 						}
-						setTimeout(()=>{
-							this.$emit('change',this.fadeActiveIndex);
-							resolve();
-						},this.speed)
 					}else{
 						if(this.transform <= -(this.children.length - 1).multiplication(this.slideSize)){
+							resolve()
 							return;
 						}
+						this.$emit('before-change',this.oldIndex)
 						if(this.timer){
 							clearInterval(this.timer);
 							this.timer = null;
@@ -586,26 +626,36 @@
 				return new Promise((resolve,reject)=>{
 					if(this.fade){
 						if(this.loop){
+							this.$emit('before-change',this.fadeActiveIndex)
 							//第一个
 							if(this.fadeActiveIndex == 0){
 								this.fadeActiveIndex = this.children.length-1;//变为最后一个
 							}else{
 								this.fadeActiveIndex--;
 							}
+							setTimeout(()=>{
+								this.$emit('change',this.fadeActiveIndex);
+								resolve();
+							},this.speed)
 						}else{
-							//不是最后一个
+							//不是第一个
 							if(this.fadeActiveIndex != 0){
+								this.$emit('before-change',this.fadeActiveIndex)
 								this.fadeActiveIndex--;
+								setTimeout(()=>{
+									this.$emit('change',this.fadeActiveIndex);
+									resolve();
+								},this.speed)
+							}else {
+								resolve()
 							}
 						}
-						setTimeout(()=>{
-							this.$emit('change',this.fadeActiveIndex);
-							resolve();
-						},this.speed)
 					}else{
 						if(this.transform >= 0){
+							resolve()
 							return;
 						}
+						this.$emit('before-change',this.oldIndex)
 						if(this.timer){
 							clearInterval(this.timer);
 							this.timer = null;
@@ -647,45 +697,52 @@
 						}else if(index < 0){
 							index = 0;
 						}
-						var isEqual = false;
-						if(this.fadeActiveIndex == index){
-							isEqual = true;
-						}
-						this.fadeActiveIndex = index;
-						setTimeout(()=>{
-							if(!isEqual){
+						if(this.fadeActiveIndex != index){
+							this.$emit('before-change',this.fadeActiveIndex)
+							this.fadeActiveIndex = index;
+							setTimeout(()=>{
 								this.$emit('change',this.fadeActiveIndex);
-							}
-							resolve();
-						},this.speed)
+								resolve();
+							},this.speed)
+						}else{
+							resolve()
+						}
 					}else{
 						//上N张
 						if(this.oldIndex > index){
 							if(this.transform >= 0){
+								resolve()
 								return;
 							}
+							this.$emit('before-change',this.oldIndex)
 							if(this.timer){
 								clearInterval(this.timer);
 								this.timer = null;
 							}
-							this.transform = this.transform.add((this.oldIndex - index).multiplication(this.slideSize));
-							setTimeout(()=>{
-								this.slideDone();
-								resolve();
-							},this.speed)
+							this.addTransition().then(()=>{
+								this.transform = this.transform.add((this.oldIndex - index).multiplication(this.slideSize));
+								setTimeout(()=>{
+									this.slideDone();
+									resolve();
+								},this.speed)
+							})
 						}else{//下N张
 							if(this.transform <= -(this.children.length - 1).multiplication(this.slideSize)){
+								resolve()
 								return;
 							}
+							this.$emit('before-change',this.oldIndex)
 							if(this.timer){
 								clearInterval(this.timer);
 								this.timer = null;
 							}
-							this.transform = this.transform.subtraction((index - this.oldIndex).multiplication(this.slideSize));
-							setTimeout(()=>{
-								this.slideDone();
-								resolve();
-							},this.speed)
+							this.addTransition().then(()=>{
+								this.transform = this.transform.subtraction((index - this.oldIndex).multiplication(this.slideSize));
+								setTimeout(()=>{
+									this.slideDone();
+									resolve();
+								},this.speed)
+							})
 						}
 					}
 					
@@ -784,8 +841,8 @@
 		align-items: center;
 		border-radius: 0;
 		z-index: 20;
-		width:0.6rem;
-		height: 0.6rem;
+		width:.8rem;
+		height: .8rem;
 		color: #fff;
 		background-color: rgba(10,20,30,.5);
 		top: 50%;

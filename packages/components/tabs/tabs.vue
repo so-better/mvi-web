@@ -14,7 +14,7 @@
 				:type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize"></m-icon>
 			</div>
 		</div>
-		<div class="mvi-tabs-content" ref="content" :style="contentStyle">
+		<div class="mvi-tabs-content" ref="content">
 			<slot></slot>
 		</div>
 	</div>
@@ -202,13 +202,6 @@
 					style.maxWidth = `calc(100% / ${this.children.length})`
 					return style;
 				}
-			},
-			contentStyle(){
-				var style = {};
-				if(this.children[this.current]){
-					style.height = this.children[this.current].$el.offsetHeight + 'px';
-				}
-				return style;
 			}
 		},
 		created() {
@@ -225,6 +218,7 @@
 					this.setSlider();
 				},100)
 			})
+			this.setHeight()
 			window.addEventListener('resize',this.setHeight);
 		},
 		methods:{
@@ -261,9 +255,11 @@
 				}
 				this.$nextTick(()=>{
 					this.current = newValue;
+					this.setHeight();
 					this.setSlider();
 				})
 			},
+			//设置滑动条
 			setSlider(){
 				this.slideWidth = parseFloat($util.getCssStyle(this.$refs.headers.querySelector('.mvi-tab-header-active'),'width'));
 				this.slideLeft = $util.getElementPoint(this.$refs.headers.querySelector('.mvi-tab-header-active'),this.$refs.headers).left;

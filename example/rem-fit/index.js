@@ -1,5 +1,5 @@
 import RemFit from "rem-fit"
-var remFit = new RemFit(7.5, true);
+var remFit = new RemFit(24, true);
 remFit.set();
 window.addEventListener('resize', () => {
 	remFit.set()

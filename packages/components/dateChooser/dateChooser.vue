@@ -16,7 +16,7 @@
 			:border-color="borderColor"
 			:timeout="timeout"
 			:closable="closable"
-			:show-triangle="false"
+			:show-triangle="showTriangle"
 			@showing="layerShow"
 			ref="layer"
 		>
@@ -196,6 +196,11 @@ export default {
 		timeout:{
 			type:Number,
 			default:300
+		},
+		//layer是否显示三角
+		showTriangle:{
+			type:Boolean,
+			default:false
 		},
 		//点击其他地方是否关闭日历
 		closable:{
@@ -564,6 +569,7 @@ export default {
 	position: relative;
 	overflow: hidden;
 	background-color: #fff;
+	color: @font-color-default;
 	border-radius: inherit;
 }
 

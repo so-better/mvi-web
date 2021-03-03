@@ -14,11 +14,6 @@
 			prop: 'value',
 			event: 'model-change'
 		},
-		data() {
-			return {
-				selectedDate: new Date()
-			}
-		},
 		props: {
 			value: { //日期值
 				type: Date,
@@ -36,6 +31,7 @@
 					date.setHours(0);
 					date.setMinutes(0);
 					date.setSeconds(0);
+					date.setMilliseconds(0)
 					return date;
 				}
 			},
@@ -49,6 +45,7 @@
 					date.setHours(23);
 					date.setMinutes(59);
 					date.setSeconds(59);
+					date.setMilliseconds(999)
 					return date;
 				}
 			},
@@ -320,6 +317,7 @@
 				}
 				return mins;
 			},
+			//picker数据
 			pickerOptions() {
 				let years = [];
 				let defaultYearIndex = 0;
@@ -413,10 +411,27 @@
 						}
 					]
 				}
+			},
+			//选择的日期
+			selectedDate:{
+				set(value){
+					this.$emit('model-change',value);
+					this.$emit('update:value',value);
+				},
+				get(){
+					if(this.value instanceof Date){
+						if(this.value.getTime() < this.startDate.getTime()){
+							return this.startDate;
+						}else if(this.value.getTime() > this.endDate.getTime()){
+							return this.endDate;
+						}else {
+							return this.value;
+						}
+					}else {
+						return new Date()
+					}
+				}
 			}
-		},
-		created() {
-			this.selectedDate = this.value;
 		},
 		methods: {
 			//日期变更
@@ -606,8 +621,7 @@
 						this.selectedDate = new Date(this.selectedDate.setMinutes(min));
 					}
 				}
-				this.$emit('model-change', this.selectedDate);
-				this.$emit('update:value', this.selectedDate);
+				
 			},
 			//点击确定
 			bindConfirm(){
