@@ -175,8 +175,6 @@
 					var style = {}
 					if(item.width){
 						style.width = item.width;
-					}else {
-						style.width = (100 / this.columnsData.length) + '%';
 					}
 					return style
 				}
@@ -218,11 +216,9 @@
 			//判断是否含有滚动条，从而对表头进行右边距设置
 			bodyScrollSet(){
 				if(this.$refs.body){
-					this.isScroll = $util.getScrollHeight(this.$refs.body) != this.$refs.body.clientHeight;
+					this.isScroll = $util.getScrollHeight(this.$refs.body) > this.$refs.body.clientHeight;
 					if(this.isScroll){
-						this.$nextTick(()=>{
-							this.scrollWidth = this.$refs.body.offsetWidth - this.$refs.body.clientWidth;
-						})
+						this.scrollWidth = this.$refs.body.offsetWidth - this.$refs.body.clientWidth;
 					}
 				}
 			},

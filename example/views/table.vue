@@ -44,24 +44,24 @@ export default {
 				{
 					key:'checkbox',
 					value:'全选',
-					//width:'2rem'
+					width:'2rem'
 				},
 				{
 					key: 'name',
 					value: '姓名',
-					//width:'3rem',
+					width:'3rem',
 					sortable:true,
 				},
 				{
 					key: 'age',
 					value: '年龄',
 					sortable:true,
-					//width:'3rem'
+					width:'3rem'
 				},
 				{
 					key: 'sex',
 					value: '性别',
-					//width:'3rem'
+					width:'3rem'
 				},
 				{
 					key: 'likes',
