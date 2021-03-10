@@ -25,9 +25,9 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 var all = Object.assign({install},components)
 
-let version = '4.2.1';
-console.log('%cThe version of MVI you are currently using is %c'+version,'color:#077d72;font-size:12px;',
-'color:#ff3300;font-size:14px;font-weight:bold')
+let version = '4.2.3';
+console.log('%cThe version of MVI you are currently using is %c'+version,'color:#077d72;',
+'color:#ff3300;font-weight:bold')
 
 //import时导出install
 export default all
