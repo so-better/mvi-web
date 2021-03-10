@@ -3,8 +3,8 @@
 		<div :class="['mvi-table-header',headClass?headClass:'']" v-if="columnsData.length!=0">
 			<table cellpadding="0" cellspacing="0">
 				<colgroup>
-					<col :style="colgroupStyle(item)" :width="item.width" v-for="(item,index) in columnsData" :key="'table-header-group-'+index"/>
-					<col v-if="isScroll" :width="scrollWidth" :style="{width:scrollWidth+'px'}"/>
+					<col :style="colgroupStyle(item,index)" v-for="(item,index) in columnsData" :key="'table-header-group-'+index"/>
+					<col v-if="isScroll" :style="{width:scrollWidth+'px'}"/>
 				</colgroup>
 				<thead>
 					<tr>
@@ -23,7 +23,7 @@
 								</span>
 							</div>
 						</th>
-						<th v-if="isScroll" :width="scrollWidth" :style="{width:scrollWidth+'px'}"></th>
+						<th v-if="isScroll" :style="{width:scrollWidth+'px'}"></th>
 					</tr>
 				</thead>
 			</table>
@@ -38,8 +38,7 @@
 		<div v-else class="mvi-table-body" :style="bodyStyle" ref="body">
 			<table cellpadding="0" cellspacing="0">
 				<colgroup>
-					<col :style="colgroupStyle(item)" v-for="(item,index) in columnsData" :key="'table-body-group-'+index"
-					 :width="item.width" />
+					<col :style="colgroupStyle(item,index)" v-for="(item,index) in columnsData" :key="'table-body-group-'+index"/>
 				</colgroup>
 				<tbody>
 					<tr v-for="(item,index) in sortData" :key="'table-data-'+index" :class="bodyTrClass(item,index)">
@@ -175,7 +174,9 @@
 				return item => {
 					var style = {}
 					if(item.width){
-						style.width = item.width + 'px';
+						style.width = item.width;
+					}else {
+						style.width = (100 / this.columnsData.length) + '%';
 					}
 					return style
 				}
