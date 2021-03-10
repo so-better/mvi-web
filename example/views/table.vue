@@ -61,7 +61,7 @@ export default {
 				{
 					key: 'sex',
 					value: '性别',
-					width:'3rem'
+					//width:'3rem'
 				},
 				{
 					key: 'likes',

@@ -3,12 +3,12 @@
 		<div :class="['mvi-table-header',headClass?headClass:'']" v-if="columnsData.length!=0">
 			<table cellpadding="0" cellspacing="0">
 				<colgroup>
-					<col :style="colgroupStyle(item,index)" v-for="(item,index) in columnsData" :key="'table-header-group-'+index"/>
+					<col ref="headCols" :style="colgroupStyle(item,index)" v-for="(item,index) in columnsData" :key="'table-header-group-'+index"/>
 					<col v-if="isScroll" :style="{width:scrollWidth+'px'}"/>
 				</colgroup>
 				<thead>
 					<tr>
-						<th :class="tableHeaderThClass" v-for="(item,index) in columnsData" :key="'table-column-'+index">
+						<th ref="ths" :class="tableHeaderThClass" v-for="(item,index) in columnsData" :key="'table-column-'+index">
 							<div>
 								<m-checkbox v-if="item.key=='checkbox'" icon-size="0.24rem" :class="(item.value?'mvi-table-checkbox':'')"
 								 :checked.sync="selectAll" @model-change="allSelect" :icon-type="(item.iconType?item.iconType:'success')"
@@ -38,7 +38,7 @@
 		<div v-else class="mvi-table-body" :style="bodyStyle" ref="body">
 			<table cellpadding="0" cellspacing="0">
 				<colgroup>
-					<col :style="colgroupStyle(item,index)" v-for="(item,index) in columnsData" :key="'table-body-group-'+index"/>
+					<col ref="bodyCols" :style="colgroupStyle(item,index)" v-for="(item,index) in columnsData" :key="'table-body-group-'+index"/>
 				</colgroup>
 				<tbody>
 					<tr v-for="(item,index) in sortData" :key="'table-data-'+index" :class="bodyTrClass(item,index)">
@@ -202,7 +202,7 @@
 			data(newValue){
 				this.sortData = this.getSortData();
 				this.$nextTick(()=>{
-					this.bodyScrollSet();
+					this.columnsAlign();
 				})
 			}
 		},
@@ -210,16 +210,25 @@
 			this.sortData = this.getSortData()
 		},
 		mounted() {
-			this.bodyScrollSet();
+			this.columnsAlign();
+			window.addEventListener('resize',this.columnsAlign);
 		},
 		methods: {
-			//判断是否含有滚动条，从而对表头进行右边距设置
-			bodyScrollSet(){
+			//表头表主体对齐设置
+			columnsAlign(){
 				if(this.$refs.body){
+					//判断表格主体是否含有滚动条，与表头对齐设置
 					this.isScroll = $util.getScrollHeight(this.$refs.body) > this.$refs.body.clientHeight;
 					if(this.isScroll){
 						this.scrollWidth = this.$refs.body.offsetWidth - this.$refs.body.clientWidth;
 					}
+					this.$nextTick(()=>{
+						this.$refs.ths.forEach((el,index)=>{
+							if(!this.columnsData[index].width){
+								this.$refs.headCols[index].style.width = this.$refs.bodyCols[index].style.width = el.offsetWidth + 'px';
+							}
+						})
+					})
 				}
 			},
 			//点击单元格
@@ -328,6 +337,9 @@
 				})
 				return arr;
 			}
+		},
+		beforeDestroy() {
+			window.removeEventListener('resize',this.columnsAlign);
 		}
 	}
 </script>
