@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-p-4">
-		<m-checkbox class="mvi-m-2" v-model="checked"></m-checkbox>
+		<m-checkbox class="mvi-m-2" v-model="checked" disabled></m-checkbox>
 		<m-checkbox class="mvi-m-2" v-model="checked" fill-color="#ff3300"></m-checkbox>
 		<m-checkbox class="mvi-m-2" v-model="checked" fill-color="#fff" icon-color="#333"></m-checkbox>
 		<m-checkbox class="mvi-m-2" v-model="checked" icon-type="check-square"></m-checkbox>

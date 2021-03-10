@@ -2,7 +2,7 @@
 	<div>
 		<m-button @click="autoplay=!autoplay">Button</m-button>
 		<m-button @click="initialSlide = 3">Button</m-button>
-		<m-swiper ref="swiper" width="7.5rem" height="4rem" :initial-slide="initialSlide" :interval="1000" show-controls @change="change" @before-change="beforeChange" fade show-indicators loop  :autoplay="autoplay">
+		<m-swiper ref="swiper" width="7.5rem" height="4rem" :initial-slide="initialSlide" :interval="1000" show-controls @change="change" @before-change="beforeChange"  show-indicators loop  :autoplay="autoplay">
 			<m-swiper-slide>
 				<div style="width: 100%;height: 100%;" class="mvi-flex-center mvi-bg-error">1</div>
 			</m-swiper-slide>

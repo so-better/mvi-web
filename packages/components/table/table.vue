@@ -1,28 +1,31 @@
 <template>
 	<div v-on="listeners" :class="'mvi-table'+(outBorder?' mvi-table-border':'')">
-		<div class="mvi-table-header" v-if="columnsData.length!=0">
+		<div :class="['mvi-table-header',headClass?headClass:'']" v-if="columnsData.length!=0">
 			<table cellpadding="0" cellspacing="0">
 				<colgroup>
-					<col :style="colgroupStyle(index)" v-for="(item,index) in columnsData" :key="'table-header-group-'+index" />
+					<col :style="colgroupStyle(item)" :width="item.width" v-for="(item,index) in columnsData" :key="'table-header-group-'+index"/>
+					<col v-if="isScroll" :width="scrollWidth" :style="{width:scrollWidth+'px'}"/>
 				</colgroup>
-				<tr ref="headRow">
-					<td :class="'mvi-table-header-td'+(rowBorder?' mvi-table-header-td-border':'')+(headClass?' '+headClass:'')" v-for="(item,index) in columnsData"
-					 :key="'table-column-'+index">
-						<div>
-							<m-checkbox v-if="item.key=='checkbox'" icon-size="0.24rem" :class="(item.value?'mvi-table-checkbox':'')"
-							 :checked.sync="selectAll" @model-change="allSelect" :icon-type="(item.iconType?item.iconType:'success')"
-							 :icon-color="(item.iconColor?item.iconColor:null)" :fill-color="(item.fillColor?item.fillColor:null)"
-							 :label="item.value?item.value:''"></m-checkbox>
-							<span v-else-if="item.value" v-html="item.value"></span>
-							<span class="mvi-table-sortable" v-if="item.sortable">
-								<m-icon @click="sortAsc(item)" :class="'mvi-table-sortable-icon'+(active==0?' mvi-table-sortable-icon-active':'')"
-								 type="caret-up" />
-								<m-icon @click="sortDesc(item)" :class="'mvi-table-sortable-icon'+(active==1?' mvi-table-sortable-icon-active':'')"
-								 type="caret-down" />
-							</span>
-						</div>
-					</td>
-				</tr>
+				<thead>
+					<tr>
+						<th :class="tableHeaderThClass" v-for="(item,index) in columnsData" :key="'table-column-'+index">
+							<div>
+								<m-checkbox v-if="item.key=='checkbox'" icon-size="0.24rem" :class="(item.value?'mvi-table-checkbox':'')"
+								 :checked.sync="selectAll" @model-change="allSelect" :icon-type="(item.iconType?item.iconType:'success')"
+								 :icon-color="(item.iconColor?item.iconColor:null)" :fill-color="(item.fillColor?item.fillColor:null)"
+								 :label="item.value?item.value:''"></m-checkbox>
+								<span v-else-if="item.value" v-html="item.value"></span>
+								<span class="mvi-table-sortable" v-if="item.sortable">
+									<m-icon @click="sortAsc($event,item)" class="mvi-table-sortable-icon"
+									 type="caret-up" />
+									<m-icon @click="sortDesc($event,item)" class="mvi-table-sortable-icon"
+									 type="caret-down" />
+								</span>
+							</div>
+						</th>
+						<th v-if="isScroll" :width="scrollWidth" :style="{width:scrollWidth+'px'}"></th>
+					</tr>
+				</thead>
 			</table>
 		</div>
 		<div v-if="loading" class="mvi-table-loading">
@@ -32,14 +35,14 @@
 			</div>
 		</div>
 		<div v-else-if="sortData.length == 0" class="mvi-table-no-data" v-html="noDataMsg"></div>
-		<div v-else class="mvi-table-body" :style="bodyStyle">
+		<div v-else class="mvi-table-body" :style="bodyStyle" ref="body">
 			<table cellpadding="0" cellspacing="0">
 				<colgroup>
-					<col :style="colgroupStyle(index)" v-for="(item,index) in columnsData" :key="'table-body-group-'+index" />
+					<col :style="colgroupStyle(item)" v-for="(item,index) in columnsData" :key="'table-body-group-'+index"
+					 :width="item.width" />
 				</colgroup>
 				<tbody>
-					<tr v-for="(item,index) in sortData" :key="'table-data-'+index" :class="(item.className?item.className:'')
-					+((stripe&&(index%2==1))?' mvi-table-stripe':'')">
+					<tr v-for="(item,index) in sortData" :key="'table-data-'+index" :class="bodyTrClass(item,index)">
 						<td :class="(rowBorder?'mvi-table-body-td-border':'')
 						+((item.cellClassName&&item.cellClassName[item2.key])?' '+item.cellClassName[item2.key]:'')
 						+(item2.className?' '+item2.className:'') + (cellClass(item,index,item2,index2)?' '+cellClass(item,index,item2,index2):'')"
@@ -63,11 +66,11 @@
 		name: "m-table",
 		data() {
 			return {
-				headRow: null, //表头行
-				active: -1, //排序图标的激活序列
 				checkRows: [], //选择的列
 				selectAll: false,
 				sortData:[],//渲染在表格上的数据
+				isScroll:false,//表格内容是否有垂直滚动条
+				scrollWidth:0//滚动条宽度
 			}
 		},
 		props: {
@@ -98,6 +101,10 @@
 			height: { //设置表格主体高度，固定表格头部
 				type: String,
 				default: null
+			},
+			rowClass:{//设置行样式
+				type:String,
+				default:null
 			},
 			cellClass: { //自定义单元格样式
 				type: Function,
@@ -134,23 +141,43 @@
 			listeners() {
 				return Object.assign({}, this.$listeners);
 			},
+			bodyTrClass(){
+				return (item,index)=>{
+					var cls = [];
+					if(this.rowClass){
+						cls.push(this.rowClass)
+					}
+					if(item.className){
+						cls.push(item.className)
+					}
+					if(index%2==1 && this.stripe){
+						cls.push('mvi-table-stripe')
+					}
+					return cls;
+				}
+			},
+			tableHeaderThClass(){
+				var cls = 'mvi-table-header-th';
+				if(this.rowBorder){
+					cls += ' mvi-table-header-th-border';
+				}
+				return cls;
+			},
 			bodyStyle() {
 				var style = {};
 				if (this.height) {
-					style.height = this.height;
+					style.maxHeight = this.height;
 					style.overflow = 'auto';
 				}
 				return style;
 			},
 			colgroupStyle() {
-				return index => {
-					var style = {};
-					if ($util.isElement(this.headRow)) {
-						var cols = this.headRow.querySelectorAll(".mvi-table-header-td");
-						var width = cols[index]?cols[index].offsetWidth:0;
-						style.width = width + 'px';
+				return item => {
+					var style = {}
+					if(item.width){
+						style.width = item.width + 'px';
 					}
-					return style;
+					return style
 				}
 			},
 			columnsData() {
@@ -175,15 +202,29 @@
 		watch:{
 			data(newValue){
 				this.sortData = this.getSortData();
+				this.$nextTick(()=>{
+					this.bodyScrollSet();
+				})
 			}
 		},
 		created() {
 			this.sortData = this.getSortData()
 		},
 		mounted() {
-			this.headRow = this.$refs.headRow;
+			this.bodyScrollSet();
 		},
 		methods: {
+			//判断是否含有滚动条，从而对表头进行右边距设置
+			bodyScrollSet(){
+				if(this.$refs.body){
+					this.isScroll = $util.getScrollHeight(this.$refs.body) != this.$refs.body.clientHeight;
+					if(this.isScroll){
+						this.$nextTick(()=>{
+							this.scrollWidth = this.$refs.body.offsetWidth - this.$refs.body.clientWidth;
+						})
+					}
+				}
+			},
 			//点击单元格
 			cellClick(event, item, index, item2, index2) {
 				this.$emit('cell-click', {
@@ -244,8 +285,12 @@
 				this.$emit('check', checkRowsData);
 			},
 			//升序排序
-			sortAsc(column) {
-				this.active = 0;
+			sortAsc(event,column) {
+				var children = $util.children(event.currentTarget.parentNode,'.mvi-table-sortable-icon');
+				children.forEach(child=>{
+					$util.removeClass(child,'mvi-table-sortable-icon-active');
+				})
+				$util.addClass(event.currentTarget,'mvi-table-sortable-icon-active');
 				if(typeof this.customSortAsc == 'function' && this.customSortAsc){
 					this.customSortAsc(column,this.sortData)
 				}else {
@@ -258,8 +303,13 @@
 				}
 			},
 			//降序排序
-			sortDesc(column) {
-				this.active = 1;
+			sortDesc(event,column) {
+				var children = $util.children(event.currentTarget.parentNode,'.mvi-table-sortable-icon');
+				children.forEach(child=>{
+					$util.removeClass(child,'mvi-table-sortable-icon-active');
+				})
+				$util.addClass(event.currentTarget,'mvi-table-sortable-icon-active');
+				
 				if(typeof this.customSortDesc == 'function' && this.customSortDesc){
 					this.customSortDesc(column,this.sortData)
 				}else {
@@ -294,6 +344,8 @@
 		padding: 0;
 		margin: 0;
 		background-color: #fff;
+		font-size: @font-size-default;
+		color: @font-color-default;
 	}
 
 	.mvi-table-border {
@@ -302,7 +354,10 @@
 	}
 
 	.mvi-table-header {
-		display: block;
+		display: flex;
+		display: -webkit-flex;
+		justify-content: flex-start;
+		align-items: center;
 		width: 100%;
 		background-color: @bg-color-dark;
 		border-top-left-radius: @radius-default;
@@ -313,12 +368,14 @@
 			width: 100%;
 			border-collapse: collapse;
 		}
+		
+		thead{
+			width: 100%;
+		}
 
-		td.mvi-table-header-td {
+		th.mvi-table-header-th {
 			padding: @mp-sm;
 			text-align: center;
-			font-size: @font-size-default;
-			color: @font-color-default;
 			font-weight: bold;
 
 			&>div {
@@ -354,17 +411,17 @@
 
 		}
 
-		td.mvi-table-header-td.mvi-table-header-td-border {
+		th.mvi-table-header-th.mvi-table-header-th-border {
 			border: 1px solid @border-color;
 			border-bottom: none;
 			border-top: none;
 		}
 
-		tr>td.mvi-table-header-td.mvi-table-header-td-border:first-child {
+		tr>th.mvi-table-header-th.mvi-table-header-th-border:first-child {
 			border-left: none;
 		}
 
-		tr>td.mvi-table-header-td.mvi-table-header-td-border:last-child {
+		tr>th.mvi-table-header-th.mvi-table-header-th-border:last-child {
 			border-right: none;
 		}
 
@@ -390,8 +447,6 @@
 		td {
 			padding: @mp-sm;
 			text-align: center;
-			font-size: @font-size-default;
-			color: @font-color-default;
 			border-bottom: 1px solid @border-color;
 		}
 

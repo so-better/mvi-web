@@ -1,13 +1,7 @@
 <template>
 	<div class="mvi-p-2">
-		<m-table head-class="mvi-bg-success" class="mvi-mb-2" :data="[]" :columns="columns"></m-table>
-		<m-table @cell-click="cellClick" class="mvi-mb-2" :data="data" :columns="columns"></m-table>
-		<m-table @sort-desc="sortDesc" @sort-asc="sortAsc" class="mvi-mb-2" :data="data" :columns="columns" out-border></m-table>
-		<m-table class="mvi-mb-2" :data="data" :columns="columns" out-border row-border></m-table>
-		<m-table class="mvi-mb-2" :data="data" :columns="columns" stripe></m-table>
-		<m-table class="mvi-mb-2" :data="data" :columns="columns" stripe out-border row-border></m-table>
-		<m-table @check="check" class="mvi-mb-2" :data="data" :columns="columns" out-border row-border stripe :cell-class="cellClass"></m-table>
-		<m-table class="mvi-mb-2" load-text="loading..." :data="data" loading :columns="columns" out-border row-border stripe :cell-class="cellClass"></m-table>
+		<m-button @click="add">添加行</m-button>
+		<m-table :data="data" :columns="columns" stripe out-border row-border height="4rem" ></m-table>
 	</div>
 </template>
 
@@ -19,23 +13,27 @@ export default {
 			data: [
 				{
 					name: '张三',
-					age: 24,
-					sex: '男'
+					age: 20,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动'
 				},
 				{
 					name: '李四',
-					age: 20,
-					sex: '男'
+					age: 24,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动'
 				},
 				{
 					name: '王红',
 					age: 22,
-					sex: '女'
+					sex: '女',
+					likes:'看电影，玩游戏，lol，dnf，运动'
 				},
 				{
 					name: '赵钱',
 					age: 30,
 					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动',
 					cellClassName:{
 						name:'mvi-text-primary'
 					},
@@ -45,25 +43,116 @@ export default {
 			columns: [
 				{
 					key:'checkbox',
-					value:'全选'
+					value:'全选',
+					width:200
 				},
 				{
 					key: 'name',
 					value: '姓名',
+					width:300,
+					sortable:true,
 				},
 				{
 					key: 'age',
 					value: '年龄',
-					sortable:true
+					sortable:true,
+					width:300,
 				},
 				{
 					key: 'sex',
-					value: '性别'
+					value: '性别',
+					width:300,
+				},
+				{
+					key: 'likes',
+					value: '兴趣爱好',
 				}
 			]
 		};
 	},
 	methods:{
+		add(){
+			this.data = [
+				{
+					name: '张三',
+					age: 24,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动'
+				},
+				{
+					name: '李四',
+					age: 20,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动'
+				},
+				{
+					name: '王红',
+					age: 22,
+					sex: '女',
+					likes:'看电影，玩游戏，lol，dnf，运动'
+				},
+				{
+					name: '赵钱',
+					age: 30,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动',
+					cellClassName:{
+						name:'mvi-text-primary'
+					},
+					checkDisabled:true
+				},
+				{
+					name: '赵钱',
+					age: 30,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动',
+					cellClassName:{
+						name:'mvi-text-primary'
+					},
+					checkDisabled:true
+				},
+				{
+					name: '赵钱',
+					age: 30,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动',
+					cellClassName:{
+						name:'mvi-text-primary'
+					},
+					checkDisabled:true
+				},
+				{
+					name: '赵钱',
+					age: 30,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动',
+					cellClassName:{
+						name:'mvi-text-primary'
+					},
+					checkDisabled:true
+				},
+				{
+					name: '赵钱',
+					age: 30,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动',
+					cellClassName:{
+						name:'mvi-text-primary'
+					},
+					checkDisabled:true
+				},
+				{
+					name: '赵钱',
+					age: 30,
+					sex: '男',
+					likes:'看电影，玩游戏，lol，dnf，运动',
+					cellClassName:{
+						name:'mvi-text-primary'
+					},
+					checkDisabled:true
+				}
+			]
+		},
 		cellClass(row,rowIndex,col,colIndex){
 			if(rowIndex == 0){
 				return 'mvi-text-error'
@@ -87,4 +176,6 @@ export default {
 };
 </script>
 
-<style scoped lang="less"></style>
+<style lang="less">
+	
+</style>

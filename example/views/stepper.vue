@@ -1,6 +1,6 @@
 <template>
 	<div class="mvi-p-4">
-		<m-stepper v-model="value" input-width="3rem" background="#ff3300" color="#fff"></m-stepper>
+		<m-stepper v-model="value" input-width="3rem"></m-stepper>
 	</div>
 </template>
 
