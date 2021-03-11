@@ -182,7 +182,7 @@
 						width = parseFloat($util.getCssStyle(this.$el,'width'));
 					}
 				}
-				return width;
+				return Number(width.toFixed(2));
 			},
 			//激活的轮播序列(非fade，数值从0开始，循环模式下包含复制的)
 			activeIndex(){
@@ -310,6 +310,9 @@
 			}
 		},
 		mounted() {
+			if(this.children.length == 0){
+				return;
+			}
 			if(this.fade){
 				this.setAutoplay();
 			}else{
@@ -334,6 +337,9 @@
 		methods:{
 			//设置计时器自动播放
 			setAutoplay(){
+				if(this.children.length == 0){
+					return;
+				}
 				if(this.autoplay && !this.timer && this.interval > this.speed){
 					this.timer = setInterval(()=>{
 						this.slideNext();
@@ -347,6 +353,9 @@
 			},
 			//触摸开始(非fade)
 			swiperTouchStart(event){
+				if(this.children.length == 0){
+					return;
+				}
 				if(!this.touchable){
 					return;
 				}
@@ -366,6 +375,9 @@
 			},
 			//触摸移动(非fade)
 			swiperTouchMove(event){
+				if(this.children.length == 0){
+					return;
+				}
 				if(!this.touchable){
 					return;
 				}
@@ -400,6 +412,9 @@
 			},
 			//触摸结束(非fade)
 			swiperTouchEnd(event){
+				if(this.children.length == 0){
+					return;
+				}
 				if(!this.touchable){
 					return;
 				}
@@ -415,6 +430,9 @@
 			},
 			//鼠标按下(非fade)
 			swiperMouseDown(event){
+				if(this.children.length == 0){
+					return;
+				}
 				if(!this.touchable){
 					return;
 				}
@@ -435,6 +453,9 @@
 			},
 			//鼠标移动(非fade)
 			swiperMouseMove(event){
+				if(this.children.length == 0){
+					return;
+				}
 				if(!this.touchable){
 					return;
 				}
@@ -472,6 +493,9 @@
 			},
 			//鼠标松开(非fade)
 			swiperMouseUp(event){
+				if(this.children.length == 0){
+					return;
+				}
 				if(!this.touchable){
 					return;
 				}
@@ -491,6 +515,9 @@
 			},
 			//设置默认索引(非fade)
 			setDefaultSlide(){
+				if(this.children.length == 0){
+					return;
+				}
 				if(!this.fade){
 					this.removeTransition().then(()=>{
 						this.transform = -this.computedInitalSlide.multiplication(this.slideSize);
@@ -577,6 +604,10 @@
 			//跳转到下一个轮播(区分slide和fade)
 			slideNext(){
 				return new Promise((resolve,reject)=>{
+					if(this.children.length == 0){
+						resolve();
+						return;
+					}
 					if(this.fade){
 						if(this.loop){
 							this.$emit('before-change',this.fadeActiveIndex)
@@ -624,6 +655,10 @@
 			//跳转到上一个轮播(区分slide和fade)
 			slidePrev(){
 				return new Promise((resolve,reject)=>{
+					if(this.children.length == 0){
+						resolve();
+						return;
+					}
 					if(this.fade){
 						if(this.loop){
 							this.$emit('before-change',this.fadeActiveIndex)
@@ -691,6 +726,10 @@
 			//跳转指定的slide(区分slide和fade)
 			slideTo(index){
 				return new Promise((resolve,reject)=>{
+					if(this.children.length == 0){
+						resolve();
+						return;
+					}
 					if(this.fade){
 						if(index > this.children.length-1){
 							index = this.children.length-1;

@@ -256,6 +256,9 @@
 		color: @font-color-sub;
 		position: relative;
 		cursor: pointer;
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
 		
 		&[disabled]{
 			opacity: .5;

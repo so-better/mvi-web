@@ -2,22 +2,10 @@
 	<div>
 		<m-button @click="autoplay=!autoplay">Button</m-button>
 		<m-button @click="initialSlide = 3">Button</m-button>
-		<m-swiper ref="swiper" width="7.5rem" height="4rem" :initial-slide="initialSlide" :interval="1000" show-controls @change="change" @before-change="beforeChange"  show-indicators loop  :autoplay="autoplay">
-			<m-swiper-slide>
-				<div style="width: 100%;height: 100%;" class="mvi-flex-center mvi-bg-error">1</div>
+		<m-swiper ref="swiper" width="7.5rem" height="4rem" loop show-indicators show-control>
+			<m-swiper-slide  v-for="(item,index) in slides" :key="'slide-'+index">
+				<img :src="item" style="width: 100%;height: 100%;" />
 			</m-swiper-slide>
-			<m-swiper-slide>
-				<div style="width: 100%;height: 100%;" class="mvi-flex-center mvi-bg-success">2</div>
-			</m-swiper-slide>
-			<m-swiper-slide>
-				<div style="width: 100%;height: 100%;" class="mvi-flex-center mvi-bg-info">3</div>
-			</m-swiper-slide>
-			<m-swiper-slide>
-				<div style="width: 100%;height: 100%;" class="mvi-flex-center mvi-bg-warn">4</div>
-			</m-swiper-slide>
-			<!-- <template v-slot:indicators="data">
-				<p style="position: absolute;z-index: 1000;bottom: 0;">{{data}}</p>
-			</template> -->
 		</m-swiper>
 	</div>
 </template>
@@ -28,7 +16,8 @@ export default {
 	data() {
 		return {
 			autoplay:false,
-			initialSlide:1
+			initialSlide:0,
+			slides:['https://www.mvi-web.cn/resources/blogImages/AF9ZISEyqfssnEQ_jCE_hPf8.jfif','https://www.mvi-web.cn/resources/blogImages/GhNI2330sHbh18vtJwExnekB.jfif'],
 		};
 	},
 	methods:{

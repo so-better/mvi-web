@@ -1,8 +1,8 @@
 <template>
 	<div v-on="listeners" :class="'mvi-tabbar'+(border?' mvi-tabbar-border':'')+(fixed?' mvi-tabbar-fixed':'')"
-	:style="'z-index'+(fixed?zIndex:'')">
+	:style="tabbarStyle">
 		<m-tabbar-item v-for="(item,index) in tabs" :key="'tab-'+index" :name="item.name" :value="item.value" 
-		:icon="item.icon" :disabled="item.disabled"></m-tabbar-item>
+		:icon="item.icon" :disabled="item.disabled" :style="tabbarItemStyle(index)"></m-tabbar-item>
 	</div>
 </template>
 
@@ -57,11 +57,38 @@
 			active:{
 				type:Boolean,
 				default:true
+			},
+			flex:{
+				type:String,
+				default:null
+			},
+			offset:{
+				type:String,
+				default:null
 			}
 		},
 		computed:{
 			listeners(){
 				return Object.assign({},this.$listeners);
+			},
+			tabbarItemStyle(){
+				return index=>{
+					var style = {}
+					if(index != 0 && this.offset){
+						style.marginLeft = this.offset;
+					}
+					return style
+				}
+			},
+			tabbarStyle(){
+				var style = {}
+				if(this.fixed){
+					style.zIndex = this.zIndex;
+				}
+				if(this.flex){
+					style.justifyContent = this.flex;
+				}
+				return style;
 			}
 		},
 		methods:{
@@ -88,8 +115,8 @@
 		align-items: center;
 		width: 100%;
 		height: @mini-height*2;
-		padding: 0 @mp-sm;
 		background-color: #fff;
+		padding: 0 @mp-xs;
 		color: @font-color-default;
 	}
 	

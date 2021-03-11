@@ -23,14 +23,8 @@ export default {
 				},
 				{
 					value: 2,
-					name: '关注',
-					icon:'ul'
-				},
-				{
-					value: 3,
 					name: '我的',
-					icon:'user',
-					disabled:true
+					icon:'user'
 				}
 			]
 		}
