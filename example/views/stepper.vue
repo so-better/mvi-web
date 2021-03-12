@@ -6,7 +6,7 @@
 		</div>
 		<div>
 			<p>{{value1}}</p>
-			<m-stepper v-model="value1" :digit="1" :step="0.5"></m-stepper>
+			<m-stepper border background="#fff" v-model="value1" :digit="1" :step="0.5"></m-stepper>
 		</div>
 	</div>
 </template>

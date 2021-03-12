@@ -1,13 +1,15 @@
 <template>
 	<div :class="'mvi-stepper mvi-stepper-'+size" v-on="listeners">
-		<div :disabled="disabledMinus || arrivalMin || disabled" :class="'mvi-stepper-minus'+((!(disabledMinus || arrivalMin || disabled) && active)?' mvi-stepper-active':'')" v-if="showMinus" :style="minusStyle" @click="doMinus">
+		<div :disabled="disabledMinus || arrivalMin || disabled" :class="minusClass" v-if="showMinus" :style="minusStyle" 
+		@click="doMinus">
 			<m-icon type="minus" />
 		</div>
-		<div :disabled="disabledInput" class="mvi-stepper-input" :style="inputStyle" v-if="showInput">
+		<div :disabled="disabledInput" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']" :style="inputStyle" v-if="showInput">
 			<input ref="input" :value="inputValue" :disabled="disabled || disabledInput" type="text" @blur="changeValue"
 			 @keyup.enter="changeValue" :style="inputElStyle">
 		</div>
-		<div :disabled="disabledPlus || arrivalMax || disabled" :class="'mvi-stepper-plus'+((!(disabledPlus || arrivalMax || disabled) && active)?' mvi-stepper-active':'')" v-if="showPlus" :style="plusStyle" @click="doPlus">
+		<div :disabled="disabledPlus || arrivalMax || disabled" :class="plusClass" v-if="showPlus" :style="plusStyle" 
+		@click="doPlus">
 			<m-icon type="plus" />
 		</div>
 	</div>
@@ -99,6 +101,10 @@
 				validator(value){
 					return ['left','center','right'].includes(value)
 				}
+			},
+			border:{//是否显示边框
+				type:Boolean,
+				default:false
 			}
 		},
 		computed:{
@@ -192,6 +198,26 @@
 					}
 					return val;
 				}
+			},
+			minusClass(){
+				var cls = ['mvi-stepper-minus'];
+				if(!(this.disabledMinus || this.arrivalMin || this.disabled) && this.active){
+					cls.push('mvi-stepper-active');
+				}
+				if(this.border){
+					cls.push('mvi-stepper-border');
+				}
+				return cls;
+			},
+			plusClass(){
+				var cls = ['mvi-stepper-plus'];
+				if(!(this.disabledPlus || this.arrivalMax || this.disabled) && this.active){
+					cls.push('mvi-stepper-active')
+				}
+				if(this.border){
+					cls.push('mvi-stepper-border');
+				}
+				return cls;
 			}
 		},
 		methods:{
@@ -345,5 +371,8 @@
 	.mvi-stepper-large>.mvi-stepper-input{
 		height: @large-height;
 		font-size: @font-size-h6;
+	}
+	&.mvi-stepper-border{
+		border: 1px solid @border-color;
 	}
 </style>
