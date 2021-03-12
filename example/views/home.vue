@@ -24,8 +24,7 @@
 		align-items: center;
 		width: 100%;
 		height: .88rem;
-		border-bottom: 1px solid #EBEDF0;
-		color: #808080;
+		border-bottom: 1px solid #ddd;
 		
 		&:active{
 			background-color: #EBEDF0;

@@ -1,8 +1,13 @@
 <template>
 	<div class="mvi-p-4">
 		<p>{{value}}</p>
-		<m-stepper v-model="value" input-width="3rem" :min="6"></m-stepper>
-		<m-stepper v-model="value" input-width="3rem" :digit="1" :step="0.5"></m-stepper>
+		<div class="mvi-mb-4">
+			<m-stepper v-model="value" :digit="4" :step="0.2"></m-stepper>
+		</div>
+		<div>
+			<p>{{value1}}</p>
+			<m-stepper v-model="value1" :digit="1" :step="0.5"></m-stepper>
+		</div>
 	</div>
 </template>
 
@@ -11,7 +16,8 @@
 		name:'demo-stepper',
 		data(){
 			return {
-				value:0
+				value:0.1,
+				value1:1,
 			}
 		}
 	}

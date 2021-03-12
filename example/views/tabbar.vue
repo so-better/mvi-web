@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<m-tabbar flex="center" offset="1rem" v-model="index" :tabs="tabs"></m-tabbar>
 		<m-tabbar @item-click="itemClick" border active-color="#0b73de" fixed v-model="index" :tabs="tabs"></m-tabbar>
 	</div>
 </template>

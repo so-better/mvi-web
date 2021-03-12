@@ -206,7 +206,7 @@
 				if(this.inputValue <= this.min && this.min != null){
 					return;
 				}
-				this.inputValue = this.inputValue - this.step;
+				this.inputValue = this.inputValue.subtraction(this.step);
 			},
 			//加法
 			doPlus(){
@@ -219,7 +219,7 @@
 				if(this.inputValue >= this.max && this.max != null){
 					return;
 				}
-				this.inputValue = this.inputValue + this.step;
+				this.inputValue = this.inputValue.add(this.step);
 			},
 			//输入框修改值
 			changeValue(){

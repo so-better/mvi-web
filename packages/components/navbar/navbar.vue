@@ -6,7 +6,7 @@
 			:url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" />
 			<span class="mvi-navbar-left-text" v-if="leftText && !$slots.left" v-text="leftText"></span>
 		</div>
-		<div @click="titleClick" class="mvi-navbar-center" v-if="$slots.title||title">
+		<div @click="titleClick" class="mvi-navbar-center" :style="centerStyle" v-if="$slots.title||title">
 			<div :class="'mvi-navbar-title'+(titleClass?' '+titleClass:'')">
 				<slot name="title" v-if="$slots.title"></slot>
 				<span v-else-if="title" v-text="title"></span>
@@ -183,6 +183,15 @@
 					cls += ' mvi-navbar-border';
 				}
 				return cls;
+			},
+			centerStyle(){
+				var style = {};
+				if((this.rightIconType||this.rightIconUrl||this.$slots.right||this.rightText) || (this.leftIconType||this.leftIconUrl||this.$slots.left||this.leftText)){
+					style.width = '60%';
+				} else{
+					style.width = '100%';
+				}
+				return style;
 			}
 		},
 		methods:{
@@ -256,7 +265,6 @@
 		display:flex;
 		display: -webkit-flex;
 		align-items: center;
-		width: 60%;
 		height: 100%;	
 	}
 	.mvi-navbar-title{
@@ -271,7 +279,7 @@
 	.mvi-navbar-right{
 		display: flex;
 		display: -webkit-flex;
-		justify-content: flex-start;
+		justify-content: flex-end;
 		align-items: center;
 		position: absolute;
 		right: 0;
