@@ -2,7 +2,7 @@
 	<div>
 		<m-button @click="autoplay=!autoplay">Button</m-button>
 		<m-button @click="initialSlide = 3">Button</m-button>
-		<m-swiper ref="swiper" width="7.5rem" height="4rem" loop show-indicators show-control>
+		<m-swiper ref="swiper" width="7.5rem" height="4rem" fade show-indicators show-control @change="change">
 			<m-swiper-slide  v-for="(item,index) in slides" :key="'slide-'+index">
 				<img :src="item" style="width: 100%;height: 100%;" />
 			</m-swiper-slide>

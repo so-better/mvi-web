@@ -38,6 +38,7 @@
 				mouseDown:false,//是否鼠标按下
 				fadeActiveIndex:0,//fade模式下被激活的序列
 				useOpacity:true,//fade模式下是否使用动画渐变
+				apiDoSlide:false,//非fade模式下，是否正在使用api来改变轮播
 			}
 		},
 		props:{
@@ -359,6 +360,9 @@
 				if(!this.touchable){
 					return;
 				}
+				if(this.apiDoSlide){
+					return;
+				}
 				if(this.timer){
 					clearInterval(this.timer);
 					this.timer = null;
@@ -418,9 +422,6 @@
 				if(!this.touchable){
 					return;
 				}
-				if(this.totalMove==0){
-					return;
-				}
 				this.addTransition().then(()=>{
 					this.transform = -this.activeIndex.multiplication(this.slideSize);
 					setTimeout(()=>{
@@ -434,6 +435,9 @@
 					return;
 				}
 				if(!this.touchable){
+					return;
+				}
+				if(this.apiDoSlide){
 					return;
 				}
 				if(this.timer){
@@ -503,9 +507,6 @@
 					return;
 				}
 				this.mouseDown = false;
-				if(this.totalMove==0){
-					return;
-				}
 				this.addTransition().then(()=>{
 					this.transform = -this.activeIndex.multiplication(this.slideSize);
 					setTimeout(()=>{
@@ -554,52 +555,58 @@
 			},
 			//滑动后处理(非fade)
 			slideDone(){
-				if(this.loop){
-					//循环模式下如果滑动到最后一张，则跳到第二张
-					if(this.transform == -(this.children.length-1).multiplication(this.slideSize)){
-						this.removeTransition().then(()=>{
-							this.transform = -this.slideSize;
-							this.$nextTick(()=>{
-								setTimeout(()=>{
-									this.addTransition().then(()=>{
-										if(this.indicatorsIndex != this.oldIndex){
-											this.oldIndex = this.indicatorsIndex;
-											this.$emit('change',this.indicatorsIndex);
-										}
-										this.setAutoplay();
-									})
-								},50)
+				return new Promise((resolve,reject)=>{
+					if(this.loop){
+						//循环模式下如果滑动到最后一张，则跳到第二张
+						if(this.transform == -(this.children.length-1).multiplication(this.slideSize)){
+							this.removeTransition().then(()=>{
+								this.transform = -this.slideSize;
+								this.$nextTick(()=>{
+									setTimeout(()=>{
+										this.addTransition().then(()=>{
+											if(this.indicatorsIndex != this.oldIndex){
+												this.oldIndex = this.indicatorsIndex;
+												this.$emit('change',this.indicatorsIndex);
+											}
+											this.setAutoplay();
+											resolve();
+										})
+									},50)
+								})
 							})
-						})
-					}else if(this.transform == 0){//循环模式下如果滑动到第一张，则跳到倒数第二张
-						this.removeTransition().then(()=>{
-							this.transform = -(this.children.length-2).multiplication(this.slideSize);
-							this.$nextTick(()=>{
-								setTimeout(()=>{
-									this.addTransition().then(()=>{
-										if(this.indicatorsIndex != this.oldIndex){
-											this.oldIndex = this.indicatorsIndex;
-											this.$emit('change',this.indicatorsIndex);
-										}
-										this.setAutoplay();
-									})
-								},50)
+						}else if(this.transform == 0){//循环模式下如果滑动到第一张，则跳到倒数第二张
+							this.removeTransition().then(()=>{
+								this.transform = -(this.children.length-2).multiplication(this.slideSize);
+								this.$nextTick(()=>{
+									setTimeout(()=>{
+										this.addTransition().then(()=>{
+											if(this.indicatorsIndex != this.oldIndex){
+												this.oldIndex = this.indicatorsIndex;
+												this.$emit('change',this.indicatorsIndex);
+											}
+											this.setAutoplay();
+											resolve();
+										})
+									},50)
+								})
 							})
-						})
+						}else{
+							if(this.indicatorsIndex != this.oldIndex){
+								this.oldIndex = this.indicatorsIndex;
+								this.$emit('change',this.indicatorsIndex);
+							}
+							this.setAutoplay();
+							resolve();
+						}
 					}else{
 						if(this.indicatorsIndex != this.oldIndex){
 							this.oldIndex = this.indicatorsIndex;
 							this.$emit('change',this.indicatorsIndex);
 						}
 						this.setAutoplay();
+						resolve();
 					}
-				}else{
-					if(this.indicatorsIndex != this.oldIndex){
-						this.oldIndex = this.indicatorsIndex;
-						this.$emit('change',this.indicatorsIndex);
-					}
-					this.setAutoplay();
-				}
+				})
 			},
 			//跳转到下一个轮播(区分slide和fade)
 			slideNext(){
@@ -639,6 +646,7 @@
 							resolve()
 							return;
 						}
+						this.apiDoSlide = true;
 						this.$emit('before-change',this.oldIndex)
 						if(this.timer){
 							clearInterval(this.timer);
@@ -646,8 +654,10 @@
 						}
 						this.transform = this.transform.subtraction(this.slideSize);
 						setTimeout(()=>{
-							this.slideDone();
-							resolve();
+							this.slideDone().then(()=>{
+								this.apiDoSlide = false;
+								resolve();
+							});
 						},this.speed)
 					}
 				})
@@ -690,6 +700,7 @@
 							resolve()
 							return;
 						}
+						this.apiDoSlide = true;
 						this.$emit('before-change',this.oldIndex)
 						if(this.timer){
 							clearInterval(this.timer);
@@ -697,8 +708,10 @@
 						}
 						this.transform = this.transform.add(this.slideSize);
 						setTimeout(()=>{
-							this.slideDone();
-							resolve();
+							this.slideDone().then(()=>{
+								this.apiDoSlide = false;
+								resolve();
+							});
 						},this.speed)
 					}
 				})
@@ -753,6 +766,7 @@
 								resolve()
 								return;
 							}
+							this.apiDoSlide = true;
 							this.$emit('before-change',this.oldIndex)
 							if(this.timer){
 								clearInterval(this.timer);
@@ -761,8 +775,10 @@
 							this.addTransition().then(()=>{
 								this.transform = this.transform.add((this.oldIndex - index).multiplication(this.slideSize));
 								setTimeout(()=>{
-									this.slideDone();
-									resolve();
+									this.slideDone().then(()=>{
+										this.apiDoSlide = false;
+										resolve();
+									});
 								},this.speed)
 							})
 						}else{//下N张
@@ -770,6 +786,7 @@
 								resolve()
 								return;
 							}
+							this.apiDoSlide = true;
 							this.$emit('before-change',this.oldIndex)
 							if(this.timer){
 								clearInterval(this.timer);
@@ -778,8 +795,10 @@
 							this.addTransition().then(()=>{
 								this.transform = this.transform.subtraction((index - this.oldIndex).multiplication(this.slideSize));
 								setTimeout(()=>{
-									this.slideDone();
-									resolve();
+									this.slideDone().then(()=>{
+										this.apiDoSlide = false;
+										resolve();
+									});
 								},this.speed)
 							})
 						}
