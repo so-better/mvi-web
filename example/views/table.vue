@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-2">
 		<m-button @click="add">添加行</m-button>
-		<m-table :data="data" :loading="loading" :columns="columns" stripe out-border row-border height="4rem" ></m-table>
+		<m-table :data="data" :loading="loading" :columns="columns" stripe out-border row-border height="4rem"></m-table>
 	</div>
 </template>
 
@@ -10,141 +10,144 @@ export default {
 	name: 'demo-table',
 	data() {
 		return {
-			loading:true,
-			data: [],
-			columns: [
-				{
-					key:'checkbox',
-					value:'全选',
-				},
-				{
-					key: 'name',
-					value: '姓名',
-					sortable:true,
-				},
-				{
-					key: 'age',
-					value: '年龄',
-					sortable:true,
-				},
-				{
-					key: 'sex',
-					value: '性别',
-				},
-				{
-					key: 'likes',
-					value: '兴趣爱好',
-				}
-			]
-		};
-	},
-	methods:{
-		add(){
-			this.loading = false;
-			this.data = [
+			loading: false,
+			data: [
 				{
 					name: '张三',
 					age: 24,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动'
+					likes: '看电影，玩游戏，lol，dnf，运动'
 				},
 				{
 					name: '李四',
 					age: 20,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动'
+					likes: '看电影，玩游戏，lol，dnf，运动'
 				},
 				{
 					name: '王红',
 					age: 22,
 					sex: '女',
-					likes:'看电影，玩游戏，lol，dnf，运动'
+					likes: '看电影，玩游戏，lol，dnf，运动'
 				},
 				{
 					name: '赵钱',
 					age: 30,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动',
-					cellClassName:{
-						name:'mvi-text-primary'
+					likes: '看电影，玩游戏，lol，dnf，运动',
+					cellClassName: {
+						name: 'mvi-text-primary'
 					},
-					checkDisabled:true
+					checkDisabled: true
 				},
 				{
 					name: '赵钱',
 					age: 30,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动',
-					cellClassName:{
-						name:'mvi-text-primary'
+					likes: '看电影，玩游戏，lol，dnf，运动',
+					cellClassName: {
+						name: 'mvi-text-primary'
 					},
-					checkDisabled:true
+					checkDisabled: true
 				},
 				{
 					name: '赵钱',
 					age: 30,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动',
-					cellClassName:{
-						name:'mvi-text-primary'
+					likes: '看电影，玩游戏，lol，dnf，运动',
+					cellClassName: {
+						name: 'mvi-text-primary'
 					},
-					checkDisabled:true
+					checkDisabled: true
 				},
 				{
 					name: '赵钱',
 					age: 30,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动',
-					cellClassName:{
-						name:'mvi-text-primary'
+					likes: '看电影，玩游戏，lol，dnf，运动',
+					cellClassName: {
+						name: 'mvi-text-primary'
 					},
-					checkDisabled:true
+					checkDisabled: true
 				},
 				{
 					name: '赵钱',
 					age: 30,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动',
-					cellClassName:{
-						name:'mvi-text-primary'
+					likes: '看电影，玩游戏，lol，dnf，运动',
+					cellClassName: {
+						name: 'mvi-text-primary'
 					},
-					checkDisabled:true
+					checkDisabled: true
 				},
 				{
 					name: '赵钱',
 					age: 30,
 					sex: '男',
-					likes:'看电影，玩游戏，lol，dnf，运动',
-					cellClassName:{
-						name:'mvi-text-primary'
+					likes: '看电影，玩游戏，lol，dnf，运动',
+					cellClassName: {
+						name: 'mvi-text-primary'
 					},
-					checkDisabled:true
+					checkDisabled: true
+				}
+			],
+			columns: [
+				{
+					key: 'checkbox',
+					value: '全选'
+				},
+				{
+					key: 'name',
+					value: '姓名',
+					sortable: true
+				},
+				{
+					key: 'age',
+					value: '年龄',
+					sortable: true
+				},
+				{
+					key: 'sex',
+					value: '性别'
+				},
+				{
+					key: 'likes',
+					value: '兴趣爱好'
 				}
 			]
+		};
+	},
+	mounted() {
+		this.add()
+	},
+	methods: {
+		add() {
+			this.loading = true;
+			setTimeout(() => {
+				this.loading = false;
+			}, 500);
 		},
-		cellClass(row,rowIndex,col,colIndex){
-			if(rowIndex == 0){
-				return 'mvi-text-error'
-			}else if(colIndex == 1){
-				return 'mvi-bg-success'
+		cellClass(row, rowIndex, col, colIndex) {
+			if (rowIndex == 0) {
+				return 'mvi-text-error';
+			} else if (colIndex == 1) {
+				return 'mvi-bg-success';
 			}
 		},
-		cellClick(res){
-			this.$msgbox(JSON.stringify(res))
+		cellClick(res) {
+			this.$msgbox(JSON.stringify(res));
 		},
-		check(checkRows){
-			console.log(checkRows)
+		check(checkRows) {
+			console.log(checkRows);
 		},
-		sortDesc(res){
-			console.log(res)
+		sortDesc(res) {
+			console.log(res);
 		},
-		sortAsc(res){
-			console.log(res)
+		sortAsc(res) {
+			console.log(res);
 		}
 	}
 };
 </script>
 
-<style lang="less">
-	
-</style>
+<style lang="less"></style>

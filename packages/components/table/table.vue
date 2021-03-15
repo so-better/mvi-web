@@ -204,6 +204,11 @@
 				this.$nextTick(()=>{
 					this.columnsAlign();
 				})
+			},
+			loading(newValue){
+				this.$nextTick(()=>{
+					this.columnsAlign();
+				})
 			}
 		},
 		created() {
@@ -225,7 +230,8 @@
 					this.$nextTick(()=>{
 						if(this.$refs.ths){
 							this.$refs.ths.forEach((el,index)=>{
-								if(!this.columnsData[index].width && this.$refs.headCols){
+								if(!this.columnsData[index].width && this.$refs.headCols && this.$refs.headCols[index] 
+								&& this.$refs.bodyCols && this.$refs.bodyCols[index]){
 									this.$refs.headCols[index].style.width = this.$refs.bodyCols[index].style.width = el.offsetWidth + 'px';
 								}
 							})
