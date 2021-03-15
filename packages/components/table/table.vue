@@ -223,11 +223,13 @@
 						this.scrollWidth = this.$refs.body.offsetWidth - this.$refs.body.clientWidth;
 					}
 					this.$nextTick(()=>{
-						this.$refs.ths.forEach((el,index)=>{
-							if(!this.columnsData[index].width){
-								this.$refs.headCols[index].style.width = this.$refs.bodyCols[index].style.width = el.offsetWidth + 'px';
-							}
-						})
+						if(this.$refs.ths){
+							this.$refs.ths.forEach((el,index)=>{
+								if(!this.columnsData[index].width && this.$refs.headCols){
+									this.$refs.headCols[index].style.width = this.$refs.bodyCols[index].style.width = el.offsetWidth + 'px';
+								}
+							})
+						}
 					})
 				}
 			},
