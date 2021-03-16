@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<m-select class="mvi-mb-2" size="small" v-model="value" :options="options" placeholder="请选择"></m-select>
+		<m-select class="mvi-mb-2" size="small" v-model="value2" :options="options" placeholder="请选择"></m-select>
 		
-		<m-select square class="mvi-mb-2" disabled v-model="value" :options="options" placeholder="请选择"></m-select>
+		<m-select square class="mvi-mb-2" disabled v-model="value2" :options="options" placeholder="请选择"></m-select>
 		
 		<m-select class="mvi-mb-2" icon="angle-down" round active-type="success" size="large" v-model="value" :options="options" placeholder="请选择" multiple :filter-method="filter"></m-select>
 	</div>
@@ -14,6 +14,7 @@
 		data(){
 			return {
 				value:[],
+				value2:-1,
 				options:[{
 					label:'高铁',
 					value:0
@@ -37,7 +38,7 @@
 		},
 		methods:{
 			filter(value){
-				return value
+				return value.length>0?value.toString():''
 			}
 		}
 	}

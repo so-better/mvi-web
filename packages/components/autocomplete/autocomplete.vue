@@ -15,7 +15,7 @@
 		</div>
 		<m-layer :show="show" :target="`[data-id='mvi-autocomplete-target-${_uid}']`" 
 		:root="`[data-id='mvi-autocomplete-${_uid}']`" :placement="placement" :offset="offset" :fixed="fixed" :z-index="zIndex" 
-		ref="layer" :wrapper-class="wrapperClass" :animation="animation" shadow :border="false" :timeout="timeout" :closable="false" :show-triangle="false" @showing="layerShow">
+		ref="layer" :wrapper-class="wrapperClass" :animation="animation" shadow :border="false" :timeout="timeout" :closable="false" :show-triangle="false" @show="layerShow">
 			<div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
 				<div class="mvi-autocomplete-list" v-for="(item,index) in computedFilter" :key="'mvi-autocomplete-list-'+index" 
 				v-text="item" @click="doSelect(item)" @mouseenter="listEnter" @mouseleave="listLeave"></div>
@@ -305,6 +305,7 @@
 			}
 		},
 		methods:{
+			//悬浮层显示前进行宽度设置
 			layerShow(){
 				if(this.width){
 					this.$refs.menu.style.width = this.width;

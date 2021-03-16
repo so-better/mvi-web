@@ -17,7 +17,7 @@
 			:timeout="timeout"
 			:closable="closable"
 			:show-triangle="showTriangle"
-			@showing="layerShow"
+			@show="layerShow"
 			ref="layer"
 		>
 			<div class="mvi-date-chooser-layer" ref="panel">
@@ -360,7 +360,7 @@ export default {
 		}
 	},
 	methods: {
-		//悬浮层显示时
+		//悬浮层显示前进行宽度设置
 		layerShow(){
 			if (this.width) {
 				this.$refs.panel.style.width = this.width;

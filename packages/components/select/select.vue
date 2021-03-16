@@ -20,7 +20,7 @@
 			:timeout="timeout"
 			shadow
 			:border="false"
-			@showing="layerShow"
+			@show="layerShow"
 			ref="layer"
 		>
 			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
@@ -305,7 +305,7 @@ export default {
 		}
 	},
 	methods: {
-		//layer显示
+		//layer显示前进行宽度设置
 		layerShow() {
 			if (this.width) {
 				this.$refs.menu.style.width = this.width;

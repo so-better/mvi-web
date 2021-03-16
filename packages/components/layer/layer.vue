@@ -210,6 +210,9 @@
 				}
 				this.layerShow = this.show;
 			}
+			//添加事件
+			window.addEventListener('resize',this.resizeSet);
+			window.addEventListener('click',this.hideLayer);
 		},
 		methods: {
 			//窗口变化时处理
@@ -437,11 +440,13 @@
 			},
 			//点击他处关闭悬浮层
 			hideLayer(event){
-				if($util.isContains(this.$el,event.target) || $util.isContains(this.getTargetEl(),event.target)){
-					return;
+				if(this.layerShow && this.firstShow && this.closable){
+					if($util.isContains(this.$el,event.target) || $util.isContains(this.getTargetEl(),event.target)){
+						return;
+					}
+					this.$emit('update:show',false);
+					this.$emit('model-change',false);
 				}
-				this.$emit('update:show',false);
-				this.$emit('model-change',false);
 			},
 			//悬浮层显示前
 			beforeEnter(el){
@@ -458,12 +463,6 @@
 					this.$nextTick(()=>{
 						this.resetTriangle()
 					})
-					window.removeEventListener('resize',this.resizeSet);
-					window.addEventListener('resize',this.resizeSet);
-					if(this.closable){
-						window.removeEventListener('click',this.hideLayer);
-						window.addEventListener('click',this.hideLayer);
-					}
 					this.$emit('showing',el)
 				})
 			},
@@ -477,10 +476,6 @@
 			},
 			//悬浮层隐藏时
 			leave(el){
-				window.removeEventListener('resize',this.resizeSet)
-				if(this.closable){
-					window.removeEventListener('click',this.hideLayer)
-				}
 				this.$emit('hidding',el)
 			},
 			//悬浮层隐藏后
@@ -643,6 +638,10 @@
 					return document.body;
 				}
 			}
+		},
+		beforeDestroy() {
+			window.removeEventListener('resize',this.resizeSet)
+			window.removeEventListener('click',this.hideLayer)
 		}
 	}
 </script>
