@@ -12,7 +12,7 @@ export default {
 	data() {
 		return {
 			show:true,
-			height:'',
+			height:null,
 			useAnimation:false
 		};
 	},
@@ -70,8 +70,11 @@ export default {
 			this.$emit('slide-down')
 		},
 		beforeLeave(el){
-			//重新记录高度
-			this.height = $util.getCssStyle(el,'height');
+			//只记录第一次的高度
+			if(!this.height){
+				this.height = $util.getCssStyle(el,'height');
+			}
+			//设置元素高度
 			el.style.height = this.height;
 			//设置动画
 			if(this.useAnimation){
