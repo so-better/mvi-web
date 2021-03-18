@@ -7,10 +7,6 @@ import './rem-fit'
 import mvi from "../packages"
 Vue.use(mvi)
 
-import Ruax from "ruax"
-var ruax = new Ruax();
-Vue.prototype.$ruax = ruax
-
 import router from "./router"
 
 
