@@ -9,10 +9,10 @@
 			}
 		},
 		mounted() {
-			console.log(this.$util.matchingText('1799-04-09','date'))
-			console.log(this.$util.matchingText('2021/03/19','date'))
-			console.log(this.$util.matchingText('2021.03.19','date'))
-			console.log(this.$util.matchingText('2021年03月03日','date'))
+			//console.log(this.$util.matchingText('1799-04-09','date'))
+			//console.log(this.$util.matchingText('2021/03/19','date'))
+			//console.log(this.$util.matchingText('2021.03.19','date'))
+			//console.log(this.$util.matchingText('2021年03月03日','date'))
 		}
 	}
 </script>

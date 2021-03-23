@@ -116,6 +116,11 @@
 			background:{
 				type:String,
 				default:'#fff'
+			},
+			//适配transform父元素
+			fixedAuto:{
+				type:Boolean,
+				default:false
 			}
 		},
 		watch:{
@@ -504,7 +509,20 @@
 				let $root = this.getRootEl();
 				let pt = $util.getElementPoint($target,$root);
 				if(this.fixed){
-					pt = $util.getElementBounding($target)
+					if(this.fixedAuto){
+						var flag = true;
+						var element = $target.offsetParent;
+						while (flag && element){
+							if($util.getCssStyle(element,'transform') != 'none'){
+								flag = false;
+							}else {
+								element = element.offsetParent;
+							}
+						}
+						pt = $util.getElementPoint($target,element)
+					}else {
+						pt = $util.getElementBounding($target)
+					}
 				}
 				if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){
 					this.$el.style.top = (pt.top + $target.offsetHeight) + 'px';
