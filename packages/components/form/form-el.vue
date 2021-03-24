@@ -69,7 +69,7 @@
 				if(this.form.labelOffset && !this.form.labelBlock){
 					style.marginRight = this.form.labelOffset;
 				}
-				if(this.labelOffset && !this.form.labelOffset){
+				if(this.labelOffset && !this.form.labelBlock){
 					style.marginRight = this.labelOffset;
 				}
 				return style;
