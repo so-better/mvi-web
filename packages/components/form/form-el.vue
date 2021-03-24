@@ -55,10 +55,10 @@
 			},
 			labelStyle(){
 				var style = {}
-				if(this.form.labelWidth && !this.form.labelBlock && !this.form.block){
+				if(this.form.labelWidth && !this.form.labelBlock){
 					style.width = this.form.labelWidth;
 				}
-				if(this.labelWidth && !this.form.labelBlock && !this.form.block){
+				if(this.labelWidth && !this.form.labelBlock){
 					style.width = this.labelWidth;
 				}
 				return style;
