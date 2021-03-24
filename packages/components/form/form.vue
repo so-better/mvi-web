@@ -37,6 +37,11 @@
 			labelWidth:{
 				type:String,
 				default:null
+			},
+			//标签距离右侧距离
+			labelOffset:{
+				type:String,
+				default:null
 			}
 		},
 		computed:{

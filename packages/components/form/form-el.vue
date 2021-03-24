@@ -33,6 +33,11 @@
 			labelWidth:{
 				type:String,
 				default:null
+			},
+			//标签距离右侧距离
+			labelOffset:{
+				type:String,
+				default:null
 			}
 		},
 		inject:['form'],
@@ -60,6 +65,12 @@
 				}
 				if(this.labelWidth && !this.form.labelBlock){
 					style.width = this.labelWidth;
+				}
+				if(this.form.labelOffset && !this.form.labelBlock){
+					style.marginRight = this.form.labelOffset;
+				}
+				if(this.labelOffset && !this.form.labelOffset){
+					style.marginRight = this.labelOffset;
 				}
 				return style;
 			},
@@ -101,7 +112,7 @@
 		display: block;
 		width: 1.2rem;
 		text-align: right;
-		margin-right: @mp-md;
+		margin-right: @mp-lg;
 		color: @font-color-default;
 		font-weight: bold;
 		
