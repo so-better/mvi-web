@@ -105,7 +105,7 @@
 			},
 			overlayColor:{//遮罩层颜色
 				type:String,
-				default:'rgba(0,0,0,.02)'
+				default:'rgba(0,10,20,.2)'
 			},
 			usePadding:{
 				type:Boolean,

@@ -400,12 +400,12 @@
 	}
 	
 	.mvi-modal-narrow-enter{
-		transform: translate3d(0,0,0) scale(1.5);
+		transform: translate3d(0,0,0) scale(1.4);
 		opacity: 0;
 	}
 	
 	.mvi-modal-scale-enter,.mvi-modal-scale-leave-to,.mvi-modal-narrow-leave-to{
-		transform:translate3d(0,0,0) scale(0.5);
+		transform:translate3d(0,0,0) scale(0.6);
 		opacity: 0;
 	}
 	

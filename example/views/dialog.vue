@@ -1,8 +1,11 @@
 <template>
 	<div>
-		<m-button @click="alert" class="mvi-m-2">ALERT</m-button>
-		<m-button @click="confirm" class="mvi-m-2">CONFIRM</m-button>
-		<m-button @click="prompt" class="mvi-m-2">PROMPT</m-button>
+		<m-button @click="alert" class="mvi-m-2">alert</m-button>
+		<m-button @click="confirm" class="mvi-m-2">confirm</m-button>
+		<m-button @click="prompt" class="mvi-m-2">prompt</m-button>
+		<m-button @click="Alert" class="mvi-m-2">Alert</m-button>
+		<m-button @click="Confirm" class="mvi-m-2">Confirm</m-button>
+		<m-button @click="Prompt" class="mvi-m-2">Prompt</m-button>
 	</div>
 </template>
 
@@ -10,35 +13,54 @@
 export default {
 	name: 'demo-dialog',
 	methods: {
-		alert() {
-			this.$alert({
-				title: '合作条款',
-				message:
-					'十年生死两茫茫，不思量，自难忘。千里孤坟，无处话凄凉。纵使相逢应不识，尘满面，鬓如霜。夜来幽梦忽还乡，小轩窗，正梳妆。相顾无言，惟有泪千行。料得年年肠断处，明月夜，短松冈。',
-				btnText: 'I agree',
-				btnColor:'#ff3300',
+		alert(){
+			this.$alert('好消息')
+		},
+		confirm(){
+			this.$confirm('你确定要删除吗？')
+		},
+		prompt(){
+			this.$prompt('请输入密码')
+		},
+		Alert() {
+			this.$Alert({
+				title: '提示',
+				message:'此操作将永久删除该文件, 是否继续?',
+				overlayColor:'rgba(0,0,0,.7)',
+				btns:{
+					ok:{
+						type:'success',
+						plain:true
+					}
+				},
+				callback:()=>{
+					console.log('点了确定')
+				}
 			});
 		},
-		confirm() {
-			this.$confirm({
-				title: '合作条款',
-				message:
-					'十年生死两茫茫，不思量，自难忘。千里孤坟，无处话凄凉。纵使相逢应不识，尘满面，鬓如霜。夜来幽梦忽还乡，小轩窗，正梳妆。相顾无言，惟有泪千行。料得年年肠断处，明月夜，短松冈。',
-				btnText: ['我同意','不同意'],
-				btnColor:['#ff3300','#333']
+		Confirm() {
+			this.$Confirm({
+				title: '提示',
+				message:'此操作将永久删除该文件, 是否继续?',
+				callback:r=>{
+					console.log(r)
+				}
 			});
 		},
-		prompt() {
-			this.$prompt({
+		Prompt() {
+			this.$Prompt({
 				title: '温馨提示',
-				message:'请输入密码',
-				value:'z1983127',
-				type:'password',
-				placeholder:'密码',
-				autofocus:true,
-				clearable:true,
-				align:'center',
-				mode:'numeric'
+				message:'请输入appleID',
+				placeholder:'输入你的appleID',
+				btns:{
+					ok:{
+						text:'好的',
+						type:'error'
+					}
+				},
+				callback:(r,value)=>{
+					console.log(r,value)
+				}
 			});
 		}
 	}

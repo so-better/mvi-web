@@ -1,7 +1,7 @@
 <template>
 	<m-modal
 		v-on="listeners"
-		:show="show"
+		v-model="show"
 		:footer-padding="false"
 		@hidden="modalHidden"
 		:width="computedWidth"
@@ -12,16 +12,15 @@
 		:animation="computedAnimation"
 		@shown="modalShown"
 		:timeout="computedTimeout"
-		:modal-color="computedIos?'rgba(255,255,255,.9)':''"
 		:overlay-color="computedOverlayColor"
 	>
-		<template v-if="computedTitle || (computedIos && computedMessage)" v-slot:title>
-			<div v-html="computedTitle" v-if="computedTitle" class="mvi-dialog-title"></div>
-			<div v-if="computedMessage && computedIos" v-html="computedMessage" class="mvi-dialog-ios-content"></div>
+		<template v-if="computedTitle" v-slot:title>
+			<div v-html="computedTitle" class="mvi-dialog-title"></div>
+			<m-icon class="mvi-dialog-close" v-if="computedShowTimes" @click="cancelFun" type="times"></m-icon>
 		</template>
 		<template v-slot:default v-if="contentShow">
-			<div v-if="!computedIos && computedMessage" v-html="computedMessage" class="mvi-dialog-content"></div>
-			<div v-if="type == 'prompt'" :class="['mvi-dialog-input',(!computedIos && computedMessage)?'mvi-dialog-input-mt':'']">
+			<div v-if="computedMessage" v-html="computedMessage" class="mvi-dialog-content"></div>
+			<div v-if="type == 'Prompt'" :class="['mvi-dialog-input',computedMessage?'mvi-dialog-input-mt':'']">
 				<input
 					ref="input"
 					:type="computedInput.type"
@@ -34,26 +33,12 @@
 					@input="inputFun"
 					@focus="inputFocus"
 					@blur="inputBlur"
-					:inputmode="computedInputMode"
 				/>
 				<m-icon v-if="computedInput.clearable" ref="icon" v-show="showClear" type="times-o" class="mvi-dialog-times" @click="doClear" />
 			</div>
-		</template>
-		<template v-slot:footer>
 			<div class="mvi-dialog-footer">
-				<div
-					v-if="type != 'alert'"
-					class="mvi-dialog-cancel"
-					v-text="computedBtnText[1]"
-					@click="cancelFun"
-					:style="'color:' + (computedBtnColor ? computedBtnColor[1] : '')"
-				></div>
-				<div
-					class="mvi-dialog-ok"
-					v-text="type == 'alert' ? computedBtnText : computedBtnText[0]"
-					@click="okFun"
-					:style="'color:' + (type == 'alert' ? (computedBtnColor ? computedBtnColor : '') : computedBtnColor ? computedBtnColor[0] : '')"
-				></div>
+				<m-button v-if="type!='Alert'" :type="computedBtns.cancel.type" :color="computedBtns.cancel.color" :sub-color="computedBtns.cancel.subColor" :plain="computedBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun">{{computedBtns.cancel.text}}</m-button>
+				<m-button :type="computedBtns.ok.type" :color="computedBtns.ok.color" :sub-color="computedBtns.ok.subColor" :plain="computedBtns.ok.plain" class="mvi-dialog-ok" @click="okFun">{{computedBtns.ok.text}}</m-button>
 			</div>
 		</template>
 	</m-modal>
@@ -67,11 +52,10 @@ export default {
 		return {
 			ok: false, //点击的是否是确定按钮
 			show: true, //对话框是否打开，默认为true，即挂载就显示
-			type: 'alert', //弹窗类型
+			type: 'Alert', //弹窗类型
 			title: null, //标题
 			message: null, //描述
-			btnText: null, //按钮文本
-			btnColor: null, //按钮文字颜色
+			btns:null,//弹窗确定按钮和取消按钮配置
 			width: null, //模态框宽度
 			callback: null, //回调函数
 			zIndex: null, //遮罩z-index
@@ -81,7 +65,7 @@ export default {
 			radius: null, //圆角
 			timeout: null, //自定义动画时间
 			overlayColor: null, //遮罩层背景色
-			ios:null,//是否ios类型
+			showTimes:null,//是否显示关闭按钮
 			input: {
 				//输入框配置
 				placeholder: null, //占位符
@@ -90,7 +74,6 @@ export default {
 				maxlength: null,
 				clearable: null,
 				value: null, //输入框的值
-				mode: null, //输入框键盘类型
 				align: null //输入框文本对齐方式
 			},
 			focus: false //输入框是否已经获得了焦点
@@ -99,6 +82,13 @@ export default {
 	computed: {
 		listeners() {
 			return Object.assign({}, this.$listeners);
+		},
+		computedShowTimes(){
+			if (typeof this.showTimes == 'boolean') {
+				return this.showTimes;
+			} else {
+				return true;
+			}
 		},
 		computedTitle() {
 			if (typeof this.title == 'string') {
@@ -120,59 +110,60 @@ export default {
 				return '';
 			}
 		},
-		computedBtnText() {
-			var bt = null;
-			if (this.type == 'alert') {
-				if (typeof this.btnText == 'string') {
-					bt = this.btnText;
-				} else {
-					bt = '确定';
-				}
-			} else {
-				bt = [];
-				if (this.btnText instanceof Array) {
-					if (typeof this.btnText[0] == 'string') {
-						bt[0] = this.btnText[0];
-					} else {
-						bt[0] = '确定';
-					}
-					if (typeof this.btnText[1] == 'string') {
-						bt[1] = this.btnText[1];
-					} else {
-						bt[1] = '取消';
-					}
-				} else {
-					bt = ['确定', '取消'];
+		computedBtns() {
+			var btns = {
+				ok:{
+					type:'primary',
+					color:null,
+					subColor:null,
+					plain:false,
+					text:'确定'
+				},
+				cancel:{
+					type:'default',
+					color:null,
+					subColor:null,
+					plain:false,
+					text:'取消'
 				}
 			}
-			return bt;
-		},
-		computedBtnColor() {
-			var bt = null;
-			if (this.type == 'alert') {
-				if (typeof this.btnColor == 'string') {
-					bt = this.btnColor;
-				} else {
-					bt = null;
+			if($util.isObject(this.btns)){
+				if($util.isObject(this.btns.ok)){
+					if(typeof (this.btns.ok.type) == 'string'){
+						btns.ok.type = this.btns.ok.type;
+					}
+					if(typeof (this.btns.ok.color) == 'string'){
+						btns.ok.color = this.btns.ok.color;
+					}
+					if(typeof (this.btns.ok.subColor) == 'string'){
+						btns.ok.subColor = this.btns.ok.subColor;
+					}
+					if(typeof (this.btns.ok.plain) == 'boolean'){
+						btns.ok.plain = this.btns.ok.plain;
+					}
+					if(typeof (this.btns.ok.text) == 'string'){
+						btns.ok.text = this.btns.ok.text;
+					}
 				}
-			} else {
-				bt = [];
-				if (this.btnColor instanceof Array) {
-					if (typeof this.btnColor[0] == 'string') {
-						bt[0] = this.btnColor[0];
-					} else {
-						bt[0] = null;
+				if($util.isObject(this.btns.cancel)){
+					if(typeof (this.btns.cancel.type) == 'string'){
+						btns.cancel.type = this.btns.cancel.type;
 					}
-					if (typeof this.btnColor[1] == 'string') {
-						bt[1] = this.btnColor[1];
-					} else {
-						bt[1] = null;
+					if(typeof (this.btns.cancel.color) == 'string'){
+						btns.cancel.color = this.btns.cancel.color;
 					}
-				} else {
-					bt = [null, null];
+					if(typeof (this.btns.cancel.subColor) == 'string'){
+						btns.cancel.subColor = this.btns.cancel.subColor;
+					}
+					if(typeof (this.btns.cancel.plain) == 'boolean'){
+						btns.cancel.plain = this.btns.cancel.plain;
+					}
+					if(typeof (this.btns.cancel.text) == 'string'){
+						btns.cancel.text = this.btns.cancel.text;
+					}
 				}
 			}
-			return bt;
+			return btns
 		},
 		computedCallback() {
 			if (typeof this.callback == 'function') {
@@ -185,7 +176,7 @@ export default {
 			if (typeof this.width == 'string' && this.width) {
 				return this.width;
 			} else {
-				return '5.6rem';
+				return '7.2rem';
 			}
 		},
 		computedInput() {
@@ -218,11 +209,6 @@ export default {
 				input.clearable = this.input.clearable;
 			} else {
 				input.clearable = false;
-			}
-			if (typeof this.input.mode == 'string') {
-				input.mode = this.input.mode;
-			} else {
-				input.mode = false;
 			}
 			if (typeof this.input.align == 'string') {
 				input.align = this.input.align;
@@ -268,14 +254,14 @@ export default {
 			if (typeof this.animation == 'string' && this.animation) {
 				return this.animation;
 			} else {
-				return 'narrow';
+				return 'translate-top';
 			}
 		},
 		computedRadius() {
 			if (typeof this.radius == 'string' && this.radius) {
 				return this.radius;
 			} else {
-				return '0.2rem';
+				return '0.12rem';
 			}
 		},
 		computedTimeout() {
@@ -289,22 +275,12 @@ export default {
 			if (typeof this.overlayColor == 'string' && this.overlayColor) {
 				return this.overlayColor;
 			} else {
-				if(this.computedIos){
-					return 'rgba(0,10,20,.3)'
-				}
 				return null;
 			}
 		},
-		computedIos(){
-			if (typeof this.ios == 'boolean') {
-				return this.ios;
-			} else {
-				return false;
-			}
-		},
 		contentShow() {
-			if (this.type == 'alert' || this.type == 'confirm') {
-				if (this.computedMessage && !this.computedIos) {
+			if (this.type == 'Alert' || this.type == 'Confirm') {
+				if (this.computedMessage) {
 					return true;
 				} else {
 					return false;
@@ -326,17 +302,6 @@ export default {
 				cls += 'mvi-dialog-input-padding';
 			}
 			return cls;
-		},
-		computedInputMode() {
-			var mode = false;
-			if ([false, 'none', 'text', 'decimal', 'numeric', 'tel', 'search', 'email', 'url'].includes(this.computedInput.mode)) {
-				mode = this.computedInput.mode;
-			} else {
-				if (this.input.type == 'number') {
-					mode = 'numeric';
-				}
-			}
-			return mode;
 		},
 		inputStyle() {
 			var style = {};
@@ -385,15 +350,19 @@ export default {
 		//取消
 		cancelFun() {
 			this.show = false;
-			this.ok = false;
+			if(this.type == 'Alert'){
+				this.ok = true;
+			}else {
+				this.ok = false;
+			}
 		},
 		//模态框隐藏后
 		modalHidden() {
-			if (this.type == 'alert') {
+			if (this.type == 'Alert') {
 				this.computedCallback();
-			} else if (this.type == 'confirm') {
+			} else if (this.type == 'Confirm') {
 				this.computedCallback(this.ok);
-			} else if (this.type == 'prompt') {
+			} else if (this.type == 'Prompt') {
 				this.computedCallback(this.ok, this.input.value);
 			}
 			this.$el.remove();
@@ -402,7 +371,7 @@ export default {
 		//模态框显示后
 		modalShown() {
 			//输入框获取焦点
-			if (this.type == 'prompt' && this.computedInput.autofocus) {
+			if (this.type == 'Prompt' && this.computedInput.autofocus) {
 				this.$refs.input.focus();
 			}
 		}
@@ -416,26 +385,27 @@ export default {
 .mvi-dialog-title {
 	display: block;
 	width: 100%;
-	text-align: center;
 	font-size: @font-size-h6;
 	color: @font-color-default;
 	font-weight: bold;
 	line-height: 1.5;
 }
 
-.mvi-dialog-ios-content{
-	display: block;
-	width: 100%;
-	font-size: .24rem;
+.mvi-dialog-close{
+	position: absolute;
+	right: .2rem;
+	top: .3rem;
+	opacity: .5;
+	font-size: .28rem;
 	font-weight: normal;
-	text-align: center;
-	color: @font-color-default;
-	line-height: 1.5;
-	margin-top: @mp-xs;
+	
+	&:hover{
+		cursor: pointer;
+		opacity: .8;
+	}
 }
 
 .mvi-dialog-content {
-	text-align: center;
 	color: @font-color-default;
 	line-height: 1.5;
 	font-size: @font-size-default;
@@ -456,17 +426,16 @@ export default {
 	appearance: none;
 	-moz-appearance: none;
 	-webkit-appearance: none;
-	width: 90%;
-	height: @small-height;
+	width: 100%;
+	height: @medium-height;
 	line-height: 1.5;
 	border-radius: @radius-default;
 	border: 1px solid @border-color;
 	color: @font-color-default;
 	font-size: @font-size-default;
-	padding: 0 @mp-sm 0 @mp-sm;
 	background-color: #fff;
 	vertical-align: middle;
-	margin-left: 5%;
+	padding: 0 @mp-sm;
 
 	&::placeholder,
 	&::-webkit-input-placeholder,
@@ -499,45 +468,20 @@ export default {
 }
 
 .mvi-dialog-footer {
-	height: 0.88rem;
 	width: 100%;
 	display: flex;
 	display: -webkit-flex;
-	justify-content: space-between;
-}
-
-.mvi-dialog-ok {
-	position: relative;
-	display: flex;
-	display: -webkit-flex;
+	justify-content: flex-end;
 	align-items: center;
-	justify-content: center;
-	height: 100%;
-	font-size: @font-size-h6;
-	color: @primary-normal;
-	flex: 1;
-	cursor: pointer;
-	font-weight: bold;
-	user-select: none;
-}
-
-.mvi-dialog-cancel {
-	position: relative;
-	display: flex;
-	display: -webkit-flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	font-size: @font-size-h6;
-	width: 50%;
-	border-right: 1px solid @border-color;
-	color: @primary-normal;
-	cursor: pointer;
-	user-select: none;
-}
-
-.mvi-dialog-ok:active::before,
-.mvi-dialog-cancel:active::before {
-	.mvi-active();
+	padding:0 @mp-sm;
+	margin-top: @mp-lg;
+	
+	.mvi-dialog-cancel{
+		margin-right: @mp-md;
+	}
+	
+	.mvi-dialog-ok{
+		
+	}
 }
 </style>

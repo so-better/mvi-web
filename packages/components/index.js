@@ -66,6 +66,7 @@ import dateChooser from "./dateChooser"
 import field from "./field"
 import editor from "./editor"
 import grid from "./grid"
+import form from "./form"
 
 export default {
 	anchor,
@@ -132,5 +133,6 @@ export default {
 	editor,
 	field,
 	grid,
-	transitionSlide
+	transitionSlide,
+	form
 }

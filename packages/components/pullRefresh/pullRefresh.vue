@@ -584,7 +584,7 @@
 		display: -webkit-flex;
 		justify-content: center;
 		align-items: center;
-		color: @font-color-mute;
+		color: @font-color-sub;
 		position: absolute;
 		width: 100%;
 		top: 0;
