@@ -66,11 +66,19 @@
 				if(this.labelWidth && !this.form.labelBlock){
 					style.width = this.labelWidth;
 				}
-				if(this.form.labelOffset && !this.form.labelBlock){
-					style.marginRight = this.form.labelOffset;
+				if(this.form.labelOffset){
+					if(this.form.labelBlock){
+						style.marginBottom = this.form.labelOffset;
+					}else {
+						style.marginRight = this.form.labelOffset;
+					}
 				}
-				if(this.labelOffset && !this.form.labelBlock){
-					style.marginRight = this.labelOffset;
+				if(this.labelOffset){
+					if(this.form.labelBlock){
+						style.marginBottom = this.labelOffset;
+					}else {
+						style.marginRight = this.labelOffset;
+					}
 				}
 				return style;
 			},
@@ -119,7 +127,7 @@
 		&.mvi-form-label-block{
 			width: 100%;
 			text-align: left;
-			margin-bottom: @mp-xs;
+			margin-bottom: @mp-sm;
 		}
 	}
 	
