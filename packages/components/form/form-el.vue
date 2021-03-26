@@ -120,14 +120,14 @@
 		display: block;
 		width: 1.2rem;
 		text-align: right;
-		margin-right: @mp-lg;
+		margin: 0 @mp-lg 0 0;
 		color: @font-color-default;
 		font-weight: bold;
 		
 		&.mvi-form-label-block{
 			width: 100%;
 			text-align: left;
-			margin-bottom: @mp-sm;
+			margin:0 0 @mp-sm 0;
 		}
 	}
 	
