@@ -12,6 +12,7 @@
 			:placement="placement"
 			:offset="offset"
 			:fixed="fixed"
+			:fixed-auto="fixedAuto"
 			:z-index="zIndex"
 			closable
 			:show-triangle="false"
@@ -88,6 +89,11 @@ export default {
 		fixed: {
 			type: Boolean,
 			default: false
+		},
+		//layer适配transform父容器
+		fixedAuto:{
+			type:Boolean,
+			default:false
 		},
 		//layer的width
 		width: {

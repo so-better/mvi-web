@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<m-layer :show="show" :target="`[data-id='mvi-autocomplete-target-${_uid}']`" 
-		:root="`[data-id='mvi-autocomplete-${_uid}']`" :placement="placement" :offset="offset" :fixed="fixed" :z-index="zIndex" 
+		:root="`[data-id='mvi-autocomplete-${_uid}']`" :placement="placement" :offset="offset" :fixed="fixed" :z-index="zIndex"  :fixed-auto="fixedAuto"
 		ref="layer" :wrapper-class="wrapperClass" :animation="animation" shadow :border="false" :timeout="timeout" :closable="false" :show-triangle="false" @show="layerShow">
 			<div class="mvi-autocomplete-menu" :style="menuStyle" ref="menu">
 				<div class="mvi-autocomplete-list" v-for="(item,index) in computedFilter" :key="'mvi-autocomplete-list-'+index" 
@@ -89,6 +89,10 @@
 				default:'bottom-start'
 			},
 			fixed:{//layer的fixed
+				type:Boolean,
+				default:false
+			},
+			fixedAuto:{//layer适配transform父元素
 				type:Boolean,
 				default:false
 			},

@@ -7,6 +7,7 @@
 			v-model="show"
 			:placement="placement"
 			:fixed="fixed"
+			:fixed-auto="fixedAuto"
 			:offset="offset"
 			:z-index="zIndex"
 			:wrapper-class="wrapperClass"
@@ -151,6 +152,11 @@ export default {
 		fixed: {
 			type: Boolean,
 			default: false
+		},
+		//layer适配transform父容器
+		fixedAuto:{
+			type:Boolean,
+			default:false
 		},
 		//layer的width
 		width: {

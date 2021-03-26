@@ -1,6 +1,9 @@
 <template>
 	<div>
 		<m-editor v-model="value"></m-editor>
+		<m-modal show width="10rem">
+			<m-editor v-model="value" :tooltip-props="{fixed:true,fixedAuto:true}" :layer-props="{fixed:true,fixedAuto:true}"></m-editor>
+		</m-modal>
 	</div>
 </template>
 

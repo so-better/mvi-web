@@ -5,6 +5,9 @@
 		height="2rem" left-icon="calendar" right-icon="arrow-down" @left-click="leftClick" @right-click="rightClick"
 		@select="select"></m-autocomplete>
 		<m-autocomplete class="mvi-mb-2" size="large" placeholder="请输入" v-model="value" :list="list" disabled></m-autocomplete>
+		<m-modal show>
+			<m-autocomplete fixed fixed-auto class="mvi-mb-2" size="small" placeholder="请输入" v-model="value" :list="list"></m-autocomplete>
+		</m-modal>
 	</div>
 </template>
 

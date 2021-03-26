@@ -59,6 +59,7 @@ export default {
 			//默认菜单浮层配置
 			defaultLayerProps: {
 				fixed: false, //是否fixed
+				fixedAuto:false,//适配fixed下tansform父元素
 				placement: 'bottom-start', //位置
 				zIndex: 400 ,//浮层z-index
 				offset:'0.1rem',
@@ -391,6 +392,7 @@ export default {
 				offset:'0.1rem',
 				zIndex:100,
 				fixed:false,
+				fixedAuto:false,
 				width:null,
 				animation:null,
 				showTriangle:true
