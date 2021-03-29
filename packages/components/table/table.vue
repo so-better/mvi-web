@@ -134,6 +134,10 @@
 			customSortDesc:{//自定义降序排序
 				type:Function,
 				default:null
+			},
+			sortActiveColor:{//排序激活颜色
+				type:String,
+				default:null
 			}
 		},
 		computed: {
@@ -300,11 +304,17 @@
 			},
 			//升序排序
 			sortAsc(event,column) {
-				var children = $util.children(event.currentTarget.parentNode,'.mvi-table-sortable-icon');
+				var children = this.$el.querySelectorAll('.mvi-table-sortable-icon')
 				children.forEach(child=>{
 					$util.removeClass(child,'mvi-table-sortable-icon-active');
+					if(this.sortActiveColor){
+						child.style.color = '';
+					}
 				})
 				$util.addClass(event.currentTarget,'mvi-table-sortable-icon-active');
+				if(this.sortActiveColor){
+					event.currentTarget.style.color = this.sortActiveColor;
+				}
 				if(typeof this.customSortAsc == 'function' && this.customSortAsc){
 					this.customSortAsc(column,this.sortData)
 				}else {
@@ -318,12 +328,17 @@
 			},
 			//降序排序
 			sortDesc(event,column) {
-				var children = $util.children(event.currentTarget.parentNode,'.mvi-table-sortable-icon');
+				var children = this.$el.querySelectorAll('.mvi-table-sortable-icon')
 				children.forEach(child=>{
 					$util.removeClass(child,'mvi-table-sortable-icon-active');
+					if(this.sortActiveColor){
+						child.style.color = '';
+					}
 				})
 				$util.addClass(event.currentTarget,'mvi-table-sortable-icon-active');
-				
+				if(this.sortActiveColor){
+					event.currentTarget.style.color = this.sortActiveColor;
+				}
 				if(typeof this.customSortDesc == 'function' && this.customSortDesc){
 					this.customSortDesc(column,this.sortData)
 				}else {

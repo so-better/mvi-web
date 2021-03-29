@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-p-2">
 		<m-button @click="add">添加行</m-button>
-		<m-table :data="data" :loading="loading" :columns="columns" stripe out-border row-border height="4rem"></m-table>
+		<m-table sort-active-color="#ff3300" :data="data" :loading="loading" :columns="columns" stripe out-border row-border height="4rem"></m-table>
 	</div>
 </template>
 
