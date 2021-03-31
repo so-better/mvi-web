@@ -758,9 +758,6 @@ export default {
 				return;
 			}
 			document.execCommand('insertHtml', false, `<img src="${url}" class="mvi-editor-image" />`);
-			this.$refs.content.querySelectorAll('.mvi-editor-image').forEach((image,index)=>{
-				image.removeEventListener('click')
-			})
 		},
 		//对外提供的用以插入视频的api
 		insertVideo(url) {
