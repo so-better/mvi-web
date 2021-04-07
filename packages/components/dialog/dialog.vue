@@ -12,7 +12,7 @@
 		:animation="computedAnimation"
 		@shown="modalShown"
 		:timeout="computedTimeout"
-		:modal-color="computedIos?'rgba(255,255,255,.9)':''"
+		:modal-color="computedIos?'rgba(255,255,255,.95)':''"
 		:overlay-color="computedOverlayColor"
 	>
 		<template v-if="computedTitle || (computedIos && computedMessage)" v-slot:title>
@@ -282,7 +282,7 @@ export default {
 			if ($util.isNumber(this.timeout)) {
 				return this.timeout;
 			} else {
-				return 400;
+				return 300;
 			}
 		},
 		computedOverlayColor() {

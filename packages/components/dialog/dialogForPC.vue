@@ -268,7 +268,7 @@ export default {
 			if ($util.isNumber(this.timeout)) {
 				return this.timeout;
 			} else {
-				return 400;
+				return 300;
 			}
 		},
 		computedOverlayColor() {

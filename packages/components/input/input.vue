@@ -469,7 +469,7 @@
 				} else {
 					if (!this.isDatePicker) {
 						var value = this.$refs.input.value;
-						//数字类型或者电话类型会过滤非数字字符
+						//数字类型会过滤非数字字符
 						if(this.type == 'number'){
 							value = value.replace(/\D/g, '');
 							this.$refs.input.value = value;
