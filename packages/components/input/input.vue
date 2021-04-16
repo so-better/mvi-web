@@ -289,12 +289,8 @@
 			},
 			computedInputMode(){
 				var mode = false;
-				if(this.inputMode){
+				if(typeof this.inputMode == 'string'){
 					mode = this.inputMode
-				}else {
-					if(this.type == 'number'){
-						mode = 'numeric'
-					}
 				}
 				return mode
 			},
