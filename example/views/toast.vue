@@ -15,10 +15,9 @@
 		methods:{
 			toast(){
 				this.$showToast({
-					background:'#ebedf0',
-					color:'#333',
-					message:'Hello World',
-					timeout:1500
+					type:'success',
+					message:'支付成功'
+				//	timeout:3000
 				})
 			}
 		}
