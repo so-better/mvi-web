@@ -204,16 +204,13 @@
 		top: 50%;
 		transform: translate(-50%,-50%);
 		-webkit-transform: translate(-50%,-50%);
-		min-width: 3rem;
-		max-width: 90%;
+		width: 3rem;
 		margin: 0;
 		padding: @mp-md;
 		border-radius: @radius-default;
 		box-shadow: @boxshadow;
 		-webkit-box-shadow: @boxshadow;
 		background-color: rgba(0,0,0,.85);
-		word-break: keep-all;
-		word-wrap: break-word;
 		color: #fff;
 		
 		&.mvi-toast-iconless{
@@ -221,8 +218,6 @@
 			align-items: center;
 			padding: 0;
 			width: 2.4rem;
-			min-width: 2.4rem;
-			max-width: 2.4rem;
 			height: 1.8rem;
 		}
 	}
@@ -241,5 +236,8 @@
 		text-align: center;
 		font-size: @font-size-default;
 		margin-top: @mp-sm;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 </style>
