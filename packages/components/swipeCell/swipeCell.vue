@@ -1,19 +1,20 @@
 <template>
 	<div class="mvi-swipe-cell" v-on="listeners" @touchstart="cellTouchStart" @touchmove="cellTouchMove" 
 	@touchend="cellTouchEnd" :style="cellStyle" :disabled="disabled" @mousedown="cellMouseDown">
-		<div v-show="leftShow" ref="left" class="mvi-swipe-cell-left" :style="'width:'+(leftWidth?leftWidth:'')">
+		<div v-show="leftShow" ref="left" class="mvi-swipe-cell-left">
 			<slot name="left"></slot>
 		</div>
 		<div ref="center" class="mvi-swipe-cell-center" @click="clickCenter">
 			<slot></slot>
 		</div>
-		<div v-show="rightShow" ref="right" class="mvi-swipe-cell-right" :style="'width:'+(rightWidth?rightWidth:'')">
+		<div v-show="rightShow" ref="right" class="mvi-swipe-cell-right">
 			<slot name="right"></slot>
 		</div>
 	</div>
 </template>
 
 <script>
+	import $util from "../../util/util.js"
 	export default {
 		name:"m-swipe-cell",
 		data(){
@@ -32,14 +33,6 @@
 			disabled:{//是否禁用滑动
 				type:Boolean,
 				default:false
-			},
-			leftWidth:{//指定左侧滑动区域宽度
-				type:String,
-				default:null
-			},
-			rightWidth:{//指定右侧滑动区域宽度
-				type:String,
-				default:null
 			},
 			centerClose:{//默认点击center部分关闭展开的左右内容
 				type:Boolean,
@@ -80,28 +73,37 @@
 				if(this.disabled){
 					return;
 				}
-				if(event.cancelable){
-					event.preventDefault();
-				}
 				var endX = event.touches[0].pageX;
 				var moveX = endX - this.startX;//每次移动的偏移值
 				var moveX2 = endX - this.startX2;//总偏移值
 				this.startX = endX;
+				if(Math.abs(moveX2) <= $util.rem2px(1)){
+					return;
+				}
+				if(event.cancelable){
+					event.preventDefault();
+				}
 				if(moveX2 > 0){//右滑，展示左侧内容
+					if(this.leftShow && this.transformX == this.$refs.left.offsetWidth){
+						return;
+					}
 					this.leftShow = true;
 					this.$nextTick(()=>{
 						if(this.transformX >= this.$refs.left.offsetWidth){
-							this.amounts+=4;
+							this.amounts+=8;
 							this.transformX += moveX/this.amounts;
 						}else{
 							this.transformX += moveX;
 						}
 					})
 				}else if(moveX2 < 0){//左滑，展示右侧内容
+					if(this.rightShow && this.transformX == -this.$refs.right.offsetWidth){
+						return;
+					}
 					this.rightShow = true;
 					this.$nextTick(()=>{
 						if(this.transformX <= -this.$refs.right.offsetWidth){
-							this.amounts+=4;
+							this.amounts+=8;
 							this.transformX += moveX/this.amounts;
 						}else{
 							this.transformX += moveX;
@@ -152,15 +154,21 @@
 				if(!this.mouseDown){
 					return;
 				}
-				if(event.cancelable){
-					event.preventDefault();
-				}
 				this.isDrag = true;
 				var endX = event.pageX;
 				var moveX = endX - this.startX;//每次移动的偏移值
 				var moveX2 = endX - this.startX2;//总偏移值
 				this.startX = endX;
+				if(Math.abs(moveX2) <= $util.rem2px(1)){
+					return;
+				}
+				if(event.cancelable){
+					event.preventDefault();
+				}
 				if(moveX2 > 0){//右滑，展示左侧内容
+					if(this.leftShow && this.transformX == this.$refs.left.offsetWidth){
+						return;
+					}
 					this.leftShow = true;
 					this.$nextTick(()=>{
 						if(this.transformX >= this.$refs.left.offsetWidth){
@@ -171,6 +179,9 @@
 						}
 					})
 				}else if(moveX2 < 0){//左滑，展示右侧内容
+					if(this.rightShow && this.transformX == -this.$refs.right.offsetWidth){
+						return;
+					}
 					this.rightShow = true;
 					this.$nextTick(()=>{
 						if(this.transformX <= -this.$refs.right.offsetWidth){

@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<m-swipe-cell ref="swipeCell" @open="open" @close="close">
+		<m-swipe-cell v-for="(item,index) in new Array(30)" @open="open" @close="close" :key="index">
 			<!-- 左侧隐藏区域，需要右滑显示 -->
 			<template v-slot:left>
-				<div style="background-color: #ff3300;width:.88rem;height: 100%;color: #fff;" class="mvi-flex-center">添加</div>
+				<div style="background-color: #000;width:.88rem;height: 100%;color: #fff;" class="mvi-flex-center">添加</div>
 			</template>
 			<!-- 右侧隐藏区域，需要左滑显示 -->
 			<template v-slot:right>
