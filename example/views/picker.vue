@@ -7,10 +7,16 @@ export default {
 	name: 'demo-picker',
 	data() {
 		return {
-			options: {
-				values: ['mvi', 'elementUI', 'iView', 'vant'], //设置选项
-				defaultIndex: 0 //设置默认选项序列
-			}
+			options: [
+				{
+					values: ['mvi', 'elementUI', 'iView', 'vant'],
+					defaultIndex: 0
+				},
+				{
+					values: ['上午', '晚上', '下午'],
+					defaultIndex: 1
+				}
+			]
 		};
 	}
 };

@@ -129,7 +129,7 @@
 			columnStyle() {
 				return (column, index) => {
 					var style = {};
-					style.transform = `translate3d(0,calc(${this.offsets[index]}px),0)`;
+					style.transform = `translate3d(0,calc(${this.offsets[index] || 0}px),0)`;
 					return style;
 				}
 			},
