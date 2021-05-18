@@ -270,7 +270,7 @@
 					return this.children.length;
 				}else {
 					if(this.loop){
-						return this.children.length-2;
+						return this.children.length-2>0?this.children.length-2:0;
 					}else{
 						return this.children.length;
 					}
