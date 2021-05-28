@@ -57,7 +57,7 @@ import imagePreview from "./imagePreview"
 import page from "./page"
 import loadingBar from "./loadingBar"
 import picker from "./picker"
-import transitionSlide from "./transition-slide"
+import transitionSlide from "./transitionSlide"
 //以下为专门针对PC端使用时设计的组件
 import layer from "./layer"
 import select from "./select"
