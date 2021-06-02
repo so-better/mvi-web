@@ -19,7 +19,11 @@ export default {
 				},
 				{
 					label: '选项B',
-					value: 1
+					value: 1,
+					icon:{
+						type:'user',
+						color:'#000'
+					}
 				},
 				{
 					label: '选项C',

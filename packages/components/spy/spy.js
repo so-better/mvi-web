@@ -13,9 +13,14 @@ class Spy {
 		this.enter = options.enter;
 		this.beforeLeave = options.beforeLeave;
 		this.leave = options.leave;
+		this.hasInit = false; //是否已经初始化
 	}
 	
 	init(){
+		if (this.hasInit) {
+			return;
+		}
+		this.hasInit = true;
 		//根据el的值查找元素
 		if(typeof(this.$el) == "string" && this.$el){
 			this.$el = document.body.querySelector(this.$el);

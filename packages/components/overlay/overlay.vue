@@ -23,7 +23,6 @@
 				paddingBottom:0,//父级元素底部内边距
 				hasHorizontalScroll:false,//是否含有水平滚动条
 				hasVerticalScroll:false,//是否含有垂直滚动条
-				
 			}
 		},
 		model:{

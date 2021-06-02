@@ -2,7 +2,7 @@
 	<label :class="'mvi-switch'+(checked?' mvi-switch-checked':'')" :style="switchStyle" v-on="listeners"
 	 :disabled="disabled">
 		<span :class="'mvi-switch-el'+(checked?' mvi-switch-el-checked':'')" :style="elStyle">
-			<m-icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :style="loadStyle"/>
+			<m-icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :color="iconColor"/>
 		</span>
 		<input @change="change" type="checkbox" :checked="checked" :disabled="disabled || loading"/>
 	</label>
@@ -43,10 +43,6 @@
 			},
 			icon: {
 				type: [String, Object],
-				default: 'load-e'
-			},
-			iconColor: {
-				type: String,
 				default: null
 			}
 		},
@@ -63,7 +59,7 @@
 				return Object.assign({}, this.$listeners)
 			},
 			iconType() {
-				var t = null;
+				let t = 'load-e';
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.type) == "string") {
 						t = this.icon.type;
@@ -74,7 +70,7 @@
 				return t;
 			},
 			iconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.url) == "string") {
 						url = this.icon.url;
@@ -83,7 +79,7 @@
 				return url;
 			},
 			iconSpin() {
-				var spin = true;
+				let spin = true;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.spin) == "boolean") {
 						spin = this.icon.spin;
@@ -92,7 +88,7 @@
 				return spin;
 			},
 			iconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.size) == "string") {
 						size = this.icon.size;
@@ -100,8 +96,17 @@
 				}
 				return size;
 			},
+			iconColor(){
+				let color = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.color) == "string") {
+						color = this.icon.color;
+					}
+				}
+				return color;
+			},
 			switchStyle() {
-				var style = {};
+				let style = {};
 				if (this.inactiveColor && !this.checked) {
 					style.backgroundColor = this.inactiveColor;
 				}
@@ -114,7 +119,7 @@
 				return style;
 			},
 			elStyle() {
-				var style = {};
+				let style = {};
 				if (this.activeColor) {
 					style.color = this.activeColor;
 				}
@@ -122,13 +127,6 @@
 					style.width = this.size;
 					style.height = this.size;
 					style.fontSize = this.size;
-				}
-				return style;
-			},
-			loadStyle() {
-				var style = {};
-				if (this.iconColor) {
-					style.color = this.iconColor;
 				}
 				return style;
 			}

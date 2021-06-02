@@ -19,7 +19,10 @@ export default {
 				},
 				{
 					label: '分享给QQ好友分享给QQ好友分享给QQ好友分享给QQ好友分享给QQ好友',
-					icon:'user',
+					icon:{
+						type:'user',
+					},
+					color:'#109828',
 					sub:'share',
 				},
 				{

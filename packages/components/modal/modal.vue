@@ -6,8 +6,8 @@
 			@before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
 				<!-- 弹出层 -->
 				<div v-if="firstShow" v-show="modalShow" class="mvi-modal-wrapper" ref="wrapper" :style="wrapperStyle">
-					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)" :style="'color:'+(timesColor?timesColor:'')">
-						<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" />
+					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)">
+						<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
 					</div>
 					<div ref="header" :class="titleCls" 
 					v-if="$slots.title || title" :style="headerStyle" >
@@ -73,7 +73,7 @@
 			},
 			timesIcon:{//自定义关闭按钮
 				type:[String,Object],
-				default:"times"
+				default:null
 			},
 			show:{//显示与否
 				type:Boolean,
@@ -135,10 +135,6 @@
 				type:Boolean,
 				default:false
 			},
-			timesColor:{//关闭图标颜色
-				type:String,
-				default:null
-			},
 			usePadding:{//局部显示是否考虑PC端滚动条影响
 				type:Boolean,
 				default:false
@@ -153,7 +149,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			iconType() {
-				var t = null;
+				let t = 'times';
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.type) == "string") {
 						t = this.timesIcon.type;
@@ -164,7 +160,7 @@
 				return t;
 			},
 			iconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.url) == "string") {
 						url = this.timesIcon.url;
@@ -173,7 +169,7 @@
 				return url;
 			},
 			iconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.spin) == "boolean") {
 						spin = this.timesIcon.spin;
@@ -182,7 +178,7 @@
 				return spin;
 			},
 			iconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.size) == "string") {
 						size = this.timesIcon.size;
@@ -190,13 +186,22 @@
 				}
 				return size;
 			},
+			iconColor(){
+				let color = null;
+				if ($util.isObject(this.timesIcon)) {
+					if (typeof(this.timesIcon.color) == "string") {
+						color = this.timesIcon.color;
+					}
+				}
+				return color;
+			},
 			modalStyle(){
-				var style = {};
+				let style = {};
 				style.zIndex = this.zIndex + 10;
 				return style;
 			},
 			wrapperStyle(){
-				var style = {};
+				let style = {};
 				if(this.radius){
 					style.borderRadius = this.radius;
 				}
@@ -211,7 +216,7 @@
 				return style;
 			},
 			titleCls(){
-				var cls = 'mvi-modal-title';
+				let cls = 'mvi-modal-title';
 				if(this.titleEllipsis){
 					cls += ' mvi-modal-title-ellipsis';
 				}
@@ -221,7 +226,7 @@
 				return cls;
 			},
 			headerStyle(){
-				var style = {};
+				let style = {};
 				//主体存在
 				if(this.$slots.default || this.content){
 					style.paddingBottom = '0';

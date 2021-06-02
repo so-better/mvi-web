@@ -4,7 +4,7 @@
 		<div :class="'mvi-search-input-container'+(round?' mvi-search-input-round':'')" :style="'backgroundColor:'+
 		(background?background:'')+';color:'+(color?color:'')">
 			<div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
-				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :class="(leftIconClass?leftIconClass:'')"/>
+				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" :class="(leftIconClass?leftIconClass:'')"/>
 			</div>
 			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off"
 			:placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode"
@@ -13,7 +13,7 @@
 				<m-icon type="times-o"/>
 			</div>
 			<div v-if="rightIconType || rightIconUrl" class="mvi-search-right-icon" @click="rightClick">
-				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :class="(rightIconClass?rightIconClass:'')" />
+				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" :class="(rightIconClass?rightIconClass:'')" />
 			</div>
 		</div>
 		<div v-if="showCancel" v-text="cancelText" :class="'mvi-search-cancel'+(cancelClass?' '+cancelClass:'')" @click="doCancel"></div>
@@ -145,7 +145,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			leftIconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.type) == "string") {
 						t = this.leftIcon.type;
@@ -156,7 +156,7 @@
 				return t;
 			},
 			leftIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.url) == "string") {
 						url = this.leftIcon.url;
@@ -165,7 +165,7 @@
 				return url;
 			},
 			leftIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.spin) == "boolean") {
 						spin = this.leftIcon.spin;
@@ -174,7 +174,7 @@
 				return spin;
 			},
 			leftIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.size) == "string") {
 						size = this.leftIcon.size;
@@ -182,8 +182,17 @@
 				}
 				return size;
 			},
+			leftIconColor(){
+				let color = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.color) == "string") {
+						color = this.leftIcon.color;
+					}
+				}
+				return color;
+			},
 			rightIconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.type) == "string") {
 						t = this.rightIcon.type;
@@ -194,7 +203,7 @@
 				return t;
 			},
 			rightIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.url) == "string") {
 						url = this.rightIcon.url;
@@ -203,7 +212,7 @@
 				return url;
 			},
 			rightIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.spin) == "boolean") {
 						spin = this.rightIcon.spin;
@@ -212,7 +221,7 @@
 				return spin;
 			},
 			rightIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.size) == "string") {
 						size = this.rightIcon.size;
@@ -220,13 +229,22 @@
 				}
 				return size;
 			},
+			rightIconColor(){
+				let color = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.color) == "string") {
+						color = this.rightIcon.color;
+					}
+				}
+				return color;
+			},
 			computedValue:{
 				set(value){
 					this.$emit('update:value',value.toString());
 					this.$emit('model-change',value.toString());
 				},
 				get(){
-					var value = this.value.toString();
+					let value = this.value.toString();
 					if(this.type == 'number'){
 						value = value.replace(/\D/g, '');
 						if(this.maxlength > 0 && value.length>this.maxlength){
@@ -249,14 +267,14 @@
 				}
 			},
 			computedInputMode(){
-				var mode = false;
+				let mode = false;
 				if(typeof this.inputMode == 'string'){
 					mode = this.inputMode
 				}
 				return mode
 			},
 			inputStyle(){
-				var style = {}
+				let style = {}
 				if(this.align){
 					style.textAlign = this.align
 				}
@@ -286,7 +304,7 @@
 			},
 			//输入监听
 			searchInput(){
-				var value = this.$refs.input.value;
+				let value = this.$refs.input.value;
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');

@@ -2,13 +2,12 @@
 	<div class="mvi-page" v-on="listeners">
 		<div v-if="firstText || firstIconType || firstIconUrl" :disabled="page==1" @click="pageFirst" :class="'mvi-page-first'+((active&&page!=1)?' mvi-page-active':'')"
 		:style="'color:'+(page==1?'':(color?color:''))">
-			<m-icon :class="'mvi-page-icon'+(firstText?' mvi-page-margin-right':'')" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" />
+			<m-icon :class="'mvi-page-icon'+(firstText?' mvi-page-margin-right':'')" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" :color="firstIconColor" />
 			<span v-if="firstText" v-text="firstText"></span>
 		</div>
 		<div v-if="prevText || prevIconType || prevIconUrl" :disabled="page==1" @click="pagePrev" :class="'mvi-page-prev'+((active&&page!=1)?' mvi-page-active':'')"
 		:style="'color:'+(page==1?'':(color?color:''))">
-			<m-icon :class="'mvi-page-icon'+(prevText?' mvi-page-margin-right':'')" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize"
-			:spin="prevIconSpin" />
+			<m-icon :class="'mvi-page-icon'+(prevText?' mvi-page-margin-right':'')" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize" :spin="prevIconSpin" :color="prevIconColor" />
 			<span v-if="prevText" v-text="prevText"></span>
 		</div>
 		<div class="mvi-page-numbers">
@@ -33,14 +32,12 @@
 		<div v-if="nextText || nextIconType || nextIconUrl" :disabled="page==total" @click="pageNext" :class="'mvi-page-next'+((active&&page!=total)?' mvi-page-active':'')"
 		:style="'color:'+(page==total?'':(color?color:''))">
 			<span v-if="nextText" v-text="nextText"></span>
-			<m-icon :class="'mvi-page-icon'+(nextText?' mvi-page-margin-left':'')" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize"
-			:spin="nextIconSpin" />
+			<m-icon :class="'mvi-page-icon'+(nextText?' mvi-page-margin-left':'')" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize" :spin="nextIconSpin" :color="nextIconColor" />
 		</div>
 		<div v-if="lastText || lastIconType || lastIconUrl" :disabled="page==total" @click="pageLast" :class="'mvi-page-last'+((active&&page!=total)?' mvi-page-active':'')"
 		:style="'color:'+(page==total?'':(color?color:''))">
 			<span v-if="lastText" v-text="lastText"></span>
-			<m-icon :class="'mvi-page-icon'+(lastText?' mvi-page-margin-left':'')" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize"
-			:spin="lastIconSpin" />
+			<m-icon :class="'mvi-page-icon'+(lastText?' mvi-page-margin-left':'')" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize" :spin="lastIconSpin" :color="lastIconColor" />
 		</div>
 	</div>
 </template>
@@ -88,11 +85,11 @@
 			},
 			prevIcon:{
 				type:[String,Object],
-				default:'angle-left'
+				default:null
 			},
 			nextIcon:{
 				type:[String,Object],
-				default:'angle-right'
+				default:null
 			},
 			simple: { //简单模式
 				type: Boolean,
@@ -108,11 +105,11 @@
 			},
 			firstIcon:{
 				type:[Object,String],
-				default:'angle-double-left'
+				default:null
 			},
 			lastIcon:{
 				type:[Object,String],
-				default:'angle-double-right'
+				default:null
 			},
 			color:{//自定义字体颜色及选中的背景色
 				type:String,
@@ -128,8 +125,8 @@
 				return Object.assign({}, this.$listeners)
 			},
 			pageStyle(){
-				return (item)=>{
-					var style = {};
+				return item=>{
+					let style = {};
 					if(this.page == item){
 						if(this.el){
 							style.color = $util.getCssStyle(this.el,'background-color');
@@ -142,28 +139,28 @@
 				}
 			},
 			arry(){
-				var arry = [];
+				let arry = [];
 				if(this.page <= (this.overNumber-1)/2+1){
-					for(var i = 0;i<this.overNumber;i++){
+					for(let i = 0;i<this.overNumber;i++){
 						arry.push(i+1);
 					}
 				}else if(this.page <= (this.total - (this.overNumber-1)/2)){
-					for(var i = 0;i<(this.overNumber-1)/2;i++){
+					for(let i = 0;i<(this.overNumber-1)/2;i++){
 						arry.push(this.page - (((this.overNumber-1)/2)-i));
 					}
 					arry.push(this.page);
-					for(var i = 0;i<(this.overNumber-1)/2;i++){
+					for(let i = 0;i<(this.overNumber-1)/2;i++){
 						arry.push(this.page + (i+1));
 					}
 				}else {
-					for(var i = 0;i<this.overNumber;i++){
+					for(let i = 0;i<this.overNumber;i++){
 						arry.push(this.total - (this.overNumber-1-i));
 					}
 				}
 				return arry;
 			},
 			firstIconType() {
-				var t = null;
+				let t = 'angle-double-left';
 				if ($util.isObject(this.firstIcon)) {
 					if (typeof(this.firstIcon.type) == "string") {
 						t = this.firstIcon.type;
@@ -174,7 +171,7 @@
 				return t;
 			},
 			firstIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.firstIcon)) {
 					if (typeof(this.firstIcon.url) == "string") {
 						url = this.firstIcon.url;
@@ -183,7 +180,7 @@
 				return url;
 			},
 			firstIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.firstIcon)) {
 					if (typeof(this.firstIcon.spin) == "boolean") {
 						spin = this.firstIcon.spin;
@@ -192,7 +189,7 @@
 				return spin;
 			},
 			firstIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.firstIcon)) {
 					if (typeof(this.firstIcon.size) == "string") {
 						size = this.firstIcon.size;
@@ -200,8 +197,17 @@
 				}
 				return size;
 			},
+			firstIconColor(){
+				let color = null;
+				if ($util.isObject(this.firstIcon)) {
+					if (typeof(this.firstIcon.color) == "string") {
+						color = this.firstIcon.color;
+					}
+				}
+				return color;
+			},
 			lastIconType() {
-				var t = null;
+				let t = 'angle-double-right';
 				if ($util.isObject(this.lastIcon)) {
 					if (typeof(this.lastIcon.type) == "string") {
 						t = this.lastIcon.type;
@@ -212,7 +218,7 @@
 				return t;
 			},
 			lastIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.lastIcon)) {
 					if (typeof(this.lastIcon.url) == "string") {
 						url = this.lastIcon.url;
@@ -221,7 +227,7 @@
 				return url;
 			},
 			lastIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.lastIcon)) {
 					if (typeof(this.lastIcon.spin) == "boolean") {
 						spin = this.lastIcon.spin;
@@ -230,7 +236,7 @@
 				return spin;
 			},
 			lastIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.lastIcon)) {
 					if (typeof(this.lastIcon.size) == "string") {
 						size = this.lastIcon.size;
@@ -238,8 +244,17 @@
 				}
 				return size;
 			},
+			lastIconColor(){
+				let color = null;
+				if ($util.isObject(this.lastIcon)) {
+					if (typeof(this.lastIcon.color) == "string") {
+						color = this.lastIcon.color;
+					}
+				}
+				return color;
+			},
 			prevIconType() {
-				var t = null;
+				let t = 'angle-left';
 				if ($util.isObject(this.prevIcon)) {
 					if (typeof(this.prevIcon.type) == "string") {
 						t = this.prevIcon.type;
@@ -250,7 +265,7 @@
 				return t;
 			},
 			prevIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.prevIcon)) {
 					if (typeof(this.prevIcon.url) == "string") {
 						url = this.prevIcon.url;
@@ -259,7 +274,7 @@
 				return url;
 			},
 			prevIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.prevIcon)) {
 					if (typeof(this.prevIcon.spin) == "boolean") {
 						spin = this.prevIcon.spin;
@@ -268,7 +283,7 @@
 				return spin;
 			},
 			prevIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.prevIcon)) {
 					if (typeof(this.prevIcon.size) == "string") {
 						size = this.prevIcon.size;
@@ -276,8 +291,17 @@
 				}
 				return size;
 			},
+			prevIconColor(){
+				let color = null;
+				if ($util.isObject(this.prevIcon)) {
+					if (typeof(this.prevIcon.color) == "string") {
+						color = this.prevIcon.color;
+					}
+				}
+				return color;
+			},
 			nextIconType() {
-				var t = null;
+				let t = 'angle-right';
 				if ($util.isObject(this.nextIcon)) {
 					if (typeof(this.nextIcon.type) == "string") {
 						t = this.nextIcon.type;
@@ -288,7 +312,7 @@
 				return t;
 			},
 			nextIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.nextIcon)) {
 					if (typeof(this.nextIcon.url) == "string") {
 						url = this.nextIcon.url;
@@ -297,7 +321,7 @@
 				return url;
 			},
 			nextIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.nextIcon)) {
 					if (typeof(this.nextIcon.spin) == "boolean") {
 						spin = this.nextIcon.spin;
@@ -306,13 +330,22 @@
 				return spin;
 			},
 			nextIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.nextIcon)) {
 					if (typeof(this.nextIcon.size) == "string") {
 						size = this.nextIcon.size;
 					}
 				}
 				return size;
+			},
+			nextIconColor(){
+				let color = null;
+				if ($util.isObject(this.nextIcon)) {
+					if (typeof(this.nextIcon.color) == "string") {
+						color = this.nextIcon.color;
+					}
+				}
+				return color;
 			}
 		},
 		mounted() {

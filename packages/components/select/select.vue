@@ -34,7 +34,7 @@
 					:key="'mvi-select-option-' + index"
 				>
 					<div class="mvi-option-value" v-html="item.label"></div>
-					<m-icon v-if="isSelect(item)" :type="selectedIconType" :spin="selectedIconSpin" :size="selectedIconSize" :url="selectedIconUrl" />
+					<m-icon v-if="isSelect(item)" :type="selectedIconType" :spin="selectedIconSpin" :size="selectedIconSize" :url="selectedIconUrl" :color="selectedIconColor" />
 				</div>
 			</div>
 		</m-layer>
@@ -191,7 +191,7 @@ export default {
 		//已选择标志icon
 		selectedIcon: {
 			type: [String, Object],
-			default: 'success'
+			default: null
 		}
 	},
 	computed: {
@@ -272,7 +272,7 @@ export default {
 			};
 		},
 		selectedIconType() {
-			var type = null;
+			let type = 'success';
 			if ($util.isObject(this.selectedIcon)) {
 				if (typeof this.selectedIcon.type == 'string') {
 					type = this.selectedIcon.type;
@@ -283,7 +283,7 @@ export default {
 			return type;
 		},
 		selectedIconSize() {
-			var size = null;
+			let size = null;
 			if ($util.isObject(this.selectedIcon)) {
 				if (typeof this.selectedIcon.size == 'string') {
 					size = this.selectedIcon.size;
@@ -292,7 +292,7 @@ export default {
 			return size;
 		},
 		selectedIconUrl() {
-			var url = null;
+			let url = null;
 			if ($util.isObject(this.selectedIcon)) {
 				if (typeof this.selectedIcon.url == 'string') {
 					url = this.selectedIcon.url;
@@ -301,14 +301,23 @@ export default {
 			return url;
 		},
 		selectedIconSpin() {
-			var spin = false;
+			let spin = false;
 			if ($util.isObject(this.selectedIcon)) {
 				if (typeof this.selectedIcon.spin == 'boolean') {
 					spin = this.selectedIcon.spin;
 				}
 			}
 			return spin;
-		}
+		},
+		selectedIconColor() {
+			let color = null;
+			if ($util.isObject(this.selectedIcon)) {
+				if (typeof this.selectedIcon.color == 'string') {
+					color = this.selectedIcon.color;
+				}
+			}
+			return color;
+		},
 	},
 	methods: {
 		//layer显示前进行宽度设置

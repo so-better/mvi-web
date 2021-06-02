@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-field append="user" v-model="value" placeholder="请输入" prefix="user"></m-field>
+		<m-field :append="{type:'user'}" v-model="value" placeholder="请输入" prefix="user"></m-field>
 	</div>
 </template>
 

@@ -33,7 +33,7 @@
 			},
 			activeIcon:{//激活状态的图标
 				type:[String,Object],
-				default:'success-o'
+				default:null
 			},
 			inactiveIcon:{//未激活状态的图标
 				type:[String,Object],
@@ -54,7 +54,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			activeIconType() {
-				var t = null;
+				let t = 'success-o';
 				if ($util.isObject(this.activeIcon)) {
 					if (typeof(this.activeIcon.type) == "string") {
 						t = this.activeIcon.type;
@@ -65,7 +65,7 @@
 				return t;
 			},
 			activeIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.activeIcon)) {
 					if (typeof(this.activeIcon.url) == "string") {
 						url = this.activeIcon.url;
@@ -74,7 +74,7 @@
 				return url;
 			},
 			activeIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.activeIcon)) {
 					if (typeof(this.activeIcon.spin) == "boolean") {
 						spin = this.activeIcon.spin;
@@ -83,7 +83,7 @@
 				return spin;
 			},
 			activeIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.activeIcon)) {
 					if (typeof(this.activeIcon.size) == "string") {
 						size = this.activeIcon.size;
@@ -91,8 +91,17 @@
 				}
 				return size;
 			},
+			activeIconColor(){
+				let color = null;
+				if ($util.isObject(this.activeIcon)) {
+					if (typeof(this.activeIcon.color) == "string") {
+						color = this.activeIcon.color;
+					}
+				}
+				return color;
+			},
 			inactiveIconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.inactiveIcon)) {
 					if (typeof(this.inactiveIcon.type) == "string") {
 						t = this.inactiveIcon.type;
@@ -103,7 +112,7 @@
 				return t;
 			},
 			inactiveIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.inactiveIcon)) {
 					if (typeof(this.inactiveIcon.url) == "string") {
 						url = this.inactiveIcon.url;
@@ -112,7 +121,7 @@
 				return url;
 			},
 			inactiveIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.inactiveIcon)) {
 					if (typeof(this.inactiveIcon.spin) == "boolean") {
 						spin = this.inactiveIcon.spin;
@@ -121,13 +130,22 @@
 				return spin;
 			},
 			inactiveIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.inactiveIcon)) {
 					if (typeof(this.inactiveIcon.size) == "string") {
 						size = this.inactiveIcon.size;
 					}
 				}
 				return size;
+			},
+			inactiveIconColor(){
+				let color = null;
+				if ($util.isObject(this.inactiveIcon)) {
+					if (typeof(this.inactiveIcon.color) == "string") {
+						color = this.inactiveIcon.color;
+					}
+				}
+				return color;
 			}
 		}
 	}

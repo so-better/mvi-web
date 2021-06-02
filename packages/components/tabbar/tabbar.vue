@@ -73,7 +73,7 @@
 			},
 			tabbarItemStyle(){
 				return index=>{
-					var style = {}
+					let style = {}
 					if(index != 0 && this.offset){
 						style.marginLeft = this.offset;
 					}
@@ -81,7 +81,7 @@
 				}
 			},
 			tabbarStyle(){
-				var style = {}
+				let style = {}
 				if(this.fixed){
 					style.zIndex = this.zIndex;
 				}

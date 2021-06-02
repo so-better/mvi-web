@@ -2,7 +2,7 @@
 	<div v-on="listeners" :class="cellClass">
 		<div class="mvi-cell-item">
 			<m-icon :class="'mvi-cell-icon'+(iconClass?' '+iconClass:'')" v-if="iconType||iconUrl" :type="iconType" :url="iconUrl"
-			 :spin="iconSpin"  :size="iconSize"/>
+			 :spin="iconSpin" :size="iconSize" :color="iconColor"/>
 			<div :class="'mvi-cell-title'+(noWrap?' mvi-cell-nowrap':'')">
 				<slot name="title" v-if="$slots.title"></slot>
 				<span v-else v-text="title" :class="(titleClass?' '+titleClass:'')"></span>
@@ -12,7 +12,7 @@
 				<span v-else-if="content" v-text="content" :class="(contentClass?' '+contentClass:'')"></span>
 			</div>
 			<m-icon :class="'mvi-cell-arrow'+(arrowClass?' '+arrowClass:'')"
-			 v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl" :spin="arrowSpin" :size="arrowSize" />
+			 v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl" :spin="arrowSpin" :size="arrowSize" :color="arrowColor"/>
 		</div>
 		<div :class="'mvi-cell-label'+(labelClass?' '+labelClass:'')" v-if="label || $slots.label" :style="labelTextStyle">
 			<slot name="label" v-if="$slots.label"></slot>
@@ -88,7 +88,7 @@
 				return Object.assign({}, this.$listeners);
 			},
 			iconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.type) == "string") {
 						t = this.icon.type;
@@ -99,7 +99,7 @@
 				return t;
 			},
 			iconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.url) == "string") {
 						url = this.icon.url;
@@ -108,7 +108,7 @@
 				return url;
 			},
 			iconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.spin) == "boolean") {
 						spin = this.icon.spin;
@@ -117,7 +117,7 @@
 				return spin;
 			},
 			iconSize() {
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.size) == "string") {
 						size = this.icon.size;
@@ -125,8 +125,17 @@
 				}
 				return size;
 			},
+			iconColor(){
+				let color = null;
+				if($util.isObject(this.icon)){
+					if (typeof(this.icon.color) == "string") {
+						color = this.icon.color;
+					}
+				}
+				return color;
+			},
 			arrowType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.arrow)) {
 					if (typeof(this.arrow.type) == "string") {
 						t = this.arrow.type;
@@ -137,7 +146,7 @@
 				return t;
 			},
 			arrowUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.arrow)) {
 					if (typeof(this.arrow.url) == "string") {
 						url = this.arrow.url;
@@ -146,7 +155,7 @@
 				return url;
 			},
 			arrowSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.arrow)) {
 					if (typeof(this.arrow.spin) == "boolean") {
 						spin = this.arrow.spin;
@@ -155,13 +164,22 @@
 				return spin;
 			},
 			arrowSize() {
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.arrow)) {
 					if (typeof(this.arrow.size) == "string") {
 						size = this.arrow.size;
 					}
 				}
 				return size;
+			},
+			arrowColor() {
+				let color = null;
+				if ($util.isObject(this.arrow)) {
+					if (typeof(this.arrow.color) == "string") {
+						color = this.arrow.color;
+					}
+				}
+				return color;
 			},
 			computedActive() {
 				if (typeof(this.active) == "boolean") {
@@ -182,7 +200,7 @@
 				}
 			},
 			labelTextStyle() {
-				var style = {};
+				let style = {};
 				if (this.ellipsis) { //如果ellipsis不是false
 					style.display = '-webkit-box';
 					style.textOverflow = 'ellipsis';
@@ -198,7 +216,7 @@
 				return style;
 			},
 			cellClass(){
-				var cls = 'mvi-cell';
+				let cls = 'mvi-cell';
 				if(this.computedBorder){
 					cls += ' mvi-cell-border';
 				}

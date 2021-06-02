@@ -13,11 +13,11 @@ class Prop {
 	
 	init(){
 		if (this.hasInit) {
-			throw new Error("prop组件已初始化,无需重复初始化");
+			return;
 		}
 		this.hasInit = true;
 		if(!$util.isElement(this.$el)){
-			throw new Error("所绑定的元素非节点对象");
+			throw new Error("The bound element is not a node element");
 		}
 		if(typeof(this.ratio) != "number" || isNaN(this.ratio)){
 			this.ratio = 0;

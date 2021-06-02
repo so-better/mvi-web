@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-pull-refresh v-model="refresh" @refresh="change" :distance="2"></m-pull-refresh>
+		<m-pull-refresh v-model="refresh" @refresh="change" :distance="2" :pulling-icon="{color:'#ff3300'}"></m-pull-refresh>
 	</div>
 </template>
 

@@ -10,11 +10,11 @@
 					<m-loading :size="(size=='large'?'0.4rem':'0.36rem')" color="#bbb" v-if="(item.loading?item.loading:false)"></m-loading>
 					<div class="mvi-acionsheet-content" v-else-if="item.label||item.sub || iconType(item.icon) || iconUrl(item.icon)">
 						<m-icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'"
-						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)"/>
+						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
 						<span v-if="item.label" class="mvi-actionsheet-item-label" v-text="item.label"></span>
 						<span v-if="item.sub" class="mvi-acionsheet-item-sub" v-text="item.sub"></span>
 						<m-icon data-placement="right" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement=='right'"
-						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)"/>
+						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
 					</div>
 				</div>
 			</div>
@@ -117,8 +117,8 @@
 				return Object.assign({}, this.$listeners)
 			},
 			iconType() {
-				return (icon) => {
-					var t = null;
+				return icon => {
+					let t = null;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.type) == "string") {
 							t = icon.type;
@@ -130,8 +130,8 @@
 				}
 			},
 			iconUrl() {
-				return (icon) => {
-					var url = null;
+				return icon => {
+					let url = null;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.url) == "string") {
 							url = icon.url;
@@ -141,8 +141,8 @@
 				}
 			},
 			iconSpin() {
-				return (icon) => {
-					var spin = false;
+				return icon => {
+					let spin = false;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.spin) == "boolean") {
 							spin = icon.spin;
@@ -152,8 +152,8 @@
 				}
 			},
 			iconSize() {
-				return (icon) => {
-					var size = null;
+				return icon => {
+					let size = null;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.size) == "string") {
 							size = icon.size;
@@ -162,9 +162,20 @@
 					return size;
 				}
 			},
+			iconColor() {
+				return icon => {
+					let color = null;
+					if ($util.isObject(icon)) {
+						if (typeof(icon.color) == "string") {
+							color = icon.color;
+						}
+					}
+					return color;
+				}
+			},
 			itemClass() {
-				return (item) => {
-					var cls = "mvi-acionsheet-item mvi-actionsheet-item-"+this.size;
+				return item => {
+					let cls = "mvi-acionsheet-item mvi-actionsheet-item-"+this.size;
 					if (item.class) {
 						cls += ' ' + item.class;
 					}
@@ -175,8 +186,8 @@
 				}
 			},
 			itemStyle(){
-				return (item)=>{
-					var style = {};
+				return item=>{
+					let style = {};
 					//非禁用状态
 					if(!this.itemDisabled(item)){
 						if(item.color){
@@ -189,7 +200,7 @@
 				}
 			},
 			itemDisabled(){
-				return (item)=>{
+				return item=>{
 					if(typeof(item.disabled) == 'boolean'){
 						return item.disabled;
 					}else{

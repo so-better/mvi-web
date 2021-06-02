@@ -2,7 +2,7 @@
 	<div v-on="listeners" :disabled="disabled" :class="computedClass" :style="computedStyle" @click="setActive">
 		<div class="mvi-tabbar-item-child">
 			<span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="'margin-bottom:'+(name?'':'0px')">
-				<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize"/>
+				<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor"/>
 			</span>
 			<span :class="'mvi-tabbar-name'+((iconType || iconUrl)?' mvi-tabbar-name-small':'')" v-text="name"></span>
 		</div>
@@ -37,7 +37,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			iconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.type) == "string") {
 						t = this.icon.type;
@@ -48,7 +48,7 @@
 				return t;
 			},
 			iconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.url) == "string") {
 						url = this.icon.url;
@@ -57,7 +57,7 @@
 				return url;
 			},
 			iconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.spin) == "boolean") {
 						spin = this.icon.spin;
@@ -66,7 +66,7 @@
 				return spin;
 			},
 			iconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.size) == "string") {
 						size = this.icon.size;
@@ -74,8 +74,17 @@
 				}
 				return size;
 			},
+			iconColor(){
+				let color = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.color) == "string") {
+						color = this.icon.color;
+					}
+				}
+				return color;
+			},
 			computedClass(){
-				var cls = "mvi-tabbar-item";
+				let cls = "mvi-tabbar-item";
 				if(this.value == this.tabbar.value){
 					cls += " mvi-tabbar-item-active";
 				}
@@ -85,7 +94,7 @@
 				return cls;
 			},
 			computedStyle(){
-				var style = {};
+				let style = {};
 				//激活
 				if(this.value===this.tabbar.value){
 					if(this.tabbar.activeColor){

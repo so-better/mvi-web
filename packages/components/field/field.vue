@@ -1,14 +1,14 @@
 <template>
 	<div :class="fieldClass" :disabled="disabled" :data-type="type">
-		<div class="mvi-field-prepend" v-if="(prependType || prependUrl || $slots.prepend) && type!='textarea'" :style="prependStyle" 
+		<div class="mvi-field-prepend" v-if="(prependIconType || prependIconUrl || $slots.prepend) && type!='textarea'" :style="prependStyle" 
 		@click="prependClick">
 			<slot v-if="$slots.prepend" name="prepend"></slot>
-			<m-icon v-else-if="prependType || prependUrl" :type="prependType" :url="prependUrl" :spin="prependSpin" :size="prependSize" />
+			<m-icon v-else-if="prependIconType || prependIconUrl" :type="prependIconType" :url="prependIconUrl" :spin="prependIconSpin" :size="prependIconSize" :color="prependIconColor" />
 		</div>
 		<div :class="fieldBodyClass" :style="fieldBodyStyle">
-			<div class="mvi-field-prefix" v-if="(prefixType || prefixUrl || $slots.prefix) && type!='textarea'" @click="prefixClick">
+			<div class="mvi-field-prefix" v-if="(prefixIconType || prefixIconUrl || $slots.prefix) && type!='textarea'" @click="prefixClick">
 				<slot v-if="$slots.prefix" name="prefix"></slot>
-				<m-icon v-else-if="prefixType || prefixUrl" :type="prefixType" :url="prefixUrl" :spin="prefixSpin" :size="prefixSize" />
+				<m-icon v-else-if="prefixIconType || prefixIconUrl" :type="prefixIconType" :url="prefixIconUrl" :spin="prefixIconSpin" :size="prefixIconSize" :color="prefixIconColor" />
 			</div>
 			<textarea ref="textarea" v-if="type=='textarea'" :disabled="disabled" :readonly="readonly" class="mvi-field-input" 
 			:style="inputStyle" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" @focus="inputFocus"
@@ -18,15 +18,15 @@
 			<div class="mvi-field-clear" @click="doClear" v-if="clearable && type!='textarea'" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
 			</div>
-			<div class="mvi-field-suffix" v-if="(suffixType || suffixUrl || $slots.suffix) && type!='textarea'" @click="suffixClick">
+			<div class="mvi-field-suffix" v-if="(suffixIconType || suffixIconUrl || $slots.suffix) && type!='textarea'" @click="suffixClick">
 				<slot v-if="$slots.suffix" name="suffix"></slot>
-				<m-icon v-else-if="suffixType || suffixUrl" :type="suffixType" :url="suffixUrl" :spin="suffixSpin" :size="suffixSize" />
+				<m-icon v-else-if="suffixIconType || suffixIconUrl" :type="suffixIconType" :url="suffixIconUrl" :spin="suffixIconSpin" :size="suffixIconSize" :color="suffixIconColor" />
 			</div>
 		</div>
-		<div class="mvi-field-append" v-if="(appendType || appendUrl || $slots.append) && type!='textarea'" :style="appendStyle" 
+		<div class="mvi-field-append" v-if="(appendIconType || appendIconUrl || $slots.append) && type!='textarea'" :style="appendStyle" 
 		@click="appendClick">
 			<slot v-if="$slots.append" name="append"></slot>
-			<m-icon v-else-if="appendType || appendUrl" :type="appendType" :url="appendUrl" :spin="appendSpin" :size="appendSize" />
+			<m-icon v-else-if="appendIconType || appendIconUrl" :type="appendIconType" :url="appendIconUrl" :spin="appendIconSpin" :size="appendIconSize" :color="appendIconColor" />
 		</div>
 	</div>
 </template>
@@ -207,15 +207,15 @@
 			},
 			//清除图标样式
 			clearStyle(){
-				var style = {}
-				if((this.suffixType || this.suffixUrl || this.$slots.suffix) && this.type != 'textarea'){
+				let style = {}
+				if((this.suffixIconType || this.suffixIconUrl || this.$slots.suffix) && this.type != 'textarea'){
 					style.borderRadius = 0;
 				}
 				return style
 			},
 			//前置样式
 			prependStyle(){
-				var style = {}
+				let style = {}
 				if(this.prependBackground){
 					style.backgroundColor = this.prependBackground
 				}
@@ -226,7 +226,7 @@
 			},
 			//后置样式
 			appendStyle(){
-				var style = {}
+				let style = {}
 				if(this.appendBackground){
 					style.backgroundColor = this.appendBackground
 				}
@@ -237,11 +237,11 @@
 			},
 			//输入框样式
 			inputStyle(){
-				var style = {}
-				if((this.$slots.prefix || this.prefixType || this.prefixUrl) && this.type !='textarea'){
+				let style = {}
+				if((this.$slots.prefix || this.prefixIconType || this.prefixIconUrl) && this.type !='textarea'){
 					style.paddingLeft = 0;
 				}
-				if((this.$slots.suffix || this.suffixType || this.suffixUrl || (this.showClearIcon && this.clearable)) && 
+				if((this.$slots.suffix || this.suffixIconType || this.suffixIconUrl || (this.showClearIcon && this.clearable)) && 
 				this.type!='textarea'){
 					style.paddingRight = 0;
 				}
@@ -252,7 +252,7 @@
 			},
 			//输入框父容器样式
 			fieldBodyStyle(){
-				var style = {}
+				let style = {}
 				if(this.focus){
 					if(this.activeColor){
 						style.borderColor = this.activeColor
@@ -266,11 +266,11 @@
 			},
 			//输入框父容器样式类
 			fieldBodyClass(){
-				var cls = 'mvi-field-body';
-				if((this.prependType || this.prependUrl || this.$slots.prepend) && this.type!='textarea'){
+				let cls = 'mvi-field-body';
+				if((this.prependIconType || this.prependIconUrl || this.$slots.prepend) && this.type!='textarea'){
 					cls += ' mvi-field-body-left';
 				}
-				if((this.appendType || this.appendUrl || this.$slots.append) && this.type!='textarea'){
+				if((this.appendIconType || this.appendIconUrl || this.$slots.append) && this.type!='textarea'){
 					cls += ' mvi-field-body-right';
 				}
 				if(!this.activeColor && this.activeType && this.focus){
@@ -280,7 +280,7 @@
 			},
 			//输入框组件样式类
 			fieldClass(){
-				var cls = 'mvi-field mvi-field-'+this.size;
+				let cls = 'mvi-field mvi-field-'+this.size;
 				if(this.round && this.type!='textarea'){
 					cls += ' mvi-field-round';
 				}else if(this.square){
@@ -298,7 +298,7 @@
 			},
 			//输入框键盘类型
 			computedInputMode(){
-				var mode = false;
+				let mode = false;
 				if(typeof this.inputMode == 'string'){
 					mode = this.inputMode
 				}
@@ -306,7 +306,7 @@
 			},
 			//输入框的值
 			computedValue(){
-				var value = this.value.toString();
+				let value = this.value.toString();
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
 					if(this.maxlength > 0 && value.length>this.maxlength){
@@ -325,8 +325,8 @@
 				return value;
 			},
 			//前置图标类型
-			prependType() {
-				var t = null;
+			prependIconType() {
+				let t = null;
 				if ($util.isObject(this.prepend)) {
 					if (typeof(this.prepend.type) == "string") {
 						t = this.prepend.type;
@@ -337,8 +337,8 @@
 				return t;
 			},
 			//前置图标url
-			prependUrl() {
-				var url = null;
+			prependIconUrl() {
+				let url = null;
 				if ($util.isObject(this.prepend)) {
 					if (typeof(this.prepend.url) == "string") {
 						url = this.prepend.url;
@@ -347,8 +347,8 @@
 				return url;
 			},
 			//前置图标旋转
-			prependSpin() {
-				var spin = false;
+			prependIconSpin() {
+				let spin = false;
 				if ($util.isObject(this.prepend)) {
 					if (typeof(this.prepend.spin) == "boolean") {
 						spin = this.prepend.spin;
@@ -357,8 +357,8 @@
 				return spin;
 			},
 			//前置图标大小
-			prependSize() {
-				var size = null;
+			prependIconSize() {
+				let size = null;
 				if ($util.isObject(this.prepend)) {
 					if (typeof(this.prepend.size) == "string") {
 						size = this.prepend.size;
@@ -366,9 +366,19 @@
 				}
 				return size;
 			},
+			//前置图标颜色
+			prependIconColor() {
+				let color = null;
+				if ($util.isObject(this.prepend)) {
+					if (typeof(this.prepend.color) == "string") {
+						color = this.prepend.color;
+					}
+				}
+				return color;
+			},
 			//后置图标类型
-			appendType() {
-				var t = null;
+			appendIconType() {
+				let t = null;
 				if ($util.isObject(this.append)) {
 					if (typeof(this.append.type) == "string") {
 						t = this.append.type;
@@ -379,8 +389,8 @@
 				return t;
 			},
 			//后置图标url
-			appendUrl() {
-				var url = null;
+			appendIconUrl() {
+				let url = null;
 				if ($util.isObject(this.append)) {
 					if (typeof(this.append.url) == "string") {
 						url = this.append.url;
@@ -389,8 +399,8 @@
 				return url;
 			},
 			//后置图标旋转
-			appendSpin() {
-				var spin = false;
+			appendIconSpin() {
+				let spin = false;
 				if ($util.isObject(this.append)) {
 					if (typeof(this.append.spin) == "boolean") {
 						spin = this.append.spin;
@@ -399,8 +409,8 @@
 				return spin;
 			},
 			//后置图标大小
-			appendSize(){
-				var size = null;
+			appendIconSize(){
+				let size = null;
 				if ($util.isObject(this.append)) {
 					if (typeof(this.append.size) == "string") {
 						size = this.append.size;
@@ -408,9 +418,19 @@
 				}
 				return size;
 			},
+			//后置图标颜色
+			appendIconColor(){
+				let color = null;
+				if ($util.isObject(this.append)) {
+					if (typeof(this.append.color) == "string") {
+						color = this.append.color;
+					}
+				}
+				return color;
+			},
 			//前缀图标类型
-			prefixType() {
-				var t = null;
+			prefixIconType() {
+				let t = null;
 				if ($util.isObject(this.prefix)) {
 					if (typeof(this.prefix.type) == "string") {
 						t = this.prefix.type;
@@ -421,8 +441,8 @@
 				return t;
 			},
 			//前缀图标url
-			prefixUrl() {
-				var url = null;
+			prefixIconUrl() {
+				let url = null;
 				if ($util.isObject(this.prefix)) {
 					if (typeof(this.prefix.url) == "string") {
 						url = this.prefix.url;
@@ -431,8 +451,8 @@
 				return url;
 			},
 			//前缀图标旋转
-			prefixSpin() {
-				var spin = false;
+			prefixIconSpin() {
+				let spin = false;
 				if ($util.isObject(this.prefix)) {
 					if (typeof(this.prefix.spin) == "boolean") {
 						spin = this.prefix.spin;
@@ -441,8 +461,8 @@
 				return spin;
 			},
 			//前缀图标大小
-			prefixSize() {
-				var size = null;
+			prefixIconSize() {
+				let size = null;
 				if ($util.isObject(this.prefix)) {
 					if (typeof(this.prefix.size) == "string") {
 						size = this.prefix.size;
@@ -450,9 +470,19 @@
 				}
 				return size;
 			},
+			//前缀图标颜色
+			prefixIconColor() {
+				let color = null;
+				if ($util.isObject(this.prefix)) {
+					if (typeof(this.prefix.color) == "string") {
+						color = this.prefix.color;
+					}
+				}
+				return color;
+			},
 			//后缀图标类型
-			suffixType() {
-				var t = null;
+			suffixIconType() {
+				let t = null;
 				if ($util.isObject(this.suffix)) {
 					if (typeof(this.suffix.type) == "string") {
 						t = this.suffix.type;
@@ -463,8 +493,8 @@
 				return t;
 			},
 			//后缀图标url
-			suffixUrl() {
-				var url = null;
+			suffixIconUrl() {
+				let url = null;
 				if ($util.isObject(this.suffix)) {
 					if (typeof(this.suffix.url) == "string") {
 						url = this.suffix.url;
@@ -473,8 +503,8 @@
 				return url;
 			},
 			//后缀图标旋转
-			suffixSpin() {
-				var spin = false;
+			suffixIconSpin() {
+				let spin = false;
 				if ($util.isObject(this.suffix)) {
 					if (typeof(this.suffix.spin) == "boolean") {
 						spin = this.suffix.spin;
@@ -483,8 +513,8 @@
 				return spin;
 			},
 			//后缀图标大小
-			suffixSize() {
-				var size = null;
+			suffixIconSize() {
+				let size = null;
 				if ($util.isObject(this.suffix)) {
 					if (typeof(this.suffix.size) == "string") {
 						size = this.suffix.size;
@@ -492,9 +522,19 @@
 				}
 				return size;
 			},
+			//后缀图标颜色
+			suffixIconColor() {
+				let color = null;
+				if ($util.isObject(this.suffix)) {
+					if (typeof(this.suffix.color) == "string") {
+						color = this.suffix.color;
+					}
+				}
+				return color;
+			},
 			//文本域的rows
 			rowsFilter() {
-				var rows = this.rows;
+				let rows = this.rows;
 				if ($util.isObject(this.autosize)) {
 					if ($util.isNumber(this.autosize.minRows)) {
 						if (this.rows < this.autosize.minRows) {

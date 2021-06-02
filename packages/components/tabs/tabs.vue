@@ -8,10 +8,10 @@
 			<div :data-type="type" :class="headerClass(item,index)" v-for="(item,index) in children" :key="'header-'+index" 
 			@click="clickHeader(item,index)" :style="headerStyle(item,index)" :disabled="item.disabled">
 				<m-icon v-if="item.placement=='left' && item.iconType || item.iconUrl" :class="'mvi-tab-icon'+(item.title?' mvi-tab-icon-left':'')" 
-				:type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize"></m-icon>
+				:type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize" :color="item.iconColor"></m-icon>
 				<span class="mvi-tab-header-text" v-html="item.title" v-if="item.title"></span>
 				<m-icon v-if="item.placement=='right' && item.iconType || item.iconUrl" :class="'mvi-tab-icon'+(item.title?' mvi-tab-icon-right':'')" 
-				:type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize"></m-icon>
+				:type="item.iconType" :url="item.iconUrl" :spin="item.iconSpin" :size="item.iconSize" :color="item.iconColor"></m-icon>
 			</div>
 		</div>
 		<div class="mvi-tabs-content" ref="content">

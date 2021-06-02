@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-page v-model="pageCurrent" :total="total" :over-number="3"></m-page>
+		<m-page :prev-icon="{color:'#ff3300'}" v-model="pageCurrent" :total="total" :over-number="3"></m-page>
 	</div>
 </template>
 

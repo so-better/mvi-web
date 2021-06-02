@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-button v-upload.disabled="options">Button</m-button>
+		<m-button v-upload="options">Button</m-button>
 		<m-button @click="getFiles">获取选择的文件</m-button>
 		<m-button @click="clearFiles">清空</m-button>
 		<div>

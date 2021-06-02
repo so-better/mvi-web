@@ -3,7 +3,7 @@
 		<div v-show="show" :class="'mvi-notify mvi-notify-'+computedType" :style="notifyStyle"
 		v-on="listeners">
 			<div class="mvi-notify-content">
-				<m-icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" />
+				<m-icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
 				<span v-text="computedMessage"></span>
 			</div>
 		</div>
@@ -89,7 +89,7 @@
 			},
 			//图标类型
 			iconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.type) == "string") {
 						t = this.icon.type;
@@ -101,7 +101,7 @@
 			},
 			//图标url
 			iconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.url) == "string") {
 						url = this.icon.url;
@@ -111,7 +111,7 @@
 			},
 			//图标是否旋转
 			iconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.spin) == "boolean") {
 						spin = this.icon.spin;
@@ -121,7 +121,7 @@
 			},
 			//图标大小
 			iconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.size) == "string") {
 						size = this.icon.size;
@@ -129,9 +129,19 @@
 				}
 				return size;
 			},
+			//图标颜色
+			iconColor(){
+				let color = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.color) == "string") {
+						color = this.icon.color;
+					}
+				}
+				return color;
+			},
 			//通知样式
 			notifyStyle(){
-				var style = {};
+				let style = {};
 				style.zIndex = this.computedZIndex;
 				if(this.computedBackground){
 					style.backgroundColor = this.computedBackground;
@@ -148,7 +158,7 @@
 		watch:{
 			amounts(newValue){
 				if(this.computedTimeout>0){
-					var timer = setTimeout(()=>{
+					let timer = setTimeout(()=>{
 						this.show = false;
 					},this.computedTimeout)
 					this.timers.push(timer);

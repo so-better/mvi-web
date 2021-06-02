@@ -67,7 +67,7 @@
 				return style;
 			},
 			iconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.type) == "string") {
 						t = this.icon.type;
@@ -78,7 +78,7 @@
 				return t;
 			},
 			iconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.url) == "string") {
 						url = this.icon.url;
@@ -87,7 +87,7 @@
 				return url;
 			},
 			iconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.spin) == "boolean") {
 						spin = this.icon.spin;
@@ -96,7 +96,7 @@
 				return spin;
 			},
 			iconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.icon)) {
 					if (typeof(this.icon.size) == "string") {
 						size = this.icon.size;
@@ -104,10 +104,19 @@
 				}
 				return size;
 			},
+			iconColor(){
+				let color = null;
+				if ($util.isObject(this.icon)) {
+					if (typeof(this.icon.color) == "string") {
+						color = this.icon.color;
+					}
+				}
+				return color;
+			},
 			//tab在tabs中的序列值
 			tabIndex() {
-				var index = 0;
-				for (var i = 0; i < this.tabs.children.length; i++) {
+				let index = 0;
+				for (let i = 0; i < this.tabs.children.length; i++) {
 					if (this.tabs.children[i] == this) {
 						index = i;
 						break;

@@ -22,6 +22,10 @@
 			size:{
 				type:String,
 				default:null
+			},
+			color:{
+				type:String,
+				default:null
 			}
 		},
 		computed:{
@@ -40,8 +44,10 @@
 					if(this.size){
 						style.fontSize = this.size;
 					}
+					if(this.color){
+						style.color = this.color;
+					}
 				}
-				
 				return style;
 			}
 		}

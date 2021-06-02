@@ -6,7 +6,7 @@
 		<div @click="leftClick" class="mvi-input-left-icon" v-if="$slots.left || leftIconUrl || leftIconType">
 			<slot name="left" v-if="$slots.left"></slot>
 			<m-icon v-else-if="leftIconUrl || leftIconType" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin"
-			 :class="leftIconClass?leftIconClass:''" :size="leftIconSize" />
+			 :class="leftIconClass?leftIconClass:''" :size="leftIconSize" :color="leftIconColor"/>
 		</div>
 		<!-- 左侧文本 -->
 		<div :class="'mvi-input-label'+(labelClass?' '+labelClass:'')" v-if="label" :style="labelStyle">
@@ -28,7 +28,7 @@
 		<div @click="rightClick" class="mvi-input-right-icon" v-if="$slots.right || (rightIconUrl || rightIconType)">
 			<slot name="right" v-if="$slots.right"></slot>
 			<m-icon v-else-if="rightIconUrl || rightIconType" ref="rightIcon" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin"
-			 :class="rightIconClass?rightIconClass:''"  :size="rightIconSize" />
+			 :class="rightIconClass?rightIconClass:''"  :size="rightIconSize" :color="rightIconColor" />
 		</div>
 		<!-- 显示文字长度限制 -->
 		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{inputValue.length}}/{{maxlength}}</div>
@@ -202,7 +202,7 @@
 				return Object.assign({}, this.$listeners)
 			},
 			leftIconType() {
-				var type = null;
+				let type = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.type) == "string") {
 						type = this.leftIcon.type;
@@ -213,7 +213,7 @@
 				return type;
 			},
 			leftIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.url) == "string") {
 						url = this.leftIcon.url;
@@ -222,7 +222,7 @@
 				return url;
 			},
 			leftIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.spin) == "boolean") {
 						spin = this.leftIcon.spin;
@@ -231,7 +231,7 @@
 				return spin;
 			},
 			leftIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.size) == "string") {
 						size = this.leftIcon.size;
@@ -239,8 +239,17 @@
 				}
 				return size;
 			},
+			leftIconColor(){
+				let color = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.color) == "string") {
+						color = this.leftIcon.color;
+					}
+				}
+				return color;
+			},
 			rightIconType() {
-				var type = null;
+				let type = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.type) == "string") {
 						type = this.rightIcon.type;
@@ -251,7 +260,7 @@
 				return type;
 			},
 			rightIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.url) == "string") {
 						url = this.rightIcon.url;
@@ -260,7 +269,7 @@
 				return url;
 			},
 			rightIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.spin) == "boolean") {
 						spin = this.rightIcon.spin;
@@ -269,7 +278,7 @@
 				return spin;
 			},
 			rightIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.size) == "string") {
 						size = this.rightIcon.size;
@@ -277,9 +286,18 @@
 				}
 				return size;
 			},
+			rightIconColor(){
+				let color = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.color) == "string") {
+						color = this.rightIcon.color;
+					}
+				}
+				return color;
+			},
 			//输入框的type值
 			inputType() {
-				var type = 'text';
+				let type = 'text';
 				if (this.isDatePicker || this.type == 'number') {
 					type = 'text';
 				} else {
@@ -288,7 +306,7 @@
 				return type;
 			},
 			computedInputMode(){
-				var mode = false;
+				let mode = false;
 				if(typeof this.inputMode == 'string'){
 					mode = this.inputMode
 				}
@@ -296,7 +314,7 @@
 			},
 			//datepicker组件的type值
 			dateType() {
-				var type = "date";
+				let type = "date";
 				if (this.isDatePicker) {
 					type = this.type;
 				}
@@ -312,7 +330,7 @@
 			},
 			//输入框的值
 			inputValue() {
-				var value = this.value.toString();
+				let value = this.value.toString();
 				if (this.isDatePicker) {
 					value = this.getDateValue();
 				} else if(this.type == 'number'){
@@ -334,7 +352,7 @@
 			},
 			//文本域的rows
 			rowsFilter() {
-				var rows = this.rows;
+				let rows = this.rows;
 				if ($util.isObject(this.autosize)) {
 					if ($util.isNumber(this.autosize.minRows)) {
 						if (this.rows < this.autosize.minRows) {
@@ -351,7 +369,7 @@
 			},
 			//label的样式
 			labelStyle() {
-				var style = {};
+				let style = {};
 				if (this.labelWidth) {
 					style.width = this.labelWidth;
 				}
@@ -371,7 +389,7 @@
 			},
 			//输入框样式
 			inputStyle() {
-				var style = {};
+				let style = {};
 				if (this.inputAlign) {
 					style.textAlign = this.inputAlign;
 				}
@@ -379,7 +397,7 @@
 			},
 			//文本域样式
 			textareaStyle() {
-				var style = {};
+				let style = {};
 				if (this.inputAlign) {
 					style.textAlign = this.inputAlign;
 				}

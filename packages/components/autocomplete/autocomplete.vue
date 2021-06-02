@@ -2,7 +2,7 @@
 	<div :data-id="'mvi-autocomplete-'+_uid" :class="autocompleteClass" :disabled="disabled">
 		<div :class="targetClass" :style="targetStyle" :data-id="'mvi-autocomplete-target-'+_uid" ref="target">
 			<div @click="leftClick" v-if="leftIconType ||　leftIconUrl" class="mvi-autocomplete-left-icon">
-				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize"/>
+				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor"/>
 			</div>
 			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" 
 			:style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off"/>
@@ -10,7 +10,7 @@
 				<m-icon type="times-o" />
 			</div>
 			<div class="mvi-autocomplete-right-icon" v-if="rightIconType ||　rightIconUrl" @click="rightClick">
-				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize"/>
+				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor"/>
 			</div>
 		</div>
 		<m-layer :show="show" :target="`[data-id='mvi-autocomplete-target-${_uid}']`" 
@@ -164,7 +164,7 @@
 				return this.focus && this.computedFilter.length != 0
 			},
 			leftIconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.type) == "string") {
 						t = this.leftIcon.type;
@@ -175,7 +175,7 @@
 				return t;
 			},
 			leftIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.url) == "string") {
 						url = this.leftIcon.url;
@@ -184,7 +184,7 @@
 				return url;
 			},
 			leftIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.spin) == "boolean") {
 						spin = this.leftIcon.spin;
@@ -193,7 +193,7 @@
 				return spin;
 			},
 			leftIconSize() {
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.size) == "string") {
 						size = this.leftIcon.size;
@@ -201,8 +201,17 @@
 				}
 				return size;
 			},
+			leftIconColor() {
+				let color = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.color) == "string") {
+						color = this.leftIcon.color;
+					}
+				}
+				return color;
+			},
 			rightIconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.type) == "string") {
 						t = this.rightIcon.type;
@@ -213,7 +222,7 @@
 				return t;
 			},
 			rightIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.url) == "string") {
 						url = this.rightIcon.url;
@@ -222,7 +231,7 @@
 				return url;
 			},
 			rightIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.spin) == "boolean") {
 						spin = this.rightIcon.spin;
@@ -231,13 +240,22 @@
 				return spin;
 			},
 			rightIconSize() {
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.size) == "string") {
 						size = this.rightIcon.size;
 					}
 				}
 				return size;
+			},
+			rightIconColor() {
+				let color = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.color) == "string") {
+						color = this.rightIcon.color;
+					}
+				}
+				return color;
 			},
 			showClearIcon(){
 				if(this.value &&　this.focus){
@@ -247,14 +265,14 @@
 				}
 			},
 			clearStyle(){
-				var style = {}
+				let style = {}
 				if(this.rightIconType || this.rightIconUrl){
 					style.borderRadius = 0;
 				}
 				return style
 			},
 			menuStyle(){
-				var style = {};
+				let style = {};
 				if(this.height){
 					style.maxHeight = this.height;
 				}
@@ -270,7 +288,7 @@
 				}
 			},
 			inputStyle(){
-				var style = {}
+				let style = {}
 				if(this.leftIconType || this.leftIconUrl){
 					style.paddingLeft = 0;
 				}
@@ -285,7 +303,7 @@
 				return style
 			},
 			autocompleteClass(){
-				var cls = 'mvi-autocomplete mvi-autocomplete-'+this.size;
+				let cls = 'mvi-autocomplete mvi-autocomplete-'+this.size;
 				if(this.round){
 					cls += ' mvi-autocomplete-round'
 				}else if(this.square){
@@ -294,14 +312,14 @@
 				return cls;
 			},
 			targetStyle(){
-				var style = {};
+				let style = {};
 				if(this.activeColor && this.focus){
 					style.borderColor = this.activeColor;
 				}
 				return style;
 			},
 			targetClass(){
-				var cls = 'mvi-autocomplete-target';
+				let cls = 'mvi-autocomplete-target';
 				if(this.activeType && !this.activeColor && this.focus){
 					cls += ' mvi-autocomplete-'+this.activeType;
 				}

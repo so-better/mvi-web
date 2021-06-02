@@ -10,9 +10,14 @@ class Scroll {
 		}
 		this.top = options.top;
 		this.bottom = options.bottom;
+		this.hasInit = false; //是否已经初始化
 	}
 	
 	init(){
+		if (this.hasInit) {
+			return;
+		}
+		this.hasInit = true;
 		if(!$util.isElement(this.$el)){
 			this.$el = window;
 		}
@@ -22,7 +27,7 @@ class Scroll {
 		if(typeof(this.bottom)!="function"){
 			this.bottom = function(){};
 		}
-		$util.scrollTopBottomTrigger(this.$el,(res)=>{
+		$util.scrollTopBottomTrigger(this.$el,res=>{
 			if(res.state == 'top'){
 				this.top(res.target)
 			}else {

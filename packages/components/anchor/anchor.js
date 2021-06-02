@@ -31,10 +31,10 @@ class Anchor {
 		}
 		
 		if(!$util.isElement(this.$el)){
-			throw new Error("点击的元素非节点对象");
+			throw new TypeError("The element you click on is not a node element");
 		}
 		if(!$util.isElement(this.$target)){
-			throw new Error("锚点元素非节点对象");
+			throw new TypeError("Anchor element is not a node element");
 		}
 		if (!$util.isNumber(this.time)) {
 			this.time = 0;

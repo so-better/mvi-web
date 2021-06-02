@@ -35,7 +35,7 @@ class Upload {
 		}
 		this.hasInit = true;
 		if (!$util.isElement(this.$el)) {
-			throw new Error("文件选择按钮el元素未指定");
+			throw new TypeError("The upload element is not specified");
 		}
 		if (!(this.allowedFileType instanceof Array)) {
 			this.allowedFileType = [];

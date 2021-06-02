@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-resize.draggableX="options" style="position: absolute;width: 2rem;height: 2rem;border: 1px solid #DDDDDD;"></div>
+		<div v-resize.draggableX="options" style="position: absolute;width: 2rem;height: 2rem;border: 1px solid #ccc;"></div>
 	</div>
 </template>
 
@@ -11,7 +11,7 @@
 			return {
 				options:{
 					draggableX:false,
-					draggableY:false
+					draggableY:true
 				}
 			}
 		}

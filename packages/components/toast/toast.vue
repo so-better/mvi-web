@@ -4,7 +4,7 @@
 		<div :class="['mvi-toast',toastMessage?'':'mvi-toast-iconless']" :style="toastStyle" v-on="listeners">
 			<div class="mvi-toast-icon">
 				<m-loading :color="toastColor?toastColor:'#fff'" v-if="toastType=='loading' && (!toastIcon.type && !toastIcon.url)" :type="0" :size="toastIcon.size"/>
-				<m-icon v-else :type="toastIcon.type" :url="toastIcon.url" :spin="toastIcon.spin" :size="toastIcon.size" />
+				<m-icon v-else :type="toastIcon.type" :url="toastIcon.url" :spin="toastIcon.spin" :size="toastIcon.size" :color="toastIcon.color" />
 			</div>
 			<div v-if="toastMessage" class="mvi-toast-message" v-html="toastMessage"></div>
 		</div>
@@ -58,7 +58,8 @@
 					type:this.defaultIconType,
 					url:null,
 					spin:false,
-					size:'0.72rem'
+					size:'0.72rem',
+					color:null
 				}
 				if(typeof this.icon == 'string' && this.icon){
 					icon.type = this.icon;
@@ -74,6 +75,9 @@
 					}
 					if(typeof this.icon.size == 'string' && this.icon.size){
 						icon.size = this.icon.size;
+					}
+					if(typeof this.icon.color == 'string' && this.icon.color){
+						icon.color = this.icon.color;
 					}
 				}
 				return icon;

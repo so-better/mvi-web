@@ -5,11 +5,11 @@
 			@click="doSelect(item,index)" :style="dropdownItemStyle(item,index)">
 				<div class="mvi-dropdown-item-label">
 					<m-icon v-if="item.icon" :type="iconType(item.icon)" :url="iconUrl(item.icon)" 
-					:spin="iconSpin(item.icon)" class="mvi-dropdown-icon" :size="iconSize(item.icon)"/>
+					:spin="iconSpin(item.icon)" class="mvi-dropdown-icon" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
 					<span class="mvi-dropdown-label-text" v-text="(item.label?item.label:'')"></span>
 				</div>
 				<div v-if="equalValue(item,index)" class="mvi-dropdown-item-checked" :data-placement="placement">
-					<m-icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" :size="selectIconSize"/>
+					<m-icon :type="selectIconType" :url="selectIconUrl" :spin="selectIconSpin" :size="selectIconSize" :color="selectIconColor"/>
 				</div>
 			</div>
 		</div>
@@ -54,7 +54,7 @@
 			},
 			selectIcon:{//自定义右侧选中的图标
 				type:[String,Object],
-				default:'success'
+				default:null
 			},
 			show:{
 				type:Boolean,
@@ -107,7 +107,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			selectIconType() {
-				var t = null;
+				let t = 'success';
 				if ($util.isObject(this.selectIcon)) {
 					if (typeof(this.selectIcon.type) == "string") {
 						t = this.selectIcon.type;
@@ -118,7 +118,7 @@
 				return t;
 			},
 			selectIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.selectIcon)) {
 					if (typeof(this.selectIcon.url) == "string") {
 						url = this.selectIcon.url;
@@ -127,7 +127,7 @@
 				return url;
 			},
 			selectIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.selectIcon)) {
 					if (typeof(this.selectIcon.spin) == "boolean") {
 						spin = this.selectIcon.spin;
@@ -136,7 +136,7 @@
 				return spin;
 			},
 			selectIconSize() {
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.selectIcon)) {
 					if (typeof(this.selectIcon.size) == "string") {
 						size = this.selectIcon.size;
@@ -144,9 +144,18 @@
 				}
 				return size;
 			},
+			selectIconColor() {
+				let color = null;
+				if ($util.isObject(this.selectIcon)) {
+					if (typeof(this.selectIcon.color) == "string") {
+						color = this.selectIcon.color;
+					}
+				}
+				return color;
+			},
 			iconType(){
-				return (icon)=>{
-					var t = null;
+				return icon=>{
+					let t = null;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.type) == "string") {
 							t = icon.type;
@@ -158,8 +167,8 @@
 				}
 			},
 			iconUrl() {
-				return (icon)=>{
-					var url = null;
+				return icon=>{
+					let url = null;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.url) == "string") {
 							url = icon.url;
@@ -169,8 +178,8 @@
 				}
 			},
 			iconSpin() {
-				return (icon)=>{
-					var spin = false;
+				return icon=>{
+					let spin = false;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.spin) == "boolean") {
 							spin = icon.spin;
@@ -180,14 +189,25 @@
 				}
 			},
 			iconSize(){
-				return (icon)=>{
-					var size = null;
+				return icon=>{
+					let size = null;
 					if ($util.isObject(icon)) {
 						if (typeof(icon.size) == "string") {
 							size = icon.size;
 						}
 					}
 					return size;
+				}
+			},
+			iconColor(){
+				return icon=>{
+					let color = null;
+					if ($util.isObject(icon)) {
+						if (typeof(icon.color) == "string") {
+							color = icon.color;
+						}
+					}
+					return color;
 				}
 			},
 			//判断是否选中项
@@ -202,7 +222,7 @@
 				}
 			},
 			itemDisabled(){
-				return (item)=>{
+				return item=>{
 					if(typeof(item.disabled) == 'boolean'){
 						return item.disabled;
 					}else{
@@ -212,7 +232,7 @@
 			},
 			dropdownItemStyle(){
 				return (item,index)=>{
-					var style = {}
+					let style = {}
 					if(!this.itemDisabled(item)){
 						//激活选中情况下
 						if(this.equalValue(item,index)){
@@ -230,7 +250,7 @@
 			},
 			dropdownItemClass(){
 				return (item,index)=>{
-					var cls = 'mvi-dropdown-item';
+					let cls = 'mvi-dropdown-item';
 					if(this.itemClass){
 						if(item.class){
 							cls += ' '+item.class;

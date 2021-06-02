@@ -11,9 +11,11 @@ export default {
 		return {
 			options:{
 				top: el => {
+					this.$msgbox('到底顶部')
 					console.log('到达顶部');
 				},
 				bottom: el => {
+					this.$msgbox('到达底部')
 					console.log('到达底部');
 				}
 			}

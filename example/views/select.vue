@@ -4,8 +4,8 @@
 		
 		<m-select square class="mvi-mb-2" disabled v-model="value2" :options="options" placeholder="请选择"></m-select>
 		
-		<m-select class="mvi-mb-2" icon="angle-down" round active-type="success" size="large" v-model="value" :options="options" placeholder="请选择" multiple :filter-method="filter"></m-select>
-		<m-modal show>
+		<m-select class="mvi-mb-2" icon="angle-down" :selected-icon="{color:'#ff3300',type:'success-o'}" round active-type="success" size="large" v-model="value" :options="options" placeholder="请选择" multiple :filter-method="filter"></m-select>
+		<m-modal >
 			<m-select fixed fixed-auto class="mvi-mb-2" size="small" v-model="value2" :options="options" placeholder="请选择"></m-select>
 		</m-modal>
 	</div>

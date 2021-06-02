@@ -23,12 +23,12 @@ class Drag {
 	//初始化
 	init(){
 		if (this.hasInit) {
-			throw new Error("drag组件已初始化,无需重复初始化");
+			return;
 		}
 		this.hasInit = true;
 		
 		if (!$util.isElement(this.$el)) {
-			throw new Error("需要拖拽的对象不是一个元素节点");
+			throw new TypeError("The element that needs to be dragged is not a node element");
 		}
 		if (typeof(this.$container) == "string" && this.$container) {
 			this.$container = document.body.querySelector(this.$container);
@@ -37,7 +37,7 @@ class Drag {
 			this.$container = document.body;
 		}
 		if (!$util.isContains(this.$container, this.$el)) {
-			throw new Error("需要拖拽的对象非容器对象的子孙节点");
+			throw new Error("Elements that need to be dragged are not descendants of container elements");
 		}
 		if ($util.getCssStyle(this.$container, "position") == "static") {
 			this.$container.style.position = "relative";

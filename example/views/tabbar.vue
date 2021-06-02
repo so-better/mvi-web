@@ -15,7 +15,9 @@ export default {
 				{
 					value: 0,
 					name: '首页',
-					icon:'home'
+					icon:{
+						type:'home'
+					}
 				},
 				{
 					value: 1,

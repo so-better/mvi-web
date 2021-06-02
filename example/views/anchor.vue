@@ -17,6 +17,7 @@ export default {
 				target: '#target',
 				root: '#app',
 				time: 400,
+				distance:2,
 				callback: () => {
 					this.$msgbox('定位结束');
 				}

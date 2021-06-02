@@ -3,7 +3,7 @@
 	 @mousedown="startPull2">
 		<div v-show="elShow" ref="refresh" class="mvi-pull-refresh-el" :style="elStyle">
 			<slot name="el" v-if="$scopedSlots.el" :status="status"></slot>
-			<m-icon v-if="!$scopedSlots.el" :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" />
+			<m-icon v-if="!$scopedSlots.el" :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
 			<span v-if="!$scopedSlots.el" class="mvi-pull-refresh-text" v-text="message"></span>
 		</div>
 		<slot></slot>
@@ -54,15 +54,15 @@
 			},
 			pullingIcon: {
 				type: [String, Object],
-				default: 'arrow-down'
+				default: null
 			},
 			loosingIcon: {
 				type: [String, Object],
-				default: 'arrow-up'
+				default: null
 			},
 			loadingIcon: {
 				type: [String, Object],
-				default: 'load-e'
+				default: null
 			},
 			disabled: {
 				type: Boolean,
@@ -98,7 +98,7 @@
 				return Object.assign({}, this.$listeners)
 			},
 			elStyle() {
-				var style = {};
+				let style = {};
 				style.transform = 'translateY(' + this.transformY + 'px)';
 				if (this.color) {
 					style.color = this.color;
@@ -121,21 +121,24 @@
 						type: this.pullingIconType,
 						spin: this.pullingIconSpin,
 						url: this.pullingIconUrl,
-						size:this.pullingIconSize
+						size:this.pullingIconSize,
+						color:this.pullingIconColor
 					}
 				} else if (this.status == 1) {
 					return {
 						type: this.loosingIconType,
 						spin: this.loosingIconSpin,
 						url: this.loosingIconUrl,
-						size:this.loosingIconSize
+						size:this.loosingIconSize,
+						color:this.loosingIconColor
 					}
 				} else if (this.status == 2) {
 					return {
 						type: this.loadingIconType,
 						spin: this.loadingIconSpin,
 						url: this.loadingIconUrl,
-						size:this.loadingIconSize
+						size:this.loadingIconSize,
+						color:this.loadingIconColor
 					}
 				}
 			},
@@ -149,7 +152,7 @@
 				}
 			},
 			pullingIconType() {
-				var t = null;
+				let t = 'arrow-down';
 				if ($util.isObject(this.pullingIcon)) {
 					if (typeof(this.pullingIcon.type) == "string") {
 						t = this.pullingIcon.type;
@@ -160,7 +163,7 @@
 				return t;
 			},
 			pullingIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.pullingIcon)) {
 					if (typeof(this.pullingIcon.url) == "string") {
 						url = this.pullingIcon.url;
@@ -169,7 +172,7 @@
 				return url;
 			},
 			pullingIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.pullingIcon)) {
 					if (typeof(this.pullingIcon.spin) == "boolean") {
 						spin = this.pullingIcon.spin;
@@ -178,7 +181,7 @@
 				return spin;
 			},
 			pullingIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.pullingIcon)) {
 					if (typeof(this.pullingIcon.size) == "string") {
 						size = this.pullingIcon.size;
@@ -186,8 +189,17 @@
 				}
 				return size;
 			},
+			pullingIconColor(){
+				let color = null;
+				if ($util.isObject(this.pullingIcon)) {
+					if (typeof(this.pullingIcon.color) == "string") {
+						color = this.pullingIcon.color;
+					}
+				}
+				return color;
+			},
 			loosingIconType() {
-				var t = null;
+				let t = 'arrow-up';
 				if ($util.isObject(this.loosingIcon)) {
 					if (typeof(this.loosingIcon.type) == "string") {
 						t = this.loosingIcon.type;
@@ -198,7 +210,7 @@
 				return t;
 			},
 			loosingIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.loosingIcon)) {
 					if (typeof(this.loosingIcon.url) == "string") {
 						url = this.loosingIcon.url;
@@ -207,7 +219,7 @@
 				return url;
 			},
 			loosingIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.loosingIcon)) {
 					if (typeof(this.loosingIcon.spin) == "boolean") {
 						spin = this.loosingIcon.spin;
@@ -216,7 +228,7 @@
 				return spin;
 			},
 			loosingIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.loosingIcon)) {
 					if (typeof(this.loosingIcon.size) == "string") {
 						size = this.loosingIcon.size;
@@ -224,8 +236,17 @@
 				}
 				return size;
 			},
+			loosingIconColor(){
+				let color = null;
+				if ($util.isObject(this.loosingIcon)) {
+					if (typeof(this.loosingIcon.color) == "string") {
+						color = this.loosingIcon.color;
+					}
+				}
+				return color;
+			},
 			loadingIconType() {
-				var t = null;
+				let t = 'load-e';
 				if ($util.isObject(this.loadingIcon)) {
 					if (typeof(this.loadingIcon.type) == "string") {
 						t = this.loadingIcon.type;
@@ -236,7 +257,7 @@
 				return t;
 			},
 			loadingIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.loadingIcon)) {
 					if (typeof(this.loadingIcon.url) == "string") {
 						url = this.loadingIcon.url;
@@ -245,7 +266,7 @@
 				return url;
 			},
 			loadingIconSpin() {
-				var spin = true;
+				let spin = true;
 				if ($util.isObject(this.loadingIcon)) {
 					if (typeof(this.loadingIcon.spin) == "boolean") {
 						spin = this.loadingIcon.spin;
@@ -254,13 +275,22 @@
 				return spin;
 			},
 			loadingIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.loadingIcon)) {
 					if (typeof(this.loadingIcon.size) == "string") {
 						size = this.loadingIcon.size;
 					}
 				}
 				return size;
+			},
+			loadingIconColor(){
+				let color = null;
+				if ($util.isObject(this.loadingIcon)) {
+					if (typeof(this.loadingIcon.color) == "string") {
+						color = this.loadingIcon.color;
+					}
+				}
+				return color;
 			}
 		},
 		mounted() {

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-collapse v-model="value" accordion no-wrap open-arrow="arrow-down" close-arrow="arrow-up" :timeout="800">
+		<m-collapse v-model="value" accordion no-wrap open-arrow="arrow-down" close-arrow="arrow-up" :timeout="300">
 		    <m-collapse-item title="标题1标题1标题1标题1标题1标题1标题1标题1" label="这是一个简单的标题这是一个简单的标题这是一个简单的标题这是一个简单的标题这是一个简单的标题">
 		        风萧萧兮易水寒
 		    </m-collapse-item>

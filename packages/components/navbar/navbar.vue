@@ -3,7 +3,7 @@
 		<div @click="leftClick" :class="'mvi-navbar-left'+(leftClass?' '+leftClass:'')" :style="leftStyle" v-if="leftIconType||leftIconUrl||$slots.left||leftText">
 			<slot name="left" v-if="$slots.left"></slot>
 			<m-icon :class="(leftText?'mvi-navbar-left-icon':'')" v-if="(leftIconType||leftIconUrl) && !$slots.left" :type="leftIconType"
-			:url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" />
+			:url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
 			<span class="mvi-navbar-left-text" v-if="leftText && !$slots.left" v-text="leftText"></span>
 		</div>
 		<div @click="titleClick" class="mvi-navbar-center" :style="centerStyle" v-if="$slots.title||title">
@@ -17,7 +17,7 @@
 			<slot name="right" v-if="$slots.right"></slot>
 			<span class="mvi-navbar-right-text" v-if="rightText && !$slots.right" v-text="rightText"></span>
 			<m-icon :class="(rightText?'mvi-navbar-right-icon':'')" v-if="(rightIconType||rightIconSpin) && !$slots.right"
-			:type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" />
+			:type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
 		</div>
 	</div>
 </template>
@@ -77,7 +77,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			leftStyle(){
-				var style = {};
+				let style = {};
 				if(this.title || this.$slots.title){
 					style.width = '20%';
 				}else if(this.rightIconType||this.rightIconUrl||this.$slots.right||this.rightText){
@@ -88,7 +88,7 @@
 				return style;
 			},
 			rightStyle(){
-				var style = {};
+				let style = {};
 				if(this.title || this.$slots.title){
 					style.width = '20%';
 				}else if(this.leftIconType||this.leftIconUrl||this.$slots.left||this.leftText){
@@ -99,7 +99,7 @@
 				return style;
 			},
 			leftIconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.type) == "string") {
 						t = this.leftIcon.type;
@@ -110,7 +110,7 @@
 				return t;
 			},
 			leftIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.url) == "string") {
 						url = this.leftIcon.url;
@@ -119,7 +119,7 @@
 				return url;
 			},
 			leftIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.spin) == "boolean") {
 						spin = this.leftIcon.spin;
@@ -128,7 +128,7 @@
 				return spin;
 			},
 			leftIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.leftIcon)) {
 					if (typeof(this.leftIcon.size) == "string") {
 						size = this.leftIcon.size;
@@ -136,8 +136,17 @@
 				}
 				return size;
 			},
+			leftIconColor(){
+				let color = null;
+				if ($util.isObject(this.leftIcon)) {
+					if (typeof(this.leftIcon.color) == "string") {
+						color = this.leftIcon.color;
+					}
+				}
+				return color;
+			},
 			rightIconType() {
-				var t = null;
+				let t = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.type) == "string") {
 						t = this.rightIcon.type;
@@ -148,7 +157,7 @@
 				return t;
 			},
 			rightIconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.url) == "string") {
 						url = this.rightIcon.url;
@@ -157,7 +166,7 @@
 				return url;
 			},
 			rightIconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.spin) == "boolean") {
 						spin = this.rightIcon.spin;
@@ -166,7 +175,7 @@
 				return spin;
 			},
 			rightIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.rightIcon)) {
 					if (typeof(this.rightIcon.size) == "string") {
 						size = this.rightIcon.size;
@@ -174,8 +183,17 @@
 				}
 				return size;
 			},
+			rightIconColor(){
+				let color = null;
+				if ($util.isObject(this.rightIcon)) {
+					if (typeof(this.rightIcon.color) == "string") {
+						color = this.rightIcon.color;
+					}
+				}
+				return color;
+			},
 			navbarClass(){
-				var cls = 'mvi-navbar';
+				let cls = 'mvi-navbar';
 				if(this.fixed){
 					cls += ' mvi-navbar-fixed';
 				}
@@ -185,7 +203,7 @@
 				return cls;
 			},
 			centerStyle(){
-				var style = {};
+				let style = {};
 				if((this.rightIconType||this.rightIconUrl||this.$slots.right||this.rightText) || (this.leftIconType||this.leftIconUrl||this.$slots.left||this.leftText)){
 					style.width = '60%';
 				} else{

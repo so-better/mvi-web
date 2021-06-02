@@ -6,8 +6,8 @@
 			<!-- 弹出层 -->
 			<div v-if="firstShow" v-show="popupShow" :class="popupClass"  :style="popupStyle" v-on="listeners">
 				<!-- 关闭图标 -->
-				<div v-if="showTimes" :class="'mvi-popup-times mvi-popup-times-'+timesPlacement" :style="'opacity:'+(iconUrl?'':'.5')">
-					<m-icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" />
+				<div v-if="showTimes" :class="'mvi-popup-times mvi-popup-times-'+timesPlacement">
+					<m-icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor"/>
 				</div>
 				<!-- 正文内容 -->
 				<div :class="'mvi-popup-content'+(showTimes?' mvi-popup-content-padding':'')">
@@ -46,7 +46,7 @@
 			},
 			timesIcon:{//自定义关闭按钮
 				type:[String,Object],
-				default:"times"
+				default:null
 			},
 			show:{//显示与否
 				type:Boolean,
@@ -105,7 +105,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			iconType() {
-				var t = null;
+				let t = "times";
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.type) == "string") {
 						t = this.timesIcon.type;
@@ -116,7 +116,7 @@
 				return t;
 			},
 			iconUrl() {
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.url) == "string") {
 						url = this.timesIcon.url;
@@ -125,7 +125,7 @@
 				return url;
 			},
 			iconSpin() {
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.spin) == "boolean") {
 						spin = this.timesIcon.spin;
@@ -134,7 +134,7 @@
 				return spin;
 			},
 			iconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.timesIcon)) {
 					if (typeof(this.timesIcon.size) == "string") {
 						size = this.timesIcon.size;
@@ -142,9 +142,18 @@
 				}
 				return size;
 			},
+			iconColor(){
+				let color = null;
+				if ($util.isObject(this.timesIcon)) {
+					if (typeof(this.timesIcon.color) == "string") {
+						color = this.timesIcon.color;
+					}
+				}
+				return color;
+			},
 			//弹出层类
 			popupClass(){
-				var cls = 'mvi-popup mvi-popup-'+this.placement;
+				let cls = 'mvi-popup mvi-popup-'+this.placement;
 				if(this.round){
 					cls += " mvi-popup-round";
 				}
@@ -152,7 +161,7 @@
 			},
 			//弹出层样式
 			popupStyle(){
-				var style = {};
+				let style = {};
 				if(this.placement == 'left' || this.placement == 'right'){
 					if(this.width){
 						style.width = this.width;
@@ -333,6 +342,7 @@
 		height: @mini-height;
 		width: 100%;
 		cursor: pointer;
+		color: @font-color-mute;
 	}
 	
 	.mvi-popup-times.mvi-popup-times-top-right,.mvi-popup-times.mvi-popup-times-bottom-right{

@@ -14,10 +14,15 @@ class Observe {
 		this.attributeNames = options.attributeNames;//监听元素属性变更时定义监听的属性名称数组
 		this.attributesChange = options.attributesChange; //属性变化触发的方法
 		this.childNodesChange = options.childNodesChange;//子孙节点变化触发的方法
+		this.hasInit = false; //是否已经初始化
 	}
 
 	//初始化方法
 	init() {
+		if (this.hasInit) {
+			return;
+		}
+		this.hasInit = true;
 		try{
 			if(typeof(this.attributes) != 'boolean'){
 				this.attributes = false;
@@ -39,9 +44,9 @@ class Observe {
 			}
 			
 			let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-			let observer = new MutationObserver((mutationList)=>{
+			let observer = new MutationObserver(mutationList=>{
 				var length = mutationList.length;
-				for(var i=0;i<length;i++){
+				for(var i = 0;i<length;i++){
 					//监听属性
 					if(this.attributes){
 						this.attributesChange(mutationList[i].attributeName,mutationList[i].oldValue,this.$el.getAttribute(mutationList[i].attributeName));
@@ -63,7 +68,7 @@ class Observe {
 				observer.observe(this.$el, { attributes: this.attributes, childList:this.childList, subtree:this.subtree})
 			}
 		}catch(e){
-			throw new Error('监听失败，你的浏览器可能不支持，或者childList、attributes都为false，即无对象可监听');
+			throw new Error('Listening failed. Your browser may not support it, or childList and attributes are false, meaning there are no objects to listen on');
 		}
 	}
 }

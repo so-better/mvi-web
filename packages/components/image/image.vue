@@ -3,12 +3,12 @@
 		<!-- 加载中 -->
 		<div v-if="(loading || lazying)&&showLoading" class="mvi-image-loading">
 			<slot name="loading" v-if="$slots.loading"></slot>
-			<m-icon v-else :type="loadIconType" :url="loadIconUrl" :spin="loadIconSpin" :size="loadIconSize" />
+			<m-icon v-else :type="loadIconType" :url="loadIconUrl" :spin="loadIconSpin" :size="loadIconSize" :color="loadIconColor" />
 		</div>
 		<!-- 加载失败 -->
 		<div v-else-if="error&&showError" class="mvi-image-error" ref="error">
 			<slot name="error" v-if="$slots.error"></slot>
-			<m-icon v-else :type="errorIconType" :url="errorIconUrl" :spin="errorIconSpin" :size="errorIconSize" />
+			<m-icon v-else :type="errorIconType" :url="errorIconUrl" :spin="errorIconSpin" :size="errorIconSize" :color="errorIconColor" />
 		</div>
 		<!-- 加载成功 -->
 		<img @load="loadSuccess" @error="loadError" :src="computedSrc" :alt="showError?'':alt"
@@ -86,7 +86,7 @@
 				return Object.assign({}, this.$listeners);
 			},
 			loadIconType(){
-				var type = 'image-alt';
+				let type = 'image-alt';
 				if ($util.isObject(this.loadIcon)) {
 					if (typeof(this.loadIcon.type) == "string") {
 						type = this.loadIcon.type;
@@ -97,7 +97,7 @@
 				return type;
 			},
 			loadIconUrl(){
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.loadIcon)) {
 					if (typeof(this.loadIcon.url) == "string") {
 						url = this.loadIcon.url;
@@ -106,7 +106,7 @@
 				return url;
 			},
 			loadIconSpin(){
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.loadIcon)) {
 					if (typeof(this.loadIcon.spin) == "boolean") {
 						spin = this.loadIcon.spin;
@@ -115,7 +115,7 @@
 				return spin;
 			},
 			loadIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.loadIcon)) {
 					if (typeof(this.loadIcon.size) == "string") {
 						size = this.loadIcon.size;
@@ -123,8 +123,17 @@
 				}
 				return size;
 			},
+			loadIconColor(){
+				let color = null;
+				if ($util.isObject(this.loadIcon)) {
+					if (typeof(this.loadIcon.color) == "string") {
+						color = this.loadIcon.color;
+					}
+				}
+				return color;
+			},
 			errorIconType(){
-				var type = 'image-error';
+				let type = 'image-error';
 				if ($util.isObject(this.errorIcon)) {
 					if (typeof(this.errorIcon.type) == "string") {
 						type = this.errorIcon.type;
@@ -135,7 +144,7 @@
 				return type;
 			},
 			errorIconUrl(){
-				var url = null;
+				let url = null;
 				if ($util.isObject(this.errorIcon)) {
 					if (typeof(this.errorIcon.url) == "string") {
 						url = this.errorIcon.url;
@@ -144,7 +153,7 @@
 				return url;
 			},
 			errorIconSpin(){
-				var spin = false;
+				let spin = false;
 				if ($util.isObject(this.errorIcon)) {
 					if (typeof(this.errorIcon.spin) == "boolean") {
 						spin = this.errorIcon.spin;
@@ -153,7 +162,7 @@
 				return spin;
 			},
 			errorIconSize(){
-				var size = null;
+				let size = null;
 				if ($util.isObject(this.errorIcon)) {
 					if (typeof(this.errorIcon.size) == "string") {
 						size = this.errorIcon.size;
@@ -161,9 +170,18 @@
 				}
 				return size;
 			},
+			errorIconColor(){
+				let color = null;
+				if ($util.isObject(this.errorIcon)) {
+					if (typeof(this.errorIcon.color) == "string") {
+						color = this.errorIcon.color;
+					}
+				}
+				return color;
+			},
 			//图片容器样式
 			imageStyle(){
-				var style = {}
+				let style = {}
 				if(this.round){
 					style.borderRadius = '50%'
 				}
