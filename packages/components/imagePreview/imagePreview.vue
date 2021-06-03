@@ -7,7 +7,7 @@
 			<m-swiper-slide v-for="(item,index) in images" :key="'image-'+index" @wheel="wheelImage(index,$event)" 
 			@touchstart="prviewTouchStart(index,$event)" @touchmove="previewTouchMove(index,$event)" 
 			@touchend="previewTouchend(index,$event)" :id="'mvi-preview-slide-'+index" class="mvi-preview-container">
-				<m-image @click="closeOverlay" class="mvi-image-preview" :src="item" fit="response" ref="images"></m-image>
+				<m-image :error-icon="errorIcon" :load-icon="loadIcon" @click="closeOverlay" class="mvi-image-preview" :src="item" fit="response" ref="images"></m-image>
 			</m-swiper-slide>
 			<template v-slot:indicators="data">
 				<div class="mvi-image-preview-page" v-if="showPage">
@@ -92,9 +92,25 @@
 				type: String,
 				default: null
 			},
-			usePadding: {
+			usePadding: {//局部显示是否考虑滚动条影响
 				type: Boolean,
 				default: false
+			},
+			errorIcon:{//图片加载失败提示设置
+				type:[String,Object],
+				default:function(){
+					return {
+						size:'1rem'
+					}
+				}
+			},
+			loadIcon:{//图片加载中提示设置
+				type:[String,Object],
+				default:function(){
+					return {
+						size:'1rem'
+					}
+				}
 			}
 		},
 		computed: {
