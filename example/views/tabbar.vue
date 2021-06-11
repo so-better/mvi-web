@@ -17,17 +17,20 @@ export default {
 					name: '首页',
 					icon:{
 						type:'home'
-					}
+					},
+					route:'/'
 				},
 				{
 					value: 1,
-					name: '附近',
-					icon:'map'
+					name: '单元格',
+					icon:'map',
+					route:'/cell'
 				},
 				{
 					value: 2,
-					name: '我的',
-					icon:'user'
+					name: '按钮',
+					icon:'user',
+					route:'/button'
 				}
 			]
 		}

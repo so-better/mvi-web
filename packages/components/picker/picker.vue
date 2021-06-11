@@ -129,7 +129,8 @@
 			columnStyle() {
 				return (column, index) => {
 					var style = {};
-					style.transform = `translate3d(0,calc(${this.offsets[index] || 0}px),0)`;
+					style.transform = `translate3d(0,${this.offsets[index] || 0}px,0)`;
+					style.webkitTransform = `translate3d(0,${this.offsets[index] || 0}px,0)`;
 					return style;
 				}
 			},
@@ -336,7 +337,6 @@
 				if (moveTotal > 0) {
 					if (this.offsets[this.columnIndex] >= this.crisis(this.columnIndex).max) {
 						this.$set(this.offsets, this.columnIndex, this.crisis(this.columnIndex).max);
-				
 					} else {
 						var order = this.getActive(this.offsets[this.columnIndex]);
 						this.$set(this.offsets, this.columnIndex, this.getOffset(order));
@@ -349,7 +349,6 @@
 						this.$set(this.offsets, this.columnIndex, this.getOffset(order));
 					}
 				}
-				
 				if (this.actives.length == 1) {
 					if (this.actives[0].index != this.oldActives[0].index) {
 						this.$emit('change', {
@@ -481,7 +480,6 @@
 			align-items: center;
 		}
 	}
-
 
 	.mvi-picker-active {
 		position: absolute;

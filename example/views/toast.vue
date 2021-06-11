@@ -16,8 +16,8 @@
 			toast(){
 				this.$showToast({
 					type:'success',
-					message:'支付成功'
-				//	timeout:3000
+					message:'支付成功',
+					timeout:1000
 				})
 			}
 		}

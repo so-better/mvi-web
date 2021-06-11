@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<m-navbar style="background-color: #0000FF;color: #fff;" class="mvi-mb-4" border title="淘宝网" left-icon="angle-left"></m-navbar>
+		<m-navbar style="background-color: #ff3300;color: #fff;" class="mvi-mb-4" border title="淘宝网" left-icon="angle-left"></m-navbar>
 		<m-navbar class="mvi-mb-4" border title="淘宝网" :left-icon="{type:'angle-left',color:'#ff3300'}" left-text="返回"></m-navbar>
 		<m-navbar class="mvi-mb-4" border title="淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网" left-icon="angle-left" left-text="返回" right-icon="user-alt"></m-navbar>
 		<m-navbar class="mvi-mb-4" border title="淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网淘宝网" left-icon="angle-left" left-text="返回" right-text="退出" right-icon="logout"></m-navbar>

@@ -13,6 +13,7 @@
 			return {
 				options:{
 					container:'#container',
+					mode:'out',
 					ready:data=>{
 						console.log(data)
 					}

@@ -15,18 +15,27 @@
 		name:"m-tabbar-item",
 		inject:['tabbar'],
 		props:{
+			//路由参数配置
+			route:{
+				type:[String,Object],
+				default:null
+			},
+			//图标
 			icon:{
 				type:[String,Object],
 				default:null
 			},
+			//名称
 			name:{
 				type:String,
 				default:null
 			},
+			//值
 			value:{
 				type:[String,Number],
 				default:null
 			},
+			//是否禁用
 			disabled:{
 				type:Boolean,
 				default:false
@@ -106,6 +115,45 @@
 					}
 				}
 				return style;
+			},
+			computedRoute(){
+				if(!this.route){
+					return null;
+				}
+				let route = {};
+				if(typeof this.route == 'string'){
+					route = {
+						path:this.route
+					}
+				}else if($util.isObject(this.route)){
+					//路径
+					if(typeof this.route.path == 'string' && this.route.path){
+						route.path = this.route.path;
+					}
+					//路由名称
+					if(typeof this.route.name == 'string' && this.route.name){
+						route.name = this.route.name;
+					}
+					//路由参数
+					if($util.isObject(this.route.query)){
+						route.query = this.route.query;
+					}else {
+						route.query = {};
+					}
+					//动态路由参数
+					if($util.isObject(this.route.params)){
+						route.params = this.route.params;
+					}else {
+						route.params = {};
+					}
+					//是否使用replace
+					if(typeof this.route.replace == 'boolean'){
+						route.replace = this.route.replace;
+					}else {
+						route.replace = false;
+					}
+				}
+				return route;
 			}
 		},
 		methods:{
@@ -116,6 +164,39 @@
 				}
 				if(this.tabbar.value === this.value){
 					return;
+				}
+				//如果路由存在
+				if(this.computedRoute && this.$router && this.$router.constructor.name == 'VueRouter'){
+					//path存在首先使用path
+					if(this.computedRoute.path){
+						if(this.computedRoute.replace){
+							this.$router.replace({
+								path:this.computedRoute.path,
+								query:this.computedRoute.query,
+								params:this.computedRoute.params
+							})
+						}else {
+							this.$router.push({
+								path:this.computedRoute.path,
+								query:this.computedRoute.query,
+								params:this.computedRoute.params
+							})
+						}
+					}else if(this.computedRoute.name){//使用路由名称
+						if(this.computedRoute.replace){
+							this.$router.replace({
+								name:this.computedRoute.name,
+								query:this.computedRoute.query,
+								params:this.computedRoute.params
+							})
+						}else {
+							this.$router.push({
+								name:this.computedRoute.name,
+								query:this.computedRoute.query,
+								params:this.computedRoute.params
+							})
+						}
+					}
 				}
 				this.tabbar.getActiveValue(this.value);
 			},

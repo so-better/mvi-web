@@ -17,10 +17,11 @@
 				files:[],
 				upload:null,
 				options:{
-					//accept:'image',
+					accept:'video',
 					//allowedFileType:['jpg'],
-					//multiple:true,
+					multiple:true,
 					//maxLength:2,
+					append:true,
 					extra:{
 						name:'lk'
 					},
@@ -30,6 +31,7 @@
 					},
 					error:(state,message,file)=>{
 						console.log(state,message,file)
+						this.$msgbox(message)
 					},
 					ready:Upload=>{
 						this.upload = Upload

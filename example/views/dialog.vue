@@ -14,13 +14,24 @@ export default {
 	name: 'demo-dialog',
 	methods: {
 		alert(){
-			this.$alert('好消息')
+			this.$alert({
+				title:'请求失败',
+				message:'请检查你的网络连接后重新尝试',
+				ios:true
+			})
 		},
 		confirm(){
-			this.$confirm('你确定要删除吗？')
+			this.$confirm({
+				title:'确定删除?',
+				message:'该操作可能会导致你的信息丢失',
+				ios:true
+			})
 		},
 		prompt(){
-			this.$prompt('请输入密码')
+			this.$prompt({
+				message:'请输入密码',
+				ios:true
+			})
 		},
 		Alert() {
 			this.$Alert({
@@ -29,8 +40,7 @@ export default {
 				overlayColor:'rgba(0,0,0,.7)',
 				btns:{
 					ok:{
-						type:'success',
-						plain:true
+						type:'success'
 					}
 				},
 				callback:()=>{
@@ -44,6 +54,16 @@ export default {
 				message:'此操作将永久删除该文件, 是否继续?',
 				callback:r=>{
 					console.log(r)
+				},
+				animation:'translate-right',
+				btns:{
+					ok:{
+						type:'success'
+					},
+					cancel:{
+						type:'success',
+						plain:true
+					}
 				}
 			});
 		},
