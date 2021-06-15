@@ -1,5 +1,5 @@
 <template>
-	<m-overlay ref="overlay" :show="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding"
+	<m-overlay :show="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding"
 	 :z-index="zIndex" @click.self="hide" :color="overlayColor" :timeout="timeout" :local="local">
 		<div ref="modal" class="mvi-modal" :style="modalStyle" v-on="listeners">
 			<transition :name="'mvi-modal-'+animation"  @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter"

@@ -1,5 +1,5 @@
 <template>
-	<m-overlay ref="overlay" :show="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding"
+	<m-overlay :show="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding"
 	:z-index="zIndex" @click.self="hide" :color="overlayColor?overlayColor:null" :timeout="timeout" :local="local">
 		<transition :name="'mvi-slide-'+placement"  @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" 
 	@before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">

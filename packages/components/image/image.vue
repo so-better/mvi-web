@@ -1,5 +1,5 @@
 <template>
-	<div v-on="listeners" ref="image" class="mvi-image" :style="imageStyle">
+	<div v-on="listeners" class="mvi-image" :style="imageStyle">
 		<!-- 加载中 -->
 		<div v-if="(loading || lazying)&&showLoading" class="mvi-image-loading">
 			<slot name="loading" v-if="$slots.loading"></slot>
@@ -230,16 +230,16 @@
 			//延时加载方法
 			lazyloadFun() {
 				this.lazying = true;
-				var root = null;
+				let root = null;
 				if (typeof(this.root) == 'string' && this.root) {
 					root = document.body.querySelector(this.root);
 				} else if ($util.isElement(this.root)) {
 					root = this.root;
 				}
 				//延时加载
-				var spy = new Spy(this.$refs.image, {
+				let spy = new Spy(this.$el, {
 					el: root, //根元素
-					beforeEnter: (el) => { //图片进入可视端口时加载
+					beforeEnter: el => { //图片进入可视端口时加载
 						this.lazying = false;
 						this.lazySrc = this.src;
 					}

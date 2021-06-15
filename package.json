@@ -5,7 +5,7 @@
   "author": "lingkai",
   "main": "packages/index",
   "license": "MIT",
-  "description": "一个基于Vue.js的高度自定义的前端样式框架",
+  "description": "一个基于Vue2的高度自定义的前端样式框架",
   "scripts": {
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
