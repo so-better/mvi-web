@@ -140,8 +140,6 @@
 					style.transform = 'translateX('+this.transform+'px)';
 					style.webkitTransform = 'translateX('+this.transform+'px)';
 				}
-				style.transition = 'transform '+this.speed+'ms';
-				style.webkitTransition = 'transform '+this.speed+'ms';
 				return style;
 			},
 			//swiper容器层

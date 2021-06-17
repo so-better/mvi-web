@@ -473,7 +473,6 @@ export default {
 		font-family: inherit;
 		font-size: inherit;
 		color: inherit;
-		opacity: 0.5;
 		vertical-align: middle;
 	}
 

@@ -7,7 +7,7 @@
 <script>
 	import $util from "../../util/util"
 	export default {
-		name:'mvi-msgbox',
+		name:'m-msgbox',
 		data(){
 			return {
 				show:false,

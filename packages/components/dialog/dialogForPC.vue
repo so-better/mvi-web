@@ -47,7 +47,7 @@
 <script>
 import $util from '../../util/util';
 export default {
-	name: 'm-dialog',
+	name: 'm-dialog-pc',
 	data() {
 		return {
 			ok: false, //点击的是否是确定按钮
@@ -446,7 +446,6 @@ export default {
 		font-family: inherit;
 		font-size: inherit;
 		color: inherit;
-		opacity: 0.5;
 		vertical-align: middle;
 	}
 
@@ -458,7 +457,7 @@ export default {
 .mvi-dialog-times {
 	position: absolute;
 	top: 50%;
-	right: ~'calc(5% + @{mp-sm})';
+	right: @mp-sm;
 	transform: translateY(-50%);
 	-webkit-transform: translateY(-50%);
 	-moz-transform: translateY(-50%);
