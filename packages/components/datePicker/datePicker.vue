@@ -625,11 +625,57 @@
 			},
 			//点击确定
 			bindConfirm(){
-				this.$emit('confirm',this.selectedDate);
+				let year = this.selectedDate.getFullYear();
+				let month = this.selectedDate.getMonth()+1;
+				let date = this.selectedDate.getDate();
+				let hour = this.selectedDate.getHours();
+				let minute = this.selectedDate.getMinutes();
+				
+				if(this.mode == 'date'){
+					let iosFormat = year + '/' + (month<10?'0'+month:month) + '/' + (date<10?'0'+date:date);
+					let format = year + '-' + (month<10?'0'+month:month) + '-' + (date<10?'0'+date:date);
+					this.$emit('confirm',{
+						year,month,date,value:this.selectedDate,iosFormat,format
+					});
+				}else if(this.mode == 'datetime'){
+					let iosFormat = year + '/' + (month<10?'0'+month:month) + '/' + (date<10?'0'+date:date) + ' '+(hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
+					let format = year + '-' + (month<10?'0'+month:month) + '-' + (date<10?'0'+date:date) + ' '+(hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
+					this.$emit('confirm',{
+						year,month,date,hour,minute,value:this.selectedDate,iosFormat,format
+					});
+				}else if(this.mode == 'time'){
+					let format = (hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
+					this.$emit('confirm',{
+						hour,minute,value:this.selectedDate,format
+					});
+				}
 			},
 			//点击取消
 			bindCancel(){
-				this.$emit('cancel',this.selectedDate);
+				let year = this.selectedDate.getFullYear();
+				let month = this.selectedDate.getMonth()+1;
+				let date = this.selectedDate.getDate();
+				let hour = this.selectedDate.getHours();
+				let minute = this.selectedDate.getMinutes();
+				
+				if(this.mode == 'date'){
+					let iosFormat = year + '/' + (month<10?'0'+month:month) + '/' + (date<10?'0'+date:date);
+					let format = year + '-' + (month<10?'0'+month:month) + '-' + (date<10?'0'+date:date);
+					this.$emit('cancel',{
+						year,month,date,value:this.selectedDate,iosFormat,format
+					});
+				}else if(this.mode == 'datetime'){
+					let iosFormat = year + '/' + (month<10?'0'+month:month) + '/' + (date<10?'0'+date:date) + ' '+(hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
+					let format = year + '-' + (month<10?'0'+month:month) + '-' + (date<10?'0'+date:date) + ' '+(hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
+					this.$emit('cancel',{
+						year,month,date,hour,minute,value:this.selectedDate,iosFormat,format
+					});
+				}else if(this.mode == 'time'){
+					let format = (hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
+					this.$emit('cancel',{
+						hour,minute,value:this.selectedDate,format
+					});
+				}
 			}
 		}
 	}

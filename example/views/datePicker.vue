@@ -1,9 +1,9 @@
 <template>
 	<div>
 		{{date.toLocaleString()}}
-		<m-date-picker title="选择日期" v-model="date" mode="date"></m-date-picker>
-		<m-date-picker v-model="date" mode="datetime"></m-date-picker>
-		<m-date-picker v-model="date" mode="time"></m-date-picker>
+		<m-date-picker title="选择日期" v-model="date" mode="date" @confirm="change"></m-date-picker>
+		<m-date-picker v-model="date" mode="datetime" @confirm="change"></m-date-picker>
+		<m-date-picker v-model="date" mode="time" @confirm="change"></m-date-picker>
 	</div>
 </template>
 
@@ -14,6 +14,11 @@
 			return {
 				date:new Date(),
 				startDate:new Date(2021,11,22)
+			}
+		},
+		methods:{
+			change(e){
+				console.log(e)
 			}
 		}
 	}
