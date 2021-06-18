@@ -18,26 +18,26 @@ export default {
 					icon:{
 						type:'home'
 					},
-					route:'/'
+					//route:'/'
 				},
 				{
 					value: 1,
 					name: '单元格',
 					icon:'map',
-					route:'/cell'
+					//route:'/cell'
 				},
 				{
 					value: 2,
 					name: '按钮',
 					icon:'user',
-					route:'/button'
+					//route:'/button'
 				}
 			]
 		}
 	},
 	methods:{
 		itemClick(value){
-			this.$msgbox(value)
+			console.log(value)
 		}
 	}
 };

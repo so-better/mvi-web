@@ -1,8 +1,8 @@
 <template>
 	<div v-on="listeners" :class="'mvi-collapse-item'+(computedOutBorder?' mvi-collapse-item-border':'')">
 		<m-cell class="mvi-collapse-cell" :icon="icon" :content="label" :title="title" :border="cellBorder" :arrow="arrow" 
-		:title-class="titleClass" :content-class="labelClass" :icon-class="iconClass" @click="changeCollapse" :active="computedActive" 
-		 :disabled="disabled || collapse.disabled" :no-wrap="computedNoWrap" :arrow-class="computedArrowClass"></m-cell>
+		:title-class="titleClass" :content-class="labelClass" :icon-class="iconClass" @click="changeCollapse" :active="computedActive"
+		:no-wrap="computedNoWrap" :arrow-class="computedArrowClass"></m-cell>
 		<m-transition-slide :expand="open" :timeout="computedTimeout" @before-slide-up="beforeSlideUp" @slide-up="slideUp" 
 		@before-slide-down="beforeSlideDown" @slide-down="slideDown">
 			<div :class="'mvi-collapse-item-content'+(contentClass?' '+contentClass:'')">
@@ -19,6 +19,8 @@
 		name: "m-collapse-item",
 		created() {
 			this.collapse.children.push(this);
+			this.cellBorder = this.computedInBorder;
+			this.isNeedHideSelf();
 		},
 		data() {
 			return {
@@ -97,10 +99,6 @@
 			}
 		},
 		inject: ['collapse'],
-		mounted() {
-			this.cellBorder = this.computedInBorder;
-			this.isNeedHideSelf();
-		},
 		watch:{
 			'collapse.openIndex':function(newValue,oldValue){
 				this.isNeedHideSelf();

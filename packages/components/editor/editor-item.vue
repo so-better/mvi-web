@@ -1,17 +1,17 @@
 <template>
-	<div class="mvi-eitor-item" :data-id="`mvi-editor-root-${_uid}-${value}`">
+	<div class="mvi-editor-item" :data-id="`mvi-editor-root-${_uid}-${value}`">
 		<m-tooltip v-if="editor.useTooltip && editor.defaultTooltips[value]" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
 		 :title="editor.defaultTooltips[value]" trigger="hover" :placement="editor.defaultTooltipProps.placement" :timeout="editor.defaultTooltipProps.timeout"
 		 :color="editor.defaultTooltipProps.color" :text-color="editor.defaultTooltipProps.textColor" :border-color="editor.defaultTooltipProps.borderColor"
 		 :offset="editor.defaultTooltipProps.offset" :z-index="editor.defaultTooltipProps.zIndex" :fixed="editor.defaultTooltipProps.fixed" :fixed-auto="editor.defaultTooltipProps.fixedAuto" :width="editor.defaultTooltipProps.width" :animation="editor.defaultTooltipProps.animation"
 		 :show-triangle="editor.defaultTooltipProps.showTriangle">
 			<div class="mvi-editor-target" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"  :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
-				<m-icon :type="editor.defaultMenuIcons[this.value]" />
+				<m-icon :type="editor.defaultMenuIcons[value]" />
 			</div>
 		</m-tooltip>
 		<div v-else :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
 		 :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
-			<m-icon :type="editor.defaultMenuIcons[this.value]" />
+			<m-icon :type="editor.defaultMenuIcons[value]" />
 		</div>
 		<m-layer v-model="layerShow" ref="layer" :placement="editor.defaultLayerProps.placement"
 		 :z-index="editor.defaultLayerProps.zIndex" :fixed="editor.defaultLayerProps.fixed" :fixed-auto="editor.defaultLayerProps.fixedAuto"
@@ -749,7 +749,7 @@
 <style lang="less" scoped>
 	@import "../../css/mvi-basic.less";
 
-	.mvi-eitor-item {
+	.mvi-editor-item {
 		display: block;
 		position: relative;
 

@@ -46,7 +46,7 @@
 					</div>
 					<div class="mvi-date-chooser-header-center">
 						<span
-							v-if="view != 'year'"
+							v-if="view != 'year' && currentYear"
 							@mouseenter="hoverHeader(true, 2)"
 							@mouseleave="hoverHeader(false, 2)"
 							v-text="currentYear"
@@ -54,7 +54,7 @@
 							@click="jumpViewYear"
 						></span>
 						<span
-							v-if="view == 'date'"
+							v-if="view == 'date' && currentMonth"
 							@mouseenter="hoverHeader(true, 3)"
 							@mouseleave="hoverHeader(false, 3)"
 							v-text="currentMonth"
@@ -62,7 +62,7 @@
 							@click="jumpViewMonth"
 						></span>
 						<span
-							v-if="view == 'year'"
+							v-if="view == 'year' && currentYears"
 							@mouseenter="hoverHeader(true, 4)"
 							@mouseleave="hoverHeader(false, 4)"
 							v-text="currentYears"
@@ -358,8 +358,10 @@ export default {
 			}
 		}
 	},
-	mounted() {
+	created() {
 		this.view = this.mode;
+	},
+	mounted() {
 		if(this.trigger == 'hover'){
 			this.$el.addEventListener('mouseenter',this.openCalendar)
 			this.$el.addEventListener('mouseleave',this.closeCalendar)
@@ -372,6 +374,9 @@ export default {
 				this.$refs.panel.style.width = this.width;
 			} else{
 				this.$refs.panel.style.width = this.$refs.target.offsetWidth + 'px';
+			}
+			if(!this.layer){
+				this.layer = this.$refs.layer;
 			}
 		},
 		//打开日期选择弹窗

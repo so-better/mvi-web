@@ -20,7 +20,8 @@
 				value2:-1,
 				options:[{
 					label:'高铁',
-					value:0
+					value:0,
+					disabled:true
 				},{
 					label:'火车',
 					value:1

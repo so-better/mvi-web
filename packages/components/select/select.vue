@@ -32,6 +32,7 @@
 					@mouseleave="mouseLeave($event, item)"
 					v-for="(item, index) in options"
 					:key="'mvi-select-option-' + index"
+					:disabled="item.disabled"
 				>
 					<div class="mvi-option-value" v-html="item.label"></div>
 					<m-icon v-if="isSelect(item)" :type="selectedIconType" :spin="selectedIconSpin" :size="selectedIconSize" :url="selectedIconUrl" :color="selectedIconColor" />
@@ -330,18 +331,27 @@ export default {
 		},
 		//鼠标移入选项
 		mouseEnter(e, item) {
+			if(this.disabled || item.disabled){
+				return;
+			}
 			if (this.hoverClass) {
 				$util.addClass(e.currentTarget, this.hoverClass);
 			}
 		},
 		//鼠标移出选项
 		mouseLeave(e, item) {
+			if(this.disabled || item.disabled){
+				return;
+			}
 			if (this.hoverClass) {
 				$util.removeClass(e.currentTarget, this.hoverClass);
 			}
 		},
 		//点击选项
 		optionClick(item) {
+			if(this.disabled || item.disabled){
+				return;
+			}
 			if (this.multiple) {
 				var arr = this.value;
 				if (arr.includes(item.value)) {
@@ -543,11 +553,18 @@ export default {
 		font-size: @font-size-h6;
 		padding: @mp-md @mp-lg;
 	}
-}
-
-.mvi-option:hover {
-	cursor: pointer;
-	background-color: @bg-color-default;
+	
+	&:hover:not([disabled]) {
+		cursor: pointer;
+		background-color: @bg-color-default;
+	}
+	
+	&[disabled]{
+		opacity: .6;
+		touch-action: none;
+		user-select: none;
+		-webkit-user-select: none;
+	}
 }
 
 .mvi-option-value {

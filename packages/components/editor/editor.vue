@@ -45,7 +45,7 @@
 
 <script>
 import $util from '../../util/util.js';
-import editorItem from './edotir-item';
+import editorItem from './editor-item.vue';
 export default {
 	name: 'm-editor',
 	data() {

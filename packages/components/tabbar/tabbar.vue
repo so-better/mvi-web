@@ -98,8 +98,8 @@
 				this.$emit('model-change',value);
 			},
 			//点击tab
-			itemClick(value){
-				this.$emit('item-click',value);
+			itemClick(props){
+				this.$emit('item-click',props);
 			}
 		}
 	}

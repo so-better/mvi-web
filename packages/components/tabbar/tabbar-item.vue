@@ -158,7 +158,7 @@
 		},
 		methods:{
 			setActive(){
-				this.tabbar.itemClick(this.value);
+				this.tabbar.itemClick(Object.assign({},this.$props));
 				if(this.disabled){
 					return;
 				}
@@ -200,7 +200,6 @@
 				}
 				this.tabbar.getActiveValue(this.value);
 			},
-			
 		}
 	}
 </script>

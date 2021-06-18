@@ -32,7 +32,6 @@
 			return {
 				focus:false,
 				target:null
-				//focus && computedFilter.length!=0
 			}
 		},
 		model:{

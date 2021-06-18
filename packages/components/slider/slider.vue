@@ -11,6 +11,7 @@
 </template>
 
 <script>
+	import $util from "../../util/util.js"
 	import Drag from "../drag/drag";
 	export default {
 		name: "m-slider",
@@ -202,6 +203,9 @@
 					return;
 				}
 				if(this.isdrag){
+					return;
+				}
+				if($util.isContains(this.$refs.btn,event.target)){
 					return;
 				}
 				if (this.vertical) {
