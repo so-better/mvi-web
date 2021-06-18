@@ -323,7 +323,4 @@
 		line-height: 1.5;
 	}
 	
-	.mvi-collapse-enter,.mvi-collapse-leave-to{
-		height: 0 !important;
-	}
 </style>
