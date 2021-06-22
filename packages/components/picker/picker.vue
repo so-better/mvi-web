@@ -497,8 +497,8 @@
 			left: 0;
 			display: block;
 			width: 100%;
-			height: 1px;
-			background-color: @border-color;
+			height: 0;
+			border-bottom: 1px solid @border-color;
 			content: '';
 		}
 		
