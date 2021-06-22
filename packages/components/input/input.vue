@@ -623,13 +623,14 @@
 
 	//是否显示边框
 	.mvi-input-container.mvi-input-border::after {
+		display: block;
 		content: "";
 		position: absolute;
 		left: @mp-sm;
 		bottom: 0;
 		width: calc(~'100% - @{mp-xs}*2');
-		height: 1px;
-		background-color: @border-color;
+		height: 0;
+		border-bottom: 1px solid @border-color;
 		box-sizing: content-box;
 	}
 

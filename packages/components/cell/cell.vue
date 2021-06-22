@@ -246,13 +246,14 @@
 	}
 	
 	.mvi-cell.mvi-cell-border::after {
+		display: block;
 		position: absolute;
-		content: "";
-		height: 1px;
-		background-color:@border-color;
-		width: calc(100% - @mp-sm);
 		left: @mp-sm;
 		bottom: 0;
+		content: "";
+		border-bottom: 1px solid @border-color;
+		height: 0;
+		width: calc(100% - @mp-sm);
 		box-sizing: content-box;
 	}
 
