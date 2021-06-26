@@ -1,6 +1,6 @@
 import table from "./table"
 
-table.install = function(Vue){
+table.install = Vue=>{
 	Vue.component(table.name,table)
 }
 

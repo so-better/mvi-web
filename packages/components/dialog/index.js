@@ -4,7 +4,7 @@ import dialogForPCComponent from "./dialogForPC"
 
 const Dialog = {};
 
-Dialog.install = function(Vue){
+Dialog.install = Vue=>{
 	// 生成一个Vue的子类
 	const DialogConstructor = Vue.extend(dialogComponent)
 	const DialogForPcConstructor = Vue.extend(dialogForPCComponent)

@@ -399,9 +399,9 @@
 			},
 			//默认过滤方法
 			defaultFilter(){
-				var arr = [];
-				var length = this.list.length;
-				for(var i = 0;i<length;i++){
+				let arr = [];
+				let length = this.list.length;
+				for(let i = 0;i<length;i++){
 					if(this.list[i].includes(this.value)){
 						arr.push(this.list[i]);
 					}

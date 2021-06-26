@@ -1,6 +1,6 @@
 <template>
-	<div v-on="listeners" :class="'mvi-steps'+(vertical?' mvi-steps-vertical':'')"
-	:style="'background-color:'+(background?background:'')">
+	<div v-on="listeners" :class="['mvi-steps',vertical?'mvi-steps-vertical':'']"
+	:style="{backgroundColor:background?background:''}">
 		<slot></slot>
 	</div>
 </template>

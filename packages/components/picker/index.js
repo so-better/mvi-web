@@ -1,6 +1,6 @@
 import picker from "./picker"
 
-picker.install = function(Vue){
+picker.install = Vue=>{
 	Vue.component(picker.name,picker)
 }
 

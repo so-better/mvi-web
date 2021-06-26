@@ -1,7 +1,7 @@
 <template>
 	<div class="mvi-tabs" v-on="listeners">
 		<!-- 选项卡头部 -->
-		<div ref="headers" :data-type="type" :class="'mvi-tabs-header'+((type=='default'&&border)?' mvi-tabs-header-border':'')" :style="headersStyle">
+		<div ref="headers" :data-type="type" :class="['mvi-tabs-header',(type=='default'&&border)?'mvi-tabs-header-border':'']" :style="headersStyle">
 			<!-- 选项卡滑动条 -->
 			<div v-if="type=='default'" class="mvi-tabs-slider" :style="sliderStyle"></div>
 			<!-- 选项卡头部卡片 -->
@@ -122,7 +122,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			sliderStyle(){
-				var style = {};
+				let style = {};
 				if(this.activeColor){
 					style.backgroundColor = this.activeColor;
 				}
@@ -138,7 +138,7 @@
 				return style;
 			},
 			headersStyle(){
-				var style = {};
+				let style = {};
 				if(this.titleBackground){
 					style.backgroundColor = this.titleBackground;
 				}
@@ -152,26 +152,26 @@
 			},
 			headerClass(){
 				return (item,index)=>{
-					var cls = 'mvi-tab-header';
+					let cls = ['mvi-tab-header'];
 					if(this.active == index){
-						cls += ' mvi-tab-header-active';
+						cls.push('mvi-tab-header-active');
 						if(this.activeClass){
-							cls += ' '+this.activeClass;
+							cls.push(this.activeClass)
 						}
 					}else{
 						if(this.inactiveClass){
-							cls += ' '+this.inactiveClass;
+							cls.push(this.inactiveClass)
 						}
 					}
 					if(this.ellipsis){
-						cls += ' mvi-tab-header-ellipsis';
+						cls.push('mvi-tab-header-ellipsis');
 					}
 					return cls;
 				}
 			},
 			headerStyle(){
 				return (item,index)=>{
-					var style = {};
+					let style = {};
 					if(this.active == index){
 						if(this.activeColor){
 							style.color = this.activeColor;
@@ -241,7 +241,7 @@
 			},
 			//激活指定的tab
 			to(newValue,oldValue){
-				for(var i = 0;i<this.children.length;i++){
+				for(let i = 0;i<this.children.length;i++){
 					this.children[i].show = false;
 					if(newValue < oldValue){
 						this.children[i].back = true;

@@ -1,6 +1,6 @@
 import checkbox from "./checkbox.vue"
 
-checkbox.install = function(Vue){
+checkbox.install = Vue=>{
 	Vue.component(checkbox.name,checkbox);
 }
 

@@ -31,7 +31,7 @@
 				}
 			},
 			barStyle(){
-				var style = {};
+				let style = {};
 				if(this.computedColor){
 					style.background = this.computedColor;
 				}

@@ -1,6 +1,6 @@
 import badge from "./badge"
 
-badge.install = function(Vue){
+badge.install = Vue=>{
 	Vue.component(badge.name,badge)
 }
 

@@ -1,6 +1,6 @@
 import editor from "./editor"
 
-editor.install = function(Vue){
+editor.install = Vue=>{
 	Vue.component(editor.name,editor)
 }
 

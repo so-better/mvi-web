@@ -49,8 +49,8 @@ class Spy {
 	
 	_set(){
 		if (this.$el == window) {
-			var clientTop1 = this.$target.getBoundingClientRect().top; //元素距离可视区域顶部的距离，不包含自身高度
-			var clientTop2 = this.$target.getBoundingClientRect().bottom; //元素距离可视区域顶部的距离，包含自身高度
+			let clientTop1 = this.$target.getBoundingClientRect().top; //元素距离可视区域顶部的距离，不包含自身高度
+			let clientTop2 = this.$target.getBoundingClientRect().bottom; //元素距离可视区域顶部的距离，包含自身高度
 			if (clientTop2 > 0 && clientTop1 < window.innerHeight) {
 				if (!this.$target.data("mvi-scroll-flag1")) {
 					this.beforeEnter(this.$target);
@@ -76,9 +76,9 @@ class Spy {
 			}
 		} else {
 			//元素距离滚动元素的可视距离,不包含自身高度
-			var offsetTop1 = this.$target.getBoundingClientRect().top - this.$el.getBoundingClientRect().top;
+			let offsetTop1 = this.$target.getBoundingClientRect().top - this.$el.getBoundingClientRect().top;
 			//元素距离滚动元素的可视距离,包含自身高度
-			var offsetTop2 = this.$target.getBoundingClientRect().bottom - this.$el.getBoundingClientRect().top;
+			let offsetTop2 = this.$target.getBoundingClientRect().bottom - this.$el.getBoundingClientRect().top;
 			if (offsetTop2 > 0 && offsetTop1 < this.$el.offsetHeight) {
 				if (!this.$target.data("mvi-scroll-flag1")) {
 					this.beforeEnter(this.$target);

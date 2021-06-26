@@ -1,7 +1,6 @@
 <template>
 	<transition name="mvi-notify" @after-leave="afterLeave">
-		<div v-show="show" :class="'mvi-notify mvi-notify-'+computedType" :style="notifyStyle"
-		v-on="listeners">
+		<div v-show="show" :class="['mvi-notify','mvi-notify-'+computedType]" :style="notifyStyle" v-on="listeners">
 			<div class="mvi-notify-content">
 				<m-icon v-if="iconType || iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
 				<span v-text="computedMessage"></span>
@@ -32,7 +31,7 @@
 		computed:{
 			//类型
 			computedType(){
-				var arry = ['success','info','primary','error','warn'];
+				let arry = ['success','info','primary','error','warn'];
 				if(arry.includes(this.type)){
 					return this.type;
 				}else{

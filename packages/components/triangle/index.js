@@ -1,6 +1,6 @@
 import triangle from "./triangle"
 
-triangle.install = function(Vue){
+triangle.install = Vue=>{
 	Vue.component(triangle.name,triangle)
 }
 

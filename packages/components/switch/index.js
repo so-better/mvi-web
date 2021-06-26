@@ -1,6 +1,6 @@
 import switchComponent from "./switch"
 
-switchComponent.install = function(Vue){
+switchComponent.install = Vue=>{
 	Vue.component(switchComponent.name,switchComponent);
 }
 

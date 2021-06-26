@@ -73,7 +73,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			progressStyle(){
-				var style = {};
+				let style = {};
 				if(this.strokeWidth){
 					style.height = this.strokeWidth;
 				}
@@ -83,7 +83,7 @@
 				return style;
 			},
 			progressBarStyle(){
-				var style = {};
+				let style = {};
 				if(this.animation){
 					style.transition = 'width '+this.timeout+'ms';
 					style.webkitTransition = 'width '+this.timeout+'ms';
@@ -106,27 +106,27 @@
 				}
 			},
 			tipStyle(){
-				var style = {};
+				let style = {};
 				if(this.tipColor){
 					style.color = this.tipColor;
 				}
 				return style;
 			},
 			barClass(){
-				var cls = 'mvi-progress-bar';
+				let cls = ['mvi-progress-bar'];
 				if(this.round){
-					cls += ' mvi-progress-radius-round';
+					cls.push('mvi-progress-radius-round');
 				}else if(this.square){
-					cls += ' mvi-progress-radius-square';
+					cls.push('mvi-progress-radius-square');
 				}
 				return cls;
 			},
 			progressClass(){
-				var cls = 'mvi-progress';
+				let cls = ['mvi-progress'];
 				if(this.round){
-					cls += ' mvi-progress-radius-round';
+					cls.push('mvi-progress-radius-round');
 				}else if(this.square){
-					cls += ' mvi-progress-radius-square';
+					cls.push('mvi-progress-radius-square');
 				}
 				return cls;
 			}

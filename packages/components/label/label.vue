@@ -72,7 +72,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			labelClass(){
-				var cls = 'mvi-label';
+				let cls = 'mvi-label';
 				if(this.size){
 					cls += ' mvi-label-' + this.size;
 				}
@@ -94,7 +94,7 @@
 				return cls;
 			},
 			labelStyle(){
-				var style = {};
+				let style = {};
 				if(this.color){
 					if(this.plain){
 						style.borderColor = this.color;

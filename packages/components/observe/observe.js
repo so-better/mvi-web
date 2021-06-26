@@ -45,8 +45,8 @@ class Observe {
 			
 			let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 			let observer = new MutationObserver(mutationList=>{
-				var length = mutationList.length;
-				for(var i = 0;i<length;i++){
+				let length = mutationList.length;
+				for(let i = 0;i<length;i++){
 					//监听属性
 					if(this.attributes){
 						this.attributesChange(mutationList[i].attributeName,mutationList[i].oldValue,this.$el.getAttribute(mutationList[i].attributeName));

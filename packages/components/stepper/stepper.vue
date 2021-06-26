@@ -1,7 +1,6 @@
 <template>
-	<div :class="'mvi-stepper mvi-stepper-'+size" v-on="listeners">
-		<div :disabled="disabledMinus || arrivalMin || disabled" :class="minusClass" v-if="showMinus" :style="minusStyle" 
-		@click="doMinus">
+	<div :class="['mvi-stepper','mvi-stepper-'+size]" v-on="listeners">
+		<div :disabled="disabledMinus || arrivalMin || disabled" :class="minusClass" v-if="showMinus" :style="minusStyle" @click="doMinus">
 			<m-icon type="minus" />
 		</div>
 		<div :disabled="disabledInput" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']" :style="inputStyle" v-if="showInput">
@@ -126,7 +125,7 @@
 				}
 			},
 			inputStyle(){
-				var style = {};
+				let style = {};
 				if(this.inputWidth){
 					style.width = this.inputWidth;
 				}
@@ -139,14 +138,14 @@
 				return style;
 			},
 			inputElStyle(){
-				var style = {};
+				let style = {};
 				if(this.inputAlign){
 					style.textAlign = this.inputAlign;
 				}
 				return style;
 			},
 			minusStyle(){
-				var style = {};
+				let style = {};
 				if(this.color){
 					style.color = this.color;
 				}
@@ -156,7 +155,7 @@
 				return style;
 			},
 			plusStyle(){
-				var style = {};
+				let style = {};
 				if(this.color){
 					style.color = this.color;
 				}
@@ -167,7 +166,7 @@
 			},
 			inputValue:{
 				set(value){
-					var val = parseFloat(value);
+					let val = parseFloat(value);
 					if(isNaN(val)){
 						val = 0;
 					}
@@ -185,7 +184,7 @@
 					}
 				},
 				get(){
-					var val = parseFloat(this.value);
+					let val = parseFloat(this.value);
 					if(isNaN(val)){
 						val = 0;
 					}
@@ -200,7 +199,7 @@
 				}
 			},
 			minusClass(){
-				var cls = ['mvi-stepper-minus'];
+				let cls = ['mvi-stepper-minus'];
 				if(!(this.disabledMinus || this.arrivalMin || this.disabled) && this.active){
 					cls.push('mvi-stepper-active');
 				}
@@ -210,7 +209,7 @@
 				return cls;
 			},
 			plusClass(){
-				var cls = ['mvi-stepper-plus'];
+				let cls = ['mvi-stepper-plus'];
 				if(!(this.disabledPlus || this.arrivalMax || this.disabled) && this.active){
 					cls.push('mvi-stepper-active')
 				}

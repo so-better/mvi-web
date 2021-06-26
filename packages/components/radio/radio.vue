@@ -3,9 +3,8 @@
 		<span :disabled="disabled" v-if="label && labelPlacement=='left'" class="mvi-radio-label" :data-placement="labelPlacement"
 		 v-text="label" :style="labelStyle"></span>
 		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="radio" :name="name"/>
-		<span :disabled="disabled" :class="'mvi-radio-item'+(check?' mvi-radio-item-check':'')" :style="radioStyle" >
-			<m-icon :disabled="disabled" :type="iconType" :class="'mvi-radio-icon'+(check?' mvi-radio-icon-check':'')" 
-			:style="iconStyle" />
+		<span :disabled="disabled" :class="['mvi-radio-item',check?'mvi-radio-item-check':'']" :style="radioStyle" >
+			<m-icon :disabled="disabled" :type="iconType" :class="['mvi-radio-icon',check?'mvi-radio-icon-check':'']" :style="iconStyle" />
 		</span>
 		<span :disabled="disabled" v-if="label && labelPlacement == 'right'" class="mvi-radio-label" :data-placement="labelPlacement" 
 		v-text="label" :style="labelStyle"></span>
@@ -79,7 +78,7 @@
 		},
 		computed:{
 			labelStyle(){
-				var style = {};
+				let style = {};
 				if(this.disabled){
 					style.color = '';
 					style.fontSize = '';
@@ -98,7 +97,7 @@
 				return style;
 			},
 			iconStyle(){
-				var style = {};
+				let style = {};
 				if(this.disabled){
 					style.color = '';
 					style.fontSize = '';
@@ -120,7 +119,7 @@
 				return style;
 			},
 			radioStyle(){
-				var style = {};
+				let style = {};
 				if(this.disabled){
 					style.backgroundColor = '';
 					style.borderColor = '';

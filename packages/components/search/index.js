@@ -1,6 +1,6 @@
 import search from "./search"
 
-search.install = function(Vue){
+search.install = Vue=>{
 	Vue.component(search.name,search)
 }
 

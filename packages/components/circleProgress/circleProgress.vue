@@ -1,12 +1,12 @@
 <template>
-	<div class="mvi-circle-progress" :style="'width: '+(size?size:'')+'; height: '+(size?size:'')" v-on="listeners">
+	<div class="mvi-circle-progress" :style="{width:size?size:'',height:size?size:''}" v-on="listeners">
 		<svg :viewBox="viewBox">
 			<path :d="pathD" :style="trackStyle" class="mvi-circle-progress-track"></path>
 			<path :d="pathD" :style="barStyle" class="mvi-circle-progress-bar"></path>
 		</svg>
 		<div v-if="showTip" class="mvi-circle-progress-tip">
 			<slot v-if="$scopedSlots.tip" name="tip" :value="value"></slot>
-			<span v-else :class="(tipClass?tipClass:'')" v-text="computedValue"></span>
+			<span v-else :class="tipClass?tipClass:''" v-text="computedValue"></span>
 		</div>
 	</div>
 </template>
@@ -85,7 +85,7 @@
 		},
 		computed: {
 			viewBox() {
-				var width = 20;
+				let width = 20;
 				if ($util.isElement(this.ele)) {
 					width = $util.getCssStyle(this.ele.querySelector('path'), 'stroke-width');
 					width = parseFloat(width);
@@ -93,7 +93,7 @@
 				return `0 0 ${this.pathSize+2*width} ${this.pathSize+2*width}`;
 			},
 			pathD() {
-				var width = 20;
+				let width = 20;
 				if ($util.isElement(this.ele)) {
 					width = $util.getCssStyle(this.ele.querySelector('path'), 'stroke-width');
 					width = parseFloat(width);
@@ -109,7 +109,7 @@
 				}
 			},
 			barStyle() {
-				var style = {};
+				let style = {};
 				if (this.fill) {
 					style.fill = this.fill;
 				}
@@ -128,14 +128,14 @@
 					style.webkitTransition = 'stroke-dasharray ' + this.timeout + 'ms';
 				}
 				//计算进度
-				var circleLength = Number((this.pathSize * Math.PI).toFixed(2)); //圆周长
+				let circleLength = Number((this.pathSize * Math.PI).toFixed(2)); //圆周长
 				let value = this.value > this.max ? this.max : (this.value < this.min ? this.min : this.value);
-				var valueLength = Number((((value - this.min) / (this.max - this.min)) * circleLength).toFixed(2)); //进度长度
+				let valueLength = Number((((value - this.min) / (this.max - this.min)) * circleLength).toFixed(2)); //进度长度
 				style.strokeDasharray = valueLength + ',' + (circleLength - valueLength);
 				return style;
 			},
 			trackStyle() {
-				var style = {};
+				let style = {};
 				if (this.fill) {
 					style.fill = this.fill;
 				}

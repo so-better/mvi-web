@@ -1,6 +1,6 @@
 import dateNativePicker from "./dateNativePicker"
 
-dateNativePicker.install = function(Vue){
+dateNativePicker.install = Vue=>{
 	Vue.component(dateNativePicker.name,dateNativePicker)
 }
 

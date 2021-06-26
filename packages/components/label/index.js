@@ -1,6 +1,6 @@
 import label from "./label"
 
-label.install = function(Vue){
+label.install = Vue=>{
 	Vue.component(label.name,label)
 }
 

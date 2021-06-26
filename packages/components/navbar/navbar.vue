@@ -1,22 +1,22 @@
 <template>
-	<div v-on="listeners" :class="navbarClass" :style="'z-index:'+(fixed?zIndex:'')">
-		<div @click="leftClick" :class="'mvi-navbar-left'+(leftClass?' '+leftClass:'')" :style="leftStyle" v-if="leftIconType||leftIconUrl||$slots.left||leftText">
+	<div v-on="listeners" :class="navbarClass" :style="{zIndex:fixed?zIndex:''}">
+		<div @click="leftClick" :class="['mvi-navbar-left',leftClass?leftClass:'']" :style="leftStyle" v-if="leftIconType||leftIconUrl||$slots.left||leftText">
 			<slot name="left" v-if="$slots.left"></slot>
-			<m-icon :class="(leftText?'mvi-navbar-left-icon':'')" v-if="(leftIconType||leftIconUrl) && !$slots.left" :type="leftIconType"
+			<m-icon :class="leftText?'mvi-navbar-left-icon':''" v-if="(leftIconType||leftIconUrl) && !$slots.left" :type="leftIconType"
 			:url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" />
 			<span class="mvi-navbar-left-text" v-if="leftText && !$slots.left" v-text="leftText"></span>
 		</div>
 		<div @click="titleClick" class="mvi-navbar-center" :style="centerStyle" v-if="$slots.title||title">
-			<div :class="'mvi-navbar-title'+(titleClass?' '+titleClass:'')">
+			<div :class="['mvi-navbar-title',titleClass?titleClass:'']">
 				<slot name="title" v-if="$slots.title"></slot>
 				<span v-else-if="title" v-text="title"></span>
 			</div>
 		</div>
-		<div @click="rightClick" :class="'mvi-navbar-right'+(rightClass?' '+rightClass:'')" :style="rightStyle"
+		<div @click="rightClick" :class="['mvi-navbar-right',rightClass?rightClass:'']" :style="rightStyle"
 		v-if="rightIconType||rightIconUrl||$slots.right||rightText">
 			<slot name="right" v-if="$slots.right"></slot>
 			<span class="mvi-navbar-right-text" v-if="rightText && !$slots.right" v-text="rightText"></span>
-			<m-icon :class="(rightText?'mvi-navbar-right-icon':'')" v-if="(rightIconType||rightIconSpin) && !$slots.right"
+			<m-icon :class="rightText?'mvi-navbar-right-icon':''" v-if="(rightIconType||rightIconSpin) && !$slots.right"
 			:type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
 		</div>
 	</div>

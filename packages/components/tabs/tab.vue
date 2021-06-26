@@ -53,7 +53,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			tabStyle(){
-				var style = {};
+				let style = {};
 				if(this.tabs.animation == 'slide'){
 					style.transition = 'left '+this.tabs.timeout+'ms,opacity '+this.tabs.timeout+'ms';
 					style.webkitTransition = 'left '+this.tabs.timeout+'ms,opacity '+this.tabs.timeout+'ms';

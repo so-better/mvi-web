@@ -1,6 +1,6 @@
 import transitionSlide from "./transitionSlide"
 
-transitionSlide.install = function(Vue){
+transitionSlide.install = Vue=>{
 	Vue.component(transitionSlide.name,transitionSlide)
 }
 

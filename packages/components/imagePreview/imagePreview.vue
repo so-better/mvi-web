@@ -171,8 +171,8 @@
 			},
 			//滚轮
 			wheelImage(index,event) {
-				var deltaY = event.deltaY; //正值向下滚，负值向上滚
-				var el = this.$refs.images[index].$el; //图片元素
+				let deltaY = event.deltaY; //正值向下滚，负值向上滚
+				let el = this.$refs.images[index].$el; //图片元素
 				if (deltaY > 0) { //向下滚，缩小图片
 					if(this.scale > 0.5){
 						this.scale -= 0.1;
@@ -200,8 +200,8 @@
 					if(event.cancelable){
 						event.preventDefault()
 					}
-					var el = this.$refs.images[index].$el; //图片元素
-					var distance = this.getDistance(event.touches[0],event.touches[1])
+					let el = this.$refs.images[index].$el; //图片元素
+					let distance = this.getDistance(event.touches[0],event.touches[1])
 					if(distance < this.touchDistance){//缩小
 						if(this.scale > 0.5){
 							this.scale += (distance - this.touchDistance) / el.offsetWidth;
@@ -225,8 +225,8 @@
 			},
 			//获取两点间距离
 			getDistance(p1, p2){
-				var x = p2.pageX - p1.pageX;
-				var y = p2.pageY - p1.pageY;
+				let x = p2.pageX - p1.pageX;
+				let y = p2.pageY - p1.pageY;
 				return Math.sqrt((x * x) + (y * y));
 			}
 		},

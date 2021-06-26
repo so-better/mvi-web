@@ -4,7 +4,7 @@ import NotifyComponent from './notify'
 const Notify = {};
 
 // 注册Notify
-Notify.install = function(Vue) {
+Notify.install = Vue=> {
 	// 生成一个Vue的子类
 	const NotifyConstructor = Vue.extend(NotifyComponent)
 	// 生成一个该子类的实例

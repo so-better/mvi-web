@@ -1,6 +1,5 @@
 <template>
-	<div v-on="listeners" :class="'mvi-tabbar'+(border?' mvi-tabbar-border':'')+(fixed?' mvi-tabbar-fixed':'')"
-	:style="tabbarStyle">
+	<div v-on="listeners" :class="['mvi-tabbar',border?'mvi-tabbar-border':'',fixed?'mvi-tabbar-fixed':'']" :style="tabbarStyle">
 		<m-tabbar-item v-for="(item,index) in tabs" :key="'tab-'+index" :name="item.name" :value="item.value" 
 		:icon="item.icon" :disabled="item.disabled" :route="item.route" :style="tabbarItemStyle(index)"></m-tabbar-item>
 	</div>

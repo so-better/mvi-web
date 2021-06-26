@@ -1,6 +1,6 @@
 import swipeCell from "./swipeCell"
 
-swipeCell.install = function(Vue){
+swipeCell.install = Vue=>{
 	Vue.component(swipeCell.name,swipeCell)
 }
 

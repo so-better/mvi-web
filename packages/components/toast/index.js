@@ -4,7 +4,7 @@ import ToastComponent from './toast'
 const Toast = {};
 
 // 注册Toast
-Toast.install = function(Vue) {
+Toast.install = Vue=> {
 	// 生成一个Vue的子类
 	const ToastConstructor = Vue.extend(ToastComponent)
 	// 生成一个该子类的实例
@@ -15,7 +15,7 @@ Toast.install = function(Vue) {
 		//如果实例元素没有添加到页面，则进行添加
 		//判断是否局部提示
 		if(typeof(options.local) == 'string' && options.local){
-			var el = document.body.querySelector(options.local);
+			let el = document.body.querySelector(options.local);
 			if(el){//局部提示
 				if(!$util.isContains(el,instance.$el)){
 					el.appendChild(instance.$el);

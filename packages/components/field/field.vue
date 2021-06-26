@@ -591,18 +591,18 @@
 			},
 			//行数转为高度
 			rows2Height(rows) {
-				var lineHeight = Math.floor(parseFloat($util.getCssStyle(this.$refs.textarea, 'line-height')));
+				let lineHeight = Math.floor(parseFloat($util.getCssStyle(this.$refs.textarea, 'line-height')));
 				return rows * lineHeight;
 			},
 			//设置最大高度和最小高度
 			setMaxMinHeight() {
 				if ($util.isObject(this.autosize)) {
 					if ($util.isNumber(this.autosize.maxRows)) {
-						var maxHeight = this.rows2Height(this.autosize.maxRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
+						let maxHeight = this.rows2Height(this.autosize.maxRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
 						this.$refs.textarea.style.maxHeight = maxHeight + "px";
 					}
 					if ($util.isNumber(this.autosize.minRows)) {
-						var minHeight = this.rows2Height(this.autosize.minRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
+						let minHeight = this.rows2Height(this.autosize.minRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
 						this.$refs.textarea.style.minHeight = minHeight + "px";
 					}
 				} else {
@@ -624,8 +624,8 @@
 			},
 			//输入框实时输入
 			doInput(event){
-				var el = this.$refs.input || this.$refs.textarea;
-				var value = el.value;
+				let el = this.$refs.input || this.$refs.textarea;
+				let value = el.value;
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
@@ -664,7 +664,7 @@
 				}
 				this.$emit('model-change','');
 				this.$emit('update:value','')
-				var el = this.$refs.input || this.$refs.textarea;
+				let el = this.$refs.input || this.$refs.textarea;
 				el.value = ''
 				el.focus();
 			},

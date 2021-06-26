@@ -35,7 +35,7 @@
 		},
 		computed:{
 			rowStyle(){
-				var style = {};
+				let style = {};
 				style.justifyContent = this.justify;
 				style.alignItems = this.align;
 				return style;

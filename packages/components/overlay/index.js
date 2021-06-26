@@ -1,6 +1,6 @@
 import overlay from "./overlay"
 
-overlay.install = function (Vue) {
+overlay.install = Vue=>{
     Vue.component(overlay.name,overlay)
 }
 

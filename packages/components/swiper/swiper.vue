@@ -1,5 +1,5 @@
 <template>
-	<div v-on="listeners" :class="'mvi-swiper-container'+(vertical?' mvi-swiper-vertical':'')" :style="containerStyle">
+	<div v-on="listeners" :class="['mvi-swiper-container',vertical?'mvi-swiper-vertical':'']" :style="containerStyle">
 		<div v-if="fade" class="mvi-swiper-fade">
 			<slot></slot>
 		</div>
@@ -9,7 +9,7 @@
 		</div>
 		<slot name="indicators" :active="indicatorsIndex" :total="indicatorsTotal" v-if="$scopedSlots.indicators"></slot>
 		<div v-else-if="showIndicators" class="mvi-swiper-indicators">
-			<div :class="'mvi-swiper-indicator'+(isIndicatorActive(index)?' mvi-swiper-indicator-active':'')" :style="indicatorStyle(index)" 
+			<div :class="['mvi-swiper-indicator',isIndicatorActive(index)?'mvi-swiper-indicator-active':'']" :style="indicatorStyle(index)" 
 			v-for="(item,index) in children" :key="'indicator-'+index" v-if="indicatorShow(index)"	@click="slideTo((fade?index:(loop?(index - 1):index)))"></div>
 		</div>
 		<div :class="controlsClass" v-if="showControl" :style="controlStyle(0)" @click="slidePrev">
@@ -115,7 +115,7 @@
 			//指示器
 			indicatorStyle(){
 				return (index)=>{
-					var style = {};
+					let style = {};
 					if(this.isIndicatorActive(index)){
 						if(this.activeColor){
 							style.backgroundColor = this.activeColor;
@@ -130,7 +130,7 @@
 			},
 			//slide父容器层(非fade)
 			wrapperStyle(){
-				var style = {};
+				let style = {};
 				if(this.vertical){
 					style.height = 'calc(100% * '+this.children.length+')';
 					style.transform = 'translateY('+this.transform+'px)';
@@ -144,7 +144,7 @@
 			},
 			//swiper容器层
 			containerStyle(){
-				var style = {};
+				let style = {};
 				if(this.width){
 					style.width = this.width;
 				}
@@ -155,7 +155,7 @@
 			},
 			//slide宽度或者高度(非fade)
 			slideSize(){
-				var width = 0;
+				let width = 0;
 				if(this.vertical){//垂直
 					if(this.height){//设置了height变量
 						if(this.height.includes('rem')){
@@ -185,7 +185,7 @@
 			},
 			//激活的轮播序列(非fade，数值从0开始，循环模式下包含复制的)
 			activeIndex(){
-				var index = 0;
+				let index = 0;
 				if(this.totalMove <= 0){
 					index = this.mathNext(Math.abs(this.transform.division(this.slideSize)));
 				}else {
@@ -200,7 +200,7 @@
 			},
 			//激活的分页器索引(区分slide和fade，数值是从0开始)
 			indicatorsIndex(){
-				var index = 0;
+				let index = 0;
 				if(this.fade){
 					index = this.fadeActiveIndex;
 				}else{
@@ -232,8 +232,8 @@
 			},
 			//控制器样式
 			controlStyle(){
-				return (index)=>{
-					var style = {};
+				return index=>{
+					let style = {};
 					if(index == 0){//上一张
 						style.left = '0';
 						style.right = 'auto';
@@ -246,15 +246,15 @@
 			},
 			//控制器类
 			controlsClass(){
-				var cls = 'mvi-swiper-control';
+				let cls = ['mvi-swiper-control'];
 				if(this.controlClass){
-					cls += ' '+this.controlClass;
+					cls.push(this.controlClass)
 				}
 				return cls;
 			},
 			//是否显示具体的每个指示器(区分slide和fade)
 			indicatorShow(){
-				return (index)=>{
+				return index=>{
 					if(this.fade){
 						return true;
 					}else{
@@ -317,8 +317,8 @@
 			}else{
 				//处理循环
 				if(this.loop && this.children.length>0){
-					var copy_first = this.children[0].$el.cloneNode(true);
-					var copy_last = this.children[this.children.length-1].$el.cloneNode(true);
+					let copy_first = this.children[0].$el.cloneNode(true);
+					let copy_last = this.children[this.children.length-1].$el.cloneNode(true);
 					this.$refs.wrapper.append(copy_first);
 					this.$refs.wrapper.prepend(copy_last);
 					this.children.unshift({
@@ -386,13 +386,13 @@
 				if(event.cancelable){
 					event.preventDefault();
 				}
-				var end = 0;
+				let end = 0;
 				if(this.vertical){
 					end = event.targetTouches[0].pageY;
 				}else{
 					end = event.targetTouches[0].pageX;
 				}
-				var move = end - this.start;
+				let move = end - this.start;
 				this.totalMove = end - this.initStart;//此次触摸总偏移值
 				if(this.totalMove>0){//向右滑动或者向下滑动
 					if(this.transform >= 0){
@@ -467,13 +467,13 @@
 				if(event.cancelable){
 					event.preventDefault();
 				}
-				var end = 0;
+				let end = 0;
 				if(this.vertical){
 					end = event.pageY;
 				}else{
 					end = event.pageX;
 				}
-				var move = end - this.start;
+				let move = end - this.start;
 				this.totalMove = end - this.initStart;//此次触摸总偏移值
 				if(this.totalMove>0){//向右滑动或者向下滑动
 					if(this.transform >= 0){

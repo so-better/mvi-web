@@ -1,6 +1,6 @@
 import navbar from "./navbar"
 
-navbar.install = function(Vue){
+navbar.install = Vue=>{
 	Vue.component(navbar.name,navbar)
 }
 

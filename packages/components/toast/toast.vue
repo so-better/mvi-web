@@ -138,7 +138,7 @@
 				}
 			},	
 			toastStyle(){
-				var style = {};
+				let style = {};
 				style.zIndex = this.toastZIndex;
 				if(this.toastBackground){
 					style.backgroundColor = this.toastBackground;
@@ -163,7 +163,7 @@
 		watch:{
 			amounts(newValue){
 				if(this.toastTimeout>0){
-					var timer = setTimeout(()=>{
+					let timer = setTimeout(()=>{
 						this.show = false;
 					},this.toastTimeout)
 					this.timers.push(timer);

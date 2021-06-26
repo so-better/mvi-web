@@ -134,7 +134,7 @@
 				}
 			},
 			boardStyle(){
-				var style = {};
+				let style = {};
 				style.transition = 'all '+ this.timeout + 'ms';
 				style.webkitTransition = 'all '+this.timeout + 'ms';
 				style.zIndex = this.zIndex + 10;
@@ -155,40 +155,40 @@
 				}
 			},
 			leftNumberClass(){
-				return (item)=>{
-					var cls = 'mvi-number-keyboard-left-number';
+				return item=>{
+					let cls = ['mvi-number-keyboard-left-number'];
 					if(item == 0){
-						cls += ' mvi-number-keyboard-number-zero';
+						cls.push('mvi-number-keyboard-number-zero');
 					}
 					if(this.active){
-						cls += ' mvi-number-keyboard-active';
+						cls.push('mvi-number-keyboard-active');
 					}
 					return cls;
 				}
 			},
 			deleteBtnClass(){
-				var cls = 'mvi-number-keyboard-delete';
+				let cls = ['mvi-number-keyboard-delete'];
 				if(this.showDelete && !this.showComplete){
-					cls += ' mvi-number-keyboard-hide';
+					cls.push('mvi-number-keyboard-hide');
 				}
 				if(this.deleteClass){
-					cls += ' '+this.deleteClass;
+					cls.push(this.deleteClass)
 				}
 				if(this.active && !this.deleteDisabeld){
-					cls += ' mvi-number-keyboard-active';
+					cls.push('mvi-number-keyboard-active');
 				}
 				return cls;
 			},
 			completeBtnClass(){
-				var cls = 'mvi-number-keyboard-complete';
+				let cls = ['mvi-number-keyboard-complete'];
 				if(this.showComplete && !this.showDelete){
-					cls += ' mvi-number-keyboard-hide';
+					cls.push('mvi-number-keyboard-hide');
 				}
 				if(this.completeClass){
-					cls += ' '+this.completeClass;
+					cls.push(this.completeClass)
 				}
 				if(this.active && !(this.promiseEmpty?false:this.completeDisabled)){
-					cls += ' mvi-number-keyboard-active';
+					cls.push('mvi-number-keyboard-active');
 				}
 				return cls;
 			}
@@ -218,7 +218,7 @@
 				if(this.deleteDisabeld){
 					return;
 				}
-				var value = $util.deleteStr(this.computedValue,this.computedValue.length-1,1);
+				let value = $util.deleteStr(this.computedValue,this.computedValue.length-1,1);
 				this.computedValue = value;
 				this.$emit('delete',value);
 			},

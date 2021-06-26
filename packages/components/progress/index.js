@@ -1,6 +1,6 @@
 import progress from "./progress"
 
-progress.install = function(Vue){
+progress.install = Vue=>{
 	Vue.component(progress.name,progress)
 }
 

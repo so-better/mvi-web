@@ -105,7 +105,7 @@ class Resize {
 
 	//设置可拖动的范围
 	_setRange() {
-		var range = this.$el.getBoundingClientRect();
+		let range = this.$el.getBoundingClientRect();
 		if (this.draggableX && this.draggableY) {
 			this.leftRange = {
 				x: [range.left, range.left + $util.rem2px(this.range)],
@@ -162,8 +162,8 @@ class Resize {
 
 	///判断点击的点是否在指定区域范围内
 	_getIsInRange(x, y, range) {
-		var conditions1 = (x >= range.x[0] && x <= range.x[1]);
-		var conditions2 = (y >= range.y[0] && y <= range.y[1]);
+		let conditions1 = (x >= range.x[0] && x <= range.x[1]);
+		let conditions2 = (y >= range.y[0] && y <= range.y[1]);
 		if (conditions1 && conditions2) {
 			return true;
 		} else {
@@ -299,8 +299,8 @@ class Resize {
 	//移动端触摸滑动或者PC端鼠标拖动
 	_move(e,endX,endY) {
 		if (this.draggable) {
-			var moveX = endX - this.startX;
-			var moveY = endY - this.startY;
+			let moveX = endX - this.startX;
+			let moveY = endY - this.startY;
 			//宽高都可以改
 			if (this.draggableX && this.draggableY) {
 				if (this._getIsInRange(this.startX, this.startY, this.leftTopRange)) { //左上区域内
@@ -651,8 +651,8 @@ class Resize {
 			if (e.cancelable) {
 				e.preventDefault();
 			}
-			var endX = e.targetTouches[0].pageX;
-			var endY = e.targetTouches[0].pageY;
+			let endX = e.targetTouches[0].pageX;
+			let endY = e.targetTouches[0].pageY;
 			this._move(e,endX,endY);
 		})
 		this.$el.addEventListener('touchend',(e)=>{
@@ -664,8 +664,8 @@ class Resize {
 			this._down(e);
 		})
 		document.body.addEventListener('mousemove',(e)=>{
-			var endX = e.pageX;
-			var endY = e.pageY;
+			let endX = e.pageX;
+			let endY = e.pageY;
 			this._move(e,endX,endY);
 		})
 		document.body.addEventListener('mouseup',(e)=>{

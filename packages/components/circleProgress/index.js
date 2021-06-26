@@ -1,6 +1,6 @@
 import circleProgress from "./circleProgress"
 
-circleProgress.install = function(Vue){
+circleProgress.install = Vue=>{
 	Vue.component(circleProgress.name,circleProgress)
 }
 

@@ -46,7 +46,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			labelCls(){
-				var cls = ['mvi-form-label']
+				let cls = ['mvi-form-label']
 				if(this.form.labelClass){
 					cls.push(this.form.labelClass)
 				}
@@ -59,7 +59,7 @@
 				return cls
 			},
 			labelStyle(){
-				var style = {}
+				let style = {}
 				if(this.form.labelWidth && !this.form.labelBlock){
 					style.width = this.form.labelWidth;
 				}
@@ -83,7 +83,7 @@
 				return style;
 			},
 			formElStyle(){
-				var style = {}
+				let style = {}
 				if(this.width && !this.form.block){
 					style.width = this.width;
 				}

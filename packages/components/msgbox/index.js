@@ -4,7 +4,7 @@ import msgBoxComponent from './msgbox'
 const MsgBox = {};
 
 // 注册msgBox
-MsgBox.install = function(Vue) {
+MsgBox.install = Vue=> {
 
 	// 生成一个Vue的子类
 	const MsgBoxConstructor = Vue.extend(msgBoxComponent)

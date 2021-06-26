@@ -1,6 +1,6 @@
 import tooltip from "./tooltip"
 
-tooltip.install = function(Vue){
+tooltip.install = Vue=>{
 	Vue.component(tooltip.name,tooltip)
 }
 

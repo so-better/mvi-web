@@ -1,6 +1,6 @@
 import colorPicker from "./colorPicker"
 
-colorPicker.install = function(Vue){
+colorPicker.install = Vue=>{
 	Vue.component(colorPicker.name,colorPicker)
 }
 

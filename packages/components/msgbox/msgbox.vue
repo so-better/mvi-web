@@ -83,7 +83,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			msgBoxStyle(){
-				var style = {};
+				let style = {};
 				style.zIndex = this.msgBox_zIndex;
 				if(this.msgBox_background){
 					style.backgroundColor = this.msgBox_background;
@@ -94,9 +94,9 @@
 				return style;
 			},
 			msgBoxClass(){
-				var cls = 'mvi-msgbox';
+				let cls = ['mvi-msgbox'];
 				if(this.animation == 'translate'){
-					cls += ' mvi-msgbox-translate';
+					cls.push('mvi-msgbox-translate');
 				}
 				return cls;
 			}

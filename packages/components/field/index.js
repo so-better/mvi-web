@@ -1,6 +1,6 @@
 import field from "./field"
 
-field.install = function(Vue){
+field.install = Vue=>{
 	Vue.component(field.name,field)
 }
 

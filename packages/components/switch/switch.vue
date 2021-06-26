@@ -1,7 +1,7 @@
 <template>
-	<label :class="'mvi-switch'+(checked?' mvi-switch-checked':'')" :style="switchStyle" v-on="listeners"
+	<label :class="['mvi-switch',checked?'mvi-switch-checked':'']" :style="switchStyle" v-on="listeners"
 	 :disabled="disabled">
-		<span :class="'mvi-switch-el'+(checked?' mvi-switch-el-checked':'')" :style="elStyle">
+		<span :class="['mvi-switch-el',checked?'mvi-switch-el-checked':'']" :style="elStyle">
 			<m-icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :color="iconColor"/>
 		</span>
 		<input @change="change" type="checkbox" :checked="checked" :disabled="disabled || loading"/>
@@ -49,7 +49,7 @@
 		methods: {
 			//更改状态
 			change(event) {
-				var check = event.target.checked;
+				let check = event.target.checked;
 				this.$emit('update:checked', check);
 				this.$emit('model-change', check)
 			}

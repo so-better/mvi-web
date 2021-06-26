@@ -1,6 +1,6 @@
 import actionSheet from "./actionsheet"
 
-actionSheet.install = function(Vue){
+actionSheet.install = Vue=>{
 	Vue.component(actionSheet.name,actionSheet)
 }
 

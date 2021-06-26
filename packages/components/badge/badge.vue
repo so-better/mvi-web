@@ -1,5 +1,5 @@
 <template>
-	<span v-on="listeners" :class="'mvi-badge mvi-badge-'+size+(dot?' mvi-badge-dot':'')" :style="badgeStyle">
+	<span v-on="listeners" :class="['mvi-badge','mvi-badge-'+size,dot?'mvi-badge-dot':'']" :style="badgeStyle">
 		<slot></slot>
 	</span>
 </template>
@@ -35,7 +35,7 @@
 					this.$el.innerHTML = '';
 				}else{
 					this.$nextTick(()=>{
-						var html = '';
+						let html = '';
 						this.$slots.default.forEach((item,index)=>{
 							if(item && $util.isElement(item.elm)){
 								html += item.elm.outerHTML;
@@ -56,7 +56,7 @@
 				return Object.assign({}, this.$listeners)
 			},
 			badgeStyle() {
-				var style = {};
+				let style = {};
 				if (this.background) {
 					style.backgroundColor = this.background;
 				}

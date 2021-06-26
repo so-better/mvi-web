@@ -1,6 +1,6 @@
 import dropdown from "./dropdown"
 
-dropdown.install = function(Vue){
+dropdown.install = Vue=>{
 	Vue.component(dropdown.name,dropdown)
 }
 

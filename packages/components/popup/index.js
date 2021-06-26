@@ -1,6 +1,6 @@
 import popup from "./popup"
 
-popup.install = function(Vue){
+popup.install = Vue=>{
 	Vue.component(popup.name,popup)
 }
 

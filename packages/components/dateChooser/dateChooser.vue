@@ -1,5 +1,5 @@
 <template>
-	<div :class="'mvi-date-chooser'+(block?' mvi-date-chooser-block':'')" :data-id="`mvi-date-chooser-${_uid}`" v-on="listeners">
+	<div :class="['mvi-date-chooser',block?'mvi-date-chooser-block':'']" :data-id="`mvi-date-chooser-${_uid}`" v-on="listeners">
 		<div class="mvi-date-chooser-target" :data-id="`mvi-date-chooser-target-${_uid}`" ref="target" @click="clickCalendar"><slot></slot></div>
 		<m-layer
 			:target="`[data-id='mvi-date-chooser-target-${_uid}']`"
@@ -239,7 +239,7 @@ export default {
 				if (value.length != 12) {
 					return false;
 				}
-				for (var i = 0; i < value.length; i++) {
+				for (let i = 0; i < value.length; i++) {
 					if (typeof value[i] != 'string') {
 						return false;
 					}
@@ -306,7 +306,7 @@ export default {
 		},
 		currentMonth() {
 			//当前月份显示值
-			var month = this.value.getMonth() + 1;
+			let month = this.value.getMonth() + 1;
 			return (month < 10 ? '0' + month : month) + ' 月';
 		},
 		hoverHeader() {
@@ -318,7 +318,7 @@ export default {
 		headerItemClass() {
 			//头部元素样式类
 			return index => {
-				var cls = '';
+				let cls = '';
 				if (this.hover[index] && this.headerHoverClass) {
 					cls += ' ' + this.headerHoverClass;
 				}
@@ -328,8 +328,8 @@ export default {
 		currentYears() {
 			//年视图下显示的中间年份区间
 			if(this.layer){
-				var years = [...this.$refs.calendar.years];
-				for (var i = 0; i < years.length; i++) {
+				let years = [...this.$refs.calendar.years];
+				for (let i = 0; i < years.length; i++) {
 					if (years[i].year < this.startYear) {
 						years.splice(i, 1);
 					}
@@ -351,7 +351,7 @@ export default {
 		},
 		nextYearDisabled() {
 			if (this.view == 'year' && this.layer) {
-				var years = this.$refs.calendar.years;
+				let years = this.$refs.calendar.years;
 				return years[years.length - 1].year >= this.endYear;
 			} else {
 				return this.value.getFullYear() >= this.endYear;
@@ -455,9 +455,9 @@ export default {
 		//前一年
 		goPrevYear() {
 			if (this.view == 'year') {
-				var years = this.$refs.calendar.years;
-				var date = this.value;
-				var year = date.getFullYear();
+				let years = this.$refs.calendar.years;
+				let date = this.value;
+				let year = date.getFullYear();
 				if (years[0].year <= this.startYear) {
 					return;
 				} else if (years[0].year - this.startYear < 12) {
@@ -468,8 +468,8 @@ export default {
 				this.$emit('update:value', date);
 				this.$emit('model-change', date);
 			} else {
-				var date = this.value;
-				var year = date.getFullYear();
+				let date = this.value;
+				let year = date.getFullYear();
 				if (year <= this.startYear) {
 					return;
 				}
@@ -480,11 +480,11 @@ export default {
 		},
 		//前一月
 		goPrevMonth() {
-			var date = this.value;
+			let date = this.value;
 			if (date.getFullYear() <= this.startYear && date.getMonth() == 0) {
 				return;
 			}
-			var prevMonths = $util.getPrevMonths(2, date);
+			let prevMonths = $util.getPrevMonths(2, date);
 			date = prevMonths[1];
 			this.$emit('update:value', date);
 			this.$emit('model-change', date);
@@ -492,9 +492,9 @@ export default {
 		//下一年
 		goNextYear() {
 			if (this.view == 'year') {
-				var years = this.$refs.calendar.years;
-				var date = this.value;
-				var year = date.getFullYear();
+				let years = this.$refs.calendar.years;
+				let date = this.value;
+				let year = date.getFullYear();
 				if (years[years.length - 1].year >= this.endYear) {
 					return;
 				} else if (this.endYear - years[years.length - 1].year < 12) {
@@ -505,8 +505,8 @@ export default {
 				this.$emit('update:value', date);
 				this.$emit('model-change', date);
 			} else {
-				var date = this.value;
-				var year = date.getFullYear();
+				let date = this.value;
+				let year = date.getFullYear();
 				if (year >= this.endYear) {
 					return;
 				}
@@ -517,11 +517,11 @@ export default {
 		},
 		//下一月
 		goNextMonth() {
-			var date = this.value;
+			let date = this.value;
 			if (date.getFullYear() >= this.endYear && date.getMonth() == 11) {
 				return;
 			}
-			var nextMonths = $util.getNextMonths(2, date);
+			let nextMonths = $util.getNextMonths(2, date);
 			date = nextMonths[1];
 			this.$emit('update:value', date);
 			this.$emit('model-change', date);

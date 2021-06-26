@@ -1,7 +1,5 @@
 <template>
-	<div :disabled="disabled" :class="'mvi-input-container mvi-input-container-'+size+(border?' mvi-input-border':'')
-	+((showWordLimit && maxlength>0)?' mvi-input-container-words':'')+(required?' mvi-input-required':'')"
-	 :data-type="(type=='textarea'?'textarea':'input')">
+	<div :disabled="disabled" :class="['mvi-input-container','mvi-input-container-'+size,border?'mvi-input-border':'',(showWordLimit && maxlength>0)?'mvi-input-container-words':'',required?'mvi-input-required':'']" :data-type="(type=='textarea'?'textarea':'input')">
 		<!-- 左侧图标 -->
 		<div @click="leftClick" class="mvi-input-left-icon" v-if="$slots.left || leftIconUrl || leftIconType">
 			<slot name="left" v-if="$slots.left"></slot>
@@ -477,12 +475,12 @@
 			//输入框监听
 			input() {
 				if (this.type == 'textarea') {
-					var value = this.$refs.textarea.value;
+					let value = this.$refs.textarea.value;
 					this.$emit('update:value', value);
 					this.$emit('model-change', value);
 				} else {
 					if (!this.isDatePicker) {
-						var value = this.$refs.input.value;
+						let value = this.$refs.input.value;
 						//数字类型会过滤非数字字符
 						if(this.type == 'number'){
 							value = value.replace(/\D/g, '');
@@ -508,18 +506,18 @@
 			},
 			//行数转为高度
 			rows2Height(rows) {
-				var lineHeight = Math.floor(parseFloat($util.getCssStyle(this.$refs.textarea, 'line-height')));
+				let lineHeight = Math.floor(parseFloat($util.getCssStyle(this.$refs.textarea, 'line-height')));
 				return rows * lineHeight;
 			},
 			//设置最大高度和最小高度
 			setMaxMinHeight() {
 				if ($util.isObject(this.autosize)) {
 					if ($util.isNumber(this.autosize.maxRows)) {
-						var maxHeight = this.rows2Height(this.autosize.maxRows);
+						let maxHeight = this.rows2Height(this.autosize.maxRows);
 						this.$refs.textarea.style.maxHeight = maxHeight + "px";
 					}
 					if ($util.isNumber(this.autosize.minRows)) {
-						var minHeight = this.rows2Height(this.autosize.minRows);
+						let minHeight = this.rows2Height(this.autosize.minRows);
 						this.$refs.textarea.style.minHeight = minHeight + "px";
 					}
 				} else {
@@ -544,9 +542,9 @@
 			getDateValue() {
 				if (this.date instanceof Date) {
 					if (this.dateType == 'date') {
-						var year = this.date.getFullYear();
-						var month = (this.date.getMonth() + 1) < 10 ? '0' + (this.date.getMonth() + 1) : this.date.getMonth() + 1;
-						var date = this.date.getDate() < 10 ? '0' + this.date.getDate() : this.date.getDate();
+						let year = this.date.getFullYear();
+						let month = (this.date.getMonth() + 1) < 10 ? '0' + (this.date.getMonth() + 1) : this.date.getMonth() + 1;
+						let date = this.date.getDate() < 10 ? '0' + this.date.getDate() : this.date.getDate();
 						if (this.format == 'yyyy年mm月dd日') {
 							return year + "年" + month + "月" + date + "日";
 						} else if (this.format == 'yyyy/mm/dd') {
@@ -557,11 +555,11 @@
 							return year + "-" + month + "-" + date;
 						}
 					} else if (this.dateType == 'datetime') {
-						var year = this.date.getFullYear();
-						var month = (this.date.getMonth() + 1) < 10 ? '0' + (this.date.getMonth() + 1) : this.date.getMonth() + 1;
-						var date = this.date.getDate() < 10 ? '0' + this.date.getDate() : this.date.getDate();
-						var hour = this.date.getHours() < 10 ? '0' + this.date.getHours() : this.date.getHours();
-						var minutes = this.date.getMinutes() < 10 ? '0' + this.date.getMinutes() : this.date.getMinutes();
+						let year = this.date.getFullYear();
+						let month = (this.date.getMonth() + 1) < 10 ? '0' + (this.date.getMonth() + 1) : this.date.getMonth() + 1;
+						let date = this.date.getDate() < 10 ? '0' + this.date.getDate() : this.date.getDate();
+						let hour = this.date.getHours() < 10 ? '0' + this.date.getHours() : this.date.getHours();
+						let minutes = this.date.getMinutes() < 10 ? '0' + this.date.getMinutes() : this.date.getMinutes();
 						if (this.format == 'yyyy年MM月dd日hh时mm分') {
 							return year + "年" + month + "月" + date + "日" + hour + "时" + minutes + "分";
 						} else if (this.format == 'yyyy年MM月dd日 hh:mm') {
@@ -574,8 +572,8 @@
 							return year + "-" + month + "-" + date + " " + hour + ":" + minutes;
 						}
 					} else if (this.dateType == 'month') {
-						var year = this.date.getFullYear();
-						var month = (this.date.getMonth() + 1) < 10 ? '0' + (this.date.getMonth() + 1) : this.date.getMonth() + 1;
+						let year = this.date.getFullYear();
+						let month = (this.date.getMonth() + 1) < 10 ? '0' + (this.date.getMonth() + 1) : this.date.getMonth() + 1;
 						if (this.format == 'yyyy年mm月') {
 							return year + "年" + month + "月";
 						} else if (this.format == 'yyyy/mm') {
@@ -586,8 +584,8 @@
 							return year + "-" + month;
 						}
 					} else if (this.dateType == 'time') {
-						var hour = this.date.getHours() < 10 ? '0' + this.date.getHours() : this.date.getHours();
-						var minutes = this.date.getMinutes() < 10 ? '0' + this.date.getMinutes() : this.date.getMinutes();
+						let hour = this.date.getHours() < 10 ? '0' + this.date.getHours() : this.date.getHours();
+						let minutes = this.date.getMinutes() < 10 ? '0' + this.date.getMinutes() : this.date.getMinutes();
 						if (this.format == 'hh时mm分') {
 							return hour + "时" + minutes + "分";
 						}else {

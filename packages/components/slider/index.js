@@ -1,6 +1,6 @@
 import slider from "./slider"
 
-slider.install = function(Vue){
+slider.install = Vue=>{
 	Vue.component(slider.name,slider)
 }
 

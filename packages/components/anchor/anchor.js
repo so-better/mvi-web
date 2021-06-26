@@ -48,25 +48,25 @@ class Anchor {
 		
 		if ($util.isElement(this.$root)) {
 			this.$el.addEventListener('click',(e)=>{
-				var scrollTop = $util.getElementPoint(this.$target, this.$root).top;
+				let scrollTop = $util.getElementPoint(this.$target, this.$root).top;
 				$util.setScrollTop({
 					el:this.$root,
 					number:scrollTop - $util.rem2px(this.distance),
 					time:this.time
 				}).then(()=>{
-					var top = (scrollTop - $util.rem2px(this.distance)) <= 0 ? 0 : (scrollTop - $util.rem2px(this.distance));
+					let top = (scrollTop - $util.rem2px(this.distance)) <= 0 ? 0 : (scrollTop - $util.rem2px(this.distance));
 					this.callback(top);
 				});
 			})
 		} else {
 			this.$el.addEventListener('click',(e)=>{
 				//获取目标元素到浏览器顶部的距离
-				var scrollTop = $util.getElementPoint(this.$target).top;
+				let scrollTop = $util.getElementPoint(this.$target).top;
 				$util.setScrollTop({
 					number:scrollTop - $util.rem2px(this.distance),
 					time:this.time
 				}).then(()=>{
-					var top = (scrollTop - $util.rem2px(this.distance)) <= 0 ? 0 : (scrollTop - $util.rem2px(this.distance));
+					let top = (scrollTop - $util.rem2px(this.distance)) <= 0 ? 0 : (scrollTop - $util.rem2px(this.distance));
 					this.callback(top);
 				})
 			})

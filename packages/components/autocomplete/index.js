@@ -1,6 +1,6 @@
 import autocomplete from "./autocomplete"
 
-autocomplete.install = function(Vue){
+autocomplete.install = Vue=>{
 	Vue.component(autocomplete.name,autocomplete)
 }
 

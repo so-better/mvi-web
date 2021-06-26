@@ -1,7 +1,7 @@
 <template>
 	<transition name="mvi-overlay-fade" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" 
 	@before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave" >
-		<div v-on="listeners" @click.self="closeOverlay" :class="'mvi-overlay'+(local?' mvi-overlay-local':' mvi-overlay-global')" 
+		<div v-on="listeners" @click.self="closeOverlay" :class="['mvi-overlay',local?'mvi-overlay-local':'mvi-overlay-global']" 
 		v-show="overlayShow" :style="overlayStyle">
 			<slot></slot>
 		</div>
@@ -76,7 +76,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			overlayStyle(){
-				var style = {};
+				let style = {};
 				if(this.zIndex){
 					style.zIndex = this.zIndex;
 				}
@@ -120,7 +120,7 @@
 					if($util.getScrollHeight(this.$el.offsetParent) > this.$el.offsetParent.clientHeight){
 						if(this.usePadding){
 							//获取滚动条宽度
-							var scrollWidth = this.$el.offsetParent.offsetWidth - this.$el.offsetParent.clientWidth - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-right-width')) - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-left-width'));
+							let scrollWidth = this.$el.offsetParent.offsetWidth - this.$el.offsetParent.clientWidth - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-right-width')) - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-left-width'));
 							//记录原先右侧内边距的值
 							this.paddingRight = parseFloat($util.getCssStyle(this.$el.offsetParent,'padding-right'));
 							//设置右侧内边距值
@@ -141,7 +141,7 @@
 					if($util.getScrollWidth(this.$el.offsetParent) > this.$el.offsetParent.clientWidth){
 						if(this.usePadding){
 							//获取滚动条高度
-							var scrollHeight = this.$el.offsetParent.offsetHeight - this.$el.offsetParent.clientHeight - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-bottom-width')) - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-top-width'));
+							let scrollHeight = this.$el.offsetParent.offsetHeight - this.$el.offsetParent.clientHeight - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-bottom-width')) - parseFloat($util.getCssStyle(this.$el.offsetParent,'border-top-width'));
 							//记录原先底部侧内边距的值
 							this.paddingBottom = parseFloat($util.getCssStyle(this.$el.offsetParent,'padding-bottom'));
 							//设置底部内边距值

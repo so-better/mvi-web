@@ -9,16 +9,15 @@
 					<div class="mvi-modal-times" @click="hideModal" v-if="showTimes && (iconType || iconUrl)">
 						<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor" />
 					</div>
-					<div ref="header" :class="titleCls" 
-					v-if="$slots.title || title" :style="headerStyle" >
+					<div ref="header" :class="titleCls" v-if="$slots.title || title" :style="headerStyle" >
 						<slot name="title" v-if="$slots.title"></slot>
 						<span v-html="title" v-else-if="title"></span>
 					</div>
-					<div ref="content" :class="'mvi-modal-content'+(contentClass?' '+contentClass:'')" v-if="$slots.default || content" :style="'padding:'+(contentPadding?'':'0')">
+					<div ref="content" :class="['mvi-modal-content',contentClass?contentClass:'']" v-if="$slots.default || content" :style="{padding:contentPadding?'':'0'}">
 						<slot v-if="$slots.default"></slot>
 						<span v-html="content" v-else-if="content"></span>
 					</div>
-					<div ref="footer" :class="'mvi-modal-footer'+(footerClass?' '+footerClass:'')" v-if="$slots.footer || footer" :style="'padding:'+(footerPadding?'':'0')">
+					<div ref="footer" :class="['mvi-modal-footer',footerClass?footerClass:'']" v-if="$slots.footer || footer" :style="{padding:footerPadding?'':'0'}">
 						<slot name="footer" v-if="$slots.footer"></slot>
 						<span class="mvi-modal-footer-text" v-html="footer" v-else-if="footer"></span>
 					</div>

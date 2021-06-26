@@ -129,15 +129,15 @@ class Upload {
 			if (this.disabled) {
 				return;
 			}
-			var files = this.$selectInput.files;
+			let files = this.$selectInput.files;
 			if (!this.append) { //选择的文件不追加，则清空文件数组
 				this.files = [];
 			}
-			var length = files.length;
-			for (var i = 0; i < length; i++) {
+			let length = files.length;
+			for (let i = 0; i < length; i++) {
 				//如果append判断文件重复
 				if (this.append && this.files.length > 0) {
-					var flag = false;
+					let flag = false;
 					this.files.forEach((f, index)=> {
 						if (f.name == files[i].name && f.size == files[i].size) {
 							flag = true;
@@ -187,12 +187,12 @@ class Upload {
 	
 	//判断选择的文件是否符合规定的后缀格式
 	_judgeSuffix(fileName){
-		var suffix = fileName.substr(fileName.lastIndexOf(".") + 1); //获取文件后缀
+		let suffix = fileName.substr(fileName.lastIndexOf(".") + 1); //获取文件后缀
 		if (this.allowedFileType.length == 0) {
 			return true;
 		} else {
 			suffix = suffix.toLowerCase(); //转为小写
-			for (var i = 0; i < this.allowedFileType.length; i++) {
+			for (let i = 0; i < this.allowedFileType.length; i++) {
 				this.allowedFileType[i] = this.allowedFileType[i].toLowerCase();
 			}
 			return this.allowedFileType.includes(suffix);

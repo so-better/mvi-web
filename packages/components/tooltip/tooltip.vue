@@ -1,5 +1,5 @@
 <template>
-	<div :class="'mvi-tooltip'+(block?' mvi-tooltip-block':'')" v-on="listeners" :data-id="'mvi-tooltip-' + _uid">
+	<div :class="['mvi-tooltip',block?'mvi-tooltip-block':'']" v-on="listeners" :data-id="'mvi-tooltip-' + _uid">
 		<div @click="clickShowTooltip" @mouseenter="hoverShowTooltip" @mouseleave="hoverHideToolTip" class="mvi-tooltip-toggle" ref="toggle" :data-id="'mvi-tooltip-target-' + _uid">
 			<slot></slot>
 		</div>
@@ -104,7 +104,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			contentStyle(){
-				var style = {};
+				let style = {};
 				if(this.textColor){
 					style.color = this.textColor;
 				}

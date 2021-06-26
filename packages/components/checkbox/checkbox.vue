@@ -3,8 +3,8 @@
 		<span v-if="labelPlacement=='left' && label" :disabled="disabled" class="mvi-checkbox-label" :data-placement="labelPlacement"
 		 v-text="label" :style="labelStyle"></span>
 		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="checkbox" :name="name" />
-		<span :disabled="disabled" :class="'mvi-checkbox-item'+(check?' mvi-checkbox-item-check':'')" :style="checkboxStyle">
-			<m-icon :disabled="disabled" :type="iconType" :class="'mvi-checkbox-icon'+(check?' mvi-checkbox-icon-check':'')"
+		<span :disabled="disabled" :class="['mvi-checkbox-item',check?'mvi-checkbox-item-check':'']" :style="checkboxStyle">
+			<m-icon :disabled="disabled" :type="iconType" :class="['mvi-checkbox-icon',check?'mvi-checkbox-icon-check':'']"
 			:style="iconStyle" />
 		</span>
 		<span v-if="labelPlacement=='right' && label" :disabled="disabled" class="mvi-checkbox-label" :data-placement="labelPlacement" 
@@ -78,7 +78,7 @@
 		},
 		computed: {
 			iconStyle(){
-				var style = {};
+				let style = {};
 				if(this.disabled){
 					style.color = '';
 					style.fontSize = '';
@@ -100,7 +100,7 @@
 				return style;
 			},
 			checkboxStyle(){
-				var style = {};
+				let style = {};
 				if(this.disabled){
 					style.backgroundColor = '';
 					style.borderColor = '';
@@ -126,7 +126,7 @@
 				return style;
 			},
 			labelStyle(){
-				var style = {};
+				let style = {};
 				if(this.disabled){
 					style.color = '';
 				}else {
@@ -144,8 +144,8 @@
 				if (typeof(this.checked) == "boolean") {
 					return this.checked;
 				} else if (this.checked instanceof Array) {
-					var clude = false;//数组中是否已包含此复选框的值
-					for(var i = 0;i<this.checked.length;i++){
+					let clude = false;//数组中是否已包含此复选框的值
+					for(let i = 0;i<this.checked.length;i++){
 						if(this.checked[i] === this.value){
 							clude = true;
 							break;
@@ -162,9 +162,9 @@
 		},
 		methods: {
 			getIndex(arry, value) {
-				var index = 0;
-				var length = arry.length;
-				for (var i = 0; i < length; i++) {
+				let index = 0;
+				let length = arry.length;
+				for (let i = 0; i < length; i++) {
 					if (arry[i] == value) {
 						index = i;
 						break;
@@ -174,9 +174,9 @@
 			},
 			change(){
 				if (this.checked instanceof Array) {
-					var arr = this.checked.slice(0);
-					var clude = false;//数组中是否已包含此复选框的值
-					for(var i = 0;i<arr.length;i++){
+					let arr = this.checked.slice(0);
+					let clude = false;//数组中是否已包含此复选框的值
+					for(let i = 0;i<arr.length;i++){
 						if(arr[i] === this.value){
 							clude = true;
 							break;
@@ -185,7 +185,7 @@
 					if (event.target.checked && !clude) { //勾选且不包含
 						arr.push(this.value);
 					} else if(clude){ //取消且包含
-						var index = this.getIndex(this.checked, this.value);
+						let index = this.getIndex(this.checked, this.value);
 						arr.splice(index, 1);
 					}
 					this.$emit('update:checked', arr);

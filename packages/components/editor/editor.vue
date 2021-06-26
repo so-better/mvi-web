@@ -612,14 +612,14 @@ export default {
 		},
 		//菜单配置值
 		computedMenus() {
-			var menus = {};
+			let menus = {};
 			Object.keys(this.defaultMenus).forEach(key => {
 				//数组
 				if (Array.isArray(this.defaultMenus[key])) {
-					var newArray = [];
+					let newArray = [];
 					this.defaultMenus[key].forEach(item => {
 						if ($util.isObject(item) && item.label && item.value) {
-							var obj = {
+							let obj = {
 								label: item.label,
 								value: item.value
 							};
@@ -648,26 +648,26 @@ export default {
 		},
 		//编辑区域样式类
 		contentClass() {
-			var cls = 'mvi-editor-content';
+			let cls = ['mvi-editor-content'];
 			if (this.autoHeight) {
-				cls += ' mvi-editor-content-auto';
+				cls.push('mvi-editor-content-auto');
 			}
 			if (this.html == '<p><br></p>' || this.html == '' || this.html == '<br>' || this.html == '<p></p>') {
-				cls += ' mvi-editor-content-empty';
+				cls.push('mvi-editor-content-empty');
 			}
 			return cls;
 		},
 		//源码视图样式类
 		codeViewClass() {
-			var cls = 'mvi-editor-codeview';
+			let cls = ['mvi-editor-codeview'];
 			if (this.autoHeight) {
-				cls += ' mvi-editor-codeview-auto';
+				cls.push('mvi-editor-codeview-auto');
 			}
 			return cls;
 		},
 		//编辑区域样式
 		contentStyle() {
-			var style = {};
+			let style = {};
 			if (this.autoHeight) {
 				if (this.height) {
 					style.minHeight = this.height;
@@ -684,7 +684,7 @@ export default {
 		},
 		//源码视图样式
 		codeViewStyle() {
-			var style = {};
+			let style = {};
 			if (this.autoHeight) {
 				if (this.height) {
 					style.minHeight = this.height;
@@ -764,7 +764,7 @@ export default {
 			if (this.disabled) {
 				return;
 			}
-			var video = $util.string2dom(`<video src="${url}" class="mvi-editor-video"></video>`);
+			let video = $util.string2dom(`<video src="${url}" class="mvi-editor-video"></video>`);
 			if (this.defaultVideoShowProps.muted) {
 				video.setAttribute('muted', 'muted');
 			}
@@ -798,7 +798,7 @@ export default {
 			if (this.disabled) {
 				return;
 			}
-			var selection = window.getSelection();
+			let selection = window.getSelection();
 			if (selection.getRangeAt && selection.rangeCount) {
 				this.range = selection.getRangeAt(0);
 			}
@@ -808,7 +808,7 @@ export default {
 			if (this.disabled) {
 				return;
 			}
-			var selection = window.getSelection();
+			let selection = window.getSelection();
 			selection.removeAllRanges();
 			if (this.range) {
 				selection.addRange(this.range);
@@ -819,14 +819,14 @@ export default {
 			if (this.disabled) {
 				return;
 			}
-			var el = null;
+			let el = null;
 			if (this.$refs.content) {
 				el = this.$refs.content;
 			} else if (this.$refs.codeView) {
 				el = this.$refs.codeView;
 			}
 			el.focus();
-			var selection = window.getSelection();
+			let selection = window.getSelection();
 			selection.selectAllChildren(el);
 			selection.collapseToEnd();
 		},
@@ -838,7 +838,7 @@ export default {
 			if (!this.range) {
 				return null;
 			}
-			var node = this.range.commonAncestorContainer;
+			let node = this.range.commonAncestorContainer;
 			if ($util.isElement(node)) {
 				return node;
 			} else {
@@ -854,7 +854,7 @@ export default {
 				return;
 			}
 			this.saveRange();
-			var node = this.getSelectNode();
+			let node = this.getSelectNode();
 			this.$refs.menu.forEach(item => {
 				switch (item.value) {
 					case 'bold':
@@ -936,7 +936,7 @@ export default {
 						break;
 					default:
 						//如果不是自定义的菜单项，则不激活
-						var selectKeys = [
+						let selectKeys = [
 							'undo',
 							'redo',
 							'removeFormat',
@@ -1007,7 +1007,7 @@ export default {
 			}
 			if (event.keyCode == 9) {
 				event.preventDefault();
-				var node = this.getSelectNode();
+				let node = this.getSelectNode();
 				if (this.compareCss(node, 'font-family', 'Consolas')) {
 					document.execCommand('insertHtml', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
 				} else {
@@ -1017,7 +1017,7 @@ export default {
 		},
 		//初始化对象参数方法
 		initOption(defaultObj, propObj) {
-			var obj = {};
+			let obj = {};
 			Object.assign(obj, defaultObj);
 			Object.assign(obj, propObj);
 			return obj;
@@ -1094,7 +1094,7 @@ export default {
 				this.text = this.$refs.content.innerText;
 			} else if (this.$refs.codeView) {
 				this.html = this.$refs.codeView.innerText;
-				var el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
+				let el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
 				this.text = el.innerText;
 			}
 		}

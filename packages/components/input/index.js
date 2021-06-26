@@ -1,6 +1,6 @@
 import input from "./input"
 
-input.install = function(Vue){
+input.install = Vue=>{
 	Vue.component(input.name,input)
 }
 

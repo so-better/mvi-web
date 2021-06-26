@@ -1,8 +1,6 @@
 <template>
 	<div class="mvi-date-picker" v-on="listeners">
-		<m-picker :options="pickerOptions" :show-toolbar="showToolbar" :title="title" :title-class="titleClass" :confirm-text="confirmText"
-		 :cancel-text="cancelText" :confirm-class="confirmClass" :cancel-class="cancelClass" :loading="loading"
-		 :visible-counts="visibleCounts" :select-height="selectHeight" @change="dateChange" @confirm="bindConfirm" @cancel="bindCancel"></m-picker>
+		<m-picker :options="pickerOptions" :show-toolbar="showToolbar" :title="title" :title-class="titleClass" :confirm-text="confirmText" :cancel-text="cancelText" :confirm-class="confirmClass" :cancel-class="cancelClass" :loading="loading" :visible-counts="visibleCounts" :select-height="selectHeight" @change="dateChange" @confirm="bindConfirm" @cancel="bindCancel"></m-picker>
 	</div>
 </template>
 
@@ -24,7 +22,7 @@
 			startDate: { //默认开始时间1970年1月1日00:00:00
 				type: Date,
 				default: function() {
-					var date = new Date();
+					let date = new Date();
 					date.setFullYear(1970);
 					date.setMonth(0);
 					date.setDate(1);
@@ -38,7 +36,7 @@
 			endDate: { //默认结束时间2099年12月31日23:59:59
 				type: Date,
 				default: function() {
-					var date = new Date();
+					let date = new Date();
 					date.setFullYear(2099);
 					date.setMonth(11);
 					date.setDate(31);
@@ -438,7 +436,7 @@
 			dateChange(res) {
 				if (this.mode == 'date') {
 					if (res.columnIndex == 0) { //修改年
-						var year = this.yearArray[res.selected[0].index].year;
+						let year = this.yearArray[res.selected[0].index].year;
 						this.selectedDate = new Date(this.selectedDate.setFullYear(year));
 						if(this.equalEndYear){
 							if(this.selectedDate.getMonth() > this.endDate.getMonth()){
@@ -461,8 +459,8 @@
 							}
 						}
 					}else if(res.columnIndex == 1){//修改月
-						var month = this.monthArray[res.selected[1].index].month;
-						var totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
+						let month = this.monthArray[res.selected[1].index].month;
+						let totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
 						if(this.selectedDate.getDate() > totalDays){
 							this.selectedDate.setDate(totalDays);
 						}
@@ -478,12 +476,12 @@
 							}
 						}
 					}else if(res.columnIndex == 2){//修改日
-						var day = this.dayArray[res.selected[2].index].day;
+						let day = this.dayArray[res.selected[2].index].day;
 						this.selectedDate = new Date(this.selectedDate.setDate(day));
 					}
 				} else if (this.mode == 'datetime') {
 					if (res.columnIndex == 0) { //修改年
-						var year = this.yearArray[res.selected[0].index].year;
+						let year = this.yearArray[res.selected[0].index].year;
 						this.selectedDate = new Date(this.selectedDate.setFullYear(year));
 						if(this.equalEndYear){
 							if(this.selectedDate.getMonth() > this.endDate.getMonth()){
@@ -526,8 +524,8 @@
 							}
 						}
 					}else if(res.columnIndex == 1){//修改月
-						var month = this.monthArray[res.selected[1].index].month;
-						var totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
+						let month = this.monthArray[res.selected[1].index].month;
+						let totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
 						if(this.selectedDate.getDate() > totalDays){
 							this.selectedDate.setDate(totalDays);
 						}
@@ -563,7 +561,7 @@
 							}
 						}
 					}else if(res.columnIndex == 2){//修改日
-						var day = this.dayArray[res.selected[2].index].day;
+						let day = this.dayArray[res.selected[2].index].day;
 						this.selectedDate = new Date(this.selectedDate.setDate(day));
 						if(this.equalEndYear && this.equalEndMonth && this.equalEndDay){
 							if(this.selectedDate.getHours() > this.endDate.getHours()){
@@ -586,7 +584,7 @@
 							}
 						}
 					}else if(res.columnIndex == 3){//修改时
-						var hour = this.hourArray[res.selected[3].index].hour;
+						let hour = this.hourArray[res.selected[3].index].hour;
 						this.selectedDate = new Date(this.selectedDate.setHours(hour));
 						if(this.equalEndYear && this.equalEndMonth && this.equalEndDay && this.equalEndHour){
 							if(this.selectedDate.getMinutes() > this.endDate.getMinutes()){
@@ -599,12 +597,12 @@
 							}
 						}
 					}else if(res.columnIndex == 4){//修改分
-						var min = this.minArray[res.selected[4].index].min;
+						let min = this.minArray[res.selected[4].index].min;
 						this.selectedDate = new Date(this.selectedDate.setMinutes(min));
 					}
 				}else if(this.mode == 'time'){
 					if(res.columnIndex == 0){//修改时
-						var hour = this.hourArray[res.selected[0].index].hour;
+						let hour = this.hourArray[res.selected[0].index].hour;
 						this.selectedDate = new Date(this.selectedDate.setHours(hour));
 						if(this.equalEndYear && this.equalEndMonth && this.equalEndDay && this.equalEndHour){
 							if(this.selectedDate.getMinutes() > this.endDate.getMinutes()){
@@ -617,7 +615,7 @@
 							}
 						}
 					}else if(res.columnIndex == 1){//修改分
-						var min = this.minArray[res.selected[1].index].min;
+						let min = this.minArray[res.selected[1].index].min;
 						this.selectedDate = new Date(this.selectedDate.setMinutes(min));
 					}
 				}

@@ -158,7 +158,7 @@
 				}
 			},
 			wrapperCls(){
-				var cls = 'mvi-layer-wrapper';
+				let cls = 'mvi-layer-wrapper';
 				if(this.shadow){
 					cls += ' mvi-layer-shadow';
 				}
@@ -171,7 +171,7 @@
 				return cls;
 			},
 			wrapperStyle(){
-				var style = {}
+				let style = {}
 				if(this.border && this.borderColor){
 					style.borderColor = this.borderColor;
 				}
@@ -184,7 +184,7 @@
 				return style;
 			},
 			layerStyle(){
-				var style = {};
+				let style = {};
 				if(this.zIndex){
 					style.zIndex = this.zIndex;
 				}
@@ -233,8 +233,8 @@
 			//悬浮层显示位置智能化
 			autoAdjust(){
 				//获取绑定元素位置
-				var $target = this.getTargetEl();
-				var point = $util.getElementBounding($target);
+				let $target = this.getTargetEl();
+				let point = $util.getElementBounding($target);
 				this.realPlacement = this.placement;
 				if(this.placement == 'bottom'){
 					if(point.bottom < this.$el.offsetHeight && point.top > this.$el.offsetHeight){
@@ -510,8 +510,8 @@
 				let pt = $util.getElementPoint($target,$root);
 				if(this.fixed){
 					if(this.fixedAuto){
-						var flag = true;
-						var element = $target.offsetParent;
+						let flag = true;
+						let element = $target.offsetParent;
 						while (flag && element){
 							if($util.getCssStyle(element,'transform') != 'none'){
 								flag = false;

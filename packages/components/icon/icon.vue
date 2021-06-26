@@ -1,6 +1,6 @@
 <template>
-	<i v-if="url" v-on="listeners" :class="'mvi-icon-url'+(spin?' mvi-icon-spin':'')" :style="iconStyle"></i>
-	<i v-else v-on="listeners" :class="'mvi-icon icon-'+ type + (spin?' mvi-icon-spin':'')" :style="iconStyle"></i>
+	<i v-if="url" v-on="listeners" :class="['mvi-icon-url',spin?'mvi-icon-spin':'']" :style="iconStyle"></i>
+	<i v-else v-on="listeners" :class="['mvi-icon','icon-'+ type,spin?'mvi-icon-spin':'']" :style="iconStyle"></i>
 </template>
 
 <script>
@@ -33,7 +33,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			iconStyle(){
-				var style = {};
+				let style = {};
 				if(this.url){
 					style.backgroundImage = 'url('+this.url+')';
 					if(this.size){

@@ -33,7 +33,7 @@
 				return Object.assign({}, this.$listeners)
 			},
 			triangleStyle() {
-				var style = {};
+				let style = {};
 				style.borderWidth = this.size;
 				if (this.placement == 'top') {
 					style.borderBottomColor = this.borderColor || '';
@@ -47,7 +47,7 @@
 				return style;
 			},
 			triangleElStyle(){
-				var style = {};
+				let style = {};
 				style.borderWidth = `calc(${this.size} - 1px)`;
 				if (this.placement == 'top') {
 					style.borderBottomColor = this.background || '';

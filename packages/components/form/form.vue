@@ -49,7 +49,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			formStyle(){
-				var style = {}
+				let style = {}
 				if(this.block && this.width){
 					style.width = this.width;
 				}

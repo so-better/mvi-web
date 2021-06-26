@@ -45,68 +45,68 @@
 		inject:['row'],
 		computed:{
 			colStyle(){
-				var cls = '';
+				let cls = [];
 				
 				if(this.span){
-					cls += ' mvi-col-'+this.span;
+					cls.push('mvi-col-'+this.span);
 				}
 				if(this.offset){
-					cls += ' mvi-col-offset-'+this.offset;
+					cls.push('mvi-col-offset-'+this.offset);
 				}
 				
 				if($util.isObject(this.xs)){
 					if($util.isNumber(this.xs.span)){
-						cls += ' mvi-col-xs-' + this.xs.span;
+						cls.push('mvi-col-xs-' + this.xs.span);
 					}
 					if($util.isNumber(this.xs.offset)){
-						cls += ' mvi-col-offset-xs-' + this.xs.offset;
+						cls.push('mvi-col-offset-xs-' + this.xs.offset);
 					}
 				}else if($util.isNumber(this.xs)){
-					cls += ' mvi-col-xs-' + this.xs;
+					cls.push('mvi-col-xs-' + this.xs)
 				}
 				
 				if($util.isObject(this.sm)){
 					if($util.isNumber(this.sm.span)){
-						cls += ' mvi-col-sm-' + this.sm.span;
+						cls.push('mvi-col-sm-' + this.sm.span)
 					}
 					if($util.isNumber(this.sm.offset)){
-						cls += ' mvi-col-offset-sm-' + this.sm.offset;
+						cls.push('mvi-col-offset-sm-' + this.sm.offset);
 					}
 				}else if($util.isNumber(this.sm)){
-					cls += ' mvi-col-sm-' + this.sm;
+					cls.push('mvi-col-sm-' + this.sm);
 				}
 				
 				if($util.isObject(this.md)){
 					if($util.isNumber(this.md.span)){
-						cls += ' mvi-col-md-' + this.md.span;
+						cls.push('mvi-col-md-' + this.md.span);
 					}
 					if($util.isNumber(this.md.offset)){
-						cls += ' mvi-col-offset-md-' + this.md.offset;
+						cls.push('mvi-col-offset-md-' + this.md.offset);
 					}
 				}else if($util.isNumber(this.md)){
-					cls += ' mvi-col-md-' + this.md;
+					cls.push('mvi-col-md-' + this.md);
 				}
 				
 				if($util.isObject(this.lg)){
 					if($util.isNumber(this.lg.span)){
-						cls += ' mvi-col-lg-' + this.lg.span;
+						cls.push('mvi-col-lg-' + this.lg.span);
 					}
 					if($util.isNumber(this.lg.offset)){
-						cls += ' mvi-col-offset-lg-' + this.lg.offset;
+						cls.push('mvi-col-offset-lg-' + this.lg.offset);
 					}
 				}else if($util.isNumber(this.lg)){
-					cls += ' mvi-col-lg-' + this.lg;
+					cls.push('mvi-col-lg-' + this.lg);
 				}
 				
 				if($util.isObject(this.xl)){
 					if($util.isNumber(this.xl.span)){
-						cls += ' mvi-col-xl-' + this.xl.span;
+						cls.push('mvi-col-xl-' + this.xl.span)
 					}
 					if($util.isNumber(this.xl.offset)){
-						cls += ' mvi-col-offset-xl-' + this.xl.offset;
+						cls.push('mvi-col-offset-xl-' + this.xl.offset)
 					}
 				}else if($util.isNumber(this.xl)){
-					cls += ' mvi-col-xl-' + this.xl;
+					cls.push('mvi-col-xl-' + this.xl)
 				}
 				
 				return cls;

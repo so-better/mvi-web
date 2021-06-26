@@ -201,17 +201,17 @@
 				if(this.drag){
 					return;
 				}
-				var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+				let reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
 				if(this.value && reg.test(this.value)){//如果值为16进制的
 					this.rgb = $util.hex2rgb(this.value);
 					this.hsv = $util.rgb2hsv(this.rgb);
 					this.opacity = 1;
 				}else{//为rgb格式的
 					try{
-						var first = this.value.indexOf('(');
-						var last = this.value.lastIndexOf(')');
-						var str = this.value.substring(first+1,last);
-						var arry = str.split(',');
+						let first = this.value.indexOf('(');
+						let last = this.value.lastIndexOf(')');
+						let str = this.value.substring(first+1,last);
+						let arry = str.split(',');
 						if(arry.length<3){
 							throw new Error();
 						}
@@ -239,13 +239,13 @@
 				if(this.drag){
 					return;
 				}
-				var h = this.hsv[0];
-				var s = this.hsv[1];
-				var v = this.hsv[2];
+				let h = this.hsv[0];
+				let s = this.hsv[1];
+				let v = this.hsv[2];
 				this.$refs.panelSlide.style.left = s / 100 * this.$refs.panel.offsetWidth - this.$refs.panelSlide.offsetWidth / 2 + "px";
 				this.$refs.panelSlide.style.top = (1 - v / 100) * this.$refs.panel.offsetHeight - this.$refs.panelSlide.offsetHeight / 2 + "px";
 				this.$refs.hueSlide.style.left = h / 360 * this.$refs.hue.offsetWidth - this.$refs.hueSlide.offsetWidth / 2 + "px";
-				var sv_rgb = $util.hsv2rgb([h, 100, 100]);
+				let sv_rgb = $util.hsv2rgb([h, 100, 100]);
 				this.$refs.panel.style.background = "rgba(" + sv_rgb[0] + "," + sv_rgb[1] + "," + sv_rgb[2] + "," + this.opacity +
 					")"; //设置选色面板的颜色
 				if(this.$refs.alphaSlide && this.$refs.alpha && this.$refs.bg){
@@ -258,16 +258,16 @@
 			//根据滑块位置设置颜色
 			setColorBySlides() {
 				return new Promise((resolve)=>{
-					var placementSV = $util.getElementPoint(this.$refs.panelSlide,this.$refs.panel);
-					var placementHue = $util.getElementPoint(this.$refs.hueSlide, this.$refs.hue);
+					let placementSV = $util.getElementPoint(this.$refs.panelSlide,this.$refs.panel);
+					let placementHue = $util.getElementPoint(this.$refs.hueSlide, this.$refs.hue);
 					this.hsv[1] = Math.round((placementSV.left + this.$refs.panelSlide.offsetWidth / 2) / this.$refs.panel.offsetWidth * 100);
 					this.hsv[2] = Math.round((1 - (placementSV.top + this.$refs.panelSlide.offsetHeight / 2) / this.$refs.panel.offsetHeight) * 100);
 					this.hsv[0] = Math.round(((placementHue.left + this.$refs.hueSlide.offsetWidth / 2) / this.$refs.hue.offsetWidth) * 360);
 					this.rgb = $util.hsv2rgb(this.hsv); //转rgb值
-					var sv_rgb = $util.hsv2rgb([this.hsv[0], 100, 100]);
+					let sv_rgb = $util.hsv2rgb([this.hsv[0], 100, 100]);
 					this.$refs.panel.style.background = "rgba(" + sv_rgb[0] + "," + sv_rgb[1] + "," + sv_rgb[2] + "," + this.opacity +
 						")"; //设置选色面板的颜色
-					var placementAlpha = null;
+					let placementAlpha = null;
 					if(this.$refs.alphaSlide && this.$refs.alpha && this.$refs.bg){
 						placementAlpha = $util.getElementPoint(this.$refs.alphaSlide, this.$refs.alpha);
 						this.opacity = Math.round(((placementAlpha.left + this.$refs.alphaSlide.offsetWidth / 2) / this.$refs.alpha.offsetWidth) *
@@ -282,7 +282,7 @@
 							1] + "," + sv_rgb[2] + ") 100%)";
 					}
 					if(this.opacity == 1){
-						var value = `rgb(${this.rgb.toString()})`;
+						let value = `rgb(${this.rgb.toString()})`;
 						if(this.hex){
 							value = $util.rgb2hex(this.rgb);
 						}
@@ -295,7 +295,7 @@
 							hsv:this.hsv
 						})
 					}else{
-						var value = `rgba(${this.rgb.toString()},${this.opacity})`;
+						let value = `rgba(${this.rgb.toString()},${this.opacity})`;
 						if(this.hex){
 							value = $util.rgb2hex(this.rgb);
 						}

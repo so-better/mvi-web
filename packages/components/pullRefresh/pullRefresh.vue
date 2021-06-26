@@ -322,7 +322,7 @@
 					this.isTop = false;
 					return;
 				}
-				var el = this.getScrollEl(event.target);
+				let el = this.getScrollEl(event.target);
 				if(el != this.$el && $util.getScrollTop(el) != 0){
 					this.isTop = false;
 					return;
@@ -343,7 +343,7 @@
 					this.isTop = false;
 					return;
 				}
-				var el = this.getScrollEl(event.target);
+				let el = this.getScrollEl(event.target);
 				if(el != this.$el && $util.getScrollTop(el) != 0){
 					this.isTop = false;
 					return;
@@ -372,7 +372,7 @@
 					this.isScroll = true;
 					return;
 				}
-				var el = this.getScrollEl(event.target);
+				let el = this.getScrollEl(event.target);
 				if(el != this.$el && $util.getScrollTop(el) != 0){
 					if(this.transformY>-this.elHeight){
 						this.transformY = -this.elHeight;
@@ -383,9 +383,9 @@
 				if(this.isScroll){
 					return;
 				}
-				var endY = event.touches[0].pageY;
-				var move = endY - this.startY; //每一次移动的偏移量
-				var move2 = endY - this.startY2; //距离第一次触摸时的偏移量
+				let endY = event.touches[0].pageY;
+				let move = endY - this.startY; //每一次移动的偏移量
+				let move2 = endY - this.startY2; //距离第一次触摸时的偏移量
 				this.startY = endY;
 				//总偏移量小于0为手指向上滑动，元素向下滚动，不执行刷新
 				if (move2 <= 0) {
@@ -404,7 +404,7 @@
 					this.amount++;
 				}
 				//元素移动距离
-				var y = this.transformY + move / this.amount;
+				let y = this.transformY + move / this.amount;
 
 				//如果移动距离大于distance指定的距离，则变为可释放状态
 				if (y > $util.rem2px(this.distance)) {
@@ -437,7 +437,7 @@
 					this.isScroll = true;
 					return;
 				}
-				var el = this.getScrollEl(event.target);
+				let el = this.getScrollEl(event.target);
 				if(el != this.$el && $util.getScrollTop(el) != 0){
 					if(this.transformY>-this.elHeight){
 						this.transformY = -this.elHeight;
@@ -448,9 +448,9 @@
 				if(this.isScroll){
 					return;
 				}
-				var endY = event.pageY;
-				var move = endY - this.startY; //每一次移动的偏移量
-				var move2 = endY - this.startY2; //距离第一次触摸时的偏移量
+				let endY = event.pageY;
+				let move = endY - this.startY; //每一次移动的偏移量
+				let move2 = endY - this.startY2; //距离第一次触摸时的偏移量
 				this.startY = endY;
 
 				//总偏移量小于0为手指向上滑动，元素向下滚动，不执行刷新
@@ -470,7 +470,7 @@
 					this.amount++;
 				}
 				//元素移动距离
-				var y = this.transformY + move / this.amount;
+				let y = this.transformY + move / this.amount;
 
 				//如果移动距离大于distance指定的距离，则变为可释放状态
 				if (y > $util.rem2px(this.distance)) {

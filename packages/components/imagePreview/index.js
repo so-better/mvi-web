@@ -1,6 +1,6 @@
 import imagePreview from "./imagePreview"
 
-imagePreview.install = function(Vue){
+imagePreview.install = Vue=>{
 	Vue.component(imagePreview.name,imagePreview)
 }
 

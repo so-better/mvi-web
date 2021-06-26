@@ -32,7 +32,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			LoadingStyle(){
-				var style = {};
+				let style = {};
 				style.background = this.color;
 				style.width = 'calc('+this.size+'/20)';
 				style.height = 'calc('+this.size+'/4)';
@@ -41,7 +41,7 @@
 				return style;
 			},
 			Loading2Style(){
-				var style = {};
+				let style = {};
 				style.boxShadow = '0 calc('+this.size+'/20) 0 0 '+this.color;
 				style.webkitBoxShadow = '0 calc('+this.size+'/20) 0 0 '+this.color;
 				style.width = this.size;

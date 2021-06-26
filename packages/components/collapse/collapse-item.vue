@@ -1,11 +1,11 @@
 <template>
-	<div v-on="listeners" :class="'mvi-collapse-item'+(computedOutBorder?' mvi-collapse-item-border':'')">
+	<div v-on="listeners" :class="['mvi-collapse-item',computedOutBorder?'mvi-collapse-item-border':'']">
 		<m-cell class="mvi-collapse-cell" :icon="icon" :content="label" :title="title" :border="cellBorder" :arrow="arrow" 
 		:title-class="titleClass" :content-class="labelClass" :icon-class="iconClass" @click="changeCollapse" :active="computedActive"
 		:no-wrap="computedNoWrap" :arrow-class="computedArrowClass"></m-cell>
 		<m-transition-slide :expand="open" :timeout="computedTimeout" @before-slide-up="beforeSlideUp" @slide-up="slideUp" 
 		@before-slide-down="beforeSlideDown" @slide-down="slideDown">
-			<div :class="'mvi-collapse-item-content'+(contentClass?' '+contentClass:'')">
+			<div :class="['mvi-collapse-item-content',contentClass?contentClass:'']">
 				<slot v-if="$slots.default"></slot>
 				<span v-else v-text="content"></span>
 			</div>
@@ -138,8 +138,8 @@
 			},
 			//item在collapse中的序列值
 			itemIndex() {
-				var index = 0;
-				for (var i = 0; i < this.collapse.children.length; i++) {
+				let index = 0;
+				for (let i = 0; i < this.collapse.children.length; i++) {
 					if (this.collapse.children[i] == this) {
 						index = i;
 						break;
@@ -262,19 +262,19 @@
 						}
 					} else if ((this.collapse.openIndex) instanceof Array) { //值为数组
 						if (this.collapse.openIndex.includes(this.itemIndex)) { //关闭当前面板
-							var arry = this.collapse.openIndex;
-							var index = this.getIndex(arry, this.itemIndex);
+							let arry = this.collapse.openIndex;
+							let index = this.getIndex(arry, this.itemIndex);
 							arry.splice(index, 1);
 							this.collapse.$emit('update:openIndex', arry);
 							this.collapse.$emit('model-change', arry);
 						} else { //打开面板
-							var arry = this.collapse.openIndex;
+							let arry = this.collapse.openIndex;
 							arry.push(this.itemIndex);
 							this.collapse.$emit('update:openIndex', arry);
 							this.collapse.$emit('model-change', arry);
 						}
 					} else {
-						var arry = [];
+						let arry = [];
 						arry.push(this.itemIndex);
 						this.collapse.$emit('update:openIndex', arry);
 						this.collapse.$emit('model-change', arry);
@@ -283,7 +283,7 @@
 			},
 			//获取元素在数组中的下标
 			getIndex(arry, value) {
-				var index = 0;
+				let index = 0;
 				arry.forEach((item, i) => {
 					if (item == value) {
 						index = i;

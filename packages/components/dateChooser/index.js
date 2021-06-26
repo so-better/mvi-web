@@ -1,6 +1,6 @@
 import dateChooser from "./dateChooser"
 
-dateChooser.install = function(Vue){
+dateChooser.install = Vue=>{
 	Vue.component(dateChooser.name,dateChooser)
 }
 

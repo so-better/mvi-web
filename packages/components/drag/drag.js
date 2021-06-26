@@ -68,8 +68,8 @@ class Drag {
 		}
 		
 		//移动端的touch事件
-		var touchX = 0;
-		var touchY = 0;
+		let touchX = 0;
+		let touchY = 0;
 		//触摸开始
 		this.$el.addEventListener('touchstart',(e)=>{
 			touchX = e.targetTouches[0].pageX - $util.getElementPoint(this.$el, this.$container).left;
@@ -89,8 +89,8 @@ class Drag {
 				e.preventDefault();
 			}
 			if (this.draggable) {
-				var left = e.targetTouches[0].pageX - touchX;
-				var top = e.targetTouches[0].pageY - touchY;
+				let left = e.targetTouches[0].pageX - touchX;
+				let top = e.targetTouches[0].pageY - touchY;
 				if (this.draggableX) {
 					this.$el.style.left = left + 'px';
 				}
@@ -123,8 +123,8 @@ class Drag {
 		})
 		
 		//PC端鼠标拖拽事件
-		var mouseX = 0;
-		var mouseY = 0;
+		let mouseX = 0;
+		let mouseY = 0;
 		//鼠标按下
 		this.$el.addEventListener('mousedown',(e)=>{
 			mouseX = e.pageX - $util.getElementPoint(this.$el, this.$container).left;
@@ -141,8 +141,8 @@ class Drag {
 		//鼠标移动
 		document.body.addEventListener('mousemove',(e)=>{
 			if (this.draggable) {
-				var left = e.pageX - mouseX;
-				var top = e.pageY - mouseY;
+				let left = e.pageX - mouseX;
+				let top = e.pageY - mouseY;
 				if (this.draggableX) {
 					this.$el.style.left = left + 'px';
 				}
@@ -251,7 +251,7 @@ class Drag {
 				this.$el.style.top = top + "px";
 			}
 			this._resize();
-			var options = {
+			let options = {
 				target: this.$el,
 				container: this.$container,
 				placement: $util.getElementPoint(this.$el, this.$container)

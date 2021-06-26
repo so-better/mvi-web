@@ -1,6 +1,6 @@
 import roll from "./roll"
 
-roll.install = function(Vue){
+roll.install = Vue=>{
 	Vue.component(roll.name,roll);
 }
 

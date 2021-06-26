@@ -1,6 +1,6 @@
 import numberKeyboard from "./numberKeyboard"
 
-numberKeyboard.install = function(Vue){
+numberKeyboard.install = Vue=>{
 	Vue.component(numberKeyboard.name,numberKeyboard)
 }
 

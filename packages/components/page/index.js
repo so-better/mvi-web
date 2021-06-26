@@ -1,6 +1,6 @@
 import page from "./page"
 
-page.install = function(Vue){
+page.install = Vue=>{
 	Vue.component(page.name,page)
 }
 

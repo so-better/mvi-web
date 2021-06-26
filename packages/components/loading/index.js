@@ -1,6 +1,6 @@
 import loading from "./loading"
 
-loading.install = function(Vue){
+loading.install = Vue=>{
 	Vue.component(loading.name,loading)
 }
 

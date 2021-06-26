@@ -1,8 +1,8 @@
 <template>
-	<div :class="'mvi-divider'+(dashed?' mvi-divider-dashed':'')" v-on="listeners">
-		<div class="mvi-divider-left" :style="'border-color:'+(color?color:'')"></div>
+	<div :class="['mvi-divider',dashed?'mvi-divider-dashed':'']" v-on="listeners">
+		<div class="mvi-divider-left" :style="{borderColor:color?color:''}"></div>
 		<slot></slot>
-		<div class="mvi-divider-right" :style="'border-color:'+(color?color:'')"></div>
+		<div class="mvi-divider-right" :style="{borderColor:color?color:''}"></div>
 	</div>
 </template>
 

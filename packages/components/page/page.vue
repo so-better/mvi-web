@@ -1,43 +1,32 @@
 <template>
 	<div class="mvi-page" v-on="listeners">
-		<div v-if="firstText || firstIconType || firstIconUrl" :disabled="page==1" @click="pageFirst" :class="'mvi-page-first'+((active&&page!=1)?' mvi-page-active':'')"
-		:style="'color:'+(page==1?'':(color?color:''))">
-			<m-icon :class="'mvi-page-icon'+(firstText?' mvi-page-margin-right':'')" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" :color="firstIconColor" />
+		<div v-if="firstText || firstIconType || firstIconUrl" :disabled="page==1" @click="pageFirst" :class="['mvi-page-first',(active&&page!=1)?'mvi-page-active':'']" :style="{color:(page==1?'':(color?color:''))}">
+			<m-icon :class="['mvi-page-icon',firstText?'mvi-page-margin-right':'']" v-if="firstIconType || firstIconUrl" :type="firstIconType" :url="firstIconUrl" :spin="firstIconSpin" :size="firstIconSize" :color="firstIconColor" />
 			<span v-if="firstText" v-text="firstText"></span>
 		</div>
-		<div v-if="prevText || prevIconType || prevIconUrl" :disabled="page==1" @click="pagePrev" :class="'mvi-page-prev'+((active&&page!=1)?' mvi-page-active':'')"
-		:style="'color:'+(page==1?'':(color?color:''))">
-			<m-icon :class="'mvi-page-icon'+(prevText?' mvi-page-margin-right':'')" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize" :spin="prevIconSpin" :color="prevIconColor" />
+		<div v-if="prevText || prevIconType || prevIconUrl" :disabled="page==1" @click="pagePrev" :class="['mvi-page-prev',(active&&page!=1)?'mvi-page-active':'']" :style="{color:(page==1?'':(color?color:''))}">
+			<m-icon :class="['mvi-page-icon',prevText?'mvi-page-margin-right':'']" v-if="prevIconType|| prevIconUrl" :type="prevIconType" :url="prevIconUrl" :size="prevIconSize" :spin="prevIconSpin" :color="prevIconColor" />
 			<span v-if="prevText" v-text="prevText"></span>
 		</div>
 		<div class="mvi-page-numbers">
 			<div class="mvi-page-numbers-simple" v-if="simple">{{page}} / {{total}}</div>
 			<div class="mvi-page-numbers-items" v-else>
 				<!--total不超过overNumber -->
-				<div v-if="total<=overNumber" :class="'mvi-page-numbers-item'+(page==item?' mvi-page-number-active':'')
-				+((active&&page!=item)?' mvi-page-active':'')" 
-				v-for="(item,index) in total" v-text="item" :key="'page-'+index" @click="toPage(item)"
-				:style="pageStyle(item)"></div>
+				<div v-if="total<=overNumber" :class="['mvi-page-numbers-item',page==item?'mvi-page-number-active':'',(active&&page!=item)?'mvi-page-active':'']" v-for="(item,index) in total" v-text="item" :key="'page-'+index" @click="toPage(item)" :style="pageStyle(item)"></div>
 				<!-- total超过overNumber -->
-				<div v-if="total>overNumber && page > (overNumber-1)/2+1" :class="'mvi-page-numbers-item'+(active?' mvi-page-active':'')"
-				@click="toPage(page-(overNumber-1))" :style="'color:'+(color?color:'')">...</div>
-				<div v-if="total>overNumber" :class="'mvi-page-numbers-item'+(page==item?' mvi-page-number-active':'')
-				+((active&&page!=item)?' mvi-page-active':'')"
-				v-for="(item,index) in arry" v-text="item" :key="'page2-'+index" @click="toPage(item)"
-				:style="pageStyle(item)"></div>
-				<div v-if="total>overNumber && page < (total - (overNumber-1)/2)" :class="'mvi-page-numbers-item'+(active?' mvi-page-active':'')"
-				@click="toPage(page+(overNumber-1))" :style="'color:'+(color?color:'')">...</div>
+				<div v-if="total>overNumber && page > (overNumber-1)/2+1" :class="['mvi-page-numbers-item',active?'mvi-page-active':'']"
+				@click="toPage(page-(overNumber-1))" :style="{color:color?color:''}">...</div>
+				<div v-if="total>overNumber" :class="['mvi-page-numbers-item',page==item?'mvi-page-number-active':'',(active&&page!=item)?'mvi-page-active':'']" v-for="(item,index) in arry" v-text="item" :key="'page2-'+index" @click="toPage(item)" :style="pageStyle(item)"></div>
+				<div v-if="total>overNumber && page < (total - (overNumber-1)/2)" :class="['mvi-page-numbers-item',active?'mvi-page-active':'']" @click="toPage(page+(overNumber-1))" :style="{color:color?color:''}">...</div>
 			</div>
 		</div>
-		<div v-if="nextText || nextIconType || nextIconUrl" :disabled="page==total" @click="pageNext" :class="'mvi-page-next'+((active&&page!=total)?' mvi-page-active':'')"
-		:style="'color:'+(page==total?'':(color?color:''))">
+		<div v-if="nextText || nextIconType || nextIconUrl" :disabled="page==total" @click="pageNext" :class="['mvi-page-next',(active&&page!=total)?'mvi-page-active':'']" :style="{color:(page==total?'':(color?color:''))}">
 			<span v-if="nextText" v-text="nextText"></span>
-			<m-icon :class="'mvi-page-icon'+(nextText?' mvi-page-margin-left':'')" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize" :spin="nextIconSpin" :color="nextIconColor" />
+			<m-icon :class="['mvi-page-icon',nextText?'mvi-page-margin-left':'']" v-if="nextIconType|| nextIconUrl" :type="nextIconType" :url="nextIconUrl" :size="nextIconSize" :spin="nextIconSpin" :color="nextIconColor" />
 		</div>
-		<div v-if="lastText || lastIconType || lastIconUrl" :disabled="page==total" @click="pageLast" :class="'mvi-page-last'+((active&&page!=total)?' mvi-page-active':'')"
-		:style="'color:'+(page==total?'':(color?color:''))">
+		<div v-if="lastText || lastIconType || lastIconUrl" :disabled="page==total" @click="pageLast" :class="['mvi-page-last',(active&&page!=total)?'mvi-page-active':'']" :style="{color:(page==total?'':(color?color:''))}">
 			<span v-if="lastText" v-text="lastText"></span>
-			<m-icon :class="'mvi-page-icon'+(lastText?' mvi-page-margin-left':'')" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize" :spin="lastIconSpin" :color="lastIconColor" />
+			<m-icon :class="['mvi-page-icon',lastText?'mvi-page-margin-left':'']" v-if="lastIconType || lastIconUrl" :type="lastIconType" :url="lastIconUrl" :size="lastIconSize" :spin="lastIconSpin" :color="lastIconColor" />
 		</div>
 	</div>
 </template>

@@ -4,19 +4,17 @@
 			<m-loading size="0.5rem" color="#ddd"></m-loading>
 		</div>
 		<div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
-			<div :class="'mvi-picker-toolbar-cancel'+(cancelClass?' '+cancelClass:'')" v-text="cancelText" @click="doCancel"></div>
-			<div :class="'mvi-picker-toolbar-title'+(titleClass?' '+titleClass:'')" v-if="title" v-text="title"></div>
-			<div :class="'mvi-picker-toolbar-confirm'+(confirmClass?' '+confirmClass:'')" v-text="confirmText" @click="doConfirm"></div>
+			<div :class="['mvi-picker-toolbar-cancel',cancelClass?cancelClass:'']" v-text="cancelText" @click="doCancel"></div>
+			<div :class="['mvi-picker-toolbar-title',titleClass?titleClass:'']" v-if="title" v-text="title"></div>
+			<div :class="['mvi-picker-toolbar-confirm',confirmClass?confirmClass:'']" v-text="confirmText" @click="doConfirm"></div>
 		</div>
 		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
-			<div v-for="(column,index) in computedOptions" :key="'picker-column-'+index" :class="'mvi-picker-items'+(column.className?' '+column.className:'')"
-			 ref="items" :style="columnStyle(column,index)" @touchstart="touchstart($event,index)" @touchmove="touchmove"
-			 @touchend="touchend" @mousedown="mousedown($event,index)">
+			<div v-for="(column,index) in computedOptions" :key="'picker-column-'+index" :class="['mvi-picker-items',column.className?column.className:'']" ref="items" :style="columnStyle(column,index)" @touchstart="touchstart($event,index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event,index)">
 				<div class="mvi-picker-item" v-for="(item,index2) in column.values" :key="'picker-item-'+index2" v-text="item"
-				 :style="'height:'+(selectHeight?selectHeight:'')"></div>
+				 :style="{height:selectHeight?selectHeight:''}"></div>
 			</div>
-			<div class="mvi-picker-active" :style="'height:'+(selectHeight?selectHeight:'')"></div>
-			<div class="mvi-picker-mask" :style="'background-size:'+(selectHeight?'100% '+(computedHeight*(visibleCounts-1)/2)+'px;':'')"></div>
+			<div class="mvi-picker-active" :style="{height:selectHeight?selectHeight:''}"></div>
+			<div class="mvi-picker-mask" :style="{backgroundSize:(selectHeight?'100% '+(computedHeight*(visibleCounts-1)/2)+'px;':'')}"></div>
 		</div>
 	</div>
 </template>
@@ -108,17 +106,17 @@
 				}
 			},
 			loadingStyle() {
-				var style = {};
+				let style = {};
 				style.height = `calc(${this.computedHeight.multiplication(this.visibleCounts)}px + 0.88rem)`;
 				return style;
 			},
 			contentStyle() {
-				var style = {};
+				let style = {};
 				style.height = `${this.computedHeight.multiplication(this.visibleCounts)}px`;
 				return style;
 			},
 			computedOptions() {
-				var op = [];
+				let op = [];
 				if (this.options instanceof Array) {
 					op = this.options;
 				} else {
@@ -128,15 +126,15 @@
 			},
 			columnStyle() {
 				return (column, index) => {
-					var style = {};
+					let style = {};
 					style.transform = `translate3d(0,${this.offsets[index] || 0}px,0)`;
 					style.webkitTransform = `translate3d(0,${this.offsets[index] || 0}px,0)`;
 					return style;
 				}
 			},
 			actives() {
-				var arr = [];
-				for (var i = 0; i < this.offsets.length; i++) {
+				let arr = [];
+				for (let i = 0; i < this.offsets.length; i++) {
 					arr.push({
 						index: this.getActive(this.offsets[i]),
 						value: this.computedOptions[i].values[this.getActive(this.offsets[i])]
@@ -154,14 +152,14 @@
 			//初始化
 			init() {
 				this.offsets = [];
-				for (var i = 0; i < this.computedOptions.length; i++) {
+				for (let i = 0; i < this.computedOptions.length; i++) {
 					this.offsets.push(this.getOffset(this.computedOptions[i].defaultIndex || 0));
 				}
 			},
 			//滑动临界值
 			crisis(index) {
-				var max = (this.visibleCounts - 1).division(2).multiplication(this.computedHeight);
-				var min = -(this.visibleCounts - 1).division(2).multiplication(this.computedHeight) + (this.visibleCounts - this.computedOptions[index].values
+				let max = (this.visibleCounts - 1).division(2).multiplication(this.computedHeight);
+				let min = -(this.visibleCounts - 1).division(2).multiplication(this.computedHeight) + (this.visibleCounts - this.computedOptions[index].values
 					.length).multiplication(this.computedHeight);
 				return {
 					max,
@@ -170,7 +168,7 @@
 			},
 			//根据offset计算序列
 			getActive(value) {
-				var num = Math.abs((value - (this.visibleCounts - 1).division(2).multiplication(this.computedHeight)).division(this.computedHeight));
+				let num = Math.abs((value - (this.visibleCounts - 1).division(2).multiplication(this.computedHeight)).division(this.computedHeight));
 				return Math.round(num);
 			},
 			//根据序列计算offset
@@ -240,9 +238,9 @@
 				if (event.cancelable) {
 					event.preventDefault();
 				}
-				var endY = event.targetTouches[0].pageY;
-				var moveY = endY - this.startY; //每次偏移量
-				var moveY2 = endY - this.startY2; //总偏移量
+				let endY = event.targetTouches[0].pageY;
+				let moveY = endY - this.startY; //每次偏移量
+				let moveY2 = endY - this.startY2; //总偏移量
 				//已经在第一个选项且是下滑的
 				if (this.offsets[this.columnIndex] >= this.crisis(this.columnIndex).max && moveY2 > 0) {
 					this.amounts += 5;
@@ -266,9 +264,9 @@
 				if (event.cancelable) {
 					event.preventDefault();
 				}
-				var endY = event.pageY;
-				var moveY = endY - this.startY; //每次偏移量
-				var moveY2 = endY - this.startY2; //总偏移量
+				let endY = event.pageY;
+				let moveY = endY - this.startY; //每次偏移量
+				let moveY2 = endY - this.startY2; //总偏移量
 				//已经在第一个选项且是下滑的
 				if (this.offsets[this.columnIndex] >= this.crisis(this.columnIndex).max && moveY2 > 0) {
 					this.amounts += 5;
@@ -287,8 +285,8 @@
 			//触摸结束
 			touchend(event) {
 				this.endTimeStamp = Date.now();
-				var moveTotal = event.changedTouches[0].pageY - this.startY2;
-				var totalTimeStamp = this.endTimeStamp - this.StartTimeStamp;//时间差
+				let moveTotal = event.changedTouches[0].pageY - this.startY2;
+				let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp;//时间差
 				if(totalTimeStamp < 300 &&　Math.abs(moveTotal)>this.computedHeight){//惯性滑动
 					this.addTransition(this.columnIndex,1000).then(()=>{
 						if(moveTotal > 0){
@@ -313,8 +311,8 @@
 				}
 				this.mouseDown = false;
 				this.endTimeStamp = Date.now();
-				var moveTotal = event.pageY - this.startY2;
-				var totalTimeStamp = this.endTimeStamp - this.StartTimeStamp;//时间差
+				let moveTotal = event.pageY - this.startY2;
+				let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp;//时间差
 				if(totalTimeStamp < 300 &&　Math.abs(moveTotal)>this.computedHeight){//惯性滑动
 					this.addTransition(this.columnIndex,1000).then(()=>{
 						if(moveTotal > 0){
@@ -338,14 +336,14 @@
 					if (this.offsets[this.columnIndex] >= this.crisis(this.columnIndex).max) {
 						this.$set(this.offsets, this.columnIndex, this.crisis(this.columnIndex).max);
 					} else {
-						var order = this.getActive(this.offsets[this.columnIndex]);
+						let order = this.getActive(this.offsets[this.columnIndex]);
 						this.$set(this.offsets, this.columnIndex, this.getOffset(order));
 					}
 				} else {
 					if (this.offsets[this.columnIndex] <= this.crisis(this.columnIndex).min) {
 						this.$set(this.offsets, this.columnIndex, this.crisis(this.columnIndex).min);
 					} else {
-						var order = this.getActive(this.offsets[this.columnIndex]);
+						let order = this.getActive(this.offsets[this.columnIndex]);
 						this.$set(this.offsets, this.columnIndex, this.getOffset(order));
 					}
 				}
@@ -357,8 +355,8 @@
 						})
 					}
 				} else {
-					var flag = true;
-					for (var i = 0; i < this.oldActives.length; i++) {
+					let flag = true;
+					for (let i = 0; i < this.oldActives.length; i++) {
 						if (this.oldActives[i].index != this.actives[i].index) {
 							flag = false;
 						}

@@ -1,6 +1,6 @@
 import panel from "./panel"
 
-panel.install = function(Vue){
+panel.install = Vue=>{
 	Vue.component(panel.name,panel)
 }
 

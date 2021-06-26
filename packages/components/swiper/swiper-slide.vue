@@ -22,7 +22,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			slideStyle(){
-				var style = {};
+				let style = {};
 				if(this.swiper.vertical){
 					style.width = '100%';
 				}else{//横向
@@ -38,8 +38,8 @@
 			},
 			//slide在swiper中的序列值
 			slideIndex() {
-				var index = 0;
-				for (var i = 0; i < this.swiper.children.length; i++) {
+				let index = 0;
+				for (let i = 0; i < this.swiper.children.length; i++) {
 					if (this.swiper.children[i] == this) {
 						index = i;
 						break;

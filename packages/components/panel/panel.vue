@@ -49,29 +49,29 @@
 				return Object.assign({},this.$listeners)
 			},
 			titleCls(){
-				var cls = 'mvi-panel-header';
+				let cls = ['mvi-panel-header'];
 				if(this.$slots.default || this.content){
-					cls += ' mvi-panel-header-border';
+					cls.push('mvi-panel-header-border');
 				}
 				if(this.titleClass){
-					cls += ' ' + this.titleClass;
+					cls.push(this.titleClass)
 				}
 				return cls;
 			},
 			contentCls(){
-				var cls = 'mvi-panel-content';
+				let cls = ['mvi-panel-content'];
 				if(this.contentClass){
-					cls += ' ' + this.contentClass;
+					cls.push(this.contentClass)
 				}
 				return cls;
 			},
 			footerCls(){
-				var cls = 'mvi-panel-footer';
+				let cls = ['mvi-panel-footer'];
 				if(this.$slots.default || this.content || this.$slots.title || this.title){
-					cls += ' mvi-panel-footer-border';
+					cls.push('mvi-panel-footer-border');
 				}
 				if(this.footerClass){
-					cls += ' ' + this.footerClass;
+					cls.push(this.footerClass);
 				}
 				return cls;
 			}

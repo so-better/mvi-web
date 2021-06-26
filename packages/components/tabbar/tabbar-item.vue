@@ -1,10 +1,10 @@
 <template>
 	<div v-on="listeners" :disabled="disabled" :class="computedClass" :style="computedStyle" @click="setActive">
 		<div class="mvi-tabbar-item-child">
-			<span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="'margin-bottom:'+(name?'':'0px')">
+			<span class="mvi-tabbar-icon" v-if="iconType || iconUrl" :style="{marginBottom:name?'':'0px'}">
 				<m-icon :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor"/>
 			</span>
-			<span :class="'mvi-tabbar-name'+((iconType || iconUrl)?' mvi-tabbar-name-small':'')" v-text="name"></span>
+			<span :class="['mvi-tabbar-name',(iconType || iconUrl)?'mvi-tabbar-name-small':'']" v-text="name"></span>
 		</div>
 	</div>
 </template>
@@ -93,12 +93,12 @@
 				return color;
 			},
 			computedClass(){
-				let cls = "mvi-tabbar-item";
+				let cls = ['mvi-tabbar-item'];
 				if(this.value == this.tabbar.value){
-					cls += " mvi-tabbar-item-active";
+					cls.push('mvi-tabbar-item-active');
 				}
 				if(this.tabbar.active && !this.disabled && this.value != this.tabbar.value){
-					cls += " mvi-tabbar-active";
+					cls.push('mvi-tabbar-active');
 				}
 				return cls;
 			},

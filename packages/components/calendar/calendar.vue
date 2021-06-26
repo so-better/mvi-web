@@ -8,8 +8,7 @@
 			<div ref="list" class="mvi-calendar-date-list">
 				<div v-for="(item,index) in new Array(6)" :key="'row-'+index" class="mvi-calendar-date-row">
 					<div class="mvi-calendar-date-day" v-for="(item2,index2) in days.slice(index*7,index*7+7)" :key="'date-'+index2">
-						<div :disabled="!item2.currentMonth" :class="'mvi-calendar-date-day-item'+((nonCurrentClick?(active):(active&&item2.currentMonth))?' mvi-calendar-active':'')
-						+dateNowClass(item2)+dateCurrentClass(item2)" v-text="item2.date.getDate()" @click="onDateClick(item2)"></div>
+						<div :disabled="!item2.currentMonth" :class="['mvi-calendar-date-day-item',(nonCurrentClick?active:(active&&item2.currentMonth))?'mvi-calendar-active':'',dateNowClass(item2),dateCurrentClass(item2)]" v-text="item2.date.getDate()" @click="onDateClick(item2)"></div>
 					</div>
 				</div>
 			</div>
@@ -18,8 +17,7 @@
 		<div v-if="view=='month'" class="mvi-calendar-month">
 			<div class="mvi-calendar-month-row" v-for="(item,index) in new Array(3)" :key="'monthRow-'+index">
 				<div class="mvi-calendar-month-m" v-for="(item2,index2) in months.slice(index*4,index*4+4)" :key="'month-'+index2">
-					<div :class="'mvi-calendar-month-item'+(active?' mvi-calendar-active':'')+monthNowClass(item2)+monthCurrentClass(item2)" v-text="item2.text"
-					@click="onMonthClick(item2)"></div>
+					<div :class="['mvi-calendar-month-item',active?'mvi-calendar-active':'',monthNowClass(item2),monthCurrentClass(item2)]" v-text="item2.text" @click="onMonthClick(item2)"></div>
 				</div>
 			</div>
 		</div>
@@ -27,8 +25,7 @@
 		<div v-if="view=='year'">
 			<div class="mvi-calendar-year-row" v-for="(item,index) in new Array(3)" :key="'yearRow'+index">
 				<div class="mvi-calendar-year-y" v-for="(item2,index2) in years.slice(index*4,index*4+4)" :key="'year-'+index2">
-					<div :class="'mvi-calendar-year-item'+((!(item2.year<startYear || item2.year>endYear) && active)?' mvi-calendar-active':'')+ yearNowClass(item2)+yearCurrentClass(item2)" v-text="item2.year" 
-					@click="onYearClick(item2)" :disabled="item2.year<startYear || item2.year>endYear"></div>
+					<div :class="['mvi-calendar-year-item',(!(item2.year<startYear || item2.year>endYear) && active)?'mvi-calendar-active':'',yearNowClass(item2),yearCurrentClass(item2)]" v-text="item2.year" @click="onYearClick(item2)" :disabled="item2.year<startYear || item2.year>endYear"></div>
 				</div>
 			</div>
 		</div>
@@ -65,7 +62,7 @@
 					if(value.length != 12){
 						return false;
 					}
-					for(var i = 0;i<value.length;i++){
+					for(let i = 0;i<value.length;i++){
 						if(typeof(value[i])!="string"){
 							return false;
 						}
@@ -127,12 +124,12 @@
 			},
 			//显示在年份面板上的年数组
 			years(){
-				var arry = [];
-				var current_year = this.date.getFullYear();//获取指定的年份
+				let arry = [];
+				let current_year = this.date.getFullYear();//获取指定的年份
 				//指定日期所在年份所在数组的序列,12个值为一个数组
-				var index = Math.floor((current_year - this.startYear)/12);
-				for(var i = this.startYear+index*12;i<this.startYear+index*12+12;i++){
-					var date = new Date();
+				let index = Math.floor((current_year - this.startYear)/12);
+				for(let i = this.startYear+index*12;i<this.startYear+index*12+12;i++){
+					let date = new Date();
 					date.setFullYear(i);
 					date.setMonth(this.date.getMonth());
 					date.setDate(this.date.getDate());
@@ -147,9 +144,9 @@
 			},
 			//显示在月份面板上的月数组
 			months(){
-				var arry = [];
-				for(var i = 0;i<12;i++){
-					var date = new Date();
+				let arry = [];
+				for(let i = 0;i<12;i++){
+					let date = new Date();
 					date.setFullYear(this.date.getFullYear());
 					date.setMonth(i);
 					date.setDate(this.date.getDate());
@@ -167,9 +164,9 @@
 			//显示在日期面板上的日期数组
 			days(){
 				//获取指定日期的总天数
-				var total = $util.getDays(this.date.getFullYear(),this.date.getMonth()+1);
-				var arry = [];
-				for(var i = 0;i<total;i++){
+				let total = $util.getDays(this.date.getFullYear(),this.date.getMonth()+1);
+				let arry = [];
+				for(let i = 0;i<total;i++){
 					arry.push({
 						date:this.getSpecifiedDate(i+1),
 						now: this.isNow(i+1),
@@ -178,11 +175,11 @@
 					})
 				}
 				//在数组中添加上个月末的几天
-				var fd = this.getSpecifiedDate(1);
-				var week = fd.getDay();//获取1号是周几
-				var pd = fd;
-				for(var i = 0;i<week;i++){
-					var prevDate = $util.showTime(pd,-1);//获取前一天
+				let fd = this.getSpecifiedDate(1);
+				let week = fd.getDay();//获取1号是周几
+				let pd = fd;
+				for(let i = 0;i<week;i++){
+					let prevDate = $util.showTime(pd,-1);//获取前一天
 					arry.unshift({
 						date:prevDate,
 						now: false,
@@ -192,10 +189,10 @@
 					pd = prevDate;
 				}
 				//在数组中添加下个月初的几天
-				var ld = this.getSpecifiedDate(total);
-				var length = arry.length;
-				for(var i = length;i<35;i++){
-					var nextDate = $util.showTime(ld,1);//获取后一天
+				let ld = this.getSpecifiedDate(total);
+				let length = arry.length;
+				for(let i = length;i<35;i++){
+					let nextDate = $util.showTime(ld,1);//获取后一天
 					arry.push({
 						date:nextDate,
 						now: false,
@@ -208,15 +205,15 @@
 			},
 			//年视图指定年份样式
 			yearCurrentClass(){
-				return (item)=>{
-					var str = "";
+				return item=>{
+					let str = [];
 					if(item.current){//指定年
 						if(typeof(this.currentClass) == "string" && this.currentClass){
-							str = " " + this.currentClass;
+							str.push(this.currentClass);
 						}else if(typeof(this.currentClass) == "object" && this.currentClass && typeof(this.currentClass.year)=="string" && this.currentClass.year){
-							str = " " + this.currentClass.year;
+							str.push(this.currentClass.year);
 						}else{
-							str = " mvi-calendar-year-current";
+							str.push('mvi-calendar-year-current');
 						}
 					}
 					return str;
@@ -224,47 +221,47 @@
 			},
 			//月视图指定月份样式
 			monthCurrentClass(){
-				return (item)=>{
-					var str = "";
+				return item=>{
+					let str = [];
 					if(item.current){//指定月
 						if(typeof(this.currentClass) == "string" && this.currentClass){
-							str = " " + this.currentClass;
+							str.push(this.currentClass);
 						}else if(typeof(this.currentClass) == "object" && this.currentClass && typeof(this.currentClass.month)=="string" && this.currentClass.month){
-							str = " " + this.currentClass.month;
+							str.push(this.currentClass.month);
 						}else{
-							str = " mvi-calendar-month-current";
+							str.push('mvi-calendar-month-current');
 						}
 					}
 					return str;
 				}
 			},
 			//日期视图指定日期样式
-			dateCurrentClass(item){
-				return (item)=>{
-					var str = "";
+			dateCurrentClass(){
+				return item=>{
+					let str = [];
 					if(item.current){//指定日期
 						if(typeof(this.currentClass) == "string" && this.currentClass){
-							str = " " + this.currentClass;
+							str.push(this.currentClass)
 						}else if(typeof(this.currentClass) == "object" && this.currentClass && typeof(this.currentClass.date)=="string" && this.currentClass.date){
-							str = " " + this.currentClass.date;
+							str.push(this.currentClass.date)
 						}else{
-							str = " mvi-calendar-date-current";
+							str.push('mvi-calendar-date-current')
 						}
 					}
 					return str;
 				}
 			},
 			//年视图当前年份样式
-			yearNowClass(item){
-				return (item)=>{
-					var ync = "";
+			yearNowClass(){
+				return item=>{
+					let ync = [];
 					if(item.now){//当前年
 						if(typeof(this.nowClass) == "string" && this.nowClass){
-							ync = " " + this.nowClass;
+							ync.push(this.nowClass)
 						}else if(typeof(this.nowClass) == "object" && this.nowClass && typeof(this.nowClass.year)=="string" && this.nowClass.year){
-							ync = " " + this.nowClass.year;
+							ync.push(this.nowClass.year)
 						}else{
-							ync = " mvi-calendar-year-now";
+							ync.push('mvi-calendar-year-now');
 						}
 					}
 					return ync;
@@ -272,31 +269,31 @@
 			},
 			//月视图当前月份样式
 			monthNowClass(){
-				return (item)=>{
-					var mnc = "";
+				return item=>{
+					let mnc = [];
 					if(item.now){//当前月
 						if(typeof(this.nowClass) == "string" && this.nowClass){
-							mnc = " " + this.nowClass;
+							mnc.push(this.nowClass)
 						}else if($util.isObject(this.nowClass) && typeof(this.nowClass.month)=="string" && this.nowClass.month){
-							mnc = " " + this.nowClass.month;
+							mnc.push(this.nowClass.month)
 						}else{
-							mnc = " mvi-calendar-month-now";
+							mnc.push('mvi-calendar-month-now');
 						}
 					}
 					return mnc;
 				}
 			},
 			//日期视图当前日期样式
-			dateNowClass(item){
-				return (item)=>{
-					var dnc = "";
+			dateNowClass(){
+				return item=>{
+					let dnc = [];
 					if(item.now){//当前月
 						if(typeof(this.nowClass) == "string"){
-							dnc = " " + this.nowClass;
+							dnc.push(this.nowClass)
 						}else if($util.isObject(this.nowClass) && typeof(this.nowClass.date)=="string" && this.nowClass.date){
-							dnc = " " + this.nowClass.date;
+							dnc.push(this.nowClass.date)
 						}else{
-							dnc = " mvi-calendar-date-now";
+							dnc.push('mvi-calendar-date-now')
 						}
 					}
 					return dnc;
@@ -306,7 +303,7 @@
 		methods:{
 			//判断是否是今天
 			isNow(date){
-				var now = new Date();
+				let now = new Date();
 				if(this.date.getFullYear() == now.getFullYear()
 				&& this.date.getMonth()== now.getMonth() && date == now.getDate()){
 					return true;
@@ -324,7 +321,7 @@
 			},
 			//获取某个日期是星期几
 			getWeek(date){
-				var fullDate = new Date();
+				let fullDate = new Date();
 				fullDate.setFullYear(this.date.getFullYear());
 				fullDate.setMonth(this.date.getMonth());
 				fullDate.setDate(date);
@@ -332,7 +329,7 @@
 			},
 			//获取本月指定日期
 			getSpecifiedDate(index){
-				var fullDate = new Date();
+				let fullDate = new Date();
 				fullDate.setFullYear(this.date.getFullYear());
 				fullDate.setMonth(this.date.getMonth());
 				fullDate.setDate(index);

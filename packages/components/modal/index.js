@@ -1,6 +1,6 @@
 import modal from "./modal"
 
-modal.install = function(Vue){
+modal.install = Vue=>{
 	Vue.component(modal.name,modal)
 }
 

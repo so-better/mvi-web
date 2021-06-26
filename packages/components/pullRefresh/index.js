@@ -1,6 +1,6 @@
 import pullRefresh from "./pullRefresh"
 
-pullRefresh.install = function(Vue){
+pullRefresh.install = Vue=>{
 	Vue.component(pullRefresh.name,pullRefresh)
 }
 

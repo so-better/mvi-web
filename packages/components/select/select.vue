@@ -1,7 +1,7 @@
 <template>
 	<div :data-id="'mvi-select-' + _uid" v-on="listeners" :class="selectClass" :disabled="disabled">
 		<div :data-id="'mvi-select-target-' + _uid" :class="targetClass" :style="targetStyle" ref="target" @click="trigger" :disabled="disabled">
-			<span :class="'mvi-select-label' + (selectLabel ? '' : ' mvi-select-label-placeholder')" :data-placeholder="placeholder" v-html="selectLabel"></span>
+			<span :class="['mvi-select-label',selectLabel ? '' : 'mvi-select-label-placeholder']" :data-placeholder="placeholder" v-html="selectLabel"></span>
 			<!-- 下拉图标 -->
 			<m-icon :class="iconClass" :type="icon" />
 		</div>
@@ -200,45 +200,45 @@ export default {
 			return Object.assign({}, this.$listeners);
 		},
 		menuStyle() {
-			var style = {};
+			let style = {};
 			if (this.height) {
 				style.maxHeight = this.height;
 			}
 			return style;
 		},
 		selectClass() {
-			var cls = 'mvi-select mvi-select-' + this.size;
+			let cls = ['mvi-select','mvi-select-' + this.size];
 			if (this.round) {
-				cls += ' mvi-select-round';
+				cls.push('mvi-select-round')
 			} else if (this.square) {
-				cls += ' mvi-select-square';
+				cls.push('mvi-select-square')
 			}
 			return cls;
 		},
 		targetClass() {
-			var cls = 'mvi-select-target';
+			let cls = ['mvi-select-target'];
 			if (this.activeType && !this.activeColor && this.focus) {
-				cls += ' mvi-select-' + this.activeType;
+				cls.push('mvi-select-' + this.activeType);
 			}
 			return cls;
 		},
 		targetStyle() {
-			var style = {};
+			let style = {};
 			if (this.activeColor && this.focus) {
 				style.borderColor = this.activeColor;
 			}
 			return style;
 		},
 		iconClass() {
-			var cls = 'mvi-select-icon';
+			let cls = ['mvi-select-icon'];
 			if (this.focus) {
-				cls += ' mvi-select-active';
+				cls.push('mvi-select-active');
 			}
 			return cls;
 		},
 		selectLabel() {
 			if (this.multiple) {
-				var labels = [];
+				let labels = [];
 				this.options.forEach((item, index) => {
 					if (this.value.includes(item.value)) {
 						labels.push(item.label);
@@ -250,7 +250,7 @@ export default {
 					return labels.join(' ');
 				}
 			} else {
-				var label = '';
+				let label = '';
 				this.options.forEach((item, index) => {
 					if (item.value == this.value) {
 						label = item.label;
@@ -353,7 +353,7 @@ export default {
 				return;
 			}
 			if (this.multiple) {
-				var arr = this.value;
+				let arr = this.value;
 				if (arr.includes(item.value)) {
 					arr.splice(this.getIndexOfArray(arr, item.value), 1);
 				} else {
@@ -374,8 +374,8 @@ export default {
 			this.focus = !this.focus;
 		},
 		getIndexOfArray(arr, value) {
-			var index = 0;
-			for (var i = 0; i < arr.length; i++) {
+			let index = 0;
+			for (let i = 0; i < arr.length; i++) {
 				if (arr[i] == value) {
 					index = i;
 					break;

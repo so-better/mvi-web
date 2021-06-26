@@ -144,7 +144,7 @@
 		computed: {
 			//激活颜色设置
 			activeColorStyle(){
-				var style = {}
+				let style = {}
 				if(this.editor.activeColor){
 					style.color = this.editor.activeColor;
 				}
@@ -152,7 +152,7 @@
 			},
 			//菜单项样式
 			editorTargetStyle(){
-				var style = {}
+				let style = {}
 				if(this.editor.activeColor && this.menuActive){
 					style.color = this.editor.activeColor;
 				}
@@ -447,8 +447,8 @@
 			//上传设置
 			uploadSet() {
 				if (this.$refs.upload && Object.keys(this.$refs.upload).length > 0) {
-					for (var i = 0; i < this.$refs.upload.length; i++) {
-						var upload = new Upload(this.$refs.upload[i], this.uploadOptions)
+					for (let i = 0; i < this.$refs.upload.length; i++) {
+						let upload = new Upload(this.$refs.upload[i], this.uploadOptions)
 						upload.init()
 					}
 				}
@@ -465,15 +465,15 @@
 				if (!this.linkText) {
 					this.linkText = this.linkUrl;
 				}
-				var link = $util.string2dom(`<a href="${this.linkUrl}">${this.linkText}</a>`);
+				let link = $util.string2dom(`<a href="${this.linkUrl}">${this.linkText}</a>`);
 				if (this.linkTarget) {
 					link.setAttribute('target', '_blank');
 				}
 				this.editor.restoreRange();
 				if (this.menuActive) {
-					var node = this.editor.getSelectNode();
+					let node = this.editor.getSelectNode();
 					if (this.editor.compareTag(node,'a')) {
-						var a = this.editor.getCompareTag(node,'a');
+						let a = this.editor.getCompareTag(node,'a');
 						a.remove()
 					}
 				}
@@ -483,8 +483,8 @@
 			//链接插入设置
 			linkInsertSet() {
 				if (this.menuActive) { //激活状态
-					var node = this.editor.getSelectNode();
-					var a = this.editor.getCompareTag(node,'a');
+					let node = this.editor.getSelectNode();
+					let a = this.editor.getCompareTag(node,'a');
 					this.linkUrl = a.getAttribute('href'); //初始化赋值
 					this.linkText = a.innerText; //初始化赋值
 					this.linkTarget = a.hasAttribute('target'); //初始化赋值
@@ -494,7 +494,7 @@
 				} else {
 					this.linkUrl = '';
 					this.linkTarget = false;
-					var text = this.editor.range.toString();
+					let text = this.editor.range.toString();
 					if (text) {
 						this.linkText = text;
 						this.$refs.linkUrl.focus()
@@ -510,9 +510,9 @@
 					return;
 				}
 				this.editor.restoreRange();
-				var node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode();
 				if (this.editor.compareTag(node,'a')) {
-					var a = this.editor.getCompareTag(node,'a')
+					let a = this.editor.getCompareTag(node,'a')
 					if(a){
 						a.remove();
 						this.menuActive = false;
@@ -538,7 +538,7 @@
 					this.hideLayer();
 					return;
 				}
-				var table = this.$refs.table.cloneNode(true);
+				let table = this.$refs.table.cloneNode(true);
 				table.style.display = '';
 				this.editor.restoreRange();
 				document.execCommand('insertHtml', false, table.outerHTML);
@@ -546,18 +546,18 @@
 			},
 			//增加行
 			addTableRow() {
-				var node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode();
 				if(this.editor.compareTag(node,'tr')){
-					var tr = this.editor.getCompareTag(node,'tr');
+					let tr = this.editor.getCompareTag(node,'tr');
 					this.copyRowAppend(tr);
 				}else if (this.editor.compareTag(node,'tbody')) { //tbody
-					var tbody = this.editor.getCompareTag(node,'tbody');
-					var children = $util.children(tbody, 'tr');
+					let tbody = this.editor.getCompareTag(node,'tbody');
+					let children = $util.children(tbody, 'tr');
 					this.copyRowAppend(children[children.length - 1]);
 				} else if (this.editor.compareTag(node,'table')) { //table
-					var table = this.editor.getCompareTag(node,'table')
-					var tbody = $util.children(table, 'tbody')[0];
-					var children = $util.children(tbody, 'tr');
+					let table = this.editor.getCompareTag(node,'table')
+					let tbody = $util.children(table, 'tbody')[0];
+					let children = $util.children(tbody, 'tr');
 					this.copyRowAppend(children[children.length - 1]);
 				}
 				this.editor.updateHtmlText();
@@ -566,18 +566,18 @@
 			},
 			//删除行
 			removeTableRow() {
-				var node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode();
 				if(this.editor.compareTag(node,'tr')){
-					var tr = this.editor.getCompareTag(node,'tr');
+					let tr = this.editor.getCompareTag(node,'tr');
 					tr.remove()
 				}else if (this.editor.compareTag(node,'tbody')) { //tbody
-					var tbody = this.editor.getCompareTag(node,'tbody');
-					var children = $util.children(tbody, 'tr');
+					let tbody = this.editor.getCompareTag(node,'tbody');
+					let children = $util.children(tbody, 'tr');
 					children[children.length - 1].remove()
 				} else if (this.editor.compareTag(node,'table')) { //table
-					var table = this.editor.getCompareTag(node,'table')
-					var tbody = $util.children(table, 'tbody')[0];
-					var children = $util.children(tbody, 'tr');
+					let table = this.editor.getCompareTag(node,'table')
+					let tbody = $util.children(table, 'tbody')[0];
+					let children = $util.children(tbody, 'tr');
 					children[children.length - 1].remove()
 				}
 				this.editor.updateHtmlText();
@@ -586,24 +586,24 @@
 			},
 			//增加列
 			addTableColumn() {
-				var node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode();
 				if(this.editor.compareTag(node,'td')){
-					var td = this.editor.getCompareTag(node,'td');
+					let td = this.editor.getCompareTag(node,'td');
 					this.copyColumnAppend(td)
 				}else if(this.editor.compareTag(node,'tr')){
-					var tr = this.editor.getCompareTag(node,'tr');
-					var children = $util.children(tr, 'td');
+					let tr = this.editor.getCompareTag(node,'tr');
+					let children = $util.children(tr, 'td');
 					this.copyColumnAppend(children[children.length - 1]);
 				}else if(this.editor.compareTag(node,'tbody')){
-					var tbody = this.editor.getCompareTag(node,'tbody');
-					var tr = $util.children(tbody, 'tr')[0];
-					var childrenTd = $util.children(tr, 'td');
+					let tbody = this.editor.getCompareTag(node,'tbody');
+					let tr = $util.children(tbody, 'tr')[0];
+					let childrenTd = $util.children(tr, 'td');
 					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
 				}else if(this.editor.compareTag(node,'table')){
-					var table = this.editor.getCompareTag(node,'table');
-					var tbody = $util.children(table, 'tbody')[0];
-					var tr = $util.children(tbody, 'tr')[0];
-					var childrenTd = $util.children(tr, 'td');
+					let table = this.editor.getCompareTag(node,'table');
+					let tbody = $util.children(table, 'tbody')[0];
+					let tr = $util.children(tbody, 'tr')[0];
+					let childrenTd = $util.children(tr, 'td');
 					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
 				}
 				this.editor.updateHtmlText();
@@ -612,24 +612,24 @@
 			},
 			//删除列
 			removeTableColumn() {
-				var node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode();
 				if(this.editor.compareTag(node,'td')){
-					var td = this.editor.getCompareTag(node,'td');
+					let td = this.editor.getCompareTag(node,'td');
 					this.removeColumn(td);
 				}else if(this.editor.compareTag(node,'tr')){
-					var tr = this.editor.getCompareTag(node,'tr');
-					var children = $util.children(tr, 'td');
+					let tr = this.editor.getCompareTag(node,'tr');
+					let children = $util.children(tr, 'td');
 					this.removeColumn(children[children.length - 1]);
 				}else if(this.editor.compareTag(node,'tbody')){
-					var tbody = this.editor.getCompareTag(node,'tbody');
-					var tr = $util.children(tbody, 'tr')[0];
-					var childrenTd = $util.children(tr, 'td');
+					let tbody = this.editor.getCompareTag(node,'tbody');
+					let tr = $util.children(tbody, 'tr')[0];
+					let childrenTd = $util.children(tr, 'td');
 					this.removeColumn(childrenTd[childrenTd.length - 1]);
 				}else if(this.editor.compareTag(node,'table')){
-					var table = this.editor.getCompareTag(node,'table');
-					var tbody = $util.children(table, 'tbody')[0];
-					var tr = $util.children(tbody, 'tr')[0];
-					var childrenTd = $util.children(tr, 'td');
+					let table = this.editor.getCompareTag(node,'table');
+					let tbody = $util.children(table, 'tbody')[0];
+					let tr = $util.children(tbody, 'tr')[0];
+					let childrenTd = $util.children(tr, 'td');
 					this.removeColumn(childrenTd[childrenTd.length - 1]);
 				}
 				this.editor.updateHtmlText();
@@ -639,8 +639,8 @@
 			//删除表格
 			deleteTable() {
 				this.editor.restoreRange();
-				var node = this.editor.getSelectNode()
-				var table = this.editor.getCompareTag(node,'table');
+				let node = this.editor.getSelectNode()
+				let table = this.editor.getCompareTag(node,'table');
 				if(table){
 					table.remove();
 					this.menuActive = false;
@@ -651,8 +651,8 @@
 			},
 			//在指定节点后插入节点
 			insertNodeAfter(newNode, targetNode) {
-				var parent = targetNode.parentNode;
-				var children = $util.children(parent);
+				let parent = targetNode.parentNode;
+				let children = $util.children(parent);
 				if (children[children.length - 1] == targetNode) {
 					parent.appendChild(newNode)
 				} else {
@@ -661,7 +661,7 @@
 			},
 			//复制表格行进行增加
 			copyRowAppend(row) {
-				var newRow = row.cloneNode(true);
+				let newRow = row.cloneNode(true);
 				newRow.querySelectorAll('td').forEach(td => {
 					td.innerText = '';
 				})
@@ -670,10 +670,10 @@
 			//复制表格列进行增加
 			copyColumnAppend(column) {
 				//该列在父元素中的序列
-				var index = [].indexOf.call($util.children(column.parentNode, column.tagName), column);
+				let index = [].indexOf.call($util.children(column.parentNode, column.tagName), column);
 				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
-					var td = $util.children(tr, 'td')[index];
-					var newColumn = td.cloneNode(true);
+					let td = $util.children(tr, 'td')[index];
+					let newColumn = td.cloneNode(true);
 					newColumn.innerText = '';
 					this.insertNodeAfter(newColumn, td);
 				})
@@ -681,26 +681,26 @@
 			//根据表格列删除指定的一列
 			removeColumn(column) {
 				//该列在父元素中的序列
-				var index = [].indexOf.call($util.children(column.parentNode, column.tagName), column);
+				let index = [].indexOf.call($util.children(column.parentNode, column.tagName), column);
 				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
-					var td = $util.children(tr, 'td')[index];
+					let td = $util.children(tr, 'td')[index];
 					td.remove();
 				})
 			},
 			//删除代码块
 			removeCode() {
-				var node = this.editor.getSelectNode()
-				var pres = this.editor.$refs.content.querySelectorAll('pre');
-				var pre = null;
-				var innerHTML = ''
-				for (var i = 0; i < pres.length; i++) {
+				let node = this.editor.getSelectNode()
+				let pres = this.editor.$refs.content.querySelectorAll('pre');
+				let pre = null;
+				let innerHTML = ''
+				for (let i = 0; i < pres.length; i++) {
 					if ($util.isContains(pres[i], node)) {
 						pre = pres[i];
 						innerHTML = pre.innerHTML;
 						break;
 					}
 				}
-				var pEl = $util.string2dom("<p>" + innerHTML + "</p>");
+				let pEl = $util.string2dom("<p>" + innerHTML + "</p>");
 				this.insertNodeAfter(pEl,pre)
 				pre.remove()
 				if(this.editor.range){
@@ -712,18 +712,18 @@
 			},
 			//删除引用
 			removeBlock(){
-				var node = this.editor.getSelectNode()
-				var blockquotes = this.editor.$refs.content.querySelectorAll('blockquote');
-				var blockquote = null;
-				var innerHTML = ''
-				for (var i = 0; i < blockquotes.length; i++) {
+				let node = this.editor.getSelectNode()
+				let blockquotes = this.editor.$refs.content.querySelectorAll('blockquote');
+				let blockquote = null;
+				let innerHTML = ''
+				for (let i = 0; i < blockquotes.length; i++) {
 					if ($util.isContains(blockquotes[i], node)) {
 						blockquote = blockquotes[i];
 						innerHTML = blockquote.innerHTML;
 						break;
 					}
 				}
-				var pEl = $util.string2dom("<p>" + innerHTML + "</p>");
+				let pEl = $util.string2dom("<p>" + innerHTML + "</p>");
 				if(pEl instanceof HTMLCollection){
 					pEl = $util.string2dom("<div>" + innerHTML + "</div>")
 				}

@@ -1,6 +1,6 @@
 import image from "./image.vue"
 
-image.install = function(Vue){
+image.install = Vue=>{
 	Vue.component(image.name,image);
 }
 

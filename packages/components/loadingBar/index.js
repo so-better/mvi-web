@@ -4,7 +4,7 @@ import LoadingBarComponent from './loadingBar'
 const LoadingBar = {};
 
 // 注册
-LoadingBar.install = function(Vue) {
+LoadingBar.install = Vue=> {
 	// 生成一个Vue的子类
 	const LoadingBarConstructor = Vue.extend(LoadingBarComponent)
 	// 生成一个该子类的实例

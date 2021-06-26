@@ -1,5 +1,5 @@
 import select from "./select"
-select.install = function(Vue){
+select.install = Vue=>{
 	Vue.component(select.name,select)
 }
 

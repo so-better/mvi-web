@@ -1,7 +1,6 @@
 <template>
 	<div @click="clickStopFun" class="mvi-roll-container" v-on="listeners" :style="containerStyle">
-		<div :class="'mvi-roll'+((direction=='left'|| direction=='right')?' mvi-roll-horizontal':' mvi-roll-vertical')" 
-		:style="rollStyle" ref="roll">
+		<div :class="['mvi-roll',(direction=='left'|| direction=='right')?'mvi-roll-horizontal':'mvi-roll-vertical']" :style="rollStyle" ref="roll">
 			<slot></slot>
 		</div>
 	</div>
@@ -62,7 +61,7 @@
 			},
 			//滚动元素style
 			rollStyle() {
-				var obj = {};
+				let obj = {};
 				if (this.direction == 'left') {
 					obj.left = "100%";
 					obj.right = 'auto';
@@ -80,7 +79,7 @@
 			},
 			//容器style
 			containerStyle(){
-				var style = {};
+				let style = {};
 				if(this.rollEl){
 					style.height = $util.getCssStyle(this.rollEl,'height');
 				}
@@ -94,8 +93,8 @@
 					return;
 				}
 				this.status = 0;
-				var placement = $util.getElementPoint(this.$refs.roll, this.$el);
-				var interval = 0;
+				let placement = $util.getElementPoint(this.$refs.roll, this.$el);
+				let interval = 0;
 				if (this.direction == 'left') {
 					interval = Math.round((placement.left+this.$refs.roll.offsetWidth)/(this.$el.offsetWidth+this.$refs.roll.offsetWidth) * this.interval);
 				} else if (this.direction == 'right') {
@@ -167,7 +166,7 @@
 				}else{
 					return;
 				}
-				var placement = $util.getElementPoint(this.$refs.roll, this.$el);
+				let placement = $util.getElementPoint(this.$refs.roll, this.$el);
 				//去除动画
 				this.$refs.roll.style.transition = "";
 				this.$refs.roll.style.webkitTransition = "";

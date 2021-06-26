@@ -1,14 +1,11 @@
 <template>
 	<div class="mvi-search" :disabled="disabled">
-		<div v-if="label" :class="'mvi-search-label'+(labelClass?' '+labelClass:'')" v-text="label"></div>
-		<div :class="'mvi-search-input-container'+(round?' mvi-search-input-round':'')" :style="'backgroundColor:'+
-		(background?background:'')+';color:'+(color?color:'')">
+		<div v-if="label" :class="['mvi-search-label',labelClass?labelClass:'']" v-text="label"></div>
+		<div :class="['mvi-search-input-container',round?'mvi-search-input-round':'']" :style="{backgroundColor:background?background:'',color:color?color:''}">
 			<div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" :class="(leftIconClass?leftIconClass:'')"/>
 			</div>
-			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off"
-			:placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode"
-			:value="computedValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle">
+			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode" :value="computedValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle">
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<m-icon type="times-o"/>
 			</div>
@@ -16,7 +13,7 @@
 				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" :class="(rightIconClass?rightIconClass:'')" />
 			</div>
 		</div>
-		<div v-if="showCancel" v-text="cancelText" :class="'mvi-search-cancel'+(cancelClass?' '+cancelClass:'')" @click="doCancel"></div>
+		<div v-if="showCancel" v-text="cancelText" :class="['mvi-search-cancel',cancelClass?cancelClass:'']" @click="doCancel"></div>
 	</div>
 </template>
 

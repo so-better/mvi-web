@@ -49,7 +49,7 @@
 				return Object.assign({},this.$listeners)
 			},
 			cellStyle(){
-				var style = {};
+				let style = {};
 				style.transform = `translateX(${this.transformX}px)`;
 				return style;
 			}
@@ -73,9 +73,9 @@
 				if(this.disabled){
 					return;
 				}
-				var endX = event.touches[0].pageX;
-				var moveX = endX - this.startX;//每次移动的偏移值
-				var moveX2 = endX - this.startX2;//总偏移值
+				let endX = event.touches[0].pageX;
+				let moveX = endX - this.startX;//每次移动的偏移值
+				let moveX2 = endX - this.startX2;//总偏移值
 				this.startX = endX;
 				if(Math.abs(moveX2) <= $util.rem2px(1)){
 					return;
@@ -117,7 +117,7 @@
 				if(this.disabled){
 					return;
 				}
-				var moveX = event.changedTouches[0].pageX - this.startX2;
+				let moveX = event.changedTouches[0].pageX - this.startX2;
 				if(moveX == 0){
 					return;
 				}
@@ -155,9 +155,9 @@
 					return;
 				}
 				this.isDrag = true;
-				var endX = event.pageX;
-				var moveX = endX - this.startX;//每次移动的偏移值
-				var moveX2 = endX - this.startX2;//总偏移值
+				let endX = event.pageX;
+				let moveX = endX - this.startX;//每次移动的偏移值
+				let moveX2 = endX - this.startX2;//总偏移值
 				this.startX = endX;
 				if(Math.abs(moveX2) <= $util.rem2px(1)){
 					return;
@@ -202,7 +202,7 @@
 					return;
 				}
 				this.mouseDown = false;
-				var moveX = event.pageX - this.startX2;
+				let moveX = event.pageX - this.startX2;
 				if(moveX == 0){
 					return;
 				}
@@ -272,7 +272,7 @@
 						return;
 					}
 				}
-				var placement = 'left';
+				let placement = 'left';
 				if(this.transformX == 0){
 					return;
 				}

@@ -1,6 +1,6 @@
 import stepper from "./stepper"
 
-stepper.install = function(Vue){
+stepper.install = Vue=>{
 	Vue.component(stepper.name,stepper)
 }
 

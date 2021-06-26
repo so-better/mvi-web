@@ -5,7 +5,7 @@
 		</div>
 		<div class="mvi-slider-button" ref="btn">
 			<slot name="button" v-if="$slots.button"></slot>
-			<div v-else :class="'mvi-slider-button-el'+(buttonClass?' '+buttonClass:'')" :style="buttonElStyle"></div>
+			<div v-else :class="['mvi-slider-button-el',buttonClass?buttonClass:'']" :style="buttonElStyle"></div>
 		</div>
 	</div>
 </template>
@@ -77,7 +77,7 @@
 				return Object.assign({}, this.$listeners);
 			},
 			sliderStyle() {
-				var style = {};
+				let style = {};
 				if (this.barHeight) {
 					if (this.vertical) {
 						style.width = this.barHeight;
@@ -91,7 +91,7 @@
 				return style;
 			},
 			sliderBarStyle() {
-				var style = {};
+				let style = {};
 				if (this.activeColor) {
 					style.backgroundColor = this.activeColor;
 				}
@@ -103,7 +103,7 @@
 				return style;
 			},
 			buttonElStyle() {
-				var style = {};
+				let style = {};
 				if (this.barHeight) {
 					style.width = `calc(${this.barHeight} * 2)`;
 					style.height = `calc(${this.barHeight} * 2)`;
@@ -114,14 +114,14 @@
 				return style;
 			},
 			sliderClass(){
-				var cls = 'mvi-slider';
+				let cls = ['mvi-slider'];
 				if(this.round){
-					cls += ' mvi-slider-radius-round';
+					cls.push('mvi-slider-radius-round');
 				}else if(this.square){
-					cls += ' mvi-slider-radius-square';
+					cls.push('mvi-slider-radius-square');
 				}
 				if(this.vertical){
-					cls += ' mvi-slider-vertical';
+					cls.push('mvi-slider-vertical');
 				}
 				return cls;
 			}
@@ -174,13 +174,13 @@
 			onDrag(res) {
 				this.isdrag = true;
 				if (this.vertical) {
-					var top = res.placement.top;
-					var value = ((top + this.$refs.btn.offsetHeight / 2) / this.$el.offsetHeight) * (this.max - this.min) + this.min;
+					let top = res.placement.top;
+					let value = ((top + this.$refs.btn.offsetHeight / 2) / this.$el.offsetHeight) * (this.max - this.min) + this.min;
 					this.$emit('update:value', value);
 					this.$emit('model-change', value);
 				} else {
-					var left = res.placement.left;
-					var value = ((left + this.$refs.btn.offsetWidth / 2) / this.$el.offsetWidth) * (this.max - this.min) + this.min;
+					let left = res.placement.left;
+					let value = ((left + this.$refs.btn.offsetWidth / 2) / this.$el.offsetWidth) * (this.max - this.min) + this.min;
 					this.$emit('update:value', value);
 					this.$emit('model-change', value);
 				}
@@ -209,13 +209,13 @@
 					return;
 				}
 				if (this.vertical) {
-					var top = event.offsetY;
-					var value = (top / this.$el.offsetHeight) * (this.max - this.min) + this.min;
+					let top = event.offsetY;
+					let value = (top / this.$el.offsetHeight) * (this.max - this.min) + this.min;
 					this.$emit('update:value', value);
 					this.$emit('model-change', value);
 				} else {
-					var left = event.offsetX;
-					var value = (left / this.$el.offsetWidth) * (this.max - this.min) + this.min;
+					let left = event.offsetX;
+					let value = (left / this.$el.offsetWidth) * (this.max - this.min) + this.min;
 					this.$emit('update:value', value);
 					this.$emit('model-change', value);
 				}

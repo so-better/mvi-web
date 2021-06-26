@@ -1,6 +1,6 @@
 <template>
 	<div v-on="listeners" class="mvi-step-vertical" v-if="steps.vertical">
-		<div :class="'mvi-step-vertical-label'+(stepIndex==steps.active?' mvi-step-label-finish':'')" :style="labelStyle">
+		<div :class="['mvi-step-vertical-label',stepIndex==steps.active?'mvi-step-label-finish':'']" :style="labelStyle">
 			<slot></slot>
 		</div>
 		<div class="mvi-step-vertical-container">
@@ -8,31 +8,26 @@
 				<m-icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin" :size="steps.activeIconSize" :color="steps.activeIconColor"
 				:style="activeIconStyle"/>
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
-				<m-icon :class="'mvi-step-icon-inactive-el'+(stepIndex<=steps.active?' mvi-step-icon-inactive-finish':'')" v-else-if="steps.inactiveIcon " :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin"
+				<m-icon :class="['mvi-step-icon-inactive-el',stepIndex<=steps.active?'mvi-step-icon-inactive-finish':'']" v-else-if="steps.inactiveIcon " :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin"
 				:style="inactiveIconStyle" :size="steps.inactiveIconSize" :color="steps.inactiveIconColor"/>
-				<div :class="'mvi-step-circle'+(stepIndex<=steps.active?' mvi-step-circle-finish':'')" v-else :style="circleStyle"></div>
+				<div :class="['mvi-step-circle',stepIndex<=steps.active?'mvi-step-circle-finish':'']" v-else :style="circleStyle"></div>
 			</div>
-			<div :class="'mvi-step-vertical-line'+(stepIndex == steps.children.length-1?' mvi-step-line-last':'')+(stepIndex<steps.active?' mvi-step-line-finish':'')"
-			:style="lineStyle"></div>
+			<div :class="['mvi-step-vertical-line',stepIndex == steps.children.length-1?'mvi-step-line-last':'',stepIndex<steps.active?'mvi-step-line-finish':'']" :style="lineStyle"></div>
 		</div>
 	</div>
-	<div v-else v-on="listeners" :class="'mvi-step'+(stepIndex==steps.children.length-1?' mvi-step-last':'')">
-		<div :class="'mvi-step-label'+(stepIndex==steps.children.length-1?' mvi-step-label-last':'')+(stepIndex==0?' mvi-step-label-first':'')+(stepIndex==steps.active?' mvi-step-label-finish':'')"
-		:style="labelStyle">
+	<div v-else v-on="listeners" :class="['mvi-step',stepIndex==steps.children.length-1?'mvi-step-last':'']">
+		<div :class="['mvi-step-label',stepIndex==steps.children.length-1?'mvi-step-label-last':'',stepIndex==0?'mvi-step-label-first':'',stepIndex==steps.active?'mvi-step-label-finish':'']" :style="labelStyle">
 			<div><slot></slot></div>
 		</div>
 		<div class="mvi-step-container">
-			<div :class="'mvi-step-icon'+(stepIndex==steps.children.length-1?' mvi-step-icon-last':'')"
-			:style="'background-color:'+(steps.background?steps.background:'')">
-				<m-icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin" :size="steps.activeIconSize" :color="steps.activeIconColor"
-				:style="activeIconStyle"/>
+			<div :class="['mvi-step-icon',stepIndex==steps.children.length-1?'mvi-step-icon-last':'']"
+			:style="{backgroundColor:steps.background?steps.background:''}">
+				<m-icon class="mvi-step-icon-active-el" v-if="steps.active == stepIndex && steps.activeIcon" :type="steps.activeIconType" :url="steps.activeIconUrl" :spin="steps.activeIconSpin" :size="steps.activeIconSize" :color="steps.activeIconColor" :style="activeIconStyle"/>
 				<div class="mvi-step-circle-active" v-else-if="steps.active == stepIndex" :style="activeCircleStyle"></div>
-				<m-icon :class="'mvi-step-icon-inactive-el'+(stepIndex<=steps.active?' mvi-step-icon-inactive-finish':'')" v-else-if="steps.inactiveIcon " :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin"
-				:style="inactiveIconStyle" :size="steps.inactiveIconSize" :color="steps.inactiveIconColor"/>
-				<div :class="'mvi-step-circle'+(stepIndex<=steps.active?' mvi-step-circle-finish':'')" v-else :style="circleStyle"></div>
+				<m-icon :class="['mvi-step-icon-inactive-el',stepIndex<=steps.active?'mvi-step-icon-inactive-finish':'']" v-else-if="steps.inactiveIcon " :type="steps.inactiveIconType" :url="steps.inactiveIconUrl" :spin="steps.inactiveIconSpin" :style="inactiveIconStyle" :size="steps.inactiveIconSize" :color="steps.inactiveIconColor"/>
+				<div :class="['mvi-step-circle',stepIndex<=steps.active?'mvi-step-circle-finish':'']" v-else :style="circleStyle"></div>
 			</div>
-			<div :class="'mvi-step-line'+(stepIndex == steps.children.length-1?' mvi-step-line-last':'')+(stepIndex<steps.active?' mvi-step-line-finish':'')"
-			:style="lineStyle"></div>
+			<div :class="['mvi-step-line',stepIndex == steps.children.length-1?'mvi-step-line-last':'',stepIndex<steps.active?'mvi-step-line-finish':'']" :style="lineStyle"></div>
 		</div>
 	</div>
 </template>
@@ -50,8 +45,8 @@
 			},
 			//step在steps中的序列值
 			stepIndex() {
-				var index = 0;
-				for (var i = 0; i < this.steps.children.length; i++) {
+				let index = 0;
+				for (let i = 0; i < this.steps.children.length; i++) {
 					if (this.steps.children[i] == this) {
 						index = i;
 						break;
@@ -61,7 +56,7 @@
 			},
 			//label
 			labelStyle(){
-				var style = {};
+				let style = {};
 				if(this.steps.activeColor){
 					if(this.steps.active == this.stepIndex){
 						style.color = this.steps.activeColor;
@@ -75,7 +70,7 @@
 				return style;
 			},
 			activeIconStyle(){
-				var style = {};
+				let style = {};
 				if(this.steps.activeColor){
 					if(this.steps.active == this.stepIndex){
 						style.color = this.steps.activeColor;
@@ -84,7 +79,7 @@
 				return style;
 			},
 			inactiveIconStyle(){
-				var style = {};
+				let style = {};
 				if(this.steps.inactiveColor){
 					if(this.stepIndex > this.steps.active){
 						style.color = this.steps.inactiveColor;
@@ -98,7 +93,7 @@
 				return style;
 			},
 			circleStyle(){
-				var style = {};
+				let style = {};
 				if(this.stepIndex <= this.steps.active){
 					if(this.steps.activeColor){
 						style.backgroundColor = this.steps.activeColor;
@@ -111,7 +106,7 @@
 				return style;
 			},
 			activeCircleStyle(){
-				var style = {};
+				let style = {};
 				if(this.steps.activeColor){
 					if(this.steps.active == this.stepIndex){
 						style.backgroundColor = this.steps.activeColor;
@@ -120,7 +115,7 @@
 				return style;
 			},
 			lineStyle(){
-				var style = {};
+				let style = {};
 				if(this.steps.activeColor){
 					if(this.stepIndex < this.steps.active){
 						if(this.steps.vertical){

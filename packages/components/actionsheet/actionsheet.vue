@@ -19,8 +19,8 @@
 				</div>
 			</div>
 			<div class="mvi-acionsheet-divider"></div>
-			<div :class="'mvi-acionsheet-button'+(active?' mvi-acionsheet-active':'')" v-if="showCancel" v-text="cancelText"
-			 @click="doCancel" :style="'color:'+(cancelColor?cancelColor:'')"></div>
+			<div :class="['mvi-acionsheet-button',active?'mvi-acionsheet-active':'']" v-if="showCancel" v-text="cancelText"
+			 @click="doCancel" :style="{color:cancelColor?cancelColor:''}"></div>
 		</div>
 	</m-popup>
 </template>
@@ -175,12 +175,12 @@
 			},
 			itemClass() {
 				return item => {
-					let cls = "mvi-acionsheet-item mvi-actionsheet-item-"+this.size;
+					let cls = ['mvi-acionsheet-item','mvi-actionsheet-item-'+this.size];
 					if (item.class) {
-						cls += ' ' + item.class;
+						cls.push(item.class)
 					}
 					if (this.active && !item.loading && !item.disabled) {
-						cls += ' mvi-acionsheet-active';
+						cls.push('mvi-acionsheet-active')
 					}
 					return cls;
 				}

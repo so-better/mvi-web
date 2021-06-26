@@ -1,6 +1,6 @@
 import layer from "./layer"
 
-layer.install = function(Vue){
+layer.install = Vue=>{
 	Vue.component(layer.name,layer)
 }
 

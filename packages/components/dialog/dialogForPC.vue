@@ -111,7 +111,7 @@ export default {
 			}
 		},
 		computedBtns() {
-			var btns = {
+			let btns = {
 				ok:{
 					type:'primary',
 					color:null,
@@ -180,7 +180,7 @@ export default {
 			}
 		},
 		computedInput() {
-			var input = {};
+			let input = {};
 			if (typeof this.input.placeholder == 'string') {
 				input.placeholder = this.input.placeholder;
 			} else {
@@ -219,7 +219,7 @@ export default {
 		},
 		computedValue: {
 			get() {
-				var value = '';
+				let value = '';
 				if (typeof this.input.value == 'string' && this.input.value) {
 					value = this.input.value;
 				}
@@ -297,14 +297,14 @@ export default {
 			}
 		},
 		inputClass() {
-			var cls = '';
+			let cls = [];
 			if (this.showClear && this.computedInput.clearable) {
-				cls += 'mvi-dialog-input-padding';
+				cls.push('mvi-dialog-input-padding');
 			}
 			return cls;
 		},
 		inputStyle() {
-			var style = {};
+			let style = {};
 			if (['left', 'right', 'center'].includes(this.computedInput.align)) {
 				style.textAlign = this.computedInput.align;
 			}
@@ -326,7 +326,7 @@ export default {
 		},
 		//输入监听
 		inputFun() {
-			var value = this.computedValue;
+			let value = this.computedValue;
 			if (this.input.type == 'number') {
 				value = value.replace(/\D/g, '');
 			}
