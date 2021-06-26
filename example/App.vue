@@ -2,12 +2,16 @@
 	<div id="app">
 		<m-cell border title="标题" content="这是一个cell单元格"></m-cell>
 		<m-cell title="标题" content="这是一个cell单元格"></m-cell>
+		<m-button @click="$util.copyText('卧槽')">复制</m-button>
+		<m-input v-model="value"></m-input>
 	</div>
 </template>
 <script>
 export default {
 	data() {
-		return {};
+		return {
+			value:''
+		};
 	},
 	mounted() {
 		//console.log(this.$util.matchingText('1799-04-09','date'))
