@@ -23,7 +23,7 @@ if (typeof window !== 'undefined' && window.Vue) {
 	install(window.Vue)
 }
 
-var all = Object.assign({install},components)
+let all = Object.assign({install},components)
 
 import packages from "../package.json";
 

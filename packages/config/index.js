@@ -11,9 +11,9 @@
 	 * 乘法
 	 */
 	Number.prototype.multiplication = function(num) {
-		var m = 0;
-		var s1 = this.toString();
-		var s2 = num.toString();
+		let m = 0;
+		let s1 = this.toString();
+		let s2 = num.toString();
 		try {
 			m += s1.split(".")[1].length
 		} catch (e) {}
@@ -27,10 +27,10 @@
 	 * 除法
 	 */
 	Number.prototype.division = function(num) {
-		var t1 = 0;
-		var t2 = 0;
-		var s1 = this.toString();
-		var s2 = num.toString();
+		let t1 = 0;
+		let t2 = 0;
+		let s1 = this.toString();
+		let s2 = num.toString();
 		try {
 			t1 = s1.split(".")[1].length
 		} catch (e) {}
@@ -46,9 +46,9 @@
 	 * 加法
 	 */
 	Number.prototype.add = function(num) {
-		var r1 = 0;
-		var r2 = 0;
-		var m = 0;
+		let r1 = 0;
+		let r2 = 0;
+		let m = 0;
 		try {
 			r1 = this.toString().split(".")[1].length
 		} catch (e) {}
@@ -64,9 +64,9 @@
 	 * 减法
 	 */
 	Number.prototype.subtraction = function(num){
-		var r1 = 0;
-		var r2 = 0;
-		var m = 0;
+		let r1 = 0;
+		let r2 = 0;
+		let m = 0;
 		try {
 			r1 = this.toString().split(".")[1].length
 		} catch (e) {}
@@ -86,7 +86,7 @@
 	 * 该方法绑定在元素对象身上，适用于与该方法相关的数据绑定
 	 */
 	Element.prototype.data = function(key, value) {
-		var _this = this,
+		let _this = this,
 			_dataName = "vi", // 存储至DOM上的对象标记为框架名称
 			_data = {};
 		// 未指定参数,返回全部

@@ -37,7 +37,7 @@ Dialog.install = Vue=>{
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
 			if(typeof(options.local) == 'string' && options.local){
-				var el = document.body.querySelector(options.local);
+				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
 				}else{
@@ -80,7 +80,7 @@ Dialog.install = Vue=>{
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
 			if(typeof(options.local) == 'string' && options.local){
-				var el = document.body.querySelector(options.local);
+				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
 				}else{
@@ -131,7 +131,7 @@ Dialog.install = Vue=>{
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
 			if(typeof(options.local) == 'string' && options.local){
-				var el = document.body.querySelector(options.local);
+				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
 				}else{
@@ -173,7 +173,7 @@ Dialog.install = Vue=>{
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
 			if(typeof(options.local) == 'string' && options.local){
-				var el = document.body.querySelector(options.local);
+				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
 				}else{
@@ -215,7 +215,7 @@ Dialog.install = Vue=>{
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
 			if(typeof(options.local) == 'string' && options.local){
-				var el = document.body.querySelector(options.local);
+				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
 				}else{
@@ -264,7 +264,7 @@ Dialog.install = Vue=>{
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
 			if(typeof(options.local) == 'string' && options.local){
-				var el = document.body.querySelector(options.local);
+				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
 				}else{
