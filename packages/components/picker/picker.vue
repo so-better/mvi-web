@@ -14,7 +14,7 @@
 				 :style="{height:selectHeight?selectHeight:''}"></div>
 			</div>
 			<div class="mvi-picker-active" :style="{height:selectHeight?selectHeight:''}"></div>
-			<div class="mvi-picker-mask" :style="{backgroundSize:(selectHeight?'100% '+(computedHeight*(visibleCounts-1)/2)+'px;':'')}"></div>
+			<div class="mvi-picker-mask" :style="{backgroundSize:(selectHeight?'100% '+(computedHeight*(visibleCounts-1)/2)+'px':'')}"></div>
 		</div>
 	</div>
 </template>

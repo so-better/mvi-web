@@ -1,13 +1,13 @@
 <template>
 	<div id="app">
-		<m-table ref="table" :sort-icon="['angle-up','angle-down']" sort-active-color="#ff3300" :data="data" :columns="columns"></m-table>
-		<m-slider :value="40"></m-slider>
+		<m-panel title="标题" content="内容" footer="2021-06-27"></m-panel>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
+			date:new Date(),
 			data:[
 				{
 					id:4,
