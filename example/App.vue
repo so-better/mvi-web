@@ -1,12 +1,14 @@
 <template>
 	<div id="app">
-		<m-panel title="标题" content="内容" footer="2021-06-27"></m-panel>
+		<div>{{value}}</div>
+		<m-editor paste-text v-model="value" :menus="{codeView:true}"></m-editor>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
+			value:'',
 			date:new Date(),
 			data:[
 				{

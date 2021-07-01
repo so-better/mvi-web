@@ -22,6 +22,7 @@
 				@input="codeViewInput"
 				@keydown="tabDown"
 				v-on="listeners"
+				@paste="codeViewPaste"
 			></div>
 			<div
 				v-else
@@ -38,6 +39,7 @@
 				v-html="initalHtml"
 				:data-placeholder="placeholder"
 				v-on="listeners"
+				@paste="contentPaste"
 			></div>
 		</div>
 	</div>
@@ -52,25 +54,25 @@ export default {
 		return {
 			range: null, //选区
 			codeViewShow: false, //源码是否显示
-			initalHtml:'',//初始值
+			initalHtml: '', //初始值
 			html: '', //html内容
 			text: '', //text内容
-			isModelChange:false,//是否双向绑定改变值
+			isModelChange: false, //是否双向绑定改变值
 			//默认菜单浮层配置
 			defaultLayerProps: {
 				fixed: false, //是否fixed
-				fixedAuto:false,//适配fixed下tansform父元素
+				fixedAuto: false, //适配fixed下tansform父元素
 				placement: 'bottom-start', //位置
-				zIndex: 400 ,//浮层z-index
-				offset:'0.1rem',
-				wrapperClass:null,
-				timeout:200,
-				showTriangle:false,
-				animation:null,
-				shadow:true,
-				border:true,
-				borderColor:'#eee',
-				background:'#fff'
+				zIndex: 400, //浮层z-index
+				offset: '0.1rem',
+				wrapperClass: null,
+				timeout: 200,
+				showTriangle: false,
+				animation: null,
+				shadow: true,
+				border: true,
+				borderColor: '#eee',
+				background: '#fff'
 			},
 			defaultMenus: {
 				//默认菜单配置
@@ -389,18 +391,18 @@ export default {
 				color: '#333',
 				textColor: '#fff',
 				borderColor: '#333',
-				offset:'0.1rem',
-				zIndex:100,
-				fixed:false,
-				fixedAuto:false,
-				width:null,
-				animation:null,
-				showTriangle:true
+				offset: '0.1rem',
+				zIndex: 100,
+				fixed: false,
+				fixedAuto: false,
+				width: null,
+				animation: null,
+				showTriangle: true
 			},
 			defaultUploadImageProps: {
 				//默认上传图片配置
 				multiple: false, //是否多选
-				allowedFileType: ['jpg', 'png', 'JPG', 'PNG', 'JPEG', 'jpeg', 'gif', 'GIF','jfif','JFIF'], //限定格式
+				allowedFileType: ['jpg', 'png', 'JPG', 'PNG', 'JPEG', 'jpeg', 'gif', 'GIF', 'jfif', 'JFIF'], //限定格式
 				accept: 'image', //限制类型
 				minSize: -1, //限制单个图片最小值，单位kb
 				maxSize: -1, //限定单个图片最大值，单位kb
@@ -452,11 +454,11 @@ export default {
 				code: 'code',
 				codeView: 'eye'
 			}
-		}
+		};
 	},
-	model:{
-		prop:'value',
-		event:'model-change'
+	model: {
+		prop: 'value',
+		event: 'model-change'
 	},
 	props: {
 		//值
@@ -589,9 +591,14 @@ export default {
 			}
 		},
 		//激活颜色设定
-		activeColor:{
-			type:String,
-			default:'#0b73de'
+		activeColor: {
+			type: String,
+			default: '#0b73de'
+		},
+		//粘贴是否为纯文本
+		pasteText:{
+			type:Boolean,
+			default:false
 		}
 	},
 	computed: {
@@ -706,14 +713,14 @@ export default {
 		mEditorItem: editorItem
 	},
 	mounted() {
-		this.init(); 
+		this.init();
 	},
-	watch:{
-		value(newValue){
-			if(!this.isModelChange){
-				if(this.$refs.content){
+	watch: {
+		value(newValue) {
+			if (!this.isModelChange) {
+				if (this.$refs.content) {
 					this.$refs.content.innerHTML = this.getValue();
-				}else if(this.$refs.codeView){
+				} else if (this.$refs.codeView) {
 					this.$refs.codeView.innerText = this.getValue();
 				}
 				this.updateHtmlText();
@@ -745,9 +752,9 @@ export default {
 			document.execCommand('styleWithCSS', false, true);
 			//初始化赋值
 			this.initalHtml = this.getValue();
-			this.$nextTick(()=>{
+			this.$nextTick(() => {
 				this.updateHtmlText();
-			})
+			});
 			if (this.autofocus) {
 				this.collapseToEnd();
 			}
@@ -784,14 +791,14 @@ export default {
 			if (this.disabled) {
 				return;
 			}
-			if(this.$refs.content){
+			if (this.$refs.content) {
 				this.$refs.content.innerHTML = '<p><br></p>';
-			}else if(this.$refs.codeView){
+			} else if (this.$refs.codeView) {
 				this.$refs.codeView.innerText = '<p><br></p>';
 			}
-			this.updateHtmlText()
-			this.updateValue()
-			this.collapseToEnd()
+			this.updateHtmlText();
+			this.updateValue();
+			this.collapseToEnd();
 		},
 		//保存选区，可对外提供
 		saveRange() {
@@ -961,18 +968,18 @@ export default {
 			});
 		},
 		//编辑区域获取焦点
-		contentFocus(){
-			if(this.border && this.activeColor){
-				this.$refs.content.style.borderColor = this.activeColor
+		contentFocus() {
+			if (this.border && this.activeColor) {
+				this.$refs.content.style.borderColor = this.activeColor;
 			}
-			this.changeActive()
+			this.changeActive();
 		},
 		//编辑区域失去焦点
-		contentBlur(){
-			if(this.border && this.activeColor){
-				this.$refs.content.style.borderColor = ''
+		contentBlur() {
+			if (this.border && this.activeColor) {
+				this.$refs.content.style.borderColor = '';
 			}
-			this.changeActive()
+			this.changeActive();
 		},
 		//输入框输入
 		contentInput() {
@@ -997,7 +1004,7 @@ export default {
 			if (!this.$refs.codeView) {
 				return;
 			}
-			this.updateHtmlText()
+			this.updateHtmlText();
 			this.updateValue();
 		},
 		//tab键按下
@@ -1071,7 +1078,7 @@ export default {
 			}
 		},
 		//获取经过处理的value值
-		getValue(){
+		getValue() {
 			if (this.value == '' || this.value == '<br>' || this.value == '<p></p>') {
 				return '<p><br></p>';
 			} else {
@@ -1079,16 +1086,16 @@ export default {
 			}
 		},
 		//根据html值更新value值，可对外提供
-		updateValue(){
+		updateValue() {
 			this.isModelChange = true;
-			this.$emit('model-change',this.html);
-			this.$emit('update:value',this.html);
-			this.$nextTick(()=>{
+			this.$emit('model-change', this.html);
+			this.$emit('update:value', this.html);
+			this.$nextTick(() => {
 				this.isModelChange = false;
-			})
+			});
 		},
 		//根据编辑器的值更新html和text值，可对外提供
-		updateHtmlText(){
+		updateHtmlText() {
 			if (this.$refs.content) {
 				this.html = this.$refs.content.innerHTML;
 				this.text = this.$refs.content.innerText;
@@ -1096,6 +1103,42 @@ export default {
 				this.html = this.$refs.codeView.innerText;
 				let el = $util.string2dom(`<div>${this.$refs.codeView.innerText}</div>`);
 				this.text = el.innerText;
+			}
+		},
+		//代码视图粘贴事件
+		codeViewPaste(event) {
+			event.preventDefault();
+			this.doPasetText();
+		},
+		//编辑器粘贴事件
+		contentPaste(e) {
+			if(this.pasteText){
+				event.preventDefault();
+				this.doPasetText();
+			}
+		},
+		//纯文本粘贴处理
+		doPasetText(){
+			let text = '';
+			let clip = (event.originalEvent || event).clipboardData;
+			//兼容针对于opera ie等浏览器
+			if (clip === undefined || clip === null) {
+				text = window.clipboardData.getData('text') || '';
+				if (text !== '') {
+					if (window.getSelection) {
+						let newNode = document.createElement('span');
+						newNode.innerHTML = text;
+						window.getSelection().getRangeAt(0).insertNode(newNode);
+					} else {
+						document.selection.createRange().pasteHTML(text);
+					}
+				}
+			} else {
+				// 兼容chorme或hotfire
+				text = clip.getData('text/plain') || '';
+				if (text !== '') {
+					document.execCommand('insertText', false, text);
+				}
 			}
 		}
 	}
