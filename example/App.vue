@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
 		<div>{{value}}</div>
-		<m-editor paste-text v-model="value" :menus="{codeView:true}"></m-editor>
+		<m-cell-group>
+			<m-cell title="报团"></m-cell>
+		</m-cell-group>
 	</div>
 </template>
 <script>

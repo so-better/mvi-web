@@ -47,7 +47,7 @@
 		padding:@mp-md @mp-sm;
 	}
 	
-	.mvi-cell-group-border .mvi-cell.mvi-cell-border:last-child::after{
-		height: 0px;
+	.mvi-cell-group-border ::v-deep .mvi-cell.mvi-cell-border:last-child::after{
+		border: none;
 	}
 </style>
