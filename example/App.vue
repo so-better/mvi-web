@@ -1,9 +1,7 @@
 <template>
 	<div id="app">
 		<div>{{value}}</div>
-		<m-cell-group>
-			<m-cell title="报团"></m-cell>
-		</m-cell-group>
+		<m-cell title="调起摄像头拍照" v-upload="{capture:true}"></m-cell>
 	</div>
 </template>
 <script>
