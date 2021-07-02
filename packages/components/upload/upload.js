@@ -191,9 +191,9 @@ class Upload {
 		if (this.allowedFileType.length == 0) {
 			return true;
 		} else {
-			suffix = suffix.toLowerCase(); //转为小写
+			suffix = suffix.toLocaleLowerCase(); //转为小写
 			for (let i = 0; i < this.allowedFileType.length; i++) {
-				this.allowedFileType[i] = this.allowedFileType[i].toLowerCase();
+				this.allowedFileType[i] = this.allowedFileType[i].toLocaleLowerCase();
 			}
 			return this.allowedFileType.includes(suffix);
 		}

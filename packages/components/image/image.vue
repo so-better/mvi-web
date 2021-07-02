@@ -68,7 +68,7 @@
 				type:[String,Object],
 				default:null
 			},
-			round: {//是否原形图片
+			round: {//是否圆形图片
 				type: Boolean,
 				default: false
 			},

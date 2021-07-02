@@ -150,10 +150,10 @@
 			iconType() {
 				let t = 'times';
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.type) == "string") {
+					if (typeof this.timesIcon.type == "string") {
 						t = this.timesIcon.type;
 					}
-				} else if (typeof(this.timesIcon) == "string") {
+				} else if (typeof this.timesIcon == "string") {
 					t = this.timesIcon;
 				}
 				return t;
@@ -161,7 +161,7 @@
 			iconUrl() {
 				let url = null;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.url) == "string") {
+					if (typeof this.timesIcon.url == "string") {
 						url = this.timesIcon.url;
 					}
 				}
@@ -170,7 +170,7 @@
 			iconSpin() {
 				let spin = false;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.spin) == "boolean") {
+					if (typeof this.timesIcon.spin == "boolean") {
 						spin = this.timesIcon.spin;
 					}
 				}
@@ -179,7 +179,7 @@
 			iconSize(){
 				let size = null;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.size) == "string") {
+					if (typeof this.timesIcon.size == "string") {
 						size = this.timesIcon.size;
 					}
 				}
@@ -188,7 +188,7 @@
 			iconColor(){
 				let color = null;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.color) == "string") {
+					if (typeof this.timesIcon.color == "string") {
 						color = this.timesIcon.color;
 					}
 				}
@@ -215,12 +215,12 @@
 				return style;
 			},
 			titleCls(){
-				let cls = 'mvi-modal-title';
+				let cls = ['mvi-modal-title'];
 				if(this.titleEllipsis){
-					cls += ' mvi-modal-title-ellipsis';
+					cls.push('mvi-modal-title-ellipsis');
 				}
 				if(this.titleClass){
-					cls += ' ' + this.titleClass;
+					cls.push(this.titleClass)
 				}
 				return cls;
 			},

@@ -129,36 +129,36 @@ export default {
 			}
 			if($util.isObject(this.btns)){
 				if($util.isObject(this.btns.ok)){
-					if(typeof (this.btns.ok.type) == 'string'){
+					if(typeof this.btns.ok.type == 'string'){
 						btns.ok.type = this.btns.ok.type;
 					}
-					if(typeof (this.btns.ok.color) == 'string'){
+					if(typeof this.btns.ok.color == 'string'){
 						btns.ok.color = this.btns.ok.color;
 					}
-					if(typeof (this.btns.ok.subColor) == 'string'){
+					if(typeof this.btns.ok.subColor == 'string'){
 						btns.ok.subColor = this.btns.ok.subColor;
 					}
-					if(typeof (this.btns.ok.plain) == 'boolean'){
+					if(typeof this.btns.ok.plain == 'boolean'){
 						btns.ok.plain = this.btns.ok.plain;
 					}
-					if(typeof (this.btns.ok.text) == 'string'){
+					if(typeof this.btns.ok.text == 'string'){
 						btns.ok.text = this.btns.ok.text;
 					}
 				}
 				if($util.isObject(this.btns.cancel)){
-					if(typeof (this.btns.cancel.type) == 'string'){
+					if(typeof this.btns.cancel.type == 'string'){
 						btns.cancel.type = this.btns.cancel.type;
 					}
-					if(typeof (this.btns.cancel.color) == 'string'){
+					if(typeof this.btns.cancel.color == 'string'){
 						btns.cancel.color = this.btns.cancel.color;
 					}
-					if(typeof (this.btns.cancel.subColor) == 'string'){
+					if(typeof this.btns.cancel.subColor == 'string'){
 						btns.cancel.subColor = this.btns.cancel.subColor;
 					}
-					if(typeof (this.btns.cancel.plain) == 'boolean'){
+					if(typeof this.btns.cancel.plain == 'boolean'){
 						btns.cancel.plain = this.btns.cancel.plain;
 					}
-					if(typeof (this.btns.cancel.text) == 'string'){
+					if(typeof this.btns.cancel.text == 'string'){
 						btns.cancel.text = this.btns.cancel.text;
 					}
 				}

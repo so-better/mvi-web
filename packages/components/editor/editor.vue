@@ -402,7 +402,7 @@ export default {
 			defaultUploadImageProps: {
 				//默认上传图片配置
 				multiple: false, //是否多选
-				allowedFileType: ['jpg', 'png', 'JPG', 'PNG', 'JPEG', 'jpeg', 'gif', 'GIF', 'jfif', 'JFIF'], //限定格式
+				allowedFileType: ['jpg', 'png', 'jpeg', 'gif', 'jfif'], //限定格式
 				accept: 'image', //限制类型
 				minSize: -1, //限制单个图片最小值，单位kb
 				maxSize: -1, //限定单个图片最大值，单位kb
@@ -412,7 +412,7 @@ export default {
 			defaultUploadVideoProps: {
 				//默认上传视频配置
 				multiple: false, //是否多选
-				allowedFileType: ['mp4', 'MP4', 'avi', 'AVI', 'WAV', 'wav'], //限定格式
+				allowedFileType: ['mp4', 'avi', 'wav'], //限定格式
 				accept: 'video', //限制类型
 				minSize: -1, //限制单个视频最小值，单位kb
 				maxSize: -1, //限定单个视频最大值，单位kb

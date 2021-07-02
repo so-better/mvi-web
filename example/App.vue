@@ -1,14 +1,15 @@
 <template>
 	<div id="app">
 		<div>{{value}}</div>
-		<m-cell title="调起摄像头拍照" v-upload="{capture:true}"></m-cell>
+		{{date}}
+		
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
-			value:'',
+			value:0,
 			date:new Date(),
 			data:[
 				{
@@ -47,6 +48,9 @@ export default {
 		};
 	},
 	mounted() {
+		setTimeout(()=>{
+			this.value = 100;
+		},400)
 		//console.log(this.$util.matchingText('1799-04-09','date'))
 		//console.log(this.$util.matchingText('2021/03/19','date'))
 		//console.log(this.$util.matchingText('2021.03.19','date'))

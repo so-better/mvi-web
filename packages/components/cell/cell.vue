@@ -90,10 +90,10 @@
 			iconType() {
 				let t = null;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.type) == "string") {
+					if (typeof this.icon.type == "string") {
 						t = this.icon.type;
 					}
-				} else if (typeof(this.icon) == "string") {
+				} else if (typeof this.icon == "string") {
 					t = this.icon;
 				}
 				return t;
@@ -101,7 +101,7 @@
 			iconUrl() {
 				let url = null;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.url) == "string") {
+					if (typeof this.icon.url == "string") {
 						url = this.icon.url;
 					}
 				}
@@ -110,7 +110,7 @@
 			iconSpin() {
 				let spin = false;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.spin) == "boolean") {
+					if (typeof this.icon.spin == "boolean") {
 						spin = this.icon.spin;
 					}
 				}
@@ -119,7 +119,7 @@
 			iconSize() {
 				let size = null;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.size) == "string") {
+					if (typeof this.icon.size == "string") {
 						size = this.icon.size;
 					}
 				}
@@ -128,7 +128,7 @@
 			iconColor(){
 				let color = null;
 				if($util.isObject(this.icon)){
-					if (typeof(this.icon.color) == "string") {
+					if (typeof this.icon.color == "string") {
 						color = this.icon.color;
 					}
 				}
@@ -137,10 +137,10 @@
 			arrowType() {
 				let t = null;
 				if ($util.isObject(this.arrow)) {
-					if (typeof(this.arrow.type) == "string") {
+					if (typeof this.arrow.type == "string") {
 						t = this.arrow.type;
 					}
-				} else if (typeof(this.arrow) == "string") {
+				} else if (typeof this.arrow == "string") {
 					t = this.arrow;
 				}
 				return t;
@@ -148,7 +148,7 @@
 			arrowUrl() {
 				let url = null;
 				if ($util.isObject(this.arrow)) {
-					if (typeof(this.arrow.url) == "string") {
+					if (typeof this.arrow.url == "string") {
 						url = this.arrow.url;
 					}
 				}
@@ -157,7 +157,7 @@
 			arrowSpin() {
 				let spin = false;
 				if ($util.isObject(this.arrow)) {
-					if (typeof(this.arrow.spin) == "boolean") {
+					if (typeof this.arrow.spin == "boolean") {
 						spin = this.arrow.spin;
 					}
 				}
@@ -166,7 +166,7 @@
 			arrowSize() {
 				let size = null;
 				if ($util.isObject(this.arrow)) {
-					if (typeof(this.arrow.size) == "string") {
+					if (typeof this.arrow.size == "string") {
 						size = this.arrow.size;
 					}
 				}
@@ -175,7 +175,7 @@
 			arrowColor() {
 				let color = null;
 				if ($util.isObject(this.arrow)) {
-					if (typeof(this.arrow.color) == "string") {
+					if (typeof this.arrow.color == "string") {
 						color = this.arrow.color;
 					}
 				}
@@ -184,7 +184,7 @@
 			computedActive() {
 				if (typeof(this.active) == "boolean") {
 					return this.active;
-				} else if (typeof(this.$parent.active) == "boolean") {
+				} else if (typeof this.$parent.active == "boolean") {
 					return this.$parent.active;
 				} else {
 					return true;
@@ -193,7 +193,7 @@
 			computedBorder() {
 				if (typeof(this.border) == "boolean") {
 					return this.border;
-				} else if (typeof(this.$parent.border) == "boolean") {
+				} else if (typeof this.$parent.border == "boolean") {
 					return this.$parent.border;
 				} else {
 					return false;
@@ -206,7 +206,7 @@
 					style.textOverflow = 'ellipsis';
 					style.webkitBoxOrient = 'vertical';
 					style.overflow = 'hidden';
-					if (typeof(this.ellipsis) == "boolean") { //true
+					if (typeof this.ellipsis == "boolean") { //true
 						style.webkitLineClamp = 3;
 					} else {
 						style.webkitLineClamp = this.ellipsis;

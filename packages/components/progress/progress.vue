@@ -2,7 +2,7 @@
 	<!-- 进度条 -->
 	<div :class="progressClass" v-on="listeners" :style="progressStyle">
 		<!-- 进度条进度 -->
-		<div :class="barClass" :style="progressBarStyle">
+		<div :class="barClass" :style="progressBarStyle" ref="bar">
 			<div v-if="showTip" class="mvi-progress-tooltip" :style="tipStyle">
 				<slot name="tip" v-if="$scopedSlots.tip" :value="value"></slot>
 				<span v-else v-text="computedText"></span>
@@ -91,9 +91,6 @@
 				if(this.color){
 					style.backgroundColor = this.color;
 				}
-				if(this.value == this.max){
-					style.borderRadius = 'inherit';
-				}
 				style.width = `calc(${(this.value - this.min < 0 ? 0 : this.value - this.min) / (this.max - this.min)} * 100%)`;
 				
 				return style;
@@ -129,6 +126,17 @@
 					cls.push('mvi-progress-radius-square');
 				}
 				return cls;
+			}
+		},
+		watch:{
+			value(newValue,oldValue){
+				if(newValue == this.max){
+					setTimeout(()=>{
+						if(this.$refs.bar){
+							this.$refs.bar.style.borderRadius = 'inherit';
+						}
+					},this.timeout)
+				}
 			}
 		}
 	}

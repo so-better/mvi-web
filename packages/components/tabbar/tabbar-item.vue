@@ -48,10 +48,10 @@
 			iconType() {
 				let t = null;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.type) == "string") {
+					if (typeof this.icon.type == "string") {
 						t = this.icon.type;
 					}
-				} else if (typeof(this.icon) == "string") {
+				} else if (typeof this.icon == "string") {
 					t = this.icon;
 				}
 				return t;
@@ -59,7 +59,7 @@
 			iconUrl() {
 				let url = null;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.url) == "string") {
+					if (typeof this.icon.url == "string") {
 						url = this.icon.url;
 					}
 				}
@@ -68,7 +68,7 @@
 			iconSpin() {
 				let spin = false;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.spin) == "boolean") {
+					if (typeof this.icon.spin == "boolean") {
 						spin = this.icon.spin;
 					}
 				}
@@ -77,7 +77,7 @@
 			iconSize(){
 				let size = null;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.size) == "string") {
+					if (typeof this.icon.size == "string") {
 						size = this.icon.size;
 					}
 				}
@@ -86,7 +86,7 @@
 			iconColor(){
 				let color = null;
 				if ($util.isObject(this.icon)) {
-					if (typeof(this.icon.color) == "string") {
+					if (typeof this.icon.color == "string") {
 						color = this.icon.color;
 					}
 				}

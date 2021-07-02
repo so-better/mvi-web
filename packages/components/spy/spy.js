@@ -22,7 +22,7 @@ class Spy {
 		}
 		this.hasInit = true;
 		//根据el的值查找元素
-		if(typeof(this.$el) == "string" && this.$el){
+		if(typeof this.$el == "string" && this.$el){
 			this.$el = document.body.querySelector(this.$el);
 		}
 		if (!$util.isElement(this.$el)) {

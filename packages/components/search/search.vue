@@ -144,10 +144,10 @@
 			leftIconType() {
 				let t = null;
 				if ($util.isObject(this.leftIcon)) {
-					if (typeof(this.leftIcon.type) == "string") {
+					if (typeof this.leftIcon.type == "string") {
 						t = this.leftIcon.type;
 					}
-				} else if (typeof(this.leftIcon) == "string") {
+				} else if (typeof this.leftIcon == "string") {
 					t = this.leftIcon;
 				}
 				return t;
@@ -155,7 +155,7 @@
 			leftIconUrl() {
 				let url = null;
 				if ($util.isObject(this.leftIcon)) {
-					if (typeof(this.leftIcon.url) == "string") {
+					if (typeof this.leftIcon.url == "string") {
 						url = this.leftIcon.url;
 					}
 				}
@@ -164,7 +164,7 @@
 			leftIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.leftIcon)) {
-					if (typeof(this.leftIcon.spin) == "boolean") {
+					if (typeof this.leftIcon.spin == "boolean") {
 						spin = this.leftIcon.spin;
 					}
 				}
@@ -173,7 +173,7 @@
 			leftIconSize(){
 				let size = null;
 				if ($util.isObject(this.leftIcon)) {
-					if (typeof(this.leftIcon.size) == "string") {
+					if (typeof this.leftIcon.size == "string") {
 						size = this.leftIcon.size;
 					}
 				}
@@ -182,7 +182,7 @@
 			leftIconColor(){
 				let color = null;
 				if ($util.isObject(this.leftIcon)) {
-					if (typeof(this.leftIcon.color) == "string") {
+					if (typeof this.leftIcon.color == "string") {
 						color = this.leftIcon.color;
 					}
 				}
@@ -191,10 +191,10 @@
 			rightIconType() {
 				let t = null;
 				if ($util.isObject(this.rightIcon)) {
-					if (typeof(this.rightIcon.type) == "string") {
+					if (typeof this.rightIcon.type == "string") {
 						t = this.rightIcon.type;
 					}
-				} else if (typeof(this.rightIcon) == "string") {
+				} else if (typeof this.rightIcon == "string") {
 					t = this.rightIcon;
 				}
 				return t;
@@ -202,7 +202,7 @@
 			rightIconUrl() {
 				let url = null;
 				if ($util.isObject(this.rightIcon)) {
-					if (typeof(this.rightIcon.url) == "string") {
+					if (typeof this.rightIcon.url == "string") {
 						url = this.rightIcon.url;
 					}
 				}
@@ -211,7 +211,7 @@
 			rightIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.rightIcon)) {
-					if (typeof(this.rightIcon.spin) == "boolean") {
+					if (typeof this.rightIcon.spin == "boolean") {
 						spin = this.rightIcon.spin;
 					}
 				}
@@ -220,7 +220,7 @@
 			rightIconSize(){
 				let size = null;
 				if ($util.isObject(this.rightIcon)) {
-					if (typeof(this.rightIcon.size) == "string") {
+					if (typeof this.rightIcon.size == "string") {
 						size = this.rightIcon.size;
 					}
 				}
@@ -229,7 +229,7 @@
 			rightIconColor(){
 				let color = null;
 				if ($util.isObject(this.rightIcon)) {
-					if (typeof(this.rightIcon.color) == "string") {
+					if (typeof this.rightIcon.color == "string") {
 						color = this.rightIcon.color;
 					}
 				}

@@ -39,7 +39,7 @@
 				return Object.assign({},this.$listeners);
 			},
 			toastUsePadding(){
-				if(typeof(this.usePadding) == 'boolean'){
+				if(typeof this.usePadding == 'boolean'){
 					return this.usePadding;
 				}else{
 					return false;
@@ -83,7 +83,7 @@
 				return icon;
 			},
 			toastMessage(){
-				if(typeof(this.message) == "string"){
+				if(typeof this.message == "string"){
 					return this.message;
 				}else if($util.isObject(this.message)){
 					return JSON.stringify(this.message);
@@ -103,7 +103,7 @@
 				}
 			},
 			toastCallback(){
-				if(typeof(this.callback) == "function"){
+				if(typeof this.callback == "function"){
 					return this.callback;
 				}else{
 					return function(){};
@@ -117,21 +117,21 @@
 				}
 			},
 			toastLocal(){
-				if((typeof(this.local) == 'string' && this.local) || $util.isElement(this.local)){
+				if((typeof this.local == 'string' && this.local) || $util.isElement(this.local)){
 					return true;
 				}else{
 					return false;
 				}
 			},
 			toastBackground(){
-				if(typeof(this.background) == 'string' && this.background){
+				if(typeof this.background == 'string' && this.background){
 					return this.background;
 				}else{
 					return null;
 				}
 			},
 			toastColor(){
-				if(typeof(this.color) == 'string' && this.color){
+				if(typeof this.color == 'string' && this.color){
 					return this.color;
 				}else{
 					return null;

@@ -22,7 +22,7 @@
 		},
 		computed:{
 			msgBox_message(){
-				if(typeof(this.message) == "string"){
+				if(typeof this.message == "string"){
 					return this.message;
 				}else if($util.isObject(this.message)){
 					return JSON.stringify(this.message);
@@ -35,7 +35,7 @@
 				}
 			},
 			msgBox_animation(){
-				if(typeof(this.animation) == "string" && this.animation){
+				if(typeof this.animation == "string" && this.animation){
 					return this.animation;
 				}else{
 					return 'fade';
@@ -49,7 +49,7 @@
 				}
 			},
 			msgBox_callback(){
-				if(typeof(this.callback) == "function"){
+				if(typeof this.callback == "function"){
 					return this.callback;
 				}else{
 					return function(){};
@@ -63,14 +63,14 @@
 				}
 			},
 			msgBox_background(){
-				if(typeof(this.background) == 'string' &&　this.background){
+				if(typeof this.background == 'string' &&　this.background){
 					return this.background;
 				}else{
 					return null;
 				}
 			},
 			msgBox_color(){
-				if(typeof(this.color) == 'string' &&　this.color){
+				if(typeof this.color == 'string' &&　this.color){
 					return this.color;
 				}else{
 					return null;

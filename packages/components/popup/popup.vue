@@ -107,10 +107,10 @@
 			iconType() {
 				let t = "times";
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.type) == "string") {
+					if (typeof this.timesIcon.type == "string") {
 						t = this.timesIcon.type;
 					}
-				} else if (typeof(this.timesIcon) == "string") {
+				} else if (typeof this.timesIcon == "string") {
 					t = this.timesIcon;
 				}
 				return t;
@@ -118,7 +118,7 @@
 			iconUrl() {
 				let url = null;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.url) == "string") {
+					if (typeof this.timesIcon.url == "string") {
 						url = this.timesIcon.url;
 					}
 				}
@@ -127,7 +127,7 @@
 			iconSpin() {
 				let spin = false;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.spin) == "boolean") {
+					if (typeof this.timesIcon.spin == "boolean") {
 						spin = this.timesIcon.spin;
 					}
 				}
@@ -136,7 +136,7 @@
 			iconSize(){
 				let size = null;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.size) == "string") {
+					if (typeof this.timesIcon.size == "string") {
 						size = this.timesIcon.size;
 					}
 				}
@@ -145,7 +145,7 @@
 			iconColor(){
 				let color = null;
 				if ($util.isObject(this.timesIcon)) {
-					if (typeof(this.timesIcon.color) == "string") {
+					if (typeof this.timesIcon.color == "string") {
 						color = this.timesIcon.color;
 					}
 				}
@@ -153,9 +153,9 @@
 			},
 			//弹出层类
 			popupClass(){
-				let cls = 'mvi-popup mvi-popup-'+this.placement;
+				let cls = ['mvi-popup','mvi-popup-'+this.placement];
 				if(this.round){
-					cls += " mvi-popup-round";
+					cls.push('mvi-popup-round')
 				}
 				return cls;
 			},
