@@ -139,10 +139,4 @@
 		}
 	};
 
-	/**
-	 * 将数组的forEach方法直接赋给NodeList
-	 * 主要是解决高版本下IE浏览器的NodeList不支持forEach方法的BUG
-	 */
-	NodeList.prototype.forEach = Array.prototype.forEach;
-
 })(window)
