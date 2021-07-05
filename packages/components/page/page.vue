@@ -151,10 +151,10 @@
 			firstIconType() {
 				let t = 'angle-double-left';
 				if ($util.isObject(this.firstIcon)) {
-					if (typeof(this.firstIcon.type) == "string") {
+					if (typeof this.firstIcon.type == "string") {
 						t = this.firstIcon.type;
 					}
-				} else if (typeof(this.firstIcon) == "string") {
+				} else if (typeof this.firstIcon == "string") {
 					t = this.firstIcon;
 				}
 				return t;
@@ -162,7 +162,7 @@
 			firstIconUrl() {
 				let url = null;
 				if ($util.isObject(this.firstIcon)) {
-					if (typeof(this.firstIcon.url) == "string") {
+					if (typeof this.firstIcon.url == "string") {
 						url = this.firstIcon.url;
 					}
 				}
@@ -171,7 +171,7 @@
 			firstIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.firstIcon)) {
-					if (typeof(this.firstIcon.spin) == "boolean") {
+					if (typeof this.firstIcon.spin == "boolean") {
 						spin = this.firstIcon.spin;
 					}
 				}
@@ -180,7 +180,7 @@
 			firstIconSize(){
 				let size = null;
 				if ($util.isObject(this.firstIcon)) {
-					if (typeof(this.firstIcon.size) == "string") {
+					if (typeof this.firstIcon.size == "string") {
 						size = this.firstIcon.size;
 					}
 				}
@@ -189,7 +189,7 @@
 			firstIconColor(){
 				let color = null;
 				if ($util.isObject(this.firstIcon)) {
-					if (typeof(this.firstIcon.color) == "string") {
+					if (typeof this.firstIcon.color == "string") {
 						color = this.firstIcon.color;
 					}
 				}
@@ -198,10 +198,10 @@
 			lastIconType() {
 				let t = 'angle-double-right';
 				if ($util.isObject(this.lastIcon)) {
-					if (typeof(this.lastIcon.type) == "string") {
+					if (typeof this.lastIcon.type == "string") {
 						t = this.lastIcon.type;
 					}
-				} else if (typeof(this.lastIcon) == "string") {
+				} else if (typeof this.lastIcon == "string") {
 					t = this.lastIcon;
 				}
 				return t;
@@ -209,7 +209,7 @@
 			lastIconUrl() {
 				let url = null;
 				if ($util.isObject(this.lastIcon)) {
-					if (typeof(this.lastIcon.url) == "string") {
+					if (typeof this.lastIcon.url == "string") {
 						url = this.lastIcon.url;
 					}
 				}
@@ -218,7 +218,7 @@
 			lastIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.lastIcon)) {
-					if (typeof(this.lastIcon.spin) == "boolean") {
+					if (typeof this.lastIcon.spin == "boolean") {
 						spin = this.lastIcon.spin;
 					}
 				}
@@ -227,7 +227,7 @@
 			lastIconSize(){
 				let size = null;
 				if ($util.isObject(this.lastIcon)) {
-					if (typeof(this.lastIcon.size) == "string") {
+					if (typeof this.lastIcon.size == "string") {
 						size = this.lastIcon.size;
 					}
 				}
@@ -236,7 +236,7 @@
 			lastIconColor(){
 				let color = null;
 				if ($util.isObject(this.lastIcon)) {
-					if (typeof(this.lastIcon.color) == "string") {
+					if (typeof this.lastIcon.color == "string") {
 						color = this.lastIcon.color;
 					}
 				}
@@ -245,10 +245,10 @@
 			prevIconType() {
 				let t = 'angle-left';
 				if ($util.isObject(this.prevIcon)) {
-					if (typeof(this.prevIcon.type) == "string") {
+					if (typeof this.prevIcon.type == "string") {
 						t = this.prevIcon.type;
 					}
-				} else if (typeof(this.prevIcon) == "string") {
+				} else if (typeof this.prevIcon == "string") {
 					t = this.prevIcon;
 				}
 				return t;
@@ -256,7 +256,7 @@
 			prevIconUrl() {
 				let url = null;
 				if ($util.isObject(this.prevIcon)) {
-					if (typeof(this.prevIcon.url) == "string") {
+					if (typeof this.prevIcon.url == "string") {
 						url = this.prevIcon.url;
 					}
 				}
@@ -265,7 +265,7 @@
 			prevIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.prevIcon)) {
-					if (typeof(this.prevIcon.spin) == "boolean") {
+					if (typeof this.prevIcon.spin == "boolean") {
 						spin = this.prevIcon.spin;
 					}
 				}
@@ -274,7 +274,7 @@
 			prevIconSize(){
 				let size = null;
 				if ($util.isObject(this.prevIcon)) {
-					if (typeof(this.prevIcon.size) == "string") {
+					if (typeof this.prevIcon.size == "string") {
 						size = this.prevIcon.size;
 					}
 				}
@@ -283,7 +283,7 @@
 			prevIconColor(){
 				let color = null;
 				if ($util.isObject(this.prevIcon)) {
-					if (typeof(this.prevIcon.color) == "string") {
+					if (typeof this.prevIcon.color == "string") {
 						color = this.prevIcon.color;
 					}
 				}
@@ -292,10 +292,10 @@
 			nextIconType() {
 				let t = 'angle-right';
 				if ($util.isObject(this.nextIcon)) {
-					if (typeof(this.nextIcon.type) == "string") {
+					if (typeof this.nextIcon.type == "string") {
 						t = this.nextIcon.type;
 					}
-				} else if (typeof(this.nextIcon) == "string") {
+				} else if (typeof this.nextIcon == "string") {
 					t = this.nextIcon;
 				}
 				return t;
@@ -303,7 +303,7 @@
 			nextIconUrl() {
 				let url = null;
 				if ($util.isObject(this.nextIcon)) {
-					if (typeof(this.nextIcon.url) == "string") {
+					if (typeof this.nextIcon.url == "string") {
 						url = this.nextIcon.url;
 					}
 				}
@@ -312,7 +312,7 @@
 			nextIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.nextIcon)) {
-					if (typeof(this.nextIcon.spin) == "boolean") {
+					if (typeof this.nextIcon.spin == "boolean") {
 						spin = this.nextIcon.spin;
 					}
 				}
@@ -321,7 +321,7 @@
 			nextIconSize(){
 				let size = null;
 				if ($util.isObject(this.nextIcon)) {
-					if (typeof(this.nextIcon.size) == "string") {
+					if (typeof this.nextIcon.size == "string") {
 						size = this.nextIcon.size;
 					}
 				}
@@ -330,7 +330,7 @@
 			nextIconColor(){
 				let color = null;
 				if ($util.isObject(this.nextIcon)) {
-					if (typeof(this.nextIcon.color) == "string") {
+					if (typeof this.nextIcon.color == "string") {
 						color = this.nextIcon.color;
 					}
 				}

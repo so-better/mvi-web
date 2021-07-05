@@ -158,15 +158,15 @@
 				}
 			},
 			wrapperCls(){
-				let cls = 'mvi-layer-wrapper';
+				let cls = ['mvi-layer-wrapper'];
 				if(this.shadow){
-					cls += ' mvi-layer-shadow';
+					cls.push('mvi-layer-shadow');
 				}
 				if(this.border){
-					cls += ' mvi-layer-border';
+					cls.push('mvi-layer-border');
 				}
 				if(this.wrapperClass){
-					cls += ' '+this.wrapperClass;
+					cls.push(this.wrapperClass)
 				}
 				return cls;
 			},

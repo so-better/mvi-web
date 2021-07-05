@@ -109,10 +109,10 @@
 			selectIconType() {
 				let t = 'success';
 				if ($util.isObject(this.selectIcon)) {
-					if (typeof(this.selectIcon.type) == "string") {
+					if (typeof this.selectIcon.type == "string") {
 						t = this.selectIcon.type;
 					}
-				} else if (typeof(this.selectIcon) == "string") {
+				} else if (typeof this.selectIcon == "string") {
 					t = this.selectIcon;
 				}
 				return t;
@@ -120,7 +120,7 @@
 			selectIconUrl() {
 				let url = null;
 				if ($util.isObject(this.selectIcon)) {
-					if (typeof(this.selectIcon.url) == "string") {
+					if (typeof this.selectIcon.url == "string") {
 						url = this.selectIcon.url;
 					}
 				}
@@ -129,7 +129,7 @@
 			selectIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.selectIcon)) {
-					if (typeof(this.selectIcon.spin) == "boolean") {
+					if (typeof this.selectIcon.spin == "boolean") {
 						spin = this.selectIcon.spin;
 					}
 				}
@@ -138,7 +138,7 @@
 			selectIconSize() {
 				let size = null;
 				if ($util.isObject(this.selectIcon)) {
-					if (typeof(this.selectIcon.size) == "string") {
+					if (typeof this.selectIcon.size == "string") {
 						size = this.selectIcon.size;
 					}
 				}
@@ -147,7 +147,7 @@
 			selectIconColor() {
 				let color = null;
 				if ($util.isObject(this.selectIcon)) {
-					if (typeof(this.selectIcon.color) == "string") {
+					if (typeof this.selectIcon.color == "string") {
 						color = this.selectIcon.color;
 					}
 				}
@@ -157,10 +157,10 @@
 				return icon=>{
 					let t = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.type) == "string") {
+						if (typeof icon.type == "string") {
 							t = icon.type;
 						}
-					} else if (typeof(icon) == "string") {
+					} else if (typeof icon == "string") {
 						t = icon;
 					}
 					return t;
@@ -170,7 +170,7 @@
 				return icon=>{
 					let url = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.url) == "string") {
+						if (typeof icon.url == "string") {
 							url = icon.url;
 						}
 					}
@@ -181,7 +181,7 @@
 				return icon=>{
 					let spin = false;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.spin) == "boolean") {
+						if (typeof icon.spin == "boolean") {
 							spin = icon.spin;
 						}
 					}
@@ -192,7 +192,7 @@
 				return icon=>{
 					let size = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.size) == "string") {
+						if (typeof icon.size == "string") {
 							size = icon.size;
 						}
 					}
@@ -203,7 +203,7 @@
 				return icon=>{
 					let color = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.color) == "string") {
+						if (typeof icon.color == "string") {
 							color = icon.color;
 						}
 					}
@@ -214,7 +214,7 @@
 			equalValue(){
 				return (item,index)=>{
 					//比较value
-					if((typeof(item.value) == 'string' && item.value) || $util.isNumber(item.value)){
+					if((typeof item.value == 'string' && item.value) || $util.isNumber(item.value)){
 						return this.value === item.value;
 					}else{
 						return this.value === index;
@@ -223,7 +223,7 @@
 			},
 			itemDisabled(){
 				return item=>{
-					if(typeof(item.disabled) == 'boolean'){
+					if(typeof item.disabled == 'boolean'){
 						return item.disabled;
 					}else{
 						return false;
@@ -250,23 +250,18 @@
 			},
 			dropdownItemClass(){
 				return (item,index)=>{
-					let cls = 'mvi-dropdown-item';
+					let cls = ['mvi-dropdown-item'];
+					if(item.class){
+						cls.push(item.class);
+					}
 					if(this.itemClass){
-						if(item.class){
-							cls += ' '+item.class;
-						}else{
-							cls += ' '+this.itemClass;
-						}
-					}else{
-						if(item.class){
-							cls += ' '+item.class;
-						}
+						cls.push(item.class);
 					}
 					if(this.equalValue(item,index)){
-						cls += ' mvi-dropdown-checked';
+						cls.push('mvi-dropdown-checked')
 					}
 					if(this.active && !item.disabled){
-						cls += ' mvi-dropdown-active';
+						cls.push('mvi-dropdown-active')
 					}
 					return cls;
 				}
@@ -316,7 +311,7 @@
 			},
 			//获取当前选择的value值
 			valueFilter(value,index){
-				if((typeof(value) == 'string' && value) || $util.isNumber(value)){
+				if((typeof value == 'string' && value) || $util.isNumber(value)){
 					return value;
 				}else{
 					return index;

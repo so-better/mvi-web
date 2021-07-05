@@ -109,28 +109,28 @@
 				return Object.assign({}, this.$listeners);
 			},
 			computedArrowClass(){
-				if (typeof(this.arrowClass) == "string" && this.arrowClass) {
+				if (typeof this.arrowClass == "string" && this.arrowClass) {
 					return this.arrowClass;
 				} else {
 					return this.collapse.arrowClass;
 				}
 			},
 			computedOutBorder() {
-				if (typeof(this.outBorder) == "boolean") {
+				if (typeof this.outBorder == "boolean") {
 					return this.outBorder;
 				} else {
 					return this.collapse.outBorder;
 				}
 			},
 			computedInBorder() {
-				if (typeof(this.inBorder) == "boolean") {
+				if (typeof this.inBorder == "boolean") {
 					return this.inBorder;
 				} else {
 					return this.collapse.inBorder;
 				}
 			},
 			computedNoWrap() {
-				if (typeof(this.noWrap) == "boolean") {
+				if (typeof this.noWrap == "boolean") {
 					return this.noWrap;
 				} else {
 					return this.collapse.noWrap;
@@ -149,7 +149,7 @@
 			},
 			//打开时右侧图标
 			computedOpenArrow() {
-				if ((typeof(this.openArrow) == 'string' && this.openArrow) ||
+				if ((typeof this.openArrow == 'string' && this.openArrow) ||
 					$util.isObject(this.openArrow)) {
 					return this.openArrow;
 				} else {
@@ -158,7 +158,7 @@
 			},
 			//关闭时右侧图标
 			computedCloseArrow() {
-				if ((typeof(this.closeArrow) == 'string' && this.closeArrow) ||
+				if ((typeof this.closeArrow == 'string' && this.closeArrow) ||
 					$util.isObject(this.openArrow)) {
 					return this.closeArrow;
 				} else {
@@ -171,7 +171,7 @@
 			},
 			//点击态
 			computedActive() {
-				if (typeof(this.active) == "boolean") {
+				if (typeof this.active == "boolean") {
 					return this.active;
 				} else {
 					return this.collapse.active;
@@ -179,7 +179,7 @@
 			},
 			//折叠面板显示隐藏动画时长
 			computedTimeout() {
-				if (typeof(this.timeout) == "number") {
+				if (typeof this.timeout == "number") {
 					return this.timeout;
 				} else {
 					return this.collapse.timeout;

@@ -51,7 +51,7 @@
 				type: String,
 				default: 'date',
 				validator(value) {
-					return ['date', 'datetime', 'time'].includes(value)
+					return ['date', 'datetime', 'time','month','year'].includes(value)
 				}
 			},
 			showToolbar: {
@@ -376,6 +376,19 @@
 							defaultIndex: defaultDayIndex
 						}
 					]
+				} else if(this.mode == 'year'){
+					return {
+						values: years,
+						defaultIndex: defaultYearIndex
+					}
+				} else if(this.mode == 'month'){
+					return [{
+						values: years,
+						defaultIndex: defaultYearIndex
+					},{
+						values: months,
+						defaultIndex: defaultMonthIndex
+					}]
 				} else if (this.mode == 'datetime') {
 					return [{
 							values: years,
@@ -478,6 +491,73 @@
 					}else if(res.columnIndex == 2){//修改日
 						let day = this.dayArray[res.selected[2].index].day;
 						this.selectedDate = new Date(this.selectedDate.setDate(day));
+					}
+				} else if (this.mode == 'month') {
+					if (res.columnIndex == 0) { //修改年
+						let year = this.yearArray[res.selected[0].index].year;
+						this.selectedDate = new Date(this.selectedDate.setFullYear(year));
+						if(this.equalEndYear){
+							if(this.selectedDate.getMonth() > this.endDate.getMonth()){
+								this.selectedDate = new Date(this.selectedDate.setMonth(this.endDate.getMonth()));
+							}
+							if(this.equalEndMonth){
+								if(this.selectedDate.getDate() > this.endDate.getDate()){
+									this.selectedDate = new Date(this.selectedDate.setDate(this.endDate.getDate()));
+								}
+							}
+						}
+						if(this.equalStartYear){
+							if(this.selectedDate.getMonth() < this.startDate.getMonth()){
+								this.selectedDate = new Date(this.selectedDate.setMonth(this.startDate.getMonth()));
+							}
+							if(this.equalStartMonth){
+								if(this.selectedDate.getDate() < this.startDate.getDate()){
+									this.selectedDate = new Date(this.selectedDate.setDate(this.startDate.getDate()));
+								}
+							}
+						}
+					}else if(res.columnIndex == 1){//修改月
+						let month = this.monthArray[res.selected[1].index].month;
+						let totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
+						if(this.selectedDate.getDate() > totalDays){
+							this.selectedDate.setDate(totalDays);
+						}
+						this.selectedDate = new Date(this.selectedDate.setMonth(month - 1));
+						if(this.equalEndYear && this.equalEndMonth){
+							if(this.selectedDate.getDate() > this.endDate.getDate()){
+								this.selectedDate = new Date(this.selectedDate.setDate(this.endDate.getDate()));
+							}
+						}
+						if(this.equalStartYear && this.equalStartMonth){
+							if(this.selectedDate.getDate() < this.startDate.getDate()){
+								this.selectedDate = new Date(this.selectedDate.setDate(this.startDate.getDate()));
+							}
+						}
+					}
+				} else if(this.mode == 'year'){
+					if (res.columnIndex == 0) { //修改年
+						let year = this.yearArray[res.selected.index].year;
+						this.selectedDate = new Date(this.selectedDate.setFullYear(year));
+						if(this.equalEndYear){
+							if(this.selectedDate.getMonth() > this.endDate.getMonth()){
+								this.selectedDate = new Date(this.selectedDate.setMonth(this.endDate.getMonth()));
+							}
+							if(this.equalEndMonth){
+								if(this.selectedDate.getDate() > this.endDate.getDate()){
+									this.selectedDate = new Date(this.selectedDate.setDate(this.endDate.getDate()));
+								}
+							}
+						}
+						if(this.equalStartYear){
+							if(this.selectedDate.getMonth() < this.startDate.getMonth()){
+								this.selectedDate = new Date(this.selectedDate.setMonth(this.startDate.getMonth()));
+							}
+							if(this.equalStartMonth){
+								if(this.selectedDate.getDate() < this.startDate.getDate()){
+									this.selectedDate = new Date(this.selectedDate.setDate(this.startDate.getDate()));
+								}
+							}
+						}
 					}
 				} else if (this.mode == 'datetime') {
 					if (res.columnIndex == 0) { //修改年

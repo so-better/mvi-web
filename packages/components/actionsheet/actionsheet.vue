@@ -120,10 +120,10 @@
 				return icon => {
 					let t = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.type) == "string") {
+						if (typeof icon.type == "string") {
 							t = icon.type;
 						}
-					} else if (typeof(icon) == "string") {
+					} else if (typeof icon == "string") {
 						t = icon;
 					}
 					return t;
@@ -133,7 +133,7 @@
 				return icon => {
 					let url = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.url) == "string") {
+						if (typeof icon.url == "string") {
 							url = icon.url;
 						}
 					}
@@ -144,7 +144,7 @@
 				return icon => {
 					let spin = false;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.spin) == "boolean") {
+						if (typeof icon.spin == "boolean") {
 							spin = icon.spin;
 						}
 					}
@@ -155,7 +155,7 @@
 				return icon => {
 					let size = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.size) == "string") {
+						if (typeof icon.size == "string") {
 							size = icon.size;
 						}
 					}
@@ -166,7 +166,7 @@
 				return icon => {
 					let color = null;
 					if ($util.isObject(icon)) {
-						if (typeof(icon.color) == "string") {
+						if (typeof icon.color == "string") {
 							color = icon.color;
 						}
 					}
@@ -201,7 +201,7 @@
 			},
 			itemDisabled(){
 				return item=>{
-					if(typeof(item.disabled) == 'boolean'){
+					if(typeof item.disabled == 'boolean'){
 						return item.disabled;
 					}else{
 						return false;

@@ -63,7 +63,7 @@
 						return false;
 					}
 					for(let i = 0;i<value.length;i++){
-						if(typeof(value[i])!="string"){
+						if(typeof value[i] != "string"){
 							return false;
 						}
 					}
@@ -240,9 +240,9 @@
 				return item=>{
 					let str = [];
 					if(item.current){//指定日期
-						if(typeof(this.currentClass) == "string" && this.currentClass){
+						if(typeof this.currentClass == "string" && this.currentClass){
 							str.push(this.currentClass)
-						}else if(typeof(this.currentClass) == "object" && this.currentClass && typeof(this.currentClass.date)=="string" && this.currentClass.date){
+						}else if(typeof this.currentClass == "object" && this.currentClass && typeof this.currentClass.date=="string" && this.currentClass.date){
 							str.push(this.currentClass.date)
 						}else{
 							str.push('mvi-calendar-date-current')
@@ -256,9 +256,9 @@
 				return item=>{
 					let ync = [];
 					if(item.now){//当前年
-						if(typeof(this.nowClass) == "string" && this.nowClass){
+						if(typeof this.nowClass == "string" && this.nowClass){
 							ync.push(this.nowClass)
-						}else if(typeof(this.nowClass) == "object" && this.nowClass && typeof(this.nowClass.year)=="string" && this.nowClass.year){
+						}else if(typeof this.nowClass == "object" && this.nowClass && typeof this.nowClass.year=="string" && this.nowClass.year){
 							ync.push(this.nowClass.year)
 						}else{
 							ync.push('mvi-calendar-year-now');
@@ -272,9 +272,9 @@
 				return item=>{
 					let mnc = [];
 					if(item.now){//当前月
-						if(typeof(this.nowClass) == "string" && this.nowClass){
+						if(typeof this.nowClass == "string" && this.nowClass){
 							mnc.push(this.nowClass)
-						}else if($util.isObject(this.nowClass) && typeof(this.nowClass.month)=="string" && this.nowClass.month){
+						}else if($util.isObject(this.nowClass) && typeof this.nowClass.month=="string" && this.nowClass.month){
 							mnc.push(this.nowClass.month)
 						}else{
 							mnc.push('mvi-calendar-month-now');
@@ -288,9 +288,9 @@
 				return item=>{
 					let dnc = [];
 					if(item.now){//当前月
-						if(typeof(this.nowClass) == "string"){
+						if(typeof this.nowClass == "string"){
 							dnc.push(this.nowClass)
-						}else if($util.isObject(this.nowClass) && typeof(this.nowClass.date)=="string" && this.nowClass.date){
+						}else if($util.isObject(this.nowClass) && typeof this.nowClass.date=="string" && this.nowClass.date){
 							dnc.push(this.nowClass.date)
 						}else{
 							dnc.push('mvi-calendar-date-now')

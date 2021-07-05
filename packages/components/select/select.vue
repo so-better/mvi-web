@@ -442,7 +442,7 @@ export default {
 		border-radius: @radius-round;
 	}
 
-	.mvi-select-square {
+	&.mvi-select-square {
 		border-radius: 0;
 	}
 
