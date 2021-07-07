@@ -186,6 +186,9 @@
 		},
 		computed: {
 			showClear() {
+				if(this.disabled || this.readonly){
+					return false;
+				}
 				if(this.focus){
 					if (this.value === '') {
 						return false;
@@ -333,18 +336,13 @@
 					value = this.getDateValue();
 				} else if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
-					if(this.maxlength > 0 && value.length>this.maxlength){
-						value = value.substr(0, this.maxlength);
-					}
-				} else {
-					value = value.toString();
-					if(this.maxlength > 0 && value.length>this.maxlength){
-						value = value.substr(0, this.maxlength);
-					}
 				}
-				if(this.value !== value){
-					this.$emit('update:value', value);
-					this.$emit('model-change', value);
+				if(this.maxlength > 0 && value.length>this.maxlength){
+					value = value.substr(0, this.maxlength);
+				}
+				if(value != this.value){
+					this.$emit('update:value',value);
+					this.$emit('model-change',value)
 				}
 				return value;
 			},
@@ -457,45 +455,39 @@
 			},
 			//清除输入框
 			doClearValue() {
+				this.$emit('update:value', '');
+				this.$emit('model-change', '');
 				if (this.type == 'textarea') {
 					this.$refs.textarea.value = '';
-					this.$emit('update:value', '');
-					this.$emit('model-change', '');
 					this.$refs.textarea.focus();
 				} else if (this.isDatePicker) {
 					this.$refs.input.value = '';
 					this.$emit('update:date', null);
 				} else {
 					this.$refs.input.value = '';
-					this.$emit('update:value', '');
-					this.$emit('model-change', '');
 					this.$refs.input.focus();
 				}
 			},
 			//输入框监听
 			input() {
+				let value = '';
 				if (this.type == 'textarea') {
-					let value = this.$refs.textarea.value;
+					value = this.$refs.textarea.value;
+				} else if(!this.isDatePicker){
+					value = this.$refs.input.value;
+					//数字类型会过滤非数字字符
+					if(this.type == 'number'){
+						value = value.replace(/\D/g, '');
+					}
+					//如果设置了maxlength，则进行字符串截取
+					if (this.maxlength > 0 && value.length > this.maxlength) {
+						value = value.substr(0, this.maxlength);
+					}
+					this.$refs.input.value = value;
+				}
+				if(this.value != value){
 					this.$emit('update:value', value);
 					this.$emit('model-change', value);
-				} else {
-					if (!this.isDatePicker) {
-						let value = this.$refs.input.value;
-						//数字类型会过滤非数字字符
-						if(this.type == 'number'){
-							value = value.replace(/\D/g, '');
-							this.$refs.input.value = value;
-						}
-						//如果设置了maxlength，则进行字符串截取
-						if (this.maxlength > 0) {
-							if (value.length > this.maxlength) {
-								value = value.substr(0, this.maxlength);
-								this.$refs.input.value = value;
-							}
-						}
-						this.$emit('update:value', value);
-						this.$emit('model-change', value);
-					}
 				}
 			},
 			//高度自适应设置

@@ -182,7 +182,7 @@
 				return color;
 			},
 			computedActive() {
-				if (typeof(this.active) == "boolean") {
+				if (typeof this.active == "boolean") {
 					return this.active;
 				} else if (typeof this.$parent.active == "boolean") {
 					return this.$parent.active;
@@ -191,7 +191,7 @@
 				}
 			},
 			computedBorder() {
-				if (typeof(this.border) == "boolean") {
+				if (typeof this.border == "boolean") {
 					return this.border;
 				} else if (typeof this.$parent.border == "boolean") {
 					return this.$parent.border;

@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
-		{{date}}
-		<m-field v-model="value" align="center" type="textarea" :rows="4"></m-field>
+		{{value}}
+		<m-search v-model="value" type="number" clearable></m-search>
 	</div>
 </template>
 <script>
@@ -47,9 +47,6 @@ export default {
 		};
 	},
 	mounted() {
-		setTimeout(() => {
-			this.value = 100;
-		}, 400);
 		//console.log(this.$util.matchingText('1799-04-09','date'))
 		//console.log(this.$util.matchingText('2021/03/19','date'))
 		//console.log(this.$util.matchingText('2021.03.19','date'))

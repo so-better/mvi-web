@@ -128,6 +128,9 @@
 		},
 		computed:{
 			showClear(){
+				if(this.disabled || this.readonly){
+					return false;
+				}
 				if(this.focus){
 					if (this.value === '') {
 						return false;
@@ -235,26 +238,19 @@
 				}
 				return color;
 			},
-			computedValue:{
-				set(value){
-					this.$emit('update:value',value.toString());
-					this.$emit('model-change',value.toString());
-				},
-				get(){
-					let value = this.value.toString();
-					if(this.type == 'number'){
-						value = value.replace(/\D/g, '');
-						if(this.maxlength > 0 && value.length>this.maxlength){
-							value = value.substr(0, this.maxlength);
-						}
-					} else {
-						value = value.toString();
-						if(this.maxlength > 0 && value.length>this.maxlength){
-							value = value.substr(0, this.maxlength);
-						}
-					}
-					return value;
+			computedValue(){
+				let value = this.value.toString();
+				if(this.type == 'number'){
+					value = value.replace(/\D/g, '');
 				}
+				if(this.maxlength > 0 && value.length>this.maxlength){
+					value = value.substr(0, this.maxlength);
+				}
+				if(this.value != value){
+					this.$emit('update:value',value);
+					this.$emit('model-change',value);
+				}
+				return value;
 			},
 			computedType(){
 				if(this.type == 'number'){
@@ -305,16 +301,17 @@
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
-					this.$refs.input.value = value;
 				}
 				//如果设置了maxlength，则进行字符串截取
-				if (this.maxlength > 0) {
-					if (value.length > this.maxlength) {
-						value = value.substr(0, this.maxlength);
-						this.$refs.input.value = value;
-					}
+				if (this.maxlength > 0 && value.length > this.maxlength) {
+					value = value.substr(0, this.maxlength);
 				}
-				this.computedValue = value;
+				this.$refs.input.value = value;
+				
+				if(this.value != value){
+					this.$emit('update:value',value);
+					this.$emit('model-change',value);
+				}
 			},
 			//搜索
 			doSearch(){
@@ -350,7 +347,8 @@
 					return;
 				}
 				this.$refs.input.value = '';
-				this.computedValue = '';
+				this.$emit('update:value','');
+				this.$emit('model-change','');
 				this.$refs.input.focus();
 			}
 		}
