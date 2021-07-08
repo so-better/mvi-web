@@ -53,10 +53,6 @@
 				type:[String,Object],
 				default:'angle-down'
 			},
-			arrowClass:{//自定义右侧图标的额外样式类
-				type:String,
-				default:null
-			},
 			timeout:{//折叠或者展开的动画时长,单位ms
 				type:Number,
 				default:300

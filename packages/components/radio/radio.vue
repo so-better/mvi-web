@@ -141,7 +141,7 @@
 			},
 			check(){
 				//checked为boolean
-				if(typeof(this.checked) == "boolean"){
+				if(typeof this.checked == "boolean"){
 					return this.checked;
 				}else if((typeof this.checked == "string" && this.checked) || $util.isNumber(this.checked)){
 					if(this.checked == this.value){
@@ -164,7 +164,7 @@
 						this.$emit('update:checked',this.value);
 						this.$emit('model-change',this.value);
 					}
-				}else if(typeof(this.checked) == "boolean"){
+				}else if(typeof this.checked == "boolean"){
 					this.$emit('update:checked',event.target.checked);
 					this.$emit('model-change',event.target.checked);
 				}

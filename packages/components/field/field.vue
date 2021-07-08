@@ -199,6 +199,9 @@
 			},
 			//是否显示清除图标
 			showClearIcon(){
+				if(this.disabled || this.readonly){
+					return false;
+				}
 				if(this.value &&　this.focus){
 					return true;
 				}else{
@@ -266,25 +269,25 @@
 			},
 			//输入框父容器样式类
 			fieldBodyClass(){
-				let cls = 'mvi-field-body';
+				let cls = ['mvi-field-body'];
 				if((this.prependIconType || this.prependIconUrl || this.$slots.prepend) && this.type!='textarea'){
-					cls += ' mvi-field-body-left';
+					cls.push('mvi-field-body-left');
 				}
 				if((this.appendIconType || this.appendIconUrl || this.$slots.append) && this.type!='textarea'){
-					cls += ' mvi-field-body-right';
+					cls.push('mvi-field-body-right');
 				}
 				if(!this.activeColor && this.activeType && this.focus){
-					cls += ' mvi-field-body-'+this.activeType
+					cls.push('mvi-field-body-'+this.activeType)
 				}
 				return cls;
 			},
 			//输入框组件样式类
 			fieldClass(){
-				let cls = 'mvi-field mvi-field-'+this.size;
+				let cls = ['mvi-field','mvi-field-'+this.size];
 				if(this.round && this.type!='textarea'){
-					cls += ' mvi-field-round';
+					cls.push('mvi-field-round');
 				}else if(this.square){
-					cls += ' mvi-field-square';
+					cls.push('mvi-field-square');
 				}
 				return cls
 			},
@@ -309,14 +312,9 @@
 				let value = this.value.toString();
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
-					if(this.maxlength > 0 && value.length>this.maxlength){
-						value = value.substr(0, this.maxlength);
-					}
-				} else {
-					value = value.toString();
-					if(this.maxlength > 0 && value.length>this.maxlength){
-						value = value.substr(0, this.maxlength);
-					}
+				} 
+				if(this.maxlength > 0 && value.length>this.maxlength){
+					value = value.substr(0, this.maxlength);
 				}
 				if(this.value !== value){
 					this.$emit('update:value', value);
@@ -328,10 +326,10 @@
 			prependIconType() {
 				let t = null;
 				if ($util.isObject(this.prepend)) {
-					if (typeof(this.prepend.type) == "string") {
+					if (typeof this.prepend.type == "string") {
 						t = this.prepend.type;
 					}
-				} else if (typeof(this.prepend) == "string") {
+				} else if (typeof this.prepend == "string") {
 					t = this.prepend;
 				}
 				return t;
@@ -340,7 +338,7 @@
 			prependIconUrl() {
 				let url = null;
 				if ($util.isObject(this.prepend)) {
-					if (typeof(this.prepend.url) == "string") {
+					if (typeof this.prepend.url == "string") {
 						url = this.prepend.url;
 					}
 				}
@@ -350,7 +348,7 @@
 			prependIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.prepend)) {
-					if (typeof(this.prepend.spin) == "boolean") {
+					if (typeof this.prepend.spin == "boolean") {
 						spin = this.prepend.spin;
 					}
 				}
@@ -360,7 +358,7 @@
 			prependIconSize() {
 				let size = null;
 				if ($util.isObject(this.prepend)) {
-					if (typeof(this.prepend.size) == "string") {
+					if (typeof this.prepend.size == "string") {
 						size = this.prepend.size;
 					}
 				}
@@ -370,7 +368,7 @@
 			prependIconColor() {
 				let color = null;
 				if ($util.isObject(this.prepend)) {
-					if (typeof(this.prepend.color) == "string") {
+					if (typeof this.prepend.color == "string") {
 						color = this.prepend.color;
 					}
 				}
@@ -380,10 +378,10 @@
 			appendIconType() {
 				let t = null;
 				if ($util.isObject(this.append)) {
-					if (typeof(this.append.type) == "string") {
+					if (typeof this.append.type == "string") {
 						t = this.append.type;
 					}
-				} else if (typeof(this.append) == "string") {
+				} else if (typeof this.append == "string") {
 					t = this.append;
 				}
 				return t;
@@ -392,7 +390,7 @@
 			appendIconUrl() {
 				let url = null;
 				if ($util.isObject(this.append)) {
-					if (typeof(this.append.url) == "string") {
+					if (typeof this.append.url == "string") {
 						url = this.append.url;
 					}
 				}
@@ -402,7 +400,7 @@
 			appendIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.append)) {
-					if (typeof(this.append.spin) == "boolean") {
+					if (typeof this.append.spin == "boolean") {
 						spin = this.append.spin;
 					}
 				}
@@ -412,7 +410,7 @@
 			appendIconSize(){
 				let size = null;
 				if ($util.isObject(this.append)) {
-					if (typeof(this.append.size) == "string") {
+					if (typeof this.append.size == "string") {
 						size = this.append.size;
 					}
 				}
@@ -422,7 +420,7 @@
 			appendIconColor(){
 				let color = null;
 				if ($util.isObject(this.append)) {
-					if (typeof(this.append.color) == "string") {
+					if (typeof this.append.color == "string") {
 						color = this.append.color;
 					}
 				}
@@ -432,10 +430,10 @@
 			prefixIconType() {
 				let t = null;
 				if ($util.isObject(this.prefix)) {
-					if (typeof(this.prefix.type) == "string") {
+					if (typeof this.prefix.type == "string") {
 						t = this.prefix.type;
 					}
-				} else if (typeof(this.prefix) == "string") {
+				} else if (typeof this.prefix == "string") {
 					t = this.prefix;
 				}
 				return t;
@@ -444,7 +442,7 @@
 			prefixIconUrl() {
 				let url = null;
 				if ($util.isObject(this.prefix)) {
-					if (typeof(this.prefix.url) == "string") {
+					if (typeof this.prefix.url == "string") {
 						url = this.prefix.url;
 					}
 				}
@@ -454,7 +452,7 @@
 			prefixIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.prefix)) {
-					if (typeof(this.prefix.spin) == "boolean") {
+					if (typeof this.prefix.spin == "boolean") {
 						spin = this.prefix.spin;
 					}
 				}
@@ -464,7 +462,7 @@
 			prefixIconSize() {
 				let size = null;
 				if ($util.isObject(this.prefix)) {
-					if (typeof(this.prefix.size) == "string") {
+					if (typeof this.prefix.size == "string") {
 						size = this.prefix.size;
 					}
 				}
@@ -474,7 +472,7 @@
 			prefixIconColor() {
 				let color = null;
 				if ($util.isObject(this.prefix)) {
-					if (typeof(this.prefix.color) == "string") {
+					if (typeof this.prefix.color == "string") {
 						color = this.prefix.color;
 					}
 				}
@@ -484,10 +482,10 @@
 			suffixIconType() {
 				let t = null;
 				if ($util.isObject(this.suffix)) {
-					if (typeof(this.suffix.type) == "string") {
+					if (typeof this.suffix.type == "string") {
 						t = this.suffix.type;
 					}
-				} else if (typeof(this.suffix) == "string") {
+				} else if (typeof this.suffix == "string") {
 					t = this.suffix;
 				}
 				return t;
@@ -496,7 +494,7 @@
 			suffixIconUrl() {
 				let url = null;
 				if ($util.isObject(this.suffix)) {
-					if (typeof(this.suffix.url) == "string") {
+					if (typeof this.suffix.url == "string") {
 						url = this.suffix.url;
 					}
 				}
@@ -506,7 +504,7 @@
 			suffixIconSpin() {
 				let spin = false;
 				if ($util.isObject(this.suffix)) {
-					if (typeof(this.suffix.spin) == "boolean") {
+					if (typeof this.suffix.spin == "boolean") {
 						spin = this.suffix.spin;
 					}
 				}
@@ -516,7 +514,7 @@
 			suffixIconSize() {
 				let size = null;
 				if ($util.isObject(this.suffix)) {
-					if (typeof(this.suffix.size) == "string") {
+					if (typeof this.suffix.size == "string") {
 						size = this.suffix.size;
 					}
 				}
@@ -526,7 +524,7 @@
 			suffixIconColor() {
 				let color = null;
 				if ($util.isObject(this.suffix)) {
-					if (typeof(this.suffix.color) == "string") {
+					if (typeof this.suffix.color == "string") {
 						color = this.suffix.color;
 					}
 				}
@@ -629,17 +627,16 @@
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
-					el.value = value;
 				}
 				//如果设置了maxlength，则进行字符串截取
-				if (this.maxlength > 0) {
-					if (value.length > this.maxlength) {
-						value = value.substr(0, this.maxlength);
-						el.value = value;
-					}
+				if (this.maxlength > 0 && value.length > this.maxlength) {
+					value = value.substr(0, this.maxlength);
 				}
-				this.$emit('update:value', value);
-				this.$emit('model-change', value);
+				el.value = value;
+				if(this.value != value){
+					this.$emit('update:value', value);
+					this.$emit('model-change', value);
+				}
 			},
 			//点击前置
 			prependClick(){

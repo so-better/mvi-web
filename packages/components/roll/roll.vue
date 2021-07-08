@@ -1,5 +1,5 @@
 <template>
-	<div @click="clickStopFun" class="mvi-roll-container" v-on="listeners" :style="containerStyle">
+	<div @click="clickStopFun" @mouseenter="hoverIn" @mouseleave="hoverOut" class="mvi-roll-container" v-on="listeners" :style="containerStyle">
 		<div :class="['mvi-roll',(direction=='left'|| direction=='right')?'mvi-roll-horizontal':'mvi-roll-vertical']" :style="rollStyle" ref="roll">
 			<slot></slot>
 		</div>
@@ -47,6 +47,10 @@
 			clickStop:{//是否点击暂停
 				type:Boolean,
 				default:false
+			},
+			hoverStop:{//是否悬浮暂停
+				type:Boolean,
+				default:false
 			}
 		},
 		mounted() {
@@ -87,6 +91,22 @@
 			}
 		},
 		methods: {
+			//鼠标进入
+			hoverIn(){
+				if(this.hoverStop){
+					if(this.status == 0){//滚动中可暂停
+						this.pause();
+					}
+				}
+			},
+			//鼠标移出
+			hoverOut(){
+				if(this.hoverStop){
+					if(this.status == 1){//暂停时可开始
+						this.play();
+					}
+				}
+			},
 			//播放
 			play() {
 				if (this.status == 0) {
@@ -201,7 +221,9 @@
 				}
 			}
 		},
-		
+		beforeDestroy() {
+			this.stop();
+		}
 	}
 </script>
 

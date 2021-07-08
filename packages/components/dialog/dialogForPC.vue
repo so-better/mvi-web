@@ -30,7 +30,6 @@
 					:style="inputStyle"
 					:autofocus="computedInput.autofocus"
 					v-model.trim="computedValue"
-					@input="inputFun"
 					@focus="inputFocus"
 					@blur="inputBlur"
 				/>
@@ -223,10 +222,19 @@ export default {
 				if (typeof this.input.value == 'string' && this.input.value) {
 					value = this.input.value;
 				}
+				if (this.input.type == 'number') {
+					value = value.replace(/\D/g, '');
+				}
+				if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
+					value = value.substr(0, this.computedInput.maxlength);
+				}
+				if(this.input.value != value){
+					this.$set(this.input,'value',value)
+				}
 				return value;
 			},
 			set(value) {
-				this.input.value = value;
+				this.$set(this.input,'value',value)
 			}
 		},
 		computedZIndex() {
@@ -316,26 +324,13 @@ export default {
 		inputFocus() {
 			setTimeout(() => {
 				this.focus = true;
-			}, 300);
+			}, 200);
 		},
 		//失去焦点
 		inputBlur(e) {
 			setTimeout(() => {
 				this.focus = false;
-			}, 300);
-		},
-		//输入监听
-		inputFun() {
-			let value = this.computedValue;
-			if (this.input.type == 'number') {
-				value = value.replace(/\D/g, '');
-			}
-			if (this.computedInput.maxlength > 0) {
-				if (value.length > this.computedInput.maxlength) {
-					value = value.substr(0, this.computedInput.maxlength);
-				}
-			}
-			this.computedValue = value;
+			}, 200);
 		},
 		//清除输入框的值
 		doClear() {

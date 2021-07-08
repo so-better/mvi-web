@@ -85,10 +85,10 @@
 			iconType(){
 				let type = 'load-e';
 				if ($util.isObject(this.loadIcon)) {
-					if (typeof(this.loadIcon.type) == "string") {
+					if (typeof this.loadIcon.type == "string") {
 						type = this.loadIcon.type;
 					}
-				} else if (typeof(this.loadIcon) == "string") {
+				} else if (typeof this.loadIcon == "string") {
 					type = this.loadIcon;
 				}
 				return type;
@@ -96,7 +96,7 @@
 			iconUrl(){
 				let url = null;
 				if ($util.isObject(this.loadIcon)) {
-					if (typeof(this.loadIcon.url) == "string") {
+					if (typeof this.loadIcon.url == "string") {
 						url = this.loadIcon.url;
 					}
 				}
@@ -105,7 +105,7 @@
 			iconSpin(){
 				let spin = true;
 				if ($util.isObject(this.loadIcon)) {
-					if (typeof(this.loadIcon.spin) == "boolean") {
+					if (typeof this.loadIcon.spin == "boolean") {
 						spin = this.loadIcon.spin;
 					}
 				}
@@ -114,7 +114,7 @@
 			iconSize(){
 				let size = null;
 				if ($util.isObject(this.loadIcon)) {
-					if (typeof(this.loadIcon.size) == "string") {
+					if (typeof this.loadIcon.size == "string") {
 						size = this.loadIcon.size;
 					}
 				}

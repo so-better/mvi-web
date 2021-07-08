@@ -14,7 +14,7 @@ Toast.install = Vue=> {
 	Vue.prototype.$showToast = (options,callback) => {
 		//如果实例元素没有添加到页面，则进行添加
 		//判断是否局部提示
-		if(typeof(options.local) == 'string' && options.local){
+		if(typeof options.local == 'string' && options.local){
 			let el = document.body.querySelector(options.local);
 			if(el){//局部提示
 				if(!$util.isContains(el,instance.$el)){
@@ -46,7 +46,7 @@ Toast.install = Vue=> {
 			instance.usePadding = options.usePadding;
 			instance.background = options.background;
 			instance.color = options.color;
-		}else if(typeof(options) == "string"){
+		}else if(typeof options == "string"){
 			instance.message = options;
 			instance.callback = callback;
 			instance.timeout = 1500;

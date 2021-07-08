@@ -1,8 +1,6 @@
 <template>
 	<div v-on="listeners" :class="['mvi-collapse-item',computedOutBorder?'mvi-collapse-item-border':'']">
-		<m-cell class="mvi-collapse-cell" :icon="icon" :content="label" :title="title" :border="cellBorder" :arrow="arrow" 
-		:title-class="titleClass" :content-class="labelClass" :icon-class="iconClass" @click="changeCollapse" :active="computedActive"
-		:no-wrap="computedNoWrap" :arrow-class="computedArrowClass"></m-cell>
+		<m-cell class="mvi-collapse-cell" :icon="icon" :content="label" :title="title" :border="cellBorder" :arrow="arrow" :title-class="titleClass" :content-class="labelClass" @click="changeCollapse" :active="computedActive" :no-wrap="computedNoWrap"></m-cell>
 		<m-transition-slide :expand="open" :timeout="computedTimeout" @before-slide-up="beforeSlideUp" @slide-up="slideUp" 
 		@before-slide-down="beforeSlideDown" @slide-down="slideDown">
 			<div :class="['mvi-collapse-item-content',contentClass?contentClass:'']">
@@ -57,10 +55,6 @@
 				type: String,
 				default: null
 			},
-			iconClass: { //标题栏左侧图标额外样式
-				type: String,
-				default: null
-			},
 			active: { //标题栏是否显示点击态
 				type: Boolean,
 				default: null
@@ -89,10 +83,6 @@
 				type: [String, Object],
 				default: null
 			},
-			arrowClass:{//自定义右侧图标的额外样式类
-				type:String,
-				default:null
-			},
 			timeout:{//折叠或者展开的动画时长,单位ms
 				type:Number,
 				default: null
@@ -107,13 +97,6 @@
 		computed: {
 			listeners() {
 				return Object.assign({}, this.$listeners);
-			},
-			computedArrowClass(){
-				if (typeof this.arrowClass == "string" && this.arrowClass) {
-					return this.arrowClass;
-				} else {
-					return this.collapse.arrowClass;
-				}
 			},
 			computedOutBorder() {
 				if (typeof this.outBorder == "boolean") {

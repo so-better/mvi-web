@@ -4,10 +4,10 @@
 		<div @click="leftClick" class="mvi-input-left-icon" v-if="$slots.left || leftIconUrl || leftIconType">
 			<slot name="left" v-if="$slots.left"></slot>
 			<m-icon v-else-if="leftIconUrl || leftIconType" :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin"
-			 :class="leftIconClass?leftIconClass:''" :size="leftIconSize" :color="leftIconColor"/>
+			:size="leftIconSize" :color="leftIconColor"/>
 		</div>
 		<!-- 左侧文本 -->
-		<div :class="'mvi-input-label'+(labelClass?' '+labelClass:'')" v-if="label" :style="labelStyle">
+		<div :class="['mvi-input-label',labelClass?labelClass:'']" v-if="label" :style="labelStyle">
 			<span v-text="label"></span>
 		</div>
 		<!-- 文本域 -->
@@ -26,7 +26,7 @@
 		<div @click="rightClick" class="mvi-input-right-icon" v-if="$slots.right || (rightIconUrl || rightIconType)">
 			<slot name="right" v-if="$slots.right"></slot>
 			<m-icon v-else-if="rightIconUrl || rightIconType" ref="rightIcon" :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin"
-			 :class="rightIconClass?rightIconClass:''"  :size="rightIconSize" :color="rightIconColor" />
+			:size="rightIconSize" :color="rightIconColor" />
 		</div>
 		<!-- 显示文字长度限制 -->
 		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{inputValue.length}}/{{maxlength}}</div>
@@ -131,16 +131,8 @@
 				type: [String, Object],
 				default: null
 			},
-			leftIconClass: { //左侧图标额外的样式类
-				type: String,
-				default: null
-			},
 			rightIcon: { //右侧图标
 				type: [String, Object],
-				default: null
-			},
-			rightIconClass: { //右侧图标额外的样式类
-				type: String,
 				default: null
 			},
 			date: { //日期选择的默认日期
@@ -185,6 +177,9 @@
 			}
 		},
 		computed: {
+			listeners() {
+				return Object.assign({}, this.$listeners)
+			},
 			showClear() {
 				if(this.disabled || this.readonly){
 					return false;
@@ -198,9 +193,6 @@
 				}else{
 					return false;
 				}
-			},
-			listeners() {
-				return Object.assign({}, this.$listeners)
 			},
 			leftIconType() {
 				let type = null;
@@ -437,13 +429,13 @@
 			getFocus(){
 				setTimeout(()=>{
 					this.focus = true;
-				},300)
+				},200)
 			},
 			//输入框或者文本域失去焦点
 			getBlur(){
 				setTimeout(()=>{
 					this.focus = false;
-				},300)
+				},200)
 			},
 			//左侧图标点击
 			leftClick() {
@@ -473,6 +465,11 @@
 				let value = '';
 				if (this.type == 'textarea') {
 					value = this.$refs.textarea.value;
+					//如果设置了maxlength，则进行字符串截取
+					if (this.maxlength > 0 && value.length > this.maxlength) {
+						value = value.substr(0, this.maxlength);
+					}
+					this.$refs.textarea.value = value;
 				} else if(!this.isDatePicker){
 					value = this.$refs.input.value;
 					//数字类型会过滤非数字字符

@@ -27,7 +27,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.ios = options.ios;
-		}else if(typeof(options) == "string"){
+		}else if(typeof options == "string"){
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -36,7 +36,7 @@ Dialog.install = Vue=>{
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
-			if(typeof(options.local) == 'string' && options.local){
+			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
@@ -70,7 +70,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.ios = options.ios;
-		}else if(typeof(options) == "string"){
+		}else if(typeof options == "string"){
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -79,7 +79,7 @@ Dialog.install = Vue=>{
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
-			if(typeof(options.local) == 'string' && options.local){
+			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
@@ -121,7 +121,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.ios = options.ios;
-		}else if(typeof(options) == "string"){
+		}else if(typeof options == "string"){
 			instance.message = options,
 			instance.callback = callback;
 		}
@@ -130,7 +130,7 @@ Dialog.install = Vue=>{
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
-			if(typeof(options.local) == 'string' && options.local){
+			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
@@ -163,7 +163,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.showTimes = options.showTimes;
-		}else if(typeof(options) == "string"){
+		}else if(typeof options == "string"){
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -172,7 +172,7 @@ Dialog.install = Vue=>{
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
-			if(typeof(options.local) == 'string' && options.local){
+			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
@@ -205,7 +205,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.showTimes = options.showTimes;
-		}else if(typeof(options) == "string"){
+		}else if(typeof options == "string"){
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -214,7 +214,7 @@ Dialog.install = Vue=>{
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
-			if(typeof(options.local) == 'string' && options.local){
+			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);
@@ -254,7 +254,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.showTimes = options.showTimes;
-		}else if(typeof(options) == "string"){
+		}else if(typeof options == "string"){
 			instance.message = options,
 			instance.callback = callback;
 		}
@@ -263,7 +263,7 @@ Dialog.install = Vue=>{
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
-			if(typeof(options.local) == 'string' && options.local){
+			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
 					el.appendChild(instance.$el);

@@ -3,14 +3,14 @@
 		<div v-if="label" :class="['mvi-search-label',labelClass?labelClass:'']" v-text="label"></div>
 		<div :class="['mvi-search-input-container',round?'mvi-search-input-round':'']" :style="{backgroundColor:background?background:'',color:color?color:''}">
 			<div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
-				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor" :class="(leftIconClass?leftIconClass:'')"/>
+				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor"/>
 			</div>
 			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode" :value="computedValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle">
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<m-icon type="times-o"/>
 			</div>
 			<div v-if="rightIconType || rightIconUrl" class="mvi-search-right-icon" @click="rightClick">
-				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" :class="(rightIconClass?rightIconClass:'')" />
+				<m-icon :type="rightIconType" :url="rightIconUrl" :spin="rightIconSpin" :size="rightIconSize" :color="rightIconColor" />
 			</div>
 		</div>
 		<div v-if="showCancel" v-text="cancelText" :class="['mvi-search-cancel',cancelClass?cancelClass:'']" @click="doCancel"></div>
@@ -106,14 +106,6 @@
 				type:[String,Object],
 				default:null
 			},
-			leftIconClass:{//左侧图标额外的样式类
-				type:String,
-				default:null
-			},
-			rightIconClass:{//右侧图标额外的样式类
-				type:String,
-				default:null
-			},
 			clearable:{//使用清除图标
 				type:Boolean,
 				default:false
@@ -127,6 +119,9 @@
 			}
 		},
 		computed:{
+			listeners(){
+				return Object.assign({},this.$listeners)
+			},
 			showClear(){
 				if(this.disabled || this.readonly){
 					return false;
@@ -140,9 +135,6 @@
 				}else{
 					return false;
 				}
-			},
-			listeners(){
-				return Object.assign({},this.$listeners)
 			},
 			leftIconType() {
 				let t = null;
@@ -287,13 +279,13 @@
 			getFocus(){
 				setTimeout(()=>{
 					this.focus = true;
-				},300)
+				},200)
 			},
 			//输入框失去焦点
 			getBlur(){
 				setTimeout(()=>{
 					this.focus = false;
-				},300)
+				},200)
 			},
 			//输入监听
 			searchInput(){

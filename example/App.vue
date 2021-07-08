@@ -1,14 +1,15 @@
 <template>
 	<div id="app">
 		{{value}}
-		<m-search v-model="value" type="number" clearable></m-search>
+		<m-button @click="change">进度条</m-button>
+		<m-button @click="hide">关闭</m-button>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
-			value: 0,
+			value: '#ff3300',
 			date: new Date(),
 			data: [
 				{
@@ -47,14 +48,14 @@ export default {
 		};
 	},
 	mounted() {
-		//console.log(this.$util.matchingText('1799-04-09','date'))
-		//console.log(this.$util.matchingText('2021/03/19','date'))
-		//console.log(this.$util.matchingText('2021.03.19','date'))
-		//console.log(this.$util.matchingText('2021年03月03日','date'))
+		
 	},
 	methods: {
-		reset() {
-			this.$refs.table.resetSortActive();
+		change(e){
+			this.$showLoadingBar()
+		},
+		hide(){
+			this.$hideLoadingBar()
 		}
 	}
 };

@@ -203,7 +203,7 @@
 					},
 					error: (state, message, file) => {
 						if (this.value == 'image') {
-							if (typeof(this.editor.uploadImageError) == 'function') {
+							if (typeof this.editor.uploadImageError == 'function') {
 								this.editor.uploadImageError(state, message, file)
 							} else {
 								this.$msgbox({
@@ -212,7 +212,7 @@
 								})
 							}
 						} else {
-							if (typeof(this.editor.uploadVideoError) == 'function') {
+							if (typeof this.editor.uploadVideoError == 'function') {
 								this.editor.uploadVideoError(state, message, file)
 							} else {
 								this.$msgbox({

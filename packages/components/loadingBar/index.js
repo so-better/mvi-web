@@ -16,18 +16,18 @@ LoadingBar.install = Vue=> {
 		if(!$util.isContains(document.body,instance.$el)){
 			document.body.appendChild(instance.$el)
 		}
-		if(typeof(options) == "string"){
+		if(typeof options == "string"){
 			instance.color = options;
 			instance.zIndex = null;
 		}else if($util.isObject(options)){
 			instance.color = options.color;
 			instance.zIndex = options.zIndex;
 		}
-		instance.show = true;
+		instance.enter();
 	}
 	
 	Vue.prototype.$hideLoadingBar = () =>{
-		instance.show = false;
+		instance.leave();
 	}
 
 }

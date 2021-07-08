@@ -28,16 +28,16 @@ class Spy {
 		if (!$util.isElement(this.$el)) {
 			this.$el = window;
 		}
-		if (typeof(this.beforeEnter) != "function") {
+		if (typeof this.beforeEnter != "function") {
 			this.beforeEnter = function() {};
 		}
-		if (typeof(this.enter) != "function") {
+		if (typeof this.enter != "function") {
 			this.enter = function() {};
 		}
-		if (typeof(this.beforeLeave) != "function") {
+		if (typeof this.beforeLeave != "function") {
 			this.beforeLeave = function() {};
 		}
-		if (typeof(this.leave) != "function") {
+		if (typeof this.leave != "function") {
 			this.leave = function() {};
 		}
 		
