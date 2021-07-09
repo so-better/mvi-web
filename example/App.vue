@@ -63,8 +63,16 @@ export default {
 				}
 			});
 			setTimeout(() => {
-				this.$hideLoadingBar();
-			}, 13000);
+				this.$showLoadingBar('#000');
+				setTimeout(()=>{
+					this.$showLoadingBar(()=>{
+						this.$msgbox('已关闭2');
+					});
+					setTimeout(()=>{
+						this.$hideLoadingBar();
+					},1000)
+				},1000)
+			}, 1000);
 		}
 	}
 };
