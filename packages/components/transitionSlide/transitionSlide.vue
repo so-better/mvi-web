@@ -34,9 +34,7 @@ export default {
 	},
 	watch:{
 		expand(newValue){
-			this.$nextTick(()=>{
-				this.show = newValue;
-			})
+			this.show = newValue;
 		}
 	},
 	created() {
@@ -51,6 +49,10 @@ export default {
 		//启用动画
 		this.$nextTick(()=>{
 			this.useAnimation = true;
+			//恢复第一次设置的透明度
+			if(this.opacity === 0){
+				this.opacity = '';
+			}
 		})
 	},
 	methods: {
@@ -102,10 +104,6 @@ export default {
 			el.offsetWidth;
 			//设置隐藏后的高度
 			el.style.height = 0;
-			//恢复第一次设置的透明度
-			if(this.opacity === 0){
-				this.opacity = '';
-			}
 		},
 		afterLeave(el){
 			//移除动画
