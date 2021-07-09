@@ -969,14 +969,14 @@ export default {
 		},
 		//编辑区域获取焦点
 		contentFocus() {
-			if (this.border && this.activeColor) {
+			if (this.border && this.activeColor && this.$refs.content) {
 				this.$refs.content.style.borderColor = this.activeColor;
 			}
 			this.changeActive();
 		},
 		//编辑区域失去焦点
 		contentBlur() {
-			if (this.border && this.activeColor) {
+			if (this.border && this.activeColor && this.$refs.content) {
 				this.$refs.content.style.borderColor = '';
 			}
 			this.changeActive();
@@ -1032,7 +1032,7 @@ export default {
 		//判断某个节点是否在指定标签下，可对外提供
 		compareTag(el, tag) {
 			if ($util.isContains(this.$refs.content, el)) {
-				if (el.tagName.toUpperCase() == tag.toUpperCase()) {
+				if (el.tagName.toLocaleUpperCase() == tag.toLocaleUpperCase()) {
 					return true;
 				} else {
 					return this.compareTag(el.parentNode, tag);
@@ -1056,7 +1056,7 @@ export default {
 		//根据标签名获取某个节点，可对外提供
 		getCompareTag(el, tag) {
 			if ($util.isContains(this.$refs.content, el)) {
-				if (el.tagName.toUpperCase() == tag.toUpperCase()) {
+				if (el.tagName.toLocaleUpperCase() == tag.toLocaleUpperCase()) {
 					return el;
 				} else {
 					return this.getCompareTag(el.parentNode, tag);

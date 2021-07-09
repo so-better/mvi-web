@@ -806,7 +806,7 @@ const util = {
 					break;
 				default: //标签名
 					for (let i = 0; i < childNodes.length; i++) {
-						if (childNodes[i].tagName.toUpperCase() == selector_value.toUpperCase()) {
+						if (childNodes[i].tagName.toLocaleUpperCase() == selector_value.toLocaleUpperCase()) {
 							result.push(childNodes[i]);
 						}
 					}
@@ -900,7 +900,7 @@ const util = {
 					break;
 				default: //标签名
 					for (let i = 0; i < siblingsArray.length; i++) {
-						if (siblingsArray[i].tagName.toUpperCase() == selector_value.toUpperCase()) {
+						if (siblingsArray[i].tagName.toLocaleUpperCase() == selector_value.toLocaleUpperCase()) {
 							result.push(siblingsArray[i]);
 						}
 					}

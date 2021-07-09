@@ -39,7 +39,7 @@
 				</div>
 			</div>
 		</m-layer>
-		<input type="hidden" :value="value" :name="name" />
+		<input type="hidden" :value="formData" :name="name" />
 	</div>
 </template>
 
@@ -198,6 +198,12 @@ export default {
 	computed: {
 		listeners() {
 			return Object.assign({}, this.$listeners);
+		},
+		formData(){
+			if(this.multiple && Array.isArray(this.value)){
+				return this.value.join(',');
+			}
+			return this.value;
 		},
 		menuStyle() {
 			let style = {};

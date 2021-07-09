@@ -699,7 +699,6 @@
 						this.selectedDate = new Date(this.selectedDate.setMinutes(min));
 					}
 				}
-				
 			},
 			//点击确定
 			bindConfirm(){
@@ -725,6 +724,16 @@
 					let format = (hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
 					this.$emit('confirm',{
 						hour,minute,value:this.selectedDate,format
+					});
+				}else if(this.mode == 'year'){
+					this.$emit('confirm',{
+						year,value:this.selectedDate
+					});
+				}else if(this.mode == 'month'){
+					let iosFormat = year + '/' + (month<10?'0'+month:month);
+					let format = year + '-' + (month<10?'0'+month:month);
+					this.$emit('confirm',{
+						year,month,value:this.selectedDate,iosFormat,format
 					});
 				}
 			},
@@ -752,6 +761,16 @@
 					let format = (hour<10?'0'+hour:hour)+':'+(minute<10?'0'+minute:minute);
 					this.$emit('cancel',{
 						hour,minute,value:this.selectedDate,format
+					});
+				}else if(this.mode == 'year'){
+					this.$emit('cancel',{
+						year,value:this.selectedDate
+					});
+				}else if(this.mode == 'month'){
+					let iosFormat = year + '/' + (month<10?'0'+month:month);
+					let format = year + '-' + (month<10?'0'+month:month);
+					this.$emit('cancel',{
+						year,month,value:this.selectedDate,iosFormat,format
 					});
 				}
 			}

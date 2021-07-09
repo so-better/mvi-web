@@ -807,6 +807,10 @@
 			}
 		},
 		beforeDestroy() {
+			if(this.timer){
+				clearInterval(this.timer);
+				this.timer = null;
+			}
 			//非fade模式下
 			if(!this.fade){
 				document.body.removeEventListener('mousemove',this.swiperMouseMove);

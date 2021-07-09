@@ -155,7 +155,7 @@
 					return;
 				}
 				this.scale = 1;
-				this.$refs.images.forEach((image)=>{
+				this.$refs.images.forEach(image=>{
 					image.$el.style.transform = '';
 				})
 				this.$emit('model-change', false);
@@ -164,7 +164,7 @@
 			//图片变更
 			swiperChange(active) {
 				this.scale = 1;
-				this.$refs.images.forEach((image)=>{
+				this.$refs.images.forEach(image=>{
 					image.$el.style.transform = '';
 				})
 				this.$emit('change', active);
