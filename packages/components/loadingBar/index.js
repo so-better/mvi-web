@@ -20,6 +20,10 @@ LoadingBar.install = Vue=> {
 			instance.color = null;
 			instance.zIndex = null;
 			instance.callback = options;
+		}else if(typeof options == 'string'){
+			instance.color = options;
+			instance.zIndex = null;
+			instance.callback = null;
 		}else if($util.isObject(options)){
 			instance.color = options.color;
 			instance.zIndex = options.zIndex;
