@@ -67,9 +67,6 @@
 			listeners(){
 				return Object.assign({},this.$listeners)
 			}
-		},
-		methods:{
-			
 		}
 	}
 </script>

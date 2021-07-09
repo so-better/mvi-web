@@ -11,6 +11,7 @@
 export default {
 	data() {
 		return {
+			active:1,
 			show:false,
 			expand:false,
 			value: '#ff3300',
@@ -52,7 +53,7 @@ export default {
 		};
 	},
 	mounted() {
-		
+		this.expand = true;
 	},
 	methods: {
 		change(){
