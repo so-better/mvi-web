@@ -11,17 +11,19 @@ LoadingBar.install = Vue=> {
 	const instance = new LoadingBarConstructor();
 	// 挂载该实例
 	instance.$mount();
-	Vue.prototype.$showLoadingBar = (options) => {
+	Vue.prototype.$showLoadingBar = options => {
 		//如果实例元素没有添加到页面，则进行添加
 		if(!$util.isContains(document.body,instance.$el)){
 			document.body.appendChild(instance.$el)
 		}
-		if(typeof options == "string"){
-			instance.color = options;
+		if(typeof options == "function"){
+			instance.color = null;
 			instance.zIndex = null;
+			instance.callback = options;
 		}else if($util.isObject(options)){
 			instance.color = options.color;
 			instance.zIndex = options.zIndex;
+			instance.callback = options.callback;
 		}
 		instance.enter();
 	}

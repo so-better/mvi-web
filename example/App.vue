@@ -1,19 +1,17 @@
 <template>
 	<div id="app">
-		{{value}}
+		{{ value }}
 		<m-button @click="change" form-control class="mvi-mb-4">Toggle</m-button>
-		<m-transition-slide :expand="expand">
-			<div style="height: 4rem;background-color: #000000;"></div>
-		</m-transition-slide>
+		<m-transition-slide :expand="expand"><div style="height: 4rem;background-color: #000000;"></div></m-transition-slide>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
-			active:1,
-			show:false,
-			expand:false,
+			active: 1,
+			show: false,
+			expand: false,
 			value: '#ff3300',
 			date: new Date(),
 			data: [
@@ -56,9 +54,17 @@ export default {
 		this.expand = true;
 	},
 	methods: {
-		change(){
-			
-			this.expand = !this.expand
+		change() {
+			this.$showLoadingBar({
+				color: '#ff3300',
+				zIndex:100,
+				callback: function() {
+					this.$msgbox('已关闭');
+				}
+			});
+			setTimeout(() => {
+				this.$hideLoadingBar();
+			}, 13000);
 		}
 	}
 };

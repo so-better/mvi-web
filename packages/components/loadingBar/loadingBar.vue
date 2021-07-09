@@ -12,7 +12,8 @@
 				widthEnterTime:4000,//进场时宽度变化时间
 				widthLeaveTime:2000,//离开时宽度变化时间
 				color:null,
-				zIndex:3000
+				zIndex:3000,
+				callback:null
 			}
 		},
 		computed:{
@@ -28,6 +29,13 @@
 					return this.zIndex;
 				}else{
 					return null;
+				}
+			},
+			computedCallback(){
+				if(typeof this.callback == 'function' && this.callback){
+					return this.callback;
+				}else{
+					return function(){};
 				}
 			},
 			barStyle(){
@@ -65,6 +73,8 @@
 					setTimeout(()=>{
 						//移除元素
 						this.$el.remove();
+						//触发回调
+						this.computedCallback();
 					},this.widthLeaveTime + this.opacityTime)
 				})
 			},
