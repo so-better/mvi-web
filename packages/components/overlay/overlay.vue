@@ -172,10 +172,18 @@
 			},
 			//组件显示之后
 			afterEnter(el){
+				if(this.fade){
+					el.style.transition = '';
+					el.style.webkitTransition = '';
+				}
 				this.$emit('shown',el);
 			},
 			//组件隐藏之前
 			beforeLeave(el){
+				if(this.fade){
+					el.style.transition = 'opacity '+this.timeout+'ms';
+					el.style.webkitTransition = 'opacity '+this.timeout+'ms';
+				}
 				this.$emit('hide',el);
 			},
 			//组件隐藏时
@@ -217,10 +225,6 @@
 			}
 		},
 		beforeDestroy() {
-			if(this.fade){
-				this.$el.style.transition = '';
-				this.$el.style.webkitTransition = '';
-			}
 			window.removeEventListener('resize',this.resize);
 		}
 	}

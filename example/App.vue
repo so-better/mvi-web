@@ -1,14 +1,18 @@
 <template>
 	<div id="app">
 		{{value}}
-		<m-button @click="change">进度条</m-button>
-		<m-button @click="hide">关闭</m-button>
+		<m-button @click="change" form-control class="mvi-mb-4">Toggle</m-button>
+		<m-transition-slide :expand="expand">
+			<div style="height: 4rem;background-color: #000000;"></div>
+		</m-transition-slide>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
+			show:false,
+			expand:false,
 			value: '#ff3300',
 			date: new Date(),
 			data: [
@@ -51,11 +55,9 @@ export default {
 		
 	},
 	methods: {
-		change(e){
-			this.$showLoadingBar()
-		},
-		hide(){
-			this.$hideLoadingBar()
+		change(){
+			
+			this.expand = !this.expand
 		}
 	}
 };
