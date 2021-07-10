@@ -194,7 +194,7 @@
 			},
 			//添加动画
 			addTransition(index, timeout) {
-				return new Promise((resolve) => {
+				return new Promise(resolve => {
 					this.$refs.items[index].style.transition = 'all ' + timeout + 'ms ease-out';
 					this.$refs.items[index].style.webkitTransition = 'all ' + timeout + 'ms ease-out';
 					setTimeout(() => {
@@ -204,7 +204,7 @@
 			},
 			//移除动画
 			removeTransition(index) {
-				return new Promise((resolve) => {
+				return new Promise(resolve => {
 					this.$refs.items[index].style.transition = '';
 					this.$refs.items[index].style.webkitTransition = '';
 					setTimeout(() => {

@@ -118,14 +118,14 @@ class Upload {
 		if (this.disabled) {
 			this.$el.setAttribute("disabled", "disabled");
 		}
-		this.$el.onclick = (e)=>{
+		this.$el.onclick = e=>{
 			if (this.disabled) {
 				return;
 			}
 			this.$selectInput.click();
 		}
 		
-		this.$selectInput.onchange = (e)=> {
+		this.$selectInput.onchange = e=> {
 			if (this.disabled) {
 				return;
 			}

@@ -257,7 +257,7 @@
 			},
 			//根据滑块位置设置颜色
 			setColorBySlides() {
-				return new Promise((resolve)=>{
+				return new Promise(resolve=>{
 					let placementSV = $util.getElementPoint(this.$refs.panelSlide,this.$refs.panel);
 					let placementHue = $util.getElementPoint(this.$refs.hueSlide, this.$refs.hue);
 					this.hsv[1] = Math.round((placementSV.left + this.$refs.panelSlide.offsetWidth / 2) / this.$refs.panel.offsetWidth * 100);

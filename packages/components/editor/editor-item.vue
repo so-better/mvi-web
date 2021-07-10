@@ -182,7 +182,7 @@
 						this.editor.restoreRange();
 						//使用base64
 						if (this.editor.useBase64) {
-							files.forEach((file) => {
+							files.forEach(file => {
 								$util.dataFileToBase64(file).then(base64 => {
 									if (this.value == 'image') {
 										this.editor.insertImage(base64);
@@ -397,7 +397,7 @@
 							this.$nextTick(() => {
 								if (this.editor.codeViewShow) {
 									this.editor.$refs.codeView.innerText = this.editor.html;
-									this.editor.$children.forEach((child)=>{
+									this.editor.$children.forEach(child=>{
 										if(child.value != 'codeView'){
 											child.menuActive = false;
 										}else {
@@ -406,7 +406,7 @@
 									})
 								} else {
 									this.editor.$refs.content.innerHTML = this.editor.html;
-									this.editor.$children.forEach((child)=>{
+									this.editor.$children.forEach(child=>{
 										if(child.value != 'codeView'){
 											this.editor.changeActive()
 										}else {

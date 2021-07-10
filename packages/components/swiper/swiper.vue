@@ -114,7 +114,7 @@
 			},
 			//指示器
 			indicatorStyle(){
-				return (index)=>{
+				return index=>{
 					let style = {};
 					if(this.isIndicatorActive(index)){
 						if(this.activeColor){

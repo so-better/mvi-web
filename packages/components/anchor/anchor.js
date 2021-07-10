@@ -47,7 +47,7 @@ class Anchor {
 		}
 		
 		if ($util.isElement(this.$root)) {
-			this.$el.addEventListener('click',(e)=>{
+			this.$el.addEventListener('click',e=>{
 				let scrollTop = $util.getElementPoint(this.$target, this.$root).top;
 				$util.setScrollTop({
 					el:this.$root,
@@ -59,7 +59,7 @@ class Anchor {
 				});
 			})
 		} else {
-			this.$el.addEventListener('click',(e)=>{
+			this.$el.addEventListener('click',e=>{
 				//获取目标元素到浏览器顶部的距离
 				let scrollTop = $util.getElementPoint(this.$target).top;
 				$util.setScrollTop({
