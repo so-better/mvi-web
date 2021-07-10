@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
-		{{ value }}
-		<m-editor v-model="value"></m-editor>
+		<m-button @click="change" class="mvi-mb-4">Toggle</m-button>
+		<m-roll v-if="show" autoplay>222</m-roll>
 	</div>
 </template>
 <script>
@@ -48,6 +48,12 @@ export default {
 				}
 			]
 		};
+	},
+	mounted() {
+		this.show = false;
+		setTimeout(()=>{
+			this.show = true;
+		},50)
 	},
 	methods: {
 		change() {

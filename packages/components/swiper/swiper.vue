@@ -518,10 +518,16 @@
 					return;
 				}
 				if(!this.fade){
+					if(!this.$refs.wrapper){
+						return;
+					}
 					this.removeTransition().then(()=>{
 						this.transform = -this.computedInitalSlide.multiplication(this.slideSize);
 						this.$nextTick(()=>{
 							setTimeout(()=>{
+								if(!this.$refs.wrapper){
+									return;
+								}
 								this.addTransition().then(()=>{
 									this.oldIndex = this.initialSlide;
 									this.setAutoplay();
