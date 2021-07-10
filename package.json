@@ -1,6 +1,6 @@
 {
   "name": "mvi-web",
-  "version": "4.8.0",
+  "version": "4.8.1",
   "private": false,
   "author": "lingkai",
   "main": "packages/index",

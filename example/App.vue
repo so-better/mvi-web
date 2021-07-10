@@ -1,9 +1,7 @@
 <template>
 	<div id="app">
 		{{ value }}
-		<m-button @click="change" form-control class="mvi-mb-4">Toggle</m-button>
-		<div style="height: 3rem;width: 3rem;background-color: #000000;position: absolute;z-index: 2000;left:4rem;" v-resize="{}" v-if="show"></div>
-		<div style="height: 3rem;width: 3rem;background-color: #FF0000;position: absolute;z-index: 2000;" v-resize="{}" v-if="show"></div>
+		<m-editor v-model="value"></m-editor>
 	</div>
 </template>
 <script>
