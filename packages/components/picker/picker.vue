@@ -21,6 +21,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mLoading from "../loading/loading"
 	export default {
 		name: 'm-picker',
 		data() {
@@ -142,6 +143,9 @@
 				}
 				return arr;
 			}
+		},
+		components:{
+			mLoading
 		},
 		mounted() {
 			this.init();

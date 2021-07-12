@@ -13,6 +13,8 @@
 
 <script>
 	import $util from "../../util/util"
+	import mCell from "../cell/cell"
+	import mTransitionSlide from "../transitionSlide/transitionSlide"
 	export default {
 		name: "m-collapse-item",
 		created() {
@@ -168,6 +170,9 @@
 					return this.collapse.timeout;
 				}
 			},
+		},
+		components:{
+			mCell,mTransitionSlide
 		},
 		methods: {
 			//面板展开前触发

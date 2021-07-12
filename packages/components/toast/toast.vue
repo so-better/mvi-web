@@ -13,6 +13,9 @@
 
 <script>
 	import $util from "../../util/util"
+	import mOverlay from "../overlay/overlay"
+	import mLoading from "../loading/loading"
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-toast",
 		data(){
@@ -170,6 +173,9 @@
 				}
 			}
 		},
+		components:{
+			mOverlay,mIcon,mLoading
+		},
 		methods:{
 			//toast完全关闭后触发的方法
 			toastHidden(){
@@ -179,7 +185,7 @@
 			},
 			//清除所有的计时器
 			clearTimer(){
-				this.timers.forEach(function(item){
+				this.timers.forEach(item=>{
 					clearTimeout(item);
 				})
 				this.timers = [];

@@ -18,6 +18,8 @@
 
 <script>
 	import $util from "../../util/util"
+	import mPopup from "../popup/popup"
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-dropdown",
 		data(){
@@ -267,6 +269,9 @@
 				}
 				return cls;
 			}
+		},
+		components:{
+			mPopup,mIcon
 		},
 		mounted() {
 			this.oldIndex = this.value;

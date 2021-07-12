@@ -113,6 +113,11 @@
 <script>
 	import $util from "../../util/util"
 	import Upload from "../upload/upload"
+	import mTooltip from "../tooltip/tooltip"
+	import mLayer from "../layer/layer"
+	import mIcon from "../icon/icon"
+	import mTabs from "../tabs/tabs"
+	import mTab from "../tabs/tab"
 	export default {
 		name: 'm-editor-item',
 		props: {
@@ -225,6 +230,9 @@
 					}
 				}
 			}
+		},
+		components:{
+			mLayer,mTooltip,mIcon,mTabs,mTab
 		},
 		mounted() {
 			if (this.editor.trigger == 'hover') {

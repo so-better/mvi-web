@@ -88,7 +88,10 @@
 </template>
 
 <script>
-import $util from '../../util/util';
+import $util from '../../util/util'
+import mIcon from "../icon/icon"
+import mCheckbox from "../checkbox/checkbox"
+import mLoading from "../loading/loading"
 export default {
 	name: 'm-table',
 	data() {
@@ -250,6 +253,9 @@ export default {
 			};
 		}
 	},
+	components:{
+		mIcon,mCheckbox,mLoading
+	},
 	watch: {
 		data(newValue) {
 			this.sortData = this.getSortData();
@@ -368,7 +374,7 @@ export default {
 			if (typeof this.customSortAsc == 'function' && this.customSortAsc) {
 				this.customSortAsc(column, this.sortData);
 			} else {
-				this.sortData = this.sortData.sort(function(a, b) {
+				this.sortData = this.sortData.sort((a, b)=>{
 					if($util.isNumber(a[column.key]) && $util.isNumber(b[column.key])){
 						return a[column.key] - b[column.key]
 					}
@@ -386,7 +392,7 @@ export default {
 			if (typeof this.customSortDesc == 'function' && this.customSortDesc) {
 				this.customSortDesc(column, this.sortData);
 			} else {
-				this.sortData = this.sortData.sort(function(a, b) {
+				this.sortData = this.sortData.sort((a, b)=>{
 					if($util.isNumber(a[column.key]) && $util.isNumber(b[column.key])){
 						return b[column.key] - a[column.key]
 					}

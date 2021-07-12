@@ -13,6 +13,7 @@
 </template>
 
 <script>
+	import mIcon from "../icon/icon"
 	export default {
 		name: "m-checkbox",
 		model: {
@@ -159,6 +160,9 @@
 			listeners() {
 				return Object.assign({},this.$listeners)
 			}
+		},
+		components:{
+			mIcon
 		},
 		methods: {
 			getIndex(arry, value) {

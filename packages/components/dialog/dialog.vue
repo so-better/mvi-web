@@ -60,6 +60,8 @@
 
 <script>
 import $util from '../../util/util';
+import mModal from "../modal/modal"
+import mIcon from "../icon/icon"
 export default {
 	name: 'm-dialog',
 	data() {
@@ -351,6 +353,9 @@ export default {
 			}
 			return style;
 		}
+	},
+	components:{
+		mIcon,mModal
 	},
 	methods: {
 		//获取焦点

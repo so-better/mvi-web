@@ -11,6 +11,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-notify",
 		data(){
@@ -154,6 +155,9 @@
 				return Object.assign({},this.$listeners);
 			}
 		},
+		components:{
+			mIcon
+		},
 		watch:{
 			amounts(newValue){
 				if(this.computedTimeout>0){
@@ -174,7 +178,7 @@
 			},
 			//清除所有的计时器
 			clearTimer(){
-				this.timers.forEach(function(item){
+				this.timers.forEach(item=>{
 					clearTimeout(item);
 				})
 				this.timers = [];

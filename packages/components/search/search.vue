@@ -19,6 +19,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-search",
 		model:{
@@ -273,6 +274,9 @@
 				}
 				return style;
 			}
+		},
+		components:{
+			mIcon
 		},
 		methods:{
 			//输入框获取焦点

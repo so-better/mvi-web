@@ -1,6 +1,6 @@
 import util from "./util"
 
-util.install = function(Vue){
+util.install = Vue=>{
 	Vue.prototype.$util = util
 }
 

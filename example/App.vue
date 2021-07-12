@@ -1,7 +1,6 @@
 <template>
 	<div id="app">
-		<m-button @click="change" class="mvi-mb-4">Toggle</m-button>
-		<m-roll v-if="show" autoplay>222</m-roll>
+		
 	</div>
 </template>
 <script>
@@ -11,6 +10,13 @@ export default {
 			active: 1,
 			show: true,
 			expand: false,
+			options:[
+				{
+					label:'LOL',
+					value:0,
+					icon:'user'
+				}
+			],
 			value: '#ff3300',
 			date: new Date(),
 			data: [
@@ -32,6 +38,10 @@ export default {
 			],
 			columns: [
 				{
+					key:'checkbox',
+					value:''
+				},
+				{
 					key: 'id',
 					value: 'ID',
 					sortable: true
@@ -50,14 +60,10 @@ export default {
 		};
 	},
 	mounted() {
-		this.show = false;
-		setTimeout(()=>{
-			this.show = true;
-		},50)
 	},
 	methods: {
 		change() {
-			this.show = !this.show
+			
 		}
 	}
 };

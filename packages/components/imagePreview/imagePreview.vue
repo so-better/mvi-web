@@ -29,6 +29,10 @@
 </template>
 
 <script>
+	import mOverlay from "../overlay/overlay"
+	import mSwiper from "../swiper/swiper"
+	import mSwiperSlide from "../swiper/swiper-slide"
+	import mImage from "../image/image"
 	export default {
 		name: "m-image-preview",
 		data() {
@@ -117,6 +121,9 @@
 			listeners() {
 				return Object.assign({}, this.$listeners)
 			}
+		},
+		components:{
+			mOverlay,mSwiper,mSwiperSlide,mImage
 		},
 		mounted() {
 			window.addEventListener('resize',this.resize)

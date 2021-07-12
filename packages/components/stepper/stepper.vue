@@ -16,6 +16,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-stepper",
 		model:{
@@ -218,6 +219,9 @@
 				}
 				return cls;
 			}
+		},
+		components:{
+			mIcon
 		},
 		methods:{
 			//减法

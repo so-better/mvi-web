@@ -115,6 +115,9 @@
 
 <script>
 import $util from '../../util/util';
+import mLayer from "../layer/layer"
+import mIcon from "../icon/icon"
+import mCalendar from "../calendar/calendar"
 export default {
 	name: 'm-date-chooser',
 	data() {
@@ -357,6 +360,9 @@ export default {
 				return this.value.getFullYear() >= this.endYear;
 			}
 		}
+	},
+	components:{
+		mLayer,mCalendar,mIcon
 	},
 	created() {
 		this.view = this.mode;

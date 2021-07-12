@@ -26,6 +26,8 @@
 
 <script>
 	import $util from "../../util/util"
+	import mLayer from "../layer/layer"
+	import mIcon from "../icon/icon"
 	export default {
 		name:'m-autocomplete',
 		data(){
@@ -324,6 +326,9 @@
 				}
 				return cls
 			}
+		},
+		components:{
+			mLayer,mIcon
 		},
 		methods:{
 			//悬浮层显示前进行宽度设置

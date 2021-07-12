@@ -1,5 +1,5 @@
 <template>
-	<m-overlay :show="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding"
+	<overlay :show="show" @show="overlayShow" @hide="overlayHide" :use-padding="usePadding"
 	:z-index="zIndex" @click.self="hide" :color="overlayColor?overlayColor:null" :timeout="timeout" :local="local">
 		<transition :name="'mvi-slide-'+placement"  @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" 
 	@before-leave="beforeLeave" @leave="leave" @after-leave="afterLeave">
@@ -7,7 +7,7 @@
 			<div v-if="firstShow" v-show="popupShow" :class="popupClass"  :style="popupStyle" v-on="listeners">
 				<!-- 关闭图标 -->
 				<div v-if="showTimes" :class="['mvi-popup-times','mvi-popup-times-'+timesPlacement]">
-					<m-icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor"/>
+					<Icon @click="hidePopup" :type="iconType" :url="iconUrl" :spin="iconSpin" :size="iconSize" :color="iconColor"/>
 				</div>
 				<!-- 正文内容 -->
 				<div :class="['mvi-popup-content',showTimes?'mvi-popup-content-padding':'']">
@@ -15,11 +15,13 @@
 				</div>
 			</div>
 		</transition>
-	</m-overlay>
+	</overlay>
 </template>
 
 <script>
 	import $util from "../../util/util"
+	import Overlay from "../overlay"
+	import Icon from "../icon"
 	export default {
 		name:"m-popup",
 		data(){
@@ -195,6 +197,9 @@
 				style.MozTransition = 'all '+this.timeout + 'ms';
 				return style;
 			}
+		},
+		components:{
+			Overlay,Icon
 		},
 		methods:{
 			//遮罩层显示前

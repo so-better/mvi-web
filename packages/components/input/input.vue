@@ -37,6 +37,8 @@
 
 <script>
 	import $util from "../../util/util"
+	import mIcon from "../icon/icon"
+	import mDateNativePicker from "../dateNativePicker/dateNativePicker"
 	export default {
 		name: "m-input",
 		data(){
@@ -391,6 +393,9 @@
 				}
 				return style;
 			}
+		},
+		components:{
+			mIcon,mDateNativePicker
 		},
 		mounted() {
 			if (this.$refs.textarea) {

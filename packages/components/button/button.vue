@@ -11,6 +11,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-button",
 		props:{
@@ -167,6 +168,7 @@
 			}
 		},
 		components:{
+			mIcon,
 			Button:{
 				render(createElement) {
 					return createElement(this.$parent.tag,{

@@ -27,6 +27,9 @@
 
 <script>
 	import $util from "../../util/util"
+	import mPopup from "../popup/popup"
+	import mLoading from "../loading/loading"
+	import mIcon from "../icon/icon"
 	export default {
 		name: "m-actionsheet",
 		model: {
@@ -208,6 +211,9 @@
 					}
 				}
 			}
+		},
+		components:{
+			mPopup,mLoading,mIcon
 		},
 		methods: {
 			//点击遮罩关闭

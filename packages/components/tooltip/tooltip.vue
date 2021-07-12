@@ -17,6 +17,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mLayer from "../layer/layer"
 	export default {
 		name:"m-tooltip",
 		data(){
@@ -113,6 +114,9 @@
 				}
 				return style;
 			}
+		},
+		components:{
+			mLayer
 		},
 		methods:{
 			//鼠标进入显示

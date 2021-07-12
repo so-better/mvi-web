@@ -33,6 +33,7 @@
 </template>
 
 <script>
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-step",
 		inject:['steps'],
@@ -136,6 +137,9 @@
 				}
 				return style;
 			}
+		},
+		components:{
+			mIcon
 		}
 	}
 </script>

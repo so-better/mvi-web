@@ -10,7 +10,7 @@ import "./config"
 import components from "./components"
 
 //注册组件和工具类
-const install = function(Vue) {
+const install = Vue=> {
 	if (install.installed) return
 	util.install(Vue)
 	Object.values(components).map(component => {
@@ -23,8 +23,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 	install(window.Vue)
 }
 
-let all = Object.assign({install},components)
-
 import packages from "../package.json";
 
 console.log('%c感谢使用' + packages.name + '，当前版本：%c v' + packages.version + '\n%c如果你觉得' + packages.name +
@@ -32,4 +30,4 @@ console.log('%c感谢使用' + packages.name + '，当前版本：%c v' + packag
 	'color:#808080;', 'color:#008a00');
 
 //import时导出install
-export default all
+export default install

@@ -44,7 +44,9 @@
 </template>
 
 <script>
-import $util from '../../util/util';
+import $util from '../../util/util'
+import mLayer from "../layer/layer"
+import mIcon from "../icon/icon"
 export default {
 	name: 'm-select',
 	model: {
@@ -325,6 +327,9 @@ export default {
 			}
 			return color;
 		},
+	},
+	components:{
+		mLayer,mIcon
 	},
 	methods: {
 		//layer显示前进行宽度设置

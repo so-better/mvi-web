@@ -13,6 +13,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mIcon from "../icon/icon"
 	export default {
 		name:"m-radio",
 		model:{
@@ -156,6 +157,9 @@
 			listeners(){
 				return Object.assign({},this.$listeners);
 			}
+		},
+		components:{
+			mIcon
 		},
 		methods:{
 			change(){

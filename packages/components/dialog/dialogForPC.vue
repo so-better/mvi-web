@@ -45,6 +45,9 @@
 
 <script>
 import $util from '../../util/util';
+import mIcon from "../icon/icon"
+import mButton from "../button/button"
+import mModal from "../modal/modal"
 export default {
 	name: 'm-dialog-pc',
 	data() {
@@ -318,6 +321,9 @@ export default {
 			}
 			return style;
 		}
+	},
+	components:{
+		mIcon,mModal,mButton
 	},
 	methods: {
 		//获取焦点

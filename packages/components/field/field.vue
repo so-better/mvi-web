@@ -33,6 +33,7 @@
 
 <script>
 	import $util from "../../util/util"
+	import mIcon from "../icon/icon"
 	export default {
 		name:'m-field',
 		model:{
@@ -547,6 +548,9 @@
 				}
 				return rows;
 			},
+		},
+		components:{
+			mIcon
 		},
 		watch:{
 			value(newValue) {
