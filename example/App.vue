@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		
+		<m-color-picker v-model="value"></m-color-picker>
 	</div>
 </template>
 <script>
