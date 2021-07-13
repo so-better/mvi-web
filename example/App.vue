@@ -1,12 +1,22 @@
 <template>
 	<div id="app">
-		<m-color-picker v-model="value"></m-color-picker>
+		<m-button @click="show=!show">Toggle</m-button>
+		<div style="width: 100%;height: 4rem;overflow: auto;border: 1px solid #DDDDDD;">
+			<div style="width: 20rem;height: 100%;">
+				<div v-if="show" v-spy="spyOpt" style="width: 4rem;height: 2rem;background-color: #000000;position: relative;margin-left: 10rem;"></div>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
+			spyOpt:{
+				beforeLeave:($el,$root)=>{
+					console.log($el,$root)
+				}
+			},
 			active: 1,
 			show: true,
 			expand: false,
