@@ -3,7 +3,7 @@
 		<m-button @click="show=!show">Toggle</m-button>
 		<div style="width: 100%;height: 4rem;overflow: auto;border: 1px solid #DDDDDD;">
 			<div style="width: 20rem;height: 100%;">
-				<div v-if="show" v-spy="spyOpt" style="width: 4rem;height: 2rem;background-color: #000000;position: relative;margin-left: 10rem;"></div>
+				<m-image style="margin-left: 10rem;" lazy-load width="4rem" height="2rem" src="https://www.mvi-web.cn/mvi-resources/images/mvi_image_3_1624705387828.jfif"></m-image>
 			</div>
 		</div>
 	</div>
@@ -13,8 +13,11 @@ export default {
 	data() {
 		return {
 			spyOpt:{
-				beforeLeave:($el,$root)=>{
-					console.log($el,$root)
+				beforeEnter(){
+					console.log(1)
+				},
+				enter(){
+					console.log(2)
 				}
 			},
 			active: 1,

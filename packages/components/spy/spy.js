@@ -51,6 +51,7 @@ class Spy {
 	//容器队列的滚动元素添加滚动监听事件
 	_initRootListens(){
 		this.rootQueue.forEach(root=>{
+			this._scrollHandler(root);
 			root.addEventListener('scroll',this._scrollHandler);
 		})
 	}
@@ -80,7 +81,7 @@ class Spy {
 	
 	//滚动处理事件
 	_scrollHandler(e){
-		let $root = e.currentTarget;
+		let $root = $util.isElement(e)?e:e.currentTarget;
 		//横向滚动
 		if($root.data('overflowX')){
 			//元素距离滚动容器的可视距离,不包含自身宽度
