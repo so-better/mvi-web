@@ -57,6 +57,10 @@
 				type: Boolean,
 				default: false
 			},
+			root:{//滚动容器元素选择器
+				type:String,
+				default:null
+			},
 			loadIcon:{
 				type:[String,Object],
 				default:null
@@ -232,7 +236,8 @@
 				this.lazying = true;
 				//延时加载
 				let spy = new Spy(this.$el, {
-					beforeEnter: (el,root) => { //图片进入可视端口时加载
+					el:this.root,
+					beforeEnter: el => { //图片进入可视端口时加载
 						this.lazying = false;
 						this.lazySrc = this.src;
 					}

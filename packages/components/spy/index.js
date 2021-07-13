@@ -19,7 +19,7 @@ Spy.install = Vue=>{
 			let spy = el.data('directive:spy')
 			if(spy){
 				//移除容器队列监听的滚动事件
-				spy._removeRootListens();
+				spy.$root.removeEventListener('scroll',spy._scrollHandler);
 			}
 		}
 	})
