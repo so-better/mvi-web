@@ -1,7 +1,11 @@
 <template>
 	<div id="app">
-		<m-button @click="change">Toggle</m-button>
-		<div style="height: 20rem;"></div>
+		<div>
+			<m-button @click="change">Toggle</m-button>
+		</div>
+		<div>
+			<m-button id="btn">BUTTON</m-button>
+		</div>
 		<!-- <div id="anchor" style="width: 100%;height: 4rem;border: 1px solid #ddd;overflow: auto;" class="mvi-p-4">
 			<div style="height: 20rem;"></div>
 			<m-button id="btn" form-control>anchor元素</m-button>
@@ -89,12 +93,13 @@ export default {
 		};
 	},
 	mounted() {
-		this.expand = true;
-		
+		document.getElementById("btn").on('click.click1 click',function(e){
+			console.log(this)
+		})
 	},
 	methods: {
 		change() {
-			this.show = !this.show
+			document.getElementById("btn").off('click.click1')
 		}
 	}
 };
