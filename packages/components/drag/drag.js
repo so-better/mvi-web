@@ -44,8 +44,8 @@ class Drag {
 		if ($util.getCssStyle(this.$container, "position") == "static") {
 			this.$container.style.position = "relative";
 		}
-		if ($util.getCssStyle(this.$el, "position") == "static") {
-			this.$el.style.position = "relative";
+		if ($util.getCssStyle(this.$el, "position") == "static" || $util.getCssStyle(this.$el, "position") == 'relative') {
+			this.$el.style.position = "absolute";
 		}
 		if (typeof this.draggableY != "boolean") {
 			this.draggableY = true;
@@ -68,44 +68,6 @@ class Drag {
 		if (typeof this.ready != "function") {
 			this.ready = function() {};
 		}
-		
-		//鼠标移动事件
-		this._bodyMouseMove = e=>{
-			if (this.draggable) {
-				let left = e.pageX - this.pageX;
-				let top = e.pageY - this.pageY;
-				if (this.draggableX) {
-					this.$el.style.left = left + 'px';
-				}
-				if (this.draggableY) {
-					this.$el.style.top = top + 'px';
-				}
-				this._resize();
-				if (this.draggableX || this.draggableY) {
-					//监听事件
-					this.drag({
-						target: this.$el,
-						container: this.$container,
-						placement: $util.getElementPoint(this.$el, this.$container)
-					})
-				}
-			}
-		}
-		
-		//鼠标松开事件
-		this._bodyMouseLeave = e=>{
-			if (this.draggable) {
-				this.draggable = false;
-				this.$el.style.cursor = ''
-				//监听事件
-				this.dragged({
-					target: this.$el,
-					container: this.$container,
-					placement: $util.getElementPoint(this.$el, this.$container)
-				})
-			}
-		}
-		
 		//设置拖拽事件
 		this._setOn();
 		//初始化回调
@@ -115,7 +77,7 @@ class Drag {
 	//设置拖拽事件
 	_setOn(){
 		//触摸开始
-		this.$el.addEventListener('touchstart',e=>{
+		this.$el.on('touchstart.drag',e=>{
 			this.pageX = e.targetTouches[0].pageX - $util.getElementPoint(this.$el, this.$container).left;
 			this.pageY = e.targetTouches[0].pageY - $util.getElementPoint(this.$el, this.$container).top;
 			this.draggable = true;
@@ -128,7 +90,7 @@ class Drag {
 			});
 		})
 		//触摸移动
-		this.$el.addEventListener('touchmove',e=>{
+		this.$el.on('touchmove.drag',e=>{
 			if (e.cancelable) {
 				e.preventDefault();
 			}
@@ -153,7 +115,7 @@ class Drag {
 			}
 		})
 		//触摸松开后，拖拽状态更改为false，触发监听事件
-		this.$el.addEventListener('touchend',e=>{
+		this.$el.on('touchend.drag',e=>{
 			if (this.draggable) {
 				this.draggable = false;
 				this.$el.style.cursor = ''
@@ -166,7 +128,7 @@ class Drag {
 			}
 		})
 		//鼠标按下
-		this.$el.addEventListener('mousedown',e=>{
+		this.$el.on('mousedown.drag',e=>{
 			this.pageX = e.pageX - $util.getElementPoint(this.$el, this.$container).left;
 			this.pageY = e.pageY - $util.getElementPoint(this.$el, this.$container).top;
 			this.draggable = true;
@@ -179,15 +141,45 @@ class Drag {
 			});
 		})
 		//鼠标移动
-		document.body.addEventListener('mousemove',this._bodyMouseMove)
+		document.body.on('mousemove.drag',e=>{
+			if (this.draggable) {
+				let left = e.pageX - this.pageX;
+				let top = e.pageY - this.pageY;
+				if (this.draggableX) {
+					this.$el.style.left = left + 'px';
+				}
+				if (this.draggableY) {
+					this.$el.style.top = top + 'px';
+				}
+				this._resize();
+				if (this.draggableX || this.draggableY) {
+					//监听事件
+					this.drag({
+						target: this.$el,
+						container: this.$container,
+						placement: $util.getElementPoint(this.$el, this.$container)
+					})
+				}
+			}
+		})
 		//鼠标松开后，拖拽状态更改为false，触发监听事件
-		document.body.addEventListener('mouseup',this._bodyMouseLeave)
+		document.body.on('mouseup.drag',e=>{
+			if (this.draggable) {
+				this.draggable = false;
+				this.$el.style.cursor = ''
+				//监听事件
+				this.dragged({
+					target: this.$el,
+					container: this.$container,
+					placement: $util.getElementPoint(this.$el, this.$container)
+				})
+			}
+		})
 	}
 
 	//移除该指令绑定在body上的事件
 	_setOff(){
-		document.body.removeEventListener('mousemove',this._bodyMouseMove)
-		document.body.removeEventListener('mouseup',this._bodyMouseLeave)
+		document.body.off('mousemove.drag  mouseup.drag')
 	}
 	
 	//元素超出容器范围设置

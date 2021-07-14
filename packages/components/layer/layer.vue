@@ -220,8 +220,8 @@
 				this.layerShow = this.show;
 			}
 			//添加事件
-			window.addEventListener('resize',this.resizeSet);
-			window.addEventListener('click',this.hideLayer);
+			window.on('resize.layer',this.resizeSet);
+			window.on('click.layer',this.hideLayer);
 		},
 		methods: {
 			//窗口变化时处理
@@ -662,8 +662,7 @@
 			}
 		},
 		beforeDestroy() {
-			window.removeEventListener('resize',this.resizeSet)
-			window.removeEventListener('click',this.hideLayer)
+			window.off('resize.layer click.layer')
 		}
 	}
 </script>

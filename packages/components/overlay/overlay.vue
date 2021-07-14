@@ -89,7 +89,7 @@
 		mounted() {
 			//初始化时是否显示遮罩层
 			this.overlayShow = this.show;
-			window.addEventListener('resize',this.resize);
+			window.on('resize.overlay',this.resize);
 		},
 		methods: {
 			//窗口改变时改变遮罩层宽高
@@ -225,7 +225,7 @@
 			}
 		},
 		beforeDestroy() {
-			window.removeEventListener('resize',this.resize);
+			window.off('resize.overlay');
 		}
 	}
 </script>

@@ -23,7 +23,7 @@ class Prop {
 			this.ratio = 0;
 		}
 		this._set();
-		window.addEventListener('resize',()=>{
+		window.on('resize.prop',e=>{
 			this._set();
 		})
 	}
@@ -34,6 +34,11 @@ class Prop {
 		/*比例系数乘以宽度获得高度*/
 		this.height = this.width * this.ratio;
 		this.$el.style.height = this.height + "px";
+	}
+	
+	//移除绑定在window的事件
+	_setOff(){
+		window.off('resize.prop');
 	}
 }
 

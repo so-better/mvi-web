@@ -1,4 +1,5 @@
 const util = {
+	
 	/**
 	 * 文字复制方法
 	 */
@@ -305,7 +306,7 @@ const util = {
 		}
 		//滑动到底部时是否触发回调函数的标识，解决ios系统下多次触发回调的bug
 		let flag = true;
-		scrollEle.addEventListener('scroll', e => {
+		scrollEle.on('scroll.topBottom', e => {
 			if (this.getScrollTop(scrollEle) <= 0) { //滑动到顶部
 				let options = {
 					state: "top",
@@ -1364,6 +1365,5 @@ const util = {
 	}
 
 }
-
 
 export default util
