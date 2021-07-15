@@ -126,7 +126,7 @@
 			mOverlay,mSwiper,mSwiperSlide,mImage
 		},
 		mounted() {
-			window.on('resize.imagePreview',this.resize)
+			window.on(`resize.imagePreview_${this._uid}`,this.resize)
 		},
 		methods: {
 			//调整大小
@@ -238,7 +238,7 @@
 			}
 		},
 		beforeDestroy() {
-			window.off('resize.imagePreview')
+			window.off(`resize.imagePreview_${this._uid}`)
 		}
 	}
 </script>

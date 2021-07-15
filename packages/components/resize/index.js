@@ -4,7 +4,7 @@ import Resize from "./resize"
 Resize.install = Vue=> {
 	//拖拽改变大小
 	Vue.directive('resize', {
-		inserted(el, binding, vnode) {
+		inserted(el, binding) {
 			let options = {};
 			if ($util.isObject(binding.value)) {
 				Object.assign(options, binding.value);
@@ -17,7 +17,7 @@ Resize.install = Vue=> {
 			//将对象记录在元素里
 			el.data('directive:resize',resize)
 		},
-		unbind(el,binding,vnode){
+		unbind(el, binding){
 			//获取对象
 			let resize = el.data('directive:resize')
 			if(resize){

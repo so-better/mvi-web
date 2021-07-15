@@ -9,7 +9,7 @@ Prop.install = Vue=>{
 			//将对象记录在元素里
 			el.data('directive:prop',prop)
 		},
-		unbind(el, binding, vnode){
+		unbind(el, binding){
 			//获取对象
 			let prop = el.data('directive:prop')
 			if(prop){

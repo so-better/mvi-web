@@ -4,7 +4,7 @@ import Anchor from "./anchor"
 Anchor.install = Vue=> {
 	//锚点定位指令
 	Vue.directive('anchor', {
-		inserted(el, binding, vnode) {
+		inserted(el, binding) {
 			let options = {};
 			if ($util.isObject(binding.value)) {
 				Object.assign(options, binding.value);

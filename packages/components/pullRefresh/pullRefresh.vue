@@ -299,8 +299,8 @@
 		},
 		mounted() {
 			this.statusInit();
-			document.body.on('mousemove.pullRefresh', this.onPull2);
-			document.body.on('mouseup.pullRefresh', this.pulled2);
+			document.body.on(`mousemove.pullRefresh_${this._uid}`, this.onPull2);
+			document.body.on(`mouseup.pullRefresh_${this._uid}`, this.pulled2);
 		},
 		watch: {
 			refresh(newValue) {
@@ -595,7 +595,7 @@
 			}
 		},
 		beforeDestroy() {
-			document.body.off('mousemove.pullRefresh mouseup.pullRefresh');
+			document.body.off(`mousemove.pullRefresh_${this._uid} mouseup.pullRefresh_${this._uid}`);
 		}
 	}
 </script>

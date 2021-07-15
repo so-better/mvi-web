@@ -9,7 +9,7 @@
 				<m-icon :type="editor.defaultMenuIcons[value]" />
 			</div>
 		</m-tooltip>
-		<div v-else :class="'mvi-editor-target'+(menuActive?' mvi-editor-active':'')" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
+		<div v-else :class="['mvi-editor-target',menuActive?'mvi-editor-active':'']" @click="targetTrigger" :disabled="editor.disabled || (value!='codeView' && editor.codeViewShow)"
 		 :data-id="`mvi-editor-target-${_uid}-${value}`" :style="editorTargetStyle">
 			<m-icon :type="editor.defaultMenuIcons[value]" />
 		</div>

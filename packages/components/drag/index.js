@@ -4,7 +4,7 @@ import Drag from "./drag"
 Drag.install = Vue=> {
 	//拖拽
 	Vue.directive('drag', {
-		inserted(el, binding, vnode) {
+		inserted(el, binding) {
 			let options = {};
 			if ($util.isObject(binding.value)) {
 				Object.assign(options, binding.value);
@@ -18,7 +18,7 @@ Drag.install = Vue=> {
 			//将对象记录在元素里
 			el.data('directive:drag',drag)
 		},
-		unbind(el, binding, vnode){
+		unbind(el, binding){
 			//获取对象
 			let drag = el.data('directive:drag')
 			if(drag){

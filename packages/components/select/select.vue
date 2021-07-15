@@ -26,7 +26,7 @@
 		>
 			<div class="mvi-select-menu" ref="menu" :style="menuStyle">
 				<div
-					:class="'mvi-option mvi-option-' + size"
+					:class="['mvi-option','mvi-option-' + size]"
 					@click="optionClick(item)"
 					@mouseenter="mouseEnter($event, item)"
 					@mouseleave="mouseLeave($event, item)"

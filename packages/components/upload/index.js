@@ -4,7 +4,7 @@ import Upload from "./upload"
 Upload.install = Vue=> {
 	//文件上传
 	Vue.directive('upload', {
-		inserted(el, binding, vnode) {
+		inserted(el, binding) {
 			let options = {};
 			if ($util.isObject(binding.value)) {
 				Object.assign(options, binding.value);

@@ -274,7 +274,7 @@ export default {
 	},
 	mounted() {
 		this.columnsAlign();
-		window.on('resize.table', this.columnsAlign);
+		window.on(`resize.table_${this._uid}`, this.columnsAlign);
 	},
 	methods: {
 		//重置排序状态
@@ -415,7 +415,7 @@ export default {
 		}
 	},
 	beforeDestroy() {
-		window.off('resize.table');
+		window.off(`resize.table_${this._uid}`)
 	}
 };
 </script>

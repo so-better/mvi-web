@@ -3,20 +3,18 @@
 		<div>
 			<m-button @click="change">Toggle</m-button>
 		</div>
-		<div>
-			<m-button id="btn">BUTTON</m-button>
-		</div>
-		<!-- <div id="anchor" style="width: 100%;height: 4rem;border: 1px solid #ddd;overflow: auto;" class="mvi-p-4">
-			<div style="height: 20rem;"></div>
-			<m-button id="btn" form-control>anchor元素</m-button>
-			<div style="height: 20rem;"></div>
-		</div> -->
+		<div style="height:18rem;"></div>
+		<div><m-button v-spy="spyOpt" type="success">BUTTON</m-button></div>
+		<div style="height: 18rem;"></div>
+		<div><m-button v-spy="spyOpt">BUTTON</m-button></div>
+		<div style="height: 18rem;"></div>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
+			checked:false,
 			images: [
 				'https://www.mvi-web.cn/mvi-resources/images/mvi_image_4_1624705387843.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_3_1624705387828.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_2_1624705387812.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_1_1624705387797.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1624705387765.jfif'
 			],
@@ -26,7 +24,7 @@ export default {
 				time:400
 			},
 			spyOpt:{
-				el:'#spy',
+				el:'#app',
 				beforeEnter:el=>{
 					console.log('触发beforeEnter')
 				},
@@ -46,8 +44,11 @@ export default {
 			options:[
 				{
 					label:'LOL',
-					value:0,
-					icon:'user'
+					value:0
+				},
+				{
+					label:'CSOL',
+					value:1
 				}
 			],
 			value: '#ff3300',
@@ -93,13 +94,11 @@ export default {
 		};
 	},
 	mounted() {
-		document.getElementById("btn").on('click.click1 click',function(e){
-			console.log(this)
-		})
+		
 	},
 	methods: {
 		change() {
-			document.getElementById("btn").off('click.click1')
+			this.show = !this.show
 		}
 	}
 };

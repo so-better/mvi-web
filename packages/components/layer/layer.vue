@@ -1,7 +1,7 @@
 <template>
 	<transition :name="(animation?animation:'mvi-layer')" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter" @leave="leave"
 	@before-leave="beforeLeave" @after-leave="afterLeave">
-		<div v-if="firstShow" v-show="layerShow" v-on="listeners" :class="'mvi-layer'+(fixed?' mvi-layer-fixed':'')" :style="layerStyle">
+		<div v-if="firstShow" v-show="layerShow" v-on="listeners" :class="['mvi-layer',fixed?'mvi-layer-fixed':'']" :style="layerStyle">
 			<div :class="wrapperCls" :style="wrapperStyle">
 				<m-triangle v-if="showTriangle" ref="triangle" class="mvi-layer-triangle" :placement="trianglePlacement" :background="background" :border-color="(border&&borderColor?borderColor:background)" size="0.14rem"></m-triangle>
 				<slot></slot>
@@ -220,8 +220,8 @@
 				this.layerShow = this.show;
 			}
 			//添加事件
-			window.on('resize.layer',this.resizeSet);
-			window.on('click.layer',this.hideLayer);
+			window.on(`resize.layer_${this._uid}`,this.resizeSet);
+			window.on(`click.layer_${this._uid}`,this.hideLayer);
 		},
 		methods: {
 			//窗口变化时处理
@@ -662,7 +662,7 @@
 			}
 		},
 		beforeDestroy() {
-			window.off('resize.layer click.layer')
+			window.off(`resize.layer_${this._uid} click.layer_${this._uid}`)
 		}
 	}
 </script>

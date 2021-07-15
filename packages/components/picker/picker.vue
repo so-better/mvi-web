@@ -149,8 +149,8 @@
 		},
 		mounted() {
 			this.init();
-			document.body.on('mousemove.picker', this.mousemove);
-			document.body.on('mouseup.picker', this.mouseup);
+			document.body.on(`mousemove.picker_${this._uid}`, this.mousemove);
+			document.body.on(`mouseup.picker_${this._uid}`, this.mouseup);
 		},
 		methods: {
 			//初始化
@@ -384,7 +384,7 @@
 			}
 		},
 		beforeDestroy() {
-			document.body.off('mousemove.picker mouseup.picker');
+			document.body.off(`mousemove.picker_${this._uid} mouseup.picker_${this._uid}`);
 		}
 	}
 </script>

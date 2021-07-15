@@ -55,8 +55,8 @@
 			}
 		},
 		mounted() {
-			document.body.on('mousemove.swipeCell',this.cellMouseMove);
-			document.body.on('mouseup.swipeCell',this.cellMouseUp);
+			document.body.on(`mousemove.swipeCell_${this._uid}`,this.cellMouseMove);
+			document.body.on(`mouseup.swipeCell_${this._uid}`,this.cellMouseUp);
 		},
 		methods:{
 			//触摸开始
@@ -301,7 +301,7 @@
 			}
 		},
 		beforeDestroy() {
-			document.body.off('mousemove.swipeCell mouseup.swipeCell');
+			document.body.off(`mousemove.swipeCell_${this._uid} mouseup.swipeCell_${this._uid}`);
 		}
 	}
 </script>

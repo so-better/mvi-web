@@ -4,7 +4,7 @@ import Spy from "./spy"
 Spy.install = Vue=>{
 	//滚动侦听
 	Vue.directive('spy', {
-		inserted(el, binding, vnode) {
+		inserted(el, binding) {
 			let options = {};
 			if($util.isObject(binding.value)){
 				Object.assign(options,binding.value);
@@ -14,7 +14,7 @@ Spy.install = Vue=>{
 			//将对象记录在元素里
 			el.data('directive:spy',spy)
 		},
-		unbind(el, binding, vnode){
+		unbind(el, binding){
 			//获取对象
 			let spy = el.data('directive:spy')
 			if(spy){

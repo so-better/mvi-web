@@ -223,7 +223,7 @@
 				},100)
 			})
 			this.setHeight()
-			window.on('resize.tabs',this.setHeight);
+			window.on(`resize.tabs_${this._uid}`,this.setHeight);
 		},
 		methods:{
 			//设置面板高度
@@ -270,7 +270,7 @@
 			}
 		},
 		beforeDestroy() {
-			window.off('resize.tabs');
+			window.off(`resize.tabs_${this._uid}`)
 		}
 	}
 </script>
