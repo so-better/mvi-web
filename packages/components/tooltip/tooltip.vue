@@ -164,11 +164,13 @@
 	
 	.mvi-tooltip{
 		display: inline-flex;
+		display: -webkit-inline-flex;
 		position: relative;
 		
 		.mvi-tooltip-toggle{
 			position: relative;
 			display: inline-flex;
+			display: -webkit-inline-flex;
 		}
 		
 		&.mvi-tooltip-block{
