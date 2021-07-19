@@ -163,12 +163,12 @@
 	@import "../../css/mvi-basic.less";
 	
 	.mvi-tooltip{
-		display: inline-block;
+		display: inline-flex;
 		position: relative;
 		
 		.mvi-tooltip-toggle{
 			position: relative;
-			display: inline-block;
+			display: inline-flex;
 		}
 		
 		&.mvi-tooltip-block{

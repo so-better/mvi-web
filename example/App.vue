@@ -3,11 +3,6 @@
 		<div>
 			<m-button @click="change">Toggle</m-button>
 		</div>
-		<div style="height:18rem;"></div>
-		<div><m-button v-spy="spyOpt" type="success">BUTTON</m-button></div>
-		<div style="height: 18rem;"></div>
-		<div><m-button v-spy="spyOpt">BUTTON</m-button></div>
-		<div style="height: 18rem;"></div>
 	</div>
 </template>
 <script>
