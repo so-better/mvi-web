@@ -170,7 +170,7 @@
 					return;
 				}
 				//如果路由存在
-				if(this.computedRoute && this.$router && this.$router.constructor.name == 'VueRouter'){
+				if(this.computedRoute && this.$router && this.$router.replace && this.$router.push){
 					//path存在首先使用path
 					if(this.computedRoute.path){
 						if(this.computedRoute.replace){
