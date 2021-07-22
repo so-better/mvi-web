@@ -3,8 +3,7 @@
 		<div>
 			<m-button @click="change">Toggle</m-button>
 			<div>{{value}}</div>
-			<m-editor v-model="value"></m-editor>
-			<!-- <m-input v-model="value" type="textarea" :rows="4" :maxlength="10"/> -->
+			<m-input v-model="value" :readonly="checked"/>
 		</div>
 	</div>
 </template>
@@ -12,7 +11,7 @@
 export default {
 	data() {
 		return {
-			checked:false,
+			checked:true,
 			images: [
 				'https://www.mvi-web.cn/mvi-resources/images/mvi_image_4_1624705387843.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_3_1624705387828.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_2_1624705387812.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_1_1624705387797.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1624705387765.jfif'
 			],
@@ -96,9 +95,7 @@ export default {
 	},
 	methods: {
 		change() {
-			this.$prompt({
-				maxlength:10
-			})
+			this.checked = !this.checked;
 		}
 	}
 };
