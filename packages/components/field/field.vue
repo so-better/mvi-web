@@ -11,10 +11,10 @@
 				<m-icon v-else-if="prefixIconType || prefixIconUrl" :type="prefixIconType" :url="prefixIconUrl" :spin="prefixIconSpin" :size="prefixIconSize" :color="prefixIconColor" />
 			</div>
 			<textarea ref="textarea" v-if="type=='textarea'" :disabled="disabled" :readonly="readonly" class="mvi-field-input" 
-			:style="inputStyle" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" @focus="inputFocus"
-			 @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter"></textarea>
-			<input v-else ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="computedValue" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
-			@focus="inputFocus" @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus">
+			:style="inputStyle" :placeholder="placeholder" :value="value" v-on="listeners" autocomplete="off" @focus="inputFocus"
+			 @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @compositionstart="compositionstart" @compositionend="compositionend"></textarea>
+			<input v-else ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="value" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
+			@focus="inputFocus" @blur="inputBlur" @input="doInput" :name="name" :autofocus="autofocus" @compositionstart="compositionstart" @compositionend="compositionend" :maxlength="maxlength">
 			<div class="mvi-field-clear" @click="doClear" v-if="clearable && type!='textarea'" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
 			</div>
@@ -42,7 +42,8 @@
 		},
 		data(){
 			return {
-				focus:false
+				focus:false,//输入框或者文本域是否获取焦点
+				disableInputEvent:false//是否禁用输入事件
 			}
 		},
 		props:{
@@ -308,21 +309,6 @@
 				}
 				return mode
 			},
-			//输入框的值
-			computedValue(){
-				let value = this.value.toString();
-				if(this.type == 'number'){
-					value = value.replace(/\D/g, '');
-				} 
-				if(this.maxlength > 0 && value.length>this.maxlength){
-					value = value.substr(0, this.maxlength);
-				}
-				if(this.value !== value){
-					this.$emit('update:value', value);
-					this.$emit('model-change', value);
-				}
-				return value;
-			},
 			//前置图标类型
 			prependIconType() {
 				let t = null;
@@ -582,8 +568,18 @@
 					this.autosizeSet();
 				}
 			}
+			this.updateValue();
 		},
 		methods:{
+			//中文输入开始
+			compositionstart(){
+				this.disableInputEvent = true;
+			},
+			//中文输入结束
+			compositionend(){
+				this.disableInputEvent = false;
+				this.updateValue();
+			},
 			//高度自适应设置
 			autosizeSet() {
 				this.$refs.textarea.style.overflow = 'hidden';
@@ -626,6 +622,13 @@
 			},
 			//输入框实时输入
 			doInput(event){
+				if(this.disableInputEvent){
+					return;
+				}
+				this.updateValue();
+			},
+			//更新value值
+			updateValue(){
 				let el = this.$refs.input || this.$refs.textarea;
 				let value = el.value;
 				//数字类型会过滤非数字字符
@@ -668,6 +671,7 @@
 				let el = this.$refs.input || this.$refs.textarea;
 				el.value = ''
 				el.focus();
+				this.$emit('clear','')
 			},
 		}
 	}

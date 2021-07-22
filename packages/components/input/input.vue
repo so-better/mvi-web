@@ -12,12 +12,12 @@
 		</div>
 		<!-- 文本域 -->
 		<textarea v-if="type=='textarea'" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly"
-		 :autofocus="autofocus" class="mvi-textarea" v-on="listeners" :value="inputValue" @input="input" ref="textarea" :rows="rowsFilter"
-		 :name="name" :style="textareaStyle" @focus="getFocus" @blur="getBlur" autocomplete="off"></textarea>
+		 :autofocus="autofocus" class="mvi-textarea" v-on="listeners" :value="value" @input="input" ref="textarea" :rows="rowsFilter"
+		 :name="name" :style="textareaStyle" @focus="getFocus" @blur="getBlur" autocomplete="off" @compositionstart="compositionstart" @compositionend="compositionend"></textarea>
 		<!-- 输入框 -->
-		<input v-else :type="inputType" :inputmode="computedInputMode" :placeholder="placeholder" :maxlength="(isDatePicker?-1:maxlength)" :disabled="disabled"
-		 :readonly="readonly || isDatePicker" :autofocus="autofocus" class="mvi-input" v-on="listeners" :value="inputValue"
-		 @click="callDate" @input="input" ref="input" :name="name" :style="inputStyle" @focus="getFocus" @blur="getBlur" autocomplete="off">
+		<input v-else :type="inputType" :inputmode="computedInputMode" :placeholder="placeholder" :disabled="disabled"
+		 :readonly="readonly || isDatePicker" :autofocus="autofocus" class="mvi-input" v-on="listeners" :value="value"
+		 @click="callDate" @input="input" ref="input" :name="name" :style="inputStyle" @focus="getFocus" @blur="getBlur" autocomplete="off" @compositionstart="compositionstart" @compositionend="compositionend" :maxlength="(isDatePicker?-1:maxlength)">
 		<!-- 清除图标 -->
 		<div @click="doClearValue" class="mvi-input-clear-icon" v-if="clearable" v-show="showClear">
 			<m-icon type="times-o" />
@@ -29,7 +29,7 @@
 			:size="rightIconSize" :color="rightIconColor" />
 		</div>
 		<!-- 显示文字长度限制 -->
-		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{inputValue.length}}/{{maxlength}}</div>
+		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{value.length}}/{{maxlength}}</div>
 		<!-- 日期 -->
 		<m-date-native-picker v-if="isDatePicker" ref="datepicker" :type="dateType" :value="date" @model-change="dateChange"></m-date-native-picker>
 	</div>
@@ -43,7 +43,8 @@
 		name: "m-input",
 		data(){
 			return {
-				focus:false//输入框或者文本域是否获取焦点
+				focus:false,//输入框或者文本域是否获取焦点
+				disableInputEvent:false//是否禁用输入事件
 			}
 		},
 		model: {
@@ -300,6 +301,7 @@
 				}
 				return type;
 			},
+			//键盘模式
 			computedInputMode(){
 				let mode = false;
 				if(typeof this.inputMode == 'string'){
@@ -322,23 +324,6 @@
 				} else {
 					return false;
 				}
-			},
-			//输入框的值
-			inputValue() {
-				let value = this.value.toString();
-				if (this.isDatePicker) {
-					value = this.getDateValue();
-				} else if(this.type == 'number'){
-					value = value.replace(/\D/g, '');
-				}
-				if(this.maxlength > 0 && value.length>this.maxlength){
-					value = value.substr(0, this.maxlength);
-				}
-				if(value != this.value){
-					this.$emit('update:value',value);
-					this.$emit('model-change',value)
-				}
-				return value;
 			},
 			//文本域的rows
 			rowsFilter() {
@@ -404,6 +389,7 @@
 					this.autosizeSet();
 				}
 			}
+			this.updateValue();
 		},
 		watch: {
 			value(newValue) {
@@ -430,6 +416,15 @@
 			}
 		},
 		methods: {
+			//中文输入开始
+			compositionstart(){
+				this.disableInputEvent = true;
+			},
+			//中文输入结束
+			compositionend(){
+				this.disableInputEvent = false;
+				this.updateValue();
+			},
 			//输入框或者文本域获取焦点
 			getFocus(){
 				setTimeout(()=>{
@@ -464,9 +459,17 @@
 					this.$refs.input.value = '';
 					this.$refs.input.focus();
 				}
+				this.$emit('clear','')
 			},
 			//输入框监听
 			input() {
+				if(this.disableInputEvent){
+					return;
+				}
+				this.updateValue();
+			},
+			//过滤输入框的值，更新value
+			updateValue(){
 				let value = '';
 				if (this.type == 'textarea') {
 					value = this.$refs.textarea.value;

@@ -23,6 +23,8 @@
 				@keydown="tabDown"
 				v-on="listeners"
 				@paste="codeViewPaste"
+				@compositionstart="compositionstart" 
+				@compositionend="compositionend"
 			></div>
 			<div
 				v-else
@@ -40,6 +42,8 @@
 				:data-placeholder="placeholder"
 				v-on="listeners"
 				@paste="contentPaste"
+				@compositionstart="compositionstart" 
+				@compositionend="compositionend"
 			></div>
 		</div>
 	</div>
@@ -52,6 +56,7 @@ export default {
 	name: 'm-editor',
 	data() {
 		return {
+			disableInputEvent:false,//是否禁用输入事件
 			range: null, //选区
 			codeViewShow: false, //源码是否显示
 			initalHtml: '', //初始值
@@ -951,10 +956,32 @@ export default {
 			}
 			this.changeActive();
 		},
+		//中文输入开始
+		compositionstart(){
+			this.disableInputEvent = true;
+		},
+		//中文输入结束
+		compositionend(){
+			this.disableInputEvent = false;
+			if(this.$refs.content){
+				if (this.$refs.content.innerHTML == '' || this.$refs.content.innerHTML == '<br>' || this.$refs.content.innerHTML == '<p></p>') {
+					this.$refs.content.innerHTML = '<p><br></p>';
+				}
+				this.updateHtmlText();
+				this.updateValue();
+				this.changeActive();
+			}else if(this.$refs.codeView){
+				this.updateHtmlText();
+				this.updateValue();
+			}
+		},
 		//输入框输入
 		contentInput() {
 			if (this.disabled) {
 				return;
+			}
+			if (this.disableInputEvent) {
+				return
 			}
 			if (!this.$refs.content) {
 				return;
@@ -970,6 +997,9 @@ export default {
 		codeViewInput() {
 			if (this.disabled) {
 				return;
+			}
+			if (this.disableInputEvent) {
+				return
 			}
 			if (!this.$refs.codeView) {
 				return;

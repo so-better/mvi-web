@@ -5,7 +5,7 @@
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor"/>
 			</div>
 			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" 
-			:style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off"/>
+			:style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off" @compositionstart="compositionstart" @compositionend="compositionend" />
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<m-icon type="times-o" />
 			</div>
@@ -33,7 +33,8 @@
 		data(){
 			return {
 				focus:false,
-				target:null
+				target:null,
+				disableInputEvent:false
 			}
 		},
 		model:{
@@ -361,10 +362,24 @@
 					$util.removeClass(e.currentTarget,this.hoverClass);
 				}
 			},
+			compositionstart(){
+				this.disableInputEvent = true;
+			},
+			compositionend(){
+				this.disableInputEvent = false;
+				this.updateValue();
+			},
 			input(event){
 				if(this.disabled){
 					return;
 				}
+				if(this.disableInputEvent){
+					return;
+				}
+				this.updateValue();
+			},
+			//更新值
+			updateValue(){
 				this.focus = true;
 				this.$nextTick(()=>{
 					setTimeout(()=>{
@@ -372,7 +387,7 @@
 					},10)
 				})
 				this.$emit('model-change',this.$refs.input.value);
-				this.$emit('update:value',this.$refs.input.value)
+				this.$emit('update:value',this.$refs.input.value);
 			},
 			inputBlur(){
 				setTimeout(()=>{
@@ -395,6 +410,7 @@
 				this.$emit('update:value','')
 				this.$refs.input.value = '';
 				this.$refs.input.focus();
+				this.$emit('clear','');
 			},
 			doSelect(item){
 				this.$emit('model-change',item);

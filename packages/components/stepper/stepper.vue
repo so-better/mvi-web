@@ -4,7 +4,7 @@
 			<m-icon type="minus" />
 		</div>
 		<div :disabled="disabledInput" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']" :style="inputStyle" v-if="showInput">
-			<input ref="input" :value="inputValue" :disabled="disabled || disabledInput" type="text" @blur="changeValue"
+			<input ref="input" :value="value" :disabled="disabled || disabledInput" type="text" @blur="changeValue"
 			 @keyup.enter="changeValue" :style="inputElStyle">
 		</div>
 		<div :disabled="disabledPlus || arrivalMax || disabled" :class="plusClass" v-if="showPlus" :style="plusStyle" 
@@ -165,40 +165,6 @@
 				}
 				return style;
 			},
-			inputValue:{
-				set(value){
-					let val = parseFloat(value);
-					if(isNaN(val)){
-						val = 0;
-					}
-					val = Number(val.toFixed(this.digit));
-					if(val <= this.min && this.min != null){
-						val = this.min;
-					}
-					if(val >= this.max && this.max != null){
-						val = this.max;
-					}
-					this.$refs.input.value = val;
-					if(this.value !== val){
-						this.$emit('update:value',val);
-						this.$emit('model-change',val);
-					}
-				},
-				get(){
-					let val = parseFloat(this.value);
-					if(isNaN(val)){
-						val = 0;
-					}
-					val = Number(val.toFixed(this.digit));
-					if(val <= this.min && this.min != null){
-						val = this.min;
-					}
-					if(val >= this.max && this.max != null){
-						val = this.max;
-					}
-					return val;
-				}
-			},
 			minusClass(){
 				let cls = ['mvi-stepper-minus'];
 				if(!(this.disabledMinus || this.arrivalMin || this.disabled) && this.active){
@@ -223,6 +189,9 @@
 		components:{
 			mIcon
 		},
+		mounted() {
+			this.updateValue();
+		},
 		methods:{
 			//减法
 			doMinus(){
@@ -232,10 +201,8 @@
 				if(this.disabledMinus){
 					return;
 				}
-				if(this.inputValue <= this.min && this.min != null){
-					return;
-				}
-				this.inputValue = this.inputValue.subtraction(this.step);
+				this.$refs.input.value = this.value.subtraction(this.step);
+				this.updateValue();
 			},
 			//加法
 			doPlus(){
@@ -245,10 +212,8 @@
 				if(this.disabledPlus){
 					return;
 				}
-				if(this.inputValue >= this.max && this.max != null){
-					return;
-				}
-				this.inputValue = this.inputValue.add(this.step);
+				this.$refs.input.value = this.value.add(this.step);
+				this.updateValue();
 			},
 			//输入框修改值
 			changeValue(){
@@ -258,7 +223,26 @@
 				if(this.disabledInput){
 					return;
 				}
-				this.inputValue = this.$refs.input.value;
+				this.updateValue();
+			},
+			//更新value值
+			updateValue(){
+				let val = parseFloat(this.$refs.input.value);
+				if(isNaN(val)){
+					val = 0;
+				}
+				val = Number(val.toFixed(this.digit));
+				if(val <= this.min && this.min != null){
+					val = this.min;
+				}
+				if(val >= this.max && this.max != null){
+					val = this.max;
+				}
+				this.$refs.input.value = val;
+				if(this.value !== val){
+					this.$emit('update:value',val);
+					this.$emit('model-change',val);
+				}
 			}
 		}
 	}

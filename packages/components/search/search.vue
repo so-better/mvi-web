@@ -5,7 +5,7 @@
 			<div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor"/>
 			</div>
-			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode" :value="computedValue" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle">
+			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode" :value="value" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle" @compositionstart="compositionstart" @compositionend="compositionend">
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<m-icon type="times-o"/>
 			</div>
@@ -28,7 +28,8 @@
 		},
 		data(){
 			return {
-				focus:false
+				focus:false,//输入框是否获取焦点
+				disableInputEvent:false//是否禁用输入事件
 			}
 		},
 		props:{
@@ -231,20 +232,6 @@
 				}
 				return color;
 			},
-			computedValue(){
-				let value = this.value.toString();
-				if(this.type == 'number'){
-					value = value.replace(/\D/g, '');
-				}
-				if(this.maxlength > 0 && value.length>this.maxlength){
-					value = value.substr(0, this.maxlength);
-				}
-				if(this.value != value){
-					this.$emit('update:value',value);
-					this.$emit('model-change',value);
-				}
-				return value;
-			},
 			computedType(){
 				if(this.type == 'number'){
 					return 'text';
@@ -278,7 +265,19 @@
 		components:{
 			mIcon
 		},
+		mounted() {
+			this.updateValue();
+		},
 		methods:{
+			//中文输入开始
+			compositionstart(){
+				this.disableInputEvent = true;
+			},
+			//中文输入结束
+			compositionend(){
+				this.disableInputEvent = false;
+				this.updateValue();
+			},
 			//输入框获取焦点
 			getFocus(){
 				setTimeout(()=>{
@@ -293,6 +292,13 @@
 			},
 			//输入监听
 			searchInput(){
+				if(this.disableInputEvent){
+					return;
+				}
+				this.updateValue();
+			},
+			//更新值
+			updateValue(){
 				let value = this.$refs.input.value;
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
@@ -346,6 +352,7 @@
 				this.$emit('update:value','');
 				this.$emit('model-change','');
 				this.$refs.input.focus();
+				this.$emit('clear',this.value);
 			}
 		}
 	}

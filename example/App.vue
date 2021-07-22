@@ -2,6 +2,9 @@
 	<div id="app">
 		<div>
 			<m-button @click="change">Toggle</m-button>
+			<div>{{value}}</div>
+			<m-editor v-model="value"></m-editor>
+			<!-- <m-input v-model="value" type="textarea" :rows="4" :maxlength="10"/> -->
 		</div>
 	</div>
 </template>
@@ -93,7 +96,9 @@ export default {
 	},
 	methods: {
 		change() {
-			this.show = !this.show
+			this.$prompt({
+				maxlength:10
+			})
 		}
 	}
 };
