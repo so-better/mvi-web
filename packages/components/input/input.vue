@@ -29,7 +29,7 @@
 			:size="rightIconSize" :color="rightIconColor" />
 		</div>
 		<!-- 显示文字长度限制 -->
-		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{value.length}}/{{maxlength}}</div>
+		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{realValue.length}}/{{maxlength}}</div>
 		<!-- 日期 -->
 		<m-date-native-picker v-if="isDatePicker" ref="datepicker" :type="dateType" v-model="realDate"></m-date-native-picker>
 	</div>
@@ -302,7 +302,6 @@
 			//输入框的值
 			realValue:{
 				set(value){
-					value = this.doFilter(value);
 					if(this.value !== value){
 						this.$emit('model-change',value);
 						this.$emit('update:value',value);
@@ -310,7 +309,18 @@
 				},
 				get(){
 					let value = this.value === null ? '':this.value.toString();
-					value = this.doFilter(value);
+					if(this.isDatePicker){
+						value = this.getDateValue();
+					}else {
+						//数字类型会过滤非数字字符
+						if(this.type == 'number'){
+							value = value.replace(/\D/g, '');
+						}
+						//如果设置了maxlength，则进行字符串截取
+						if (this.maxlength > 0 && value.length > this.maxlength) {
+							value = value.substr(0, this.maxlength);
+						}
+					}
 					if(this.value !== value){
 						this.$emit('model-change',value);
 						this.$emit('update:value',value);
@@ -442,22 +452,6 @@
 			}
 		},
 		methods: {
-			//对传入的值进行过滤
-			doFilter(value){
-				if(this.isDatePicker){
-					value = this.getDateValue();
-				}else {
-					//数字类型会过滤非数字字符
-					if(this.type == 'number'){
-						value = value.replace(/\D/g, '');
-					}
-					//如果设置了maxlength，则进行字符串截取
-					if (this.maxlength > 0 && value.length > this.maxlength) {
-						value = value.substr(0, this.maxlength);
-					}
-				}
-				return value;
-			},
 			//输入框或者文本域获取焦点
 			getFocus(){
 				if(this.disabled){

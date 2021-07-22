@@ -373,6 +373,9 @@
 			},
 			//输入时对悬浮层进行设置
 			input(){
+				if(this.disabled){
+					return;
+				}
 				this.focus = true;
 				this.$nextTick(()=>{
 					setTimeout(()=>{
@@ -381,6 +384,9 @@
 				})
 			},
 			inputBlur(){
+				if(this.disabled){
+					return;
+				}
 				setTimeout(()=>{
 					this.focus = false;
 				},200)
@@ -397,13 +403,18 @@
 				if(this.disabled){
 					return;
 				}
+				if(!this.clearable){
+					return;
+				}
 				this.realValue = '';
 				this.$emit('clear','');
 				this.$refs.input.focus();
 			},
 			doSelect(item){
-				this.$emit('model-change',item);
-				this.$emit('update:value',item);
+				if(this.disabled){
+					return;
+				}
+				this.realValue = item;
 				this.$emit('select',item);
 				this.focus = false;
 			},

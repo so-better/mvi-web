@@ -235,24 +235,24 @@ export default {
 		computedValue: {
 			get() {
 				let value = '';
-				if (typeof this.input.value == 'string' && this.input.value) {
-					value = this.input.value;
+				if ((typeof this.input.value == 'string' && this.input.value) || typeof this.input.value == 'number') {
+					value = this.input.value.toString();
 				}
 				if (this.input.type == 'number') {
 					value = value.replace(/\D/g, '');
 				}
-				if (this.computedInput.maxlength > 0) {
-					if (value.length > this.computedInput.maxlength) {
-						value = value.substr(0, this.computedInput.maxlength);
-					}
+				if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
+					value = value.substr(0, this.computedInput.maxlength);
 				}
-				if(this.input.value != value){
+				if(this.input.value !== value){
 					this.$set(this.input,'value',value);
 				}
 				return value;
 			},
 			set(value) {
-				this.$set(this.input,'value',value)
+				if(this.input.value !== value){
+					this.$set(this.input,'value',value);
+				}
 			}
 		},
 		computedZIndex() {
@@ -372,6 +372,9 @@ export default {
 		},
 		//清除输入框的值
 		doClear() {
+			if(!this.computedInput.clearable){
+				return;
+			}
 			this.computedValue = '';
 			this.$refs.input.focus();
 		},
@@ -392,7 +395,7 @@ export default {
 			} else if (this.type == 'confirm') {
 				this.computedCallback(this.ok);
 			} else if (this.type == 'prompt') {
-				this.computedCallback(this.ok, this.input.value);
+				this.computedCallback(this.ok, this.computedValue);
 			}
 			this.$el.remove();
 			this.$destroy();

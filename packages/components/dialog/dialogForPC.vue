@@ -222,7 +222,7 @@ export default {
 		computedValue: {
 			get() {
 				let value = '';
-				if (typeof this.input.value == 'string' && this.input.value) {
+				if ((typeof this.input.value == 'string' && this.input.value) || typeof this.input.value == 'number') {
 					value = this.input.value;
 				}
 				if (this.input.type == 'number') {
@@ -231,13 +231,15 @@ export default {
 				if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
 					value = value.substr(0, this.computedInput.maxlength);
 				}
-				if(this.input.value != value){
+				if(this.input.value !== value){
 					this.$set(this.input,'value',value)
 				}
 				return value;
 			},
 			set(value) {
-				this.$set(this.input,'value',value)
+				if(this.input.value !== value){
+					this.$set(this.input,'value',value)
+				}
 			}
 		},
 		computedZIndex() {
@@ -340,6 +342,9 @@ export default {
 		},
 		//清除输入框的值
 		doClear() {
+			if(!this.computedInput.clearable){
+				return;
+			}
 			this.computedValue = '';
 			this.$refs.input.focus();
 		},
@@ -364,7 +369,7 @@ export default {
 			} else if (this.type == 'Confirm') {
 				this.computedCallback(this.ok);
 			} else if (this.type == 'Prompt') {
-				this.computedCallback(this.ok, this.input.value);
+				this.computedCallback(this.ok, this.computedValue);
 			}
 			this.$el.remove();
 			this.$destroy();

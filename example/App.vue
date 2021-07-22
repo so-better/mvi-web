@@ -5,7 +5,8 @@
 			<m-button @click="change">Toggle</m-button>
 			<div>{{value}}</div>
 			<div>{{date}}</div>
-			<m-field v-model="value" :maxlength="10" clearable></m-field>
+			<m-editor v-model="value"></m-editor>
+			<m-editor v-model="value2"></m-editor>
 		</div>
 	</div>
 </template>
@@ -52,6 +53,7 @@ export default {
 				}
 			],
 			value: '#ff3300',
+			value2:'',
 			date: new Date(),
 			data: [
 				{
@@ -100,7 +102,7 @@ export default {
 	},
 	methods: {
 		change() {
-			console.log(1)
+			
 		}
 	}
 };

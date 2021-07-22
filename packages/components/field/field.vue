@@ -536,7 +536,6 @@
 			//输入框的值
 			realValue:{
 				set(value){
-					value = this.doFilter(value);
 					if(this.value !== value){
 						this.$emit('model-change',value);
 						this.$emit('update:value',value);
@@ -544,7 +543,14 @@
 				},
 				get(){
 					let value = this.value === null ? '':this.value.toString();
-					value = this.doFilter(value);
+					//数字类型会过滤非数字字符
+					if(this.type == 'number'){
+						value = value.replace(/\D/g, '');
+					}
+					//如果设置了maxlength，则进行字符串截取
+					if (this.maxlength > 0 && value.length > this.maxlength) {
+						value = value.substr(0, this.maxlength);
+					}
 					if(this.value !== value){
 						this.$emit('model-change',value);
 						this.$emit('update:value',value);
@@ -618,47 +624,56 @@
 			},
 			//输入框获取焦点
 			inputFocus(){
+				if(this.disabled){
+					return;
+				}
 				setTimeout(()=>{
 					this.focus = true;
 				},200)
 			},
 			//输入框失去焦点
 			inputBlur(){
+				if(this.disabled){
+					return;
+				}
 				setTimeout(()=>{
 					this.focus = false;
 				},200)
 			},
-			//过滤值
-			doFilter(value){
-				//数字类型会过滤非数字字符
-				if(this.type == 'number'){
-					value = value.replace(/\D/g, '');
-				}
-				//如果设置了maxlength，则进行字符串截取
-				if (this.maxlength > 0 && value.length > this.maxlength) {
-					value = value.substr(0, this.maxlength);
-				}
-				return value;
-			},
 			//点击前置
 			prependClick(){
+				if(this.disabled){
+					return;
+				}
 				this.$emit('prepend-click',this.realValue)
 			},
 			//点击前缀
 			prefixClick(){
+				if(this.disabled){
+					return;
+				}
 				this.$emit('prefix-click',this.realValue)
 			},
 			//点击后置
 			appendClick(){
+				if(this.disabled){
+					return;
+				}
 				this.$emit('append-click',this.realValue)
 			},
 			//点击后缀
 			suffixClick(){
+				if(this.disabled){
+					return;
+				}
 				this.$emit('suffix-click',this.realValue)
 			},
 			//清除
 			doClear(){
 				if(this.disabled){
+					return;
+				}
+				if(!this.clearable){
 					return;
 				}
 				this.realValue = '';

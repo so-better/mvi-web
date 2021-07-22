@@ -451,7 +451,7 @@
 			},
 			//上传设置
 			uploadSet() {
-				if (this.$refs.upload && Object.keys(this.$refs.upload).length > 0) {
+				if (this.$refs.upload && this.$refs.upload.length > 0) {
 					for (let i = 0; i < this.$refs.upload.length; i++) {
 						let upload = new Upload(this.$refs.upload[i], this.uploadOptions)
 						upload.init()
