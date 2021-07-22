@@ -1,9 +1,11 @@
 <template>
 	<div id="app">
 		<div>
+			{{counts}}
 			<m-button @click="change">Toggle</m-button>
 			<div>{{value}}</div>
-			<m-input v-model="value" :readonly="checked"/>
+			<div>{{date}}</div>
+			<m-field v-model="value" :maxlength="10" clearable></m-field>
 		</div>
 	</div>
 </template>
@@ -11,6 +13,7 @@
 export default {
 	data() {
 		return {
+			counts:100000,
 			checked:true,
 			images: [
 				'https://www.mvi-web.cn/mvi-resources/images/mvi_image_4_1624705387843.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_3_1624705387828.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_2_1624705387812.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_1_1624705387797.jfif','https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1624705387765.jfif'
@@ -91,11 +94,13 @@ export default {
 		};
 	},
 	mounted() {
-		
+		setInterval(()=>{
+			this.counts-=10;
+		},10)
 	},
 	methods: {
 		change() {
-			this.checked = !this.checked;
+			console.log(1)
 		}
 	}
 };

@@ -4,7 +4,7 @@
 			<m-icon type="minus" />
 		</div>
 		<div :disabled="disabledInput" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']" :style="inputStyle" v-if="showInput">
-			<input ref="input" :value="value" :disabled="disabled || disabledInput" type="text" @blur="changeValue"
+			<input ref="input" v-model="realValue" :disabled="disabled || disabledInput" type="text" @blur="changeValue"
 			 @keyup.enter="changeValue" :style="inputElStyle">
 		</div>
 		<div :disabled="disabledPlus || arrivalMax || disabled" :class="plusClass" v-if="showPlus" :style="plusStyle" 
@@ -113,14 +113,14 @@
 			},
 			arrivalMin(){
 				if(this.min != null){
-					return this.value<=this.min;
+					return this.realValue<=this.min;
 				}else{
 					return false;
 				}
 			},
 			arrivalMax(){
 				if(this.max != null){
-					return this.value>=this.max;
+					return this.realValue>=this.max;
 				}else{
 					return false;
 				}
@@ -184,6 +184,17 @@
 					cls.push('mvi-stepper-border');
 				}
 				return cls;
+			},
+			realValue:{
+				set(value){
+					if(this.value !== value){
+						this.$emit('update:value',value);
+						this.$emit('model-change',value);
+					}
+				},
+				get(){
+					return this.value;
+				}
 			}
 		},
 		components:{
@@ -201,7 +212,10 @@
 				if(this.disabledMinus){
 					return;
 				}
-				this.$refs.input.value = this.value.subtraction(this.step);
+				if(this.arrivalMin){
+					return;
+				}
+				this.realValue = this.realValue.subtraction(this.step);
 				this.updateValue();
 			},
 			//加法
@@ -212,7 +226,10 @@
 				if(this.disabledPlus){
 					return;
 				}
-				this.$refs.input.value = this.value.add(this.step);
+				if(this.arrivalMax){
+					return;
+				}
+				this.realValue = this.realValue.add(this.step);
 				this.updateValue();
 			},
 			//输入框修改值
@@ -227,7 +244,7 @@
 			},
 			//更新value值
 			updateValue(){
-				let val = parseFloat(this.$refs.input.value);
+				let val = parseFloat(this.realValue);
 				if(isNaN(val)){
 					val = 0;
 				}
@@ -238,10 +255,8 @@
 				if(val >= this.max && this.max != null){
 					val = this.max;
 				}
-				this.$refs.input.value = val;
-				if(this.value !== val){
-					this.$emit('update:value',val);
-					this.$emit('model-change',val);
+				if(this.realValue !== val){
+					this.realValue = val;
 				}
 			}
 		}

@@ -12,12 +12,12 @@
 		</div>
 		<!-- 文本域 -->
 		<textarea v-if="type=='textarea'" :placeholder="placeholder" :maxlength="maxlength" :disabled="disabled" :readonly="readonly"
-		 :autofocus="autofocus" class="mvi-textarea" v-on="listeners" :value="value" @input="input" ref="textarea" :rows="rowsFilter"
-		 :name="name" :style="textareaStyle" @focus="getFocus" @blur="getBlur" autocomplete="off" @compositionstart="compositionstart" @compositionend="compositionend"></textarea>
+		 :autofocus="autofocus" class="mvi-textarea" v-on="listeners" v-model="realValue" ref="textarea" :rows="rowsFilter"
+		 :name="name" :style="textareaStyle" @focus="getFocus" @blur="getBlur" autocomplete="off"></textarea>
 		<!-- 输入框 -->
 		<input v-else :type="inputType" :inputmode="computedInputMode" :placeholder="placeholder" :disabled="disabled"
-		 :readonly="readonly || isDatePicker" :autofocus="autofocus" class="mvi-input" v-on="listeners" :value="value"
-		 @click="callDate" @input="input" ref="input" :name="name" :style="inputStyle" @focus="getFocus" @blur="getBlur" autocomplete="off" @compositionstart="compositionstart" @compositionend="compositionend" :maxlength="(isDatePicker?-1:maxlength)">
+		 :readonly="readonly || isDatePicker" :autofocus="autofocus" class="mvi-input" v-on="listeners" v-model="realValue"
+		 @click="callDate" ref="input" :name="name" :style="inputStyle" @focus="getFocus" @blur="getBlur" autocomplete="off" :maxlength="(isDatePicker?-1:maxlength)">
 		<!-- 清除图标 -->
 		<div @click="doClearValue" class="mvi-input-clear-icon" v-if="clearable" v-show="showClear">
 			<m-icon type="times-o" />
@@ -31,7 +31,7 @@
 		<!-- 显示文字长度限制 -->
 		<div v-if="showWordLimit && maxlength>0" class="mvi-input-words">{{value.length}}/{{maxlength}}</div>
 		<!-- 日期 -->
-		<m-date-native-picker v-if="isDatePicker" ref="datepicker" :type="dateType" :value="date" @model-change="dateChange"></m-date-native-picker>
+		<m-date-native-picker v-if="isDatePicker" ref="datepicker" :type="dateType" v-model="realDate"></m-date-native-picker>
 	</div>
 </template>
 
@@ -44,7 +44,6 @@
 		data(){
 			return {
 				focus:false,//输入框或者文本域是否获取焦点
-				disableInputEvent:false//是否禁用输入事件
 			}
 		},
 		model: {
@@ -188,7 +187,7 @@
 					return false;
 				}
 				if(this.focus){
-					if (this.value === '') {
+					if (this.realValue === '') {
 						return false;
 					} else {
 						return true;
@@ -291,6 +290,34 @@
 				}
 				return color;
 			},
+			//原生日期选择的值
+			realDate:{
+				set(value){
+					this.$emit('update:date',value);
+				},
+				get(){
+					return this.date;
+				}
+			},
+			//输入框的值
+			realValue:{
+				set(value){
+					value = this.doFilter(value);
+					if(this.value !== value){
+						this.$emit('model-change',value);
+						this.$emit('update:value',value);
+					}
+				},
+				get(){
+					let value = this.value === null ? '':this.value.toString();
+					value = this.doFilter(value);
+					if(this.value !== value){
+						this.$emit('model-change',value);
+						this.$emit('update:value',value);
+					}
+					return value;
+				}
+			},
 			//输入框的type值
 			inputType() {
 				let type = 'text';
@@ -389,10 +416,9 @@
 					this.autosizeSet();
 				}
 			}
-			this.updateValue();
 		},
 		watch: {
-			value(newValue) {
+			realValue(newValue) {
 				if (this.$refs.textarea && (this.autosize == true || $util.isObject(this.autosize))) {
 					this.autosizeSet();
 				}
@@ -416,70 +442,11 @@
 			}
 		},
 		methods: {
-			//中文输入开始
-			compositionstart(){
-				this.disableInputEvent = true;
-			},
-			//中文输入结束
-			compositionend(){
-				this.disableInputEvent = false;
-				this.updateValue();
-			},
-			//输入框或者文本域获取焦点
-			getFocus(){
-				setTimeout(()=>{
-					this.focus = true;
-				},200)
-			},
-			//输入框或者文本域失去焦点
-			getBlur(){
-				setTimeout(()=>{
-					this.focus = false;
-				},200)
-			},
-			//左侧图标点击
-			leftClick() {
-				this.$emit('left-click', this.value);
-			},
-			//右侧图标点击
-			rightClick() {
-				this.$emit('right-click', this.value);
-			},
-			//清除输入框
-			doClearValue() {
-				this.$emit('update:value', '');
-				this.$emit('model-change', '');
-				if (this.type == 'textarea') {
-					this.$refs.textarea.value = '';
-					this.$refs.textarea.focus();
-				} else if (this.isDatePicker) {
-					this.$refs.input.value = '';
-					this.$emit('update:date', null);
-				} else {
-					this.$refs.input.value = '';
-					this.$refs.input.focus();
-				}
-				this.$emit('clear','')
-			},
-			//输入框监听
-			input() {
-				if(this.disableInputEvent){
-					return;
-				}
-				this.updateValue();
-			},
-			//过滤输入框的值，更新value
-			updateValue(){
-				let value = '';
-				if (this.type == 'textarea') {
-					value = this.$refs.textarea.value;
-					//如果设置了maxlength，则进行字符串截取
-					if (this.maxlength > 0 && value.length > this.maxlength) {
-						value = value.substr(0, this.maxlength);
-					}
-					this.$refs.textarea.value = value;
-				} else if(!this.isDatePicker){
-					value = this.$refs.input.value;
+			//对传入的值进行过滤
+			doFilter(value){
+				if(this.isDatePicker){
+					value = this.getDateValue();
+				}else {
 					//数字类型会过滤非数字字符
 					if(this.type == 'number'){
 						value = value.replace(/\D/g, '');
@@ -488,12 +455,55 @@
 					if (this.maxlength > 0 && value.length > this.maxlength) {
 						value = value.substr(0, this.maxlength);
 					}
-					this.$refs.input.value = value;
 				}
-				if(this.value != value){
-					this.$emit('update:value', value);
-					this.$emit('model-change', value);
+				return value;
+			},
+			//输入框或者文本域获取焦点
+			getFocus(){
+				if(this.disabled){
+					return;
 				}
+				setTimeout(()=>{
+					this.focus = true;
+				},200)
+			},
+			//输入框或者文本域失去焦点
+			getBlur(){
+				if(this.disabled){
+					return;
+				}
+				setTimeout(()=>{
+					this.focus = false;
+				},200)
+			},
+			//左侧图标点击
+			leftClick() {
+				if(this.disabled){
+					return;
+				}
+				this.$emit('left-click', this.realValue);
+			},
+			//右侧图标点击
+			rightClick() {
+				if(this.disabled){
+					return;
+				}
+				this.$emit('right-click', this.realValue);
+			},
+			//清除输入框
+			doClearValue() {
+				if(this.disabled){
+					return;
+				}
+				this.realValue = '';
+				if (this.type == 'textarea') {
+					this.$refs.textarea.focus();
+				} else if (this.isDatePicker) {
+					this.realDate = null;
+				} else {
+					this.$refs.input.focus();
+				}
+				this.$emit('clear','')
 			},
 			//高度自适应设置
 			autosizeSet() {
@@ -527,12 +537,6 @@
 				//如果是日历输入框
 				if (this.isDatePicker && !this.disabled && !this.readonly) {
 					this.$refs.datepicker.trigger();
-				}
-			},
-			//日期变更
-			dateChange(value) {
-				if (this.isDatePicker) {
-					this.$emit('update:date', value)
 				}
 			},
 			//选择日期后转换成输入框的value值

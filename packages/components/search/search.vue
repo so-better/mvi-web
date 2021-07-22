@@ -5,7 +5,7 @@
 			<div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor"/>
 			</div>
-			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode" :value="value" @input="searchInput" @focus="getFocus" @blur="getBlur" :style="inputStyle" @compositionstart="compositionstart" @compositionend="compositionend">
+			<input v-on="listeners" ref="input" class="mvi-search-input" :type="computedType" @keypress.enter="doSearch" autocomplete="off" :placeholder="placeholder" :maxlength="maxlength" :autofocus="autofocus" :disabled="disabled" :readonly="readonly" :inputmode="computedInputMode" v-model="realValue" @focus="getFocus" @blur="getBlur" :style="inputStyle">
 			<div v-if="clearable" class="mvi-search-clear" @click="clearInput" v-show="showClear">
 				<m-icon type="times-o"/>
 			</div>
@@ -28,8 +28,7 @@
 		},
 		data(){
 			return {
-				focus:false,//输入框是否获取焦点
-				disableInputEvent:false//是否禁用输入事件
+				focus:false//输入框是否获取焦点
 			}
 		},
 		props:{
@@ -129,7 +128,7 @@
 					return false;
 				}
 				if(this.focus){
-					if (this.value === '') {
+					if (this.realValue === '') {
 						return false;
 					} else {
 						return true;
@@ -260,24 +259,30 @@
 					style.paddingRight = 0;
 				}
 				return style;
+			},
+			realValue:{
+				set(value){
+					value = this.doFilter(value);
+					if(this.value !== value){
+						this.$emit('model-change',value);
+						this.$emit('update:value',value);
+					}
+				},
+				get(){
+					let value = this.value === null ? '':this.value.toString();
+					value = this.doFilter(value);
+					if(this.value !== value){
+						this.$emit('model-change',value);
+						this.$emit('update:value',value);
+					}
+					return value;
+				}
 			}
 		},
 		components:{
 			mIcon
 		},
-		mounted() {
-			this.updateValue();
-		},
 		methods:{
-			//中文输入开始
-			compositionstart(){
-				this.disableInputEvent = true;
-			},
-			//中文输入结束
-			compositionend(){
-				this.disableInputEvent = false;
-				this.updateValue();
-			},
 			//输入框获取焦点
 			getFocus(){
 				setTimeout(()=>{
@@ -290,16 +295,8 @@
 					this.focus = false;
 				},200)
 			},
-			//输入监听
-			searchInput(){
-				if(this.disableInputEvent){
-					return;
-				}
-				this.updateValue();
-			},
-			//更新值
-			updateValue(){
-				let value = this.$refs.input.value;
+			//过滤值
+			doFilter(value){
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
@@ -308,51 +305,44 @@
 				if (this.maxlength > 0 && value.length > this.maxlength) {
 					value = value.substr(0, this.maxlength);
 				}
-				this.$refs.input.value = value;
-				
-				if(this.value != value){
-					this.$emit('update:value',value);
-					this.$emit('model-change',value);
-				}
+				return value;
 			},
 			//搜索
 			doSearch(){
 				if(this.disabled){
 					return;
 				}
-				this.$emit('search',this.value);
+				this.$emit('search',this.realValue);
 			},
 			//取消
 			doCancel(){
 				if(this.disabled){
 					return;
 				}
-				this.$emit('cancel',this.value);
+				this.$emit('cancel',this.realValue);
 			},
 			//左侧图标点击
 			leftClick(){
 				if(this.disabled){
 					return;
 				}
-				this.$emit('left-click',this.value);
+				this.$emit('left-click',this.realValue);
 			},
 			//右侧图标点击
 			rightClick(){
 				if(this.disabled){
 					return;
 				}
-				this.$emit('right-click',this.value);
+				this.$emit('right-click',this.realValue);
 			},
 			//清除输入框
 			clearInput(){
 				if(this.disabled){
 					return;
 				}
-				this.$refs.input.value = '';
-				this.$emit('update:value','');
-				this.$emit('model-change','');
+				this.realValue = '';
 				this.$refs.input.focus();
-				this.$emit('clear',this.value);
+				this.$emit('clear','');
 			}
 		}
 	}

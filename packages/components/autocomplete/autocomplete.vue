@@ -4,8 +4,8 @@
 			<div @click="leftClick" v-if="leftIconType ||　leftIconUrl" class="mvi-autocomplete-left-icon">
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize" :color="leftIconColor"/>
 			</div>
-			<input ref="input" v-on="listeners" @input="input" :value="value" type="text" :placeholder="placeholder" 
-			:style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off" @compositionstart="compositionstart" @compositionend="compositionend" />
+			<input ref="input" v-on="listeners" @input="input" v-model="realValue" type="text" :placeholder="placeholder" 
+			:style="inputStyle" :name="name" @focus="inputFocus" @blur="inputBlur" :disabled="disabled" autocomplete="off" />
 			<div @click="doClear" v-if="clearable" v-show="showClearIcon" class="mvi-autocomplete-clear" :style="clearStyle">
 				<m-icon type="times-o" />
 			</div>
@@ -32,9 +32,7 @@
 		name:'m-autocomplete',
 		data(){
 			return {
-				focus:false,
-				target:null,
-				disableInputEvent:false
+				focus:false
 			}
 		},
 		model:{
@@ -260,7 +258,7 @@
 				return color;
 			},
 			showClearIcon(){
-				if(this.value &&　this.focus){
+				if(this.realValue &&　this.focus){
 					return true;
 				}else{
 					return false;
@@ -282,7 +280,7 @@
 			},
 			computedFilter(){
 				if(typeof this.filterMethod == 'function'){
-					return this.filterMethod(this.value,this.list);
+					return this.filterMethod(this.realValue,this.list);
 				}else if(this.filterMethod){
 					return this.defaultFilter();
 				}else{
@@ -326,6 +324,17 @@
 					cls.push('mvi-autocomplete-'+this.activeType);
 				}
 				return cls
+			},
+			realValue:{
+				set(value){
+					if(this.value !== value){
+						this.$emit('model-change',value);
+						this.$emit('update:value',value);
+					}
+				},
+				get(){
+					return this.value;
+				}
 			}
 		},
 		components:{
@@ -344,13 +353,13 @@
 				if(this.disabled){
 					return;
 				}
-				this.$emit('right-click',this.value)
+				this.$emit('right-click',this.realValue)
 			},
 			leftClick(e){
 				if(this.disabled){
 					return;
 				}
-				this.$emit('left-click',this.value)
+				this.$emit('left-click',this.realValue)
 			},
 			listEnter(e){
 				if(this.hoverClass){
@@ -362,32 +371,14 @@
 					$util.removeClass(e.currentTarget,this.hoverClass);
 				}
 			},
-			compositionstart(){
-				this.disableInputEvent = true;
-			},
-			compositionend(){
-				this.disableInputEvent = false;
-				this.updateValue();
-			},
-			input(event){
-				if(this.disabled){
-					return;
-				}
-				if(this.disableInputEvent){
-					return;
-				}
-				this.updateValue();
-			},
-			//更新值
-			updateValue(){
+			//输入时对悬浮层进行设置
+			input(){
 				this.focus = true;
 				this.$nextTick(()=>{
 					setTimeout(()=>{
 						this.$refs.layer.reset();
 					},10)
 				})
-				this.$emit('model-change',this.$refs.input.value);
-				this.$emit('update:value',this.$refs.input.value);
 			},
 			inputBlur(){
 				setTimeout(()=>{
@@ -406,11 +397,9 @@
 				if(this.disabled){
 					return;
 				}
-				this.$emit('model-change','');
-				this.$emit('update:value','')
-				this.$refs.input.value = '';
-				this.$refs.input.focus();
+				this.realValue = '';
 				this.$emit('clear','');
+				this.$refs.input.focus();
 			},
 			doSelect(item){
 				this.$emit('model-change',item);
@@ -423,7 +412,7 @@
 				let arr = [];
 				let length = this.list.length;
 				for(let i = 0;i<length;i++){
-					if(this.list[i].includes(this.value)){
+					if(this.list[i].includes(this.realValue)){
 						arr.push(this.list[i]);
 					}
 				}

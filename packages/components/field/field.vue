@@ -11,10 +11,10 @@
 				<m-icon v-else-if="prefixIconType || prefixIconUrl" :type="prefixIconType" :url="prefixIconUrl" :spin="prefixIconSpin" :size="prefixIconSize" :color="prefixIconColor" />
 			</div>
 			<textarea ref="textarea" v-if="type=='textarea'" :disabled="disabled" :readonly="readonly" class="mvi-field-input" 
-			:style="inputStyle" :placeholder="placeholder" :value="value" v-on="listeners" autocomplete="off" @focus="inputFocus"
-			 @blur="inputBlur" @input="doInput" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter" @compositionstart="compositionstart" @compositionend="compositionend"></textarea>
-			<input v-else ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" :value="value" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
-			@focus="inputFocus" @blur="inputBlur" @input="doInput" :name="name" :autofocus="autofocus" @compositionstart="compositionstart" @compositionend="compositionend" :maxlength="maxlength">
+			:style="inputStyle" :placeholder="placeholder" v-model="realValue" v-on="listeners" autocomplete="off" @focus="inputFocus"
+			 @blur="inputBlur" :maxlength="maxlength" :name="name" :autofocus="autofocus" :rows="rowsFilter"></textarea>
+			<input v-else ref="input" :disabled="disabled" :readonly="readonly" class="mvi-field-input" :style="inputStyle" :type="computedType" :placeholder="placeholder" v-model="realValue" v-on="listeners" autocomplete="off" :inputmode="computedInputMode"
+			@focus="inputFocus" @blur="inputBlur" :name="name" :autofocus="autofocus" :maxlength="maxlength">
 			<div class="mvi-field-clear" @click="doClear" v-if="clearable && type!='textarea'" v-show="showClearIcon" :style="clearStyle">
 				<m-icon type="times-o"/>
 			</div>
@@ -42,8 +42,7 @@
 		},
 		data(){
 			return {
-				focus:false,//输入框或者文本域是否获取焦点
-				disableInputEvent:false//是否禁用输入事件
+				focus:false//输入框或者文本域是否获取焦点
 			}
 		},
 		props:{
@@ -204,7 +203,7 @@
 				if(this.disabled || this.readonly){
 					return false;
 				}
-				if(this.value &&　this.focus){
+				if(this.realValue &&　this.focus){
 					return true;
 				}else{
 					return false;
@@ -534,12 +533,31 @@
 				}
 				return rows;
 			},
+			//输入框的值
+			realValue:{
+				set(value){
+					value = this.doFilter(value);
+					if(this.value !== value){
+						this.$emit('model-change',value);
+						this.$emit('update:value',value);
+					}
+				},
+				get(){
+					let value = this.value === null ? '':this.value.toString();
+					value = this.doFilter(value);
+					if(this.value !== value){
+						this.$emit('model-change',value);
+						this.$emit('update:value',value);
+					}
+					return value;
+				}
+			}
 		},
 		components:{
 			mIcon
 		},
 		watch:{
-			value(newValue) {
+			realValue(newValue) {
 				this.$nextTick(()=>{
 					if (this.$refs.textarea && (this.autosize == true || $util.isObject(this.autosize))) {
 						this.autosizeSet();
@@ -568,18 +586,8 @@
 					this.autosizeSet();
 				}
 			}
-			this.updateValue();
 		},
 		methods:{
-			//中文输入开始
-			compositionstart(){
-				this.disableInputEvent = true;
-			},
-			//中文输入结束
-			compositionend(){
-				this.disableInputEvent = false;
-				this.updateValue();
-			},
 			//高度自适应设置
 			autosizeSet() {
 				this.$refs.textarea.style.overflow = 'hidden';
@@ -620,17 +628,8 @@
 					this.focus = false;
 				},200)
 			},
-			//输入框实时输入
-			doInput(event){
-				if(this.disableInputEvent){
-					return;
-				}
-				this.updateValue();
-			},
-			//更新value值
-			updateValue(){
-				let el = this.$refs.input || this.$refs.textarea;
-				let value = el.value;
+			//过滤值
+			doFilter(value){
 				//数字类型会过滤非数字字符
 				if(this.type == 'number'){
 					value = value.replace(/\D/g, '');
@@ -639,37 +638,31 @@
 				if (this.maxlength > 0 && value.length > this.maxlength) {
 					value = value.substr(0, this.maxlength);
 				}
-				el.value = value;
-				if(this.value != value){
-					this.$emit('update:value', value);
-					this.$emit('model-change', value);
-				}
+				return value;
 			},
 			//点击前置
 			prependClick(){
-				this.$emit('prepend-click',this.value)
+				this.$emit('prepend-click',this.realValue)
 			},
 			//点击前缀
 			prefixClick(){
-				this.$emit('prefix-click',this.value)
+				this.$emit('prefix-click',this.realValue)
 			},
 			//点击后置
 			appendClick(){
-				this.$emit('append-click',this.value)
+				this.$emit('append-click',this.realValue)
 			},
 			//点击后缀
 			suffixClick(){
-				this.$emit('suffix-click',this.value)
+				this.$emit('suffix-click',this.realValue)
 			},
 			//清除
 			doClear(){
 				if(this.disabled){
 					return;
 				}
-				this.$emit('model-change','');
-				this.$emit('update:value','')
+				this.realValue = '';
 				let el = this.$refs.input || this.$refs.textarea;
-				el.value = ''
 				el.focus();
 				this.$emit('clear','')
 			},

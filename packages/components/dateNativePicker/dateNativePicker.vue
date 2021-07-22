@@ -1,6 +1,5 @@
 <template>
-	<input @blur="selectDateForIOS" @change="selectDateForAndroid" v-on="listeners" class="mvi-date-native-picker" 
-	:type="dateType" :value="dateValue"/>
+	<input @blur="selectDateForIOS" @change="selectDateForAndroid" v-on="listeners" class="mvi-date-native-picker" :type="dateType"/>
 </template>
 
 <script>
@@ -35,33 +34,6 @@
 		computed:{
 			listeners(){
 				return Object.assign({},this.$listeners)
-			},
-			dateValue(){
-				if(this.value){
-					if(this.type == 'date'){
-						let year = this.value.getFullYear();
-						let month = (this.value.getMonth()+1)<10?'0'+(this.value.getMonth()+1):this.value.getMonth()+1;
-						let date = this.value.getDate()<10?'0'+this.value.getDate():this.value.getDate();
-						return year+"-"+month+"-"+date;
-					}else if(this.type == 'datetime'){
-						let year = this.value.getFullYear();
-						let month = (this.value.getMonth()+1)<10?'0'+(this.value.getMonth()+1):this.value.getMonth()+1;
-						let date = this.value.getDate()<10?'0'+this.value.getDate():this.value.getDate();
-						let hour = this.value.getHours()<10?'0'+this.value.getHours():this.value.getHours();
-						let minutes = this.value.getMinutes()<10?'0'+this.value.getMinutes():this.value.getMinutes();
-						return year+"-"+month+"-"+date+"T"+hour+":"+minutes;
-					}else if(this.type == 'month'){
-						let year = this.value.getFullYear();
-						let month = (this.value.getMonth()+1)<10?'0'+(this.value.getMonth()+1):this.value.getMonth()+1;
-						return year+"-"+month;
-					}else if(this.type == 'time'){
-						let hour = this.value.getHours()<10?'0'+this.value.getHours():this.value.getHours();
-						let minutes = this.value.getMinutes()<10?'0'+this.value.getMinutes():this.value.getMinutes();
-						return hour+":"+minutes;
-					}
-				}else{
-					return '';
-				}
 			},
 			dateType(){
 				if(this.type == 'datetime'){
