@@ -5,8 +5,8 @@
 			<m-button @click="change">Toggle</m-button>
 			<div>{{value}}</div>
 			<div>{{date}}</div>
-			<m-editor v-model="value"></m-editor>
-			<m-editor v-model="value2"></m-editor>
+			<m-autocomplete v-model="value" filter-method clearable :list="['1','2']"></m-autocomplete>
+			<m-field v-model="value" clearable></m-field>
 		</div>
 	</div>
 </template>
