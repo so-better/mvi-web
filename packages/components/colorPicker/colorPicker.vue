@@ -213,7 +213,7 @@
 						let str = this.value.substring(first+1,last);
 						let arry = str.split(',');
 						if(arry.length<3){
-							throw new Error();
+							throw new Error('Color values are not in RGB(RGBA) format or hexadecimal format');
 						}
 						this.rgb = [Number(arry[0]),Number(arry[1]),Number(arry[2])];
 						if(arry.length == 4){
@@ -228,7 +228,7 @@
 							this.$emit('update:value',$util.rgb2hex(this.rgb));
 						}
 					}catch(e){
-						throw new Error('颜色值非RGB(RGBA)格式和十六进制格式');
+						throw new Error('Color values are not in RGB(RGBA) format or hexadecimal format');
 					}
 				}
 				//设置滑块位置
