@@ -1,13 +1,7 @@
 <template>
 	<div id="app">
-		<div>
-			{{counts}}
-			<m-button @click="change">Toggle</m-button>
-			<div>{{value}}</div>
-			<div>{{date}}</div>
-			<m-autocomplete v-model="value" filter-method clearable :list="['1','2']"></m-autocomplete>
-			<m-field v-model="value" clearable></m-field>
-		</div>
+		<div class="demo mvi-mb-20"></div>
+		<div class="demo" v-px:border-width v-px:height.before></div>
 	</div>
 </template>
 <script>
@@ -96,9 +90,7 @@ export default {
 		};
 	},
 	mounted() {
-		setInterval(()=>{
-			this.counts-=10;
-		},10)
+		
 	},
 	methods: {
 		change() {
@@ -117,5 +109,23 @@ html {
 	overflow-x: hidden;
 	position: relative;
 	width: 100%;
+}
+
+.demo{
+	width: 4rem;
+	height: 2rem;
+	margin: .2rem auto;
+	position: relative;
+	border: 1px solid #000000;
+	
+	&::before{
+		content: '';
+		width: 100%;
+		height: 1px;
+		background-color: #000000;
+		position: absolute;
+		bottom: -1rem;
+		left: 0;
+	}
 }
 </style>
