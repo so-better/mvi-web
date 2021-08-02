@@ -2,6 +2,7 @@
 	<div id="app">
 		<div class="demo mvi-mb-20"></div>
 		<div class="demo" v-px:border-width v-px:height.before></div>
+		<m-number-keyboard v-model="active" :show.sync="show"></m-number-keyboard>
 	</div>
 </template>
 <script>

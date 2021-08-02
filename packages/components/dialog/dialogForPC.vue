@@ -3,6 +3,8 @@
 		v-on="listeners"
 		v-model="show"
 		:footer-padding="false"
+		@hide="modalHide"
+		@hidding="modalHidding"
 		@hidden="modalHidden"
 		:width="computedWidth"
 		:z-index="computedZIndex"
@@ -10,6 +12,8 @@
 		:local="computedLocal"
 		:use-padding="computedUsePadding"
 		:animation="computedAnimation"
+		@show="modalShow"
+		@showing="modalShowing"
 		@shown="modalShown"
 		:timeout="computedTimeout"
 		:overlay-color="computedOverlayColor"
@@ -362,8 +366,22 @@ export default {
 				this.ok = false;
 			}
 		},
+		//模态框隐藏前
+		modalHide(el){
+			//触发全局的监听
+			if(typeof this.dialogComponentWatch == 'function'){
+				this.dialogComponentWatch.apply(this,['hide',this.type,el])
+			}
+		},
+		//模态框隐藏时
+		modalHidding(el){
+			//触发全局的监听
+			if(typeof this.dialogComponentWatch == 'function'){
+				this.dialogComponentWatch.apply(this,['hidding',this.type,el])
+			}
+		},
 		//模态框隐藏后
-		modalHidden() {
+		modalHidden(el) {
 			if (this.type == 'Alert') {
 				this.computedCallback();
 			} else if (this.type == 'Confirm') {
@@ -371,14 +389,36 @@ export default {
 			} else if (this.type == 'Prompt') {
 				this.computedCallback(this.ok, this.computedValue);
 			}
+			//触发全局的监听
+			if(typeof this.dialogComponentWatch == 'function'){
+				this.dialogComponentWatch.apply(this,['hidden',this.type,el])
+			}
 			this.$el.remove();
 			this.$destroy();
 		},
+		//模态框显示前
+		modalShow(el){
+			//触发全局的监听
+			if(typeof this.dialogComponentWatch == 'function'){
+				this.dialogComponentWatch.apply(this,['show',this.type,el])
+			}
+		},
+		//模态框显示时
+		modalShowing(el){
+			//触发全局的监听
+			if(typeof this.dialogComponentWatch == 'function'){
+				this.dialogComponentWatch.apply(this,['showing',this.type,el])
+			}
+		},
 		//模态框显示后
-		modalShown() {
+		modalShown(el) {
 			//输入框获取焦点
 			if (this.type == 'Prompt' && this.computedInput.autofocus) {
 				this.$refs.input.focus();
+			}
+			//触发全局的监听
+			if(typeof this.dialogComponentWatch == 'function'){
+				this.dialogComponentWatch.apply(this,['shown',this.type,el])
 			}
 		}
 	}

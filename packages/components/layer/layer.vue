@@ -460,6 +460,9 @@
 			//悬浮层显示前
 			beforeEnter(el){
 				this.$emit('show',el)
+				if(typeof this.layerComponentWatch == 'function'){
+					this.layerComponentWatch.apply(this,['show',el])
+				}
 			},
 			//悬浮层显示时
 			enter(el){
@@ -473,23 +476,38 @@
 						this.resetTriangle()
 					})
 					this.$emit('showing',el)
+					if(typeof this.layerComponentWatch == 'function'){
+						this.layerComponentWatch.apply(this,['showing',el])
+					}
 				})
 			},
 			//悬浮层显示后
 			afterEnter(el){
 				this.$emit('shown',el)
+				if(typeof this.layerComponentWatch == 'function'){
+					this.layerComponentWatch.apply(this,['shown',el])
+				}
 			},
 			//悬浮层隐藏前
 			beforeLeave(el){
 				this.$emit('hide',el)
+				if(typeof this.layerComponentWatch == 'function'){
+					this.layerComponentWatch.apply(this,['hide',el])
+				}
 			},
 			//悬浮层隐藏时
 			leave(el){
 				this.$emit('hidding',el)
+				if(typeof this.layerComponentWatch == 'function'){
+					this.layerComponentWatch.apply(this,['hidding',el])
+				}
 			},
 			//悬浮层隐藏后
 			afterLeave(el){
 				this.$emit('hidden',el)
+				if(typeof this.layerComponentWatch == 'function'){
+					this.layerComponentWatch.apply(this,['hidden',el])
+				}
 			},
 			//重置位置
 			reset(){

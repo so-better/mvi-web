@@ -298,27 +298,51 @@
 			//弹出层显示前
 			beforeEnter(el){
 				this.$emit('show',el);
+				//触发全局的监听
+				if(typeof this.modalComponentWatch == 'function'){
+					this.modalComponentWatch.apply(this,['show',el])
+				}
 			},
 			//弹出层显示时
 			enter(el){
 				this.modalSize();
 				this.$emit('showing',el);
+				//触发全局的监听
+				if(typeof this.modalComponentWatch == 'function'){
+					this.modalComponentWatch.apply(this,['showing',el])
+				}
 			},
 			//弹出层显示后
 			afterEnter(el){
 				this.$emit('shown',el);
+				//触发全局的监听
+				if(typeof this.modalComponentWatch == 'function'){
+					this.modalComponentWatch.apply(this,['shown',el])
+				}
 			},
 			//弹出层隐藏前
 			beforeLeave(el){
 				this.$emit('hide',el);
+				//触发全局的监听
+				if(typeof this.modalComponentWatch == 'function'){
+					this.modalComponentWatch.apply(this,['hide',el])
+				}
 			},
 			//弹出层隐藏时
 			leave(el){
 				this.$emit('hidding',el);
+				//触发全局的监听
+				if(typeof this.modalComponentWatch == 'function'){
+					this.modalComponentWatch.apply(this,['hidding',el])
+				}
 			},
 			//弹出层隐藏后
 			afterLeave(el){
 				this.$emit('hidden',el);
+				//触发全局的监听
+				if(typeof this.modalComponentWatch == 'function'){
+					this.modalComponentWatch.apply(this,['hidden',el])
+				}
 			}
 		}
 	}

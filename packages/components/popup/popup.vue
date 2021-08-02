@@ -227,26 +227,44 @@
 			//弹出层显示前
 			beforeEnter(el){
 				this.$emit('show',el);
+				if(typeof this.popupComponentWatch == 'function'){
+					this.popupComponentWatch.apply(this,['show',el])
+				}
 			},
 			//弹出层显示时
 			enter(el){
 				this.$emit('showing',el);
+				if(typeof this.popupComponentWatch == 'function'){
+					this.popupComponentWatch.apply(this,['showing',el])
+				}
 			},
 			//弹出层显示后
 			afterEnter(el){
 				this.$emit('shown',el);
+				if(typeof this.popupComponentWatch == 'function'){
+					this.popupComponentWatch.apply(this,['shown',el])
+				}
 			},
 			//弹出层隐藏前
 			beforeLeave(el){
 				this.$emit('hide',el);
+				if(typeof this.popupComponentWatch == 'function'){
+					this.popupComponentWatch.apply(this,['hide',el])
+				}
 			},
 			//弹出层隐藏时
 			leave(el){
 				this.$emit('hidding',el);
+				if(typeof this.popupComponentWatch == 'function'){
+					this.popupComponentWatch.apply(this,['hidding',el])
+				}
 			},
 			//弹出层隐藏后
 			afterLeave(el){
 				this.$emit('hidden',el);
+				if(typeof this.popupComponentWatch == 'function'){
+					this.popupComponentWatch.apply(this,['hidden',el])
+				}
 			}
 		}
 	}

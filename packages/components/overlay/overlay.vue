@@ -111,6 +111,9 @@
 					el.style.webkitTransition = 'opacity '+this.timeout+'ms';
 				}
 				this.$emit('show',el);
+				if(typeof this.overlayComponentWatch == 'function'){
+					this.overlayComponentWatch.apply(this,['show',el])
+				}
 			},
 			//transition钩子函数：组件显示
 			enter(el){
@@ -169,6 +172,9 @@
 					this.$el.style.height = window.innerHeight + 'px';
 				}
 				this.$emit('showing',el);
+				if(typeof this.overlayComponentWatch == 'function'){
+					this.overlayComponentWatch.apply(this,['showing',el])
+				}
 			},
 			//组件显示之后
 			afterEnter(el){
@@ -177,6 +183,9 @@
 					el.style.webkitTransition = '';
 				}
 				this.$emit('shown',el);
+				if(typeof this.overlayComponentWatch == 'function'){
+					this.overlayComponentWatch.apply(this,['shown',el])
+				}
 			},
 			//组件隐藏之前
 			beforeLeave(el){
@@ -185,6 +194,9 @@
 					el.style.webkitTransition = 'opacity '+this.timeout+'ms';
 				}
 				this.$emit('hide',el);
+				if(typeof this.overlayComponentWatch == 'function'){
+					this.overlayComponentWatch.apply(this,['hide',el])
+				}
 			},
 			//组件隐藏时
 			leave(el){
@@ -207,6 +219,9 @@
 					}
 				}
 				this.$emit('hidding',el);
+				if(typeof this.overlayComponentWatch == 'function'){
+					this.overlayComponentWatch.apply(this,['hidding',el])
+				}
 			},
 			//组件隐藏之后
 			afterLeave(el){
@@ -215,6 +230,9 @@
 					el.style.webkitTransition = '';
 				}
 				this.$emit('hidden',el);
+				if(typeof this.overlayComponentWatch == 'function'){
+					this.overlayComponentWatch.apply(this,['hidden',el])
+				}
 			},
 			//点击遮罩关闭此遮罩
 			closeOverlay() {
