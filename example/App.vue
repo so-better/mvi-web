@@ -1,8 +1,19 @@
 <template>
 	<div id="app">
-		<div class="demo mvi-mb-20"></div>
-		<div class="demo" v-px:border-width v-px:height.before></div>
-		<m-number-keyboard v-model="active" :show.sync="show"></m-number-keyboard>
+		<div class="mvi-p-4">
+			<!-- <m-tooltip placement="top-end" style="margin-left:4rem;margin-top: 6rem;">
+				<div style="width:4rem;height: 4rem;" class="mvi-bg-success"></div>
+				<template v-slot:title>
+					<div style="width: 7rem;height:4rem;">这是一个工具提示</div>
+				</template>
+			</m-tooltip> -->
+			<m-tooltip block style="margin-top:2rem;" placement="right-end">
+				<m-button form-control>Button</m-button>
+				<template v-slot:title>
+					<div style="width: 13rem;height:4rem;">这是一个工具提示</div>
+				</template>
+			</m-tooltip>
+		</div>
 	</div>
 </template>
 <script>
