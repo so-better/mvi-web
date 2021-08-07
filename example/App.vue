@@ -1,18 +1,7 @@
 <template>
 	<div id="app">
 		<div class="mvi-p-4">
-			<!-- <m-tooltip placement="top-end" style="margin-left:4rem;margin-top: 6rem;">
-				<div style="width:4rem;height: 4rem;" class="mvi-bg-success"></div>
-				<template v-slot:title>
-					<div style="width: 7rem;height:4rem;">这是一个工具提示</div>
-				</template>
-			</m-tooltip> -->
-			<m-tooltip block style="margin-top:2rem;" placement="right-end">
-				<m-button form-control>Button</m-button>
-				<template v-slot:title>
-					<div style="width: 13rem;height:4rem;">这是一个工具提示</div>
-				</template>
-			</m-tooltip>
+			<m-button @click="change">Button</m-button>
 		</div>
 	</div>
 </template>
@@ -106,7 +95,9 @@ export default {
 	},
 	methods: {
 		change() {
-			
+			this.$showToast({
+				message:false
+			})
 		}
 	}
 };

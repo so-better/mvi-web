@@ -106,14 +106,10 @@ export default {
 		computedMessage() {
 			if (typeof this.message == 'string') {
 				return this.message;
-			} else if ($util.isObject(this.message)) {
+			}else if ($util.isObject(this.message)) {
 				return JSON.stringify(this.message);
-			} else if ($util.isNumber(this.message)) {
-				return this.message.toString();
-			} else if (this.message) {
-				return String(this.message);
 			} else {
-				return '';
+				return String(this.message)
 			}
 		},
 		computedBtns() {
