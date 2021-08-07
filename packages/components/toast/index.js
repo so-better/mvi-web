@@ -46,7 +46,7 @@ Toast.install = Vue=> {
 			instance.usePadding = options.usePadding;
 			instance.background = options.background;
 			instance.color = options.color;
-		}else if(typeof options == "string"){
+		}else{
 			instance.message = options;
 			instance.callback = callback;
 			instance.timeout = 1500;

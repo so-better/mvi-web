@@ -27,7 +27,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.ios = options.ios;
-		}else if(typeof options == "string"){
+		}else {
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -70,7 +70,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.ios = options.ios;
-		}else if(typeof options == "string"){
+		}else{
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -121,7 +121,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.ios = options.ios;
-		}else if(typeof options == "string"){
+		}else{
 			instance.message = options,
 			instance.callback = callback;
 		}
@@ -163,7 +163,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.showTimes = options.showTimes;
-		}else if(typeof options == "string"){
+		}else{
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -205,7 +205,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.showTimes = options.showTimes;
-		}else if(typeof options == "string"){
+		}else{
 			instance.message = options;
 			instance.callback = callback;
 		}
@@ -254,7 +254,7 @@ Dialog.install = Vue=>{
 			instance.timeout = options.timeout;
 			instance.overlayColor = options.overlayColor;
 			instance.showTimes = options.showTimes;
-		}else if(typeof options == "string"){
+		}else{
 			instance.message = options,
 			instance.callback = callback;
 		}
