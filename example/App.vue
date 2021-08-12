@@ -3,6 +3,7 @@
 		<div class="mvi-p-4">
 			<m-button @click="change">Button</m-button>
 		</div>
+		<m-editor v-model="value"></m-editor>
 	</div>
 </template>
 <script>
