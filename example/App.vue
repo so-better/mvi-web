@@ -96,7 +96,7 @@ export default {
 	},
 	methods: {
 		change() {
-			this.$showToast({
+			this.$showNotify({
 				message:false
 			})
 		}
