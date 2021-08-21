@@ -60,14 +60,14 @@
 						if(this.min){
 							let minTime = this.min.getTime();
 							if(date.getTime() < minTime){
-								this.$emit('error','选择的时间不在范围');
+								this.$emit('error','选择的时间小于限定最小时间');
 								return;
 							}
 						}
 						if(this.max){
 							let maxTime = this.max.getTime();
 							if(date.getTime() > maxTime){
-								this.$emit('error','选择的时间不在范围')
+								this.$emit('error','选择的时间大于限定最大时间')
 								return;
 							}
 						}
@@ -85,14 +85,14 @@
 						if(this.min){
 							let minTime = this.min.getTime();
 							if(date.getTime() < minTime){
-								this.$emit('error','选择的时间不在范围');
+								this.$emit('error','选择的时间小于限定最小时间');
 								return;
 							}
 						}
 						if(this.max){
 							let maxTime = this.max.getTime();
 							if(date.getTime() > maxTime){
-								this.$emit('error','选择的时间不在范围')
+								this.$emit('error','选择的时间大于限定最大时间')
 								return;
 							}
 						}

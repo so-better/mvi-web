@@ -305,12 +305,12 @@ export default {
 		},
 		currentYear() {
 			//当前年份显示值
-			return this.value.getFullYear() + ' 年';
+			return this.value.getFullYear() + '年';
 		},
 		currentMonth() {
 			//当前月份显示值
 			let month = this.value.getMonth() + 1;
-			return (month < 10 ? '0' + month : month) + ' 月';
+			return (month < 10 ? '0' + month : month) + '月';
 		},
 		hoverHeader() {
 			//头部元素悬浮标记
@@ -321,9 +321,9 @@ export default {
 		headerItemClass() {
 			//头部元素样式类
 			return index => {
-				let cls = '';
+				let cls = [];
 				if (this.hover[index] && this.headerHoverClass) {
-					cls += ' ' + this.headerHoverClass;
+					cls.push(this.headerHoverClass)
 				}
 				return cls;
 			};

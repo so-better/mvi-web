@@ -43,8 +43,10 @@
 			computedMessage(){
 				if(typeof this.message == "string"){
 					return this.message;
-				}else{
-					return '';
+				}else if($util.isObject(this.message)){
+					return JSON.stringify(this.message);
+				}else {
+					return String(this.message);
 				}
 			},
 			//自定义文字颜色

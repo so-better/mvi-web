@@ -25,7 +25,7 @@ Notify.install = Vue=> {
 			instance.zIndex = options.zIndex;
 			instance.callback = options.callback;
 			instance.icon = options.icon;
-		}else if(typeof options == "string"){
+		}else {
 			instance.message = options;
 			instance.callback = callback;
 			instance.type = null;
