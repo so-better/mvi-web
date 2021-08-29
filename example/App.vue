@@ -2,6 +2,7 @@
 	<div id="app">
 		<div class="mvi-p-4">
 			<m-button @click="change">Button</m-button>
+			<div v-observe="observe" :data-value="value"></div>
 		</div>
 		<m-editor v-model="value"></m-editor>
 	</div>
@@ -10,6 +11,16 @@
 export default {
 	data() {
 		return {
+			observe:{
+				attributes:true,childList:true,subtree:true,
+				attributesChange:(attributeName,oldValue,newValue)=>{
+					console.log(attributeName,oldValue,newValue)
+				},
+				childNodesChange:(addNodes,removeNodes)=>{
+					console.log(addNodes,removeNodes)
+				}
+			},
+			cls:'',
 			counts:100000,
 			checked:true,
 			images: [
@@ -36,7 +47,7 @@ export default {
 				}
 			},
 			active: 1,
-			show: true,
+			show: false,
 			expand: false,
 			options:[
 				{
@@ -96,9 +107,7 @@ export default {
 	},
 	methods: {
 		change() {
-			this.$showNotify({
-				message:false
-			})
+			this.value = '22222'
 		}
 	}
 };
