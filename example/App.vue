@@ -2,15 +2,25 @@
 	<div id="app">
 		<div class="mvi-p-4">
 			<m-button @click="change">Button</m-button>
-			<div v-observe="observe" :data-value="value"></div>
+			
 		</div>
-		<m-editor v-model="value"></m-editor>
+		<div id="container" style="position: relative;">
+			<div v-drag="dragOpt" id="el" style="position: absolute;left: 0;top: 0;width: 1rem;height: 1rem;background-color: #000000;"></div>
+		</div>
 	</div>
 </template>
 <script>
 export default {
 	data() {
 		return {
+			dragOpt:{
+				container:'#container',
+				draggableX:false,
+				//draggableY:false,
+				beforedrag:e=>{
+					console.log(1)
+				}
+			},
 			observe:{
 				attributes:true,childList:true,subtree:true,
 				attributesChange:(attributeName,oldValue,newValue)=>{
