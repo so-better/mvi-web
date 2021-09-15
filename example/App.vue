@@ -4,9 +4,7 @@
 			<m-button @click="change">Button</m-button>
 			
 		</div>
-		<div id="container" style="position: relative;">
-			<div v-drag="dragOpt" id="el" style="position: absolute;left: 0;top: 0;width: 1rem;height: 1rem;background-color: #000000;"></div>
-		</div>
+		<m-editor v-model="value2"></m-editor>
 	</div>
 </template>
 <script>
