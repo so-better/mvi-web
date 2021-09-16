@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mLayer from "../layer/layer"
 	import mIcon from "../icon/icon"
 	export default {
@@ -164,176 +164,176 @@
 				return this.focus && this.computedFilter.length != 0
 			},
 			leftIconType() {
-				let t = null;
-				if ($util.isObject(this.leftIcon)) {
+				let t = null
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.type == "string") {
-						t = this.leftIcon.type;
+						t = this.leftIcon.type
 					}
 				} else if (typeof this.leftIcon == "string") {
-					t = this.leftIcon;
+					t = this.leftIcon
 				}
-				return t;
+				return t
 			},
 			leftIconUrl() {
-				let url = null;
-				if ($util.isObject(this.leftIcon)) {
+				let url = null
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.url == "string") {
-						url = this.leftIcon.url;
+						url = this.leftIcon.url
 					}
 				}
-				return url;
+				return url
 			},
 			leftIconSpin() {
-				let spin = false;
-				if ($util.isObject(this.leftIcon)) {
+				let spin = false
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.spin == "boolean") {
-						spin = this.leftIcon.spin;
+						spin = this.leftIcon.spin
 					}
 				}
-				return spin;
+				return spin
 			},
 			leftIconSize() {
-				let size = null;
-				if ($util.isObject(this.leftIcon)) {
+				let size = null
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.size == "string") {
-						size = this.leftIcon.size;
+						size = this.leftIcon.size
 					}
 				}
-				return size;
+				return size
 			},
 			leftIconColor() {
-				let color = null;
-				if ($util.isObject(this.leftIcon)) {
+				let color = null
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.color == "string") {
-						color = this.leftIcon.color;
+						color = this.leftIcon.color
 					}
 				}
-				return color;
+				return color
 			},
 			rightIconType() {
-				let t = null;
-				if ($util.isObject(this.rightIcon)) {
+				let t = null
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.type == "string") {
-						t = this.rightIcon.type;
+						t = this.rightIcon.type
 					}
 				} else if (typeof this.rightIcon == "string") {
-					t = this.rightIcon;
+					t = this.rightIcon
 				}
-				return t;
+				return t
 			},
 			rightIconUrl() {
-				let url = null;
-				if ($util.isObject(this.rightIcon)) {
+				let url = null
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.url == "string") {
-						url = this.rightIcon.url;
+						url = this.rightIcon.url
 					}
 				}
-				return url;
+				return url
 			},
 			rightIconSpin() {
-				let spin = false;
-				if ($util.isObject(this.rightIcon)) {
+				let spin = false
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.spin == "boolean") {
-						spin = this.rightIcon.spin;
+						spin = this.rightIcon.spin
 					}
 				}
-				return spin;
+				return spin
 			},
 			rightIconSize() {
-				let size = null;
-				if ($util.isObject(this.rightIcon)) {
+				let size = null
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.size == "string") {
-						size = this.rightIcon.size;
+						size = this.rightIcon.size
 					}
 				}
-				return size;
+				return size
 			},
 			rightIconColor() {
-				let color = null;
-				if ($util.isObject(this.rightIcon)) {
+				let color = null
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.color == "string") {
-						color = this.rightIcon.color;
+						color = this.rightIcon.color
 					}
 				}
-				return color;
+				return color
 			},
 			showClearIcon(){
 				if(this.realValue &&　this.focus){
-					return true;
+					return true
 				}else{
-					return false;
+					return false
 				}
 			},
 			clearStyle(){
 				let style = {}
 				if(this.rightIconType || this.rightIconUrl){
-					style.borderRadius = 0;
+					style.borderRadius = 0
 				}
 				return style
 			},
 			menuStyle(){
-				let style = {};
+				let style = {}
 				if(this.height){
-					style.maxHeight = this.height;
+					style.maxHeight = this.height
 				}
-				return style;
+				return style
 			},
 			computedFilter(){
 				if(typeof this.filterMethod == 'function'){
-					return this.filterMethod(this.realValue,this.list);
+					return this.filterMethod(this.realValue,this.list)
 				}else if(this.filterMethod){
-					return this.defaultFilter();
+					return this.defaultFilter()
 				}else{
-					return this.list;
+					return this.list
 				}
 			},
 			inputStyle(){
 				let style = {}
 				if(this.leftIconType || this.leftIconUrl){
-					style.paddingLeft = 0;
+					style.paddingLeft = 0
 				}
 				if(this.showClearIcon && this.clearable){
-					style.paddingRight = 0;
+					style.paddingRight = 0
 				}else if(this.rightIconType || this.rightIconUrl){
-					style.paddingRight = 0;
+					style.paddingRight = 0
 				}
 				if(this.align){
-					style.textAlign = this.align;
+					style.textAlign = this.align
 				}
 				return style
 			},
 			autocompleteClass(){
-				let cls = ['mvi-autocomplete','mvi-autocomplete-'+this.size];
+				let cls = ['mvi-autocomplete','mvi-autocomplete-'+this.size]
 				if(this.round){
 					cls.push('mvi-autocomplete-round')
 				}else if(this.square){
 					cls.push('mvi-autocomplete-square')
 				}
-				return cls;
+				return cls
 			},
 			targetStyle(){
-				let style = {};
+				let style = {}
 				if(this.activeColor && this.focus){
-					style.borderColor = this.activeColor;
+					style.borderColor = this.activeColor
 				}
-				return style;
+				return style
 			},
 			targetClass(){
-				let cls = ['mvi-autocomplete-target'];
+				let cls = ['mvi-autocomplete-target']
 				if(this.activeType && !this.activeColor && this.focus){
-					cls.push('mvi-autocomplete-'+this.activeType);
+					cls.push('mvi-autocomplete-'+this.activeType)
 				}
 				return cls
 			},
 			realValue:{
 				set(value){
 					if(this.value !== value){
-						this.$emit('model-change',value);
-						this.$emit('update:value',value);
+						this.$emit('model-change',value)
+						this.$emit('update:value',value)
 					}
 				},
 				get(){
-					return this.value;
+					return this.value
 				}
 			}
 		},
@@ -344,92 +344,92 @@
 			//悬浮层显示前进行宽度设置
 			layerShow(){
 				if(this.width){
-					this.$refs.menu.style.width = this.width;
+					this.$refs.menu.style.width = this.width
 				}else {
-					this.$refs.menu.style.width = this.$refs.target.offsetWidth + 'px';
+					this.$refs.menu.style.width = this.$refs.target.offsetWidth + 'px'
 				}
 			},
 			rightClick(e){
 				if(this.disabled){
-					return;
+					return
 				}
 				this.$emit('right-click',this.realValue)
 			},
 			leftClick(e){
 				if(this.disabled){
-					return;
+					return
 				}
 				this.$emit('left-click',this.realValue)
 			},
 			listEnter(e){
 				if(this.hoverClass){
-					$util.addClass(e.currentTarget,this.hoverClass);
+					$dap.element.addClass(e.currentTarget,this.hoverClass)
 				}
 			},
 			listLeave(e){
 				if(this.hoverClass){
-					$util.removeClass(e.currentTarget,this.hoverClass);
+					$dap.element.removeClass(e.currentTarget,this.hoverClass)
 				}
 			},
 			//输入时对悬浮层进行设置
 			input(){
 				if(this.disabled){
-					return;
+					return
 				}
 				this.focus = true;
 				this.$nextTick(()=>{
 					setTimeout(()=>{
-						this.$refs.layer.reset();
+						this.$refs.layer.reset()
 					},10)
 				})
 			},
 			inputBlur(){
 				if(this.disabled){
-					return;
+					return
 				}
 				setTimeout(()=>{
-					this.focus = false;
+					this.focus = false
 				},200)
 			},
 			inputFocus(){
 				if(this.disabled){
-					return;
+					return
 				}
 				setTimeout(()=>{
-					this.focus = true;
+					this.focus = true
 				},200)
 			},
 			doClear(){
 				if(this.disabled){
-					return;
+					return
 				}
 				if(!this.clearable){
-					return;
+					return
 				}
 				setTimeout(()=>{
-					this.realValue = '';
-					this.$emit('clear','');
-					this.$refs.input.focus();
+					this.realValue = ''
+					this.$emit('clear','')
+					this.$refs.input.focus()
 				},200)
 			},
 			doSelect(item){
 				if(this.disabled){
-					return;
+					return
 				}
-				this.realValue = item;
-				this.$emit('select',item);
-				this.focus = false;
+				this.realValue = item
+				this.$emit('select',item)
+				this.focus = false
 			},
 			//默认过滤方法
 			defaultFilter(){
-				let arr = [];
-				let length = this.list.length;
+				let arr = []
+				let length = this.list.length
 				for(let i = 0;i<length;i++){
 					if(this.list[i].includes(this.realValue)){
-						arr.push(this.list[i]);
+						arr.push(this.list[i])
 					}
 				}
-				return arr;
+				return arr
 			}
 		}
 	}

@@ -1,11 +1,11 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 /**
  * 滚动侦听
  */
 class Spy {
 	constructor(element,options) {
 		this.$el = element;
-		if(!$util.isObject(options)){
+		if(!$dap.common.isObject(options)){
 			options = {};
 		}
 		this.$root = options.el;
@@ -32,7 +32,7 @@ class Spy {
 		if(typeof this.$root == "string" && this.$root){
 			this.$root = document.documentElement.querySelector(this.$root);
 		}
-		if (!$util.isElement(this.$root)) {
+		if (!$dap.element.isElement(this.$root)) {
 			this.$root = document.body;
 		}
 		if (typeof this.beforeEnter != "function") {
@@ -57,8 +57,8 @@ class Spy {
 	//侦听处理
 	_scrollHandler(){
 		//获取容器元素是否含有滚动条
-		let overflowX = $util.getCssStyle(this.$root,'overflow-x');
-		let overflowY = $util.getCssStyle(this.$root,'overflow-y');
+		let overflowX = $dap.element.getCssStyle(this.$root,'overflow-x');
+		let overflowY = $dap.element.getCssStyle(this.$root,'overflow-y');
 		let hasScrollX = (overflowX == 'auto' || overflowX == 'scroll');
 		let hasScrollY = (overflowY == 'auto' || overflowY == 'scroll');
 		//元素左侧距离滚动容器左侧的可视距离,即不包含自身宽度

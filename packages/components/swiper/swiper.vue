@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mIcon from "../icon/icon"
 	export default {
 		name:"m-swiper",
@@ -160,26 +160,26 @@
 				if(this.vertical){//垂直
 					if(this.height){//设置了height变量
 						if(this.height.includes('rem')){
-							width = $util.rem2px(parseFloat(this.height));
+							width = $dap.element.rem2px(parseFloat(this.height));
 						}else if(this.height.includes('px')){
 							width = parseFloat(this.height);
 						}else{
-							width = parseFloat($util.getCssStyle(this.$el,'height'));
+							width = parseFloat($dap.element.getCssStyle(this.$el,'height'));
 						}
 					}else{
-						width = parseFloat($util.getCssStyle(this.$el,'height'));
+						width = parseFloat($dap.element.getCssStyle(this.$el,'height'));
 					}
 				}else {//水平
 					if(this.width){//设置了width变量
 						if(this.width.includes('rem')){
-							width = $util.rem2px(parseFloat(this.width));
+							width = $dap.element.rem2px(parseFloat(this.width));
 						}else if(this.width.includes('px')){
 							width = parseFloat(this.width);
 						}else{
-							width = parseFloat($util.getCssStyle(this.$el,'width'));
+							width = parseFloat($dap.element.getCssStyle(this.$el,'width'));
 						}
 					}else{
-						width = parseFloat($util.getCssStyle(this.$el,'width'));
+						width = parseFloat($dap.element.getCssStyle(this.$el,'width'));
 					}
 				}
 				return Number(width.toFixed(2));

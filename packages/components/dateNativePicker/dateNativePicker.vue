@@ -3,7 +3,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	export default {
 		name:"m-date-native-picker",
 		model:{
@@ -46,7 +46,7 @@
 		methods:{
 			//触发日期选择弹窗
 			trigger(){
-				if($util.judgeAccessTerminalBrowser('ios')){
+				if($dap.common.judgeAccessTerminalBrowser('ios')){
 					this.$el.focus();
 				}else{
 					this.$el.click();
@@ -54,7 +54,7 @@
 			},
 			//IOS下选择日期
 			selectDateForIOS(){
-				if($util.judgeAccessTerminalBrowser('ios')){
+				if($dap.common.judgeAccessTerminalBrowser('ios')){
 					let date = this.dateParse(this.$el.value);
 					if(date){
 						if(this.min){
@@ -79,7 +79,7 @@
 			},
 			//安卓系统下选择日期
 			selectDateForAndroid(){
-				if(!$util.judgeAccessTerminalBrowser('ios')){
+				if(!$dap.common.judgeAccessTerminalBrowser('ios')){
 					let date = this.dateParse(this.$el.value);
 					if(date){
 						if(this.min){

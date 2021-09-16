@@ -1,11 +1,11 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 /**
  * 监听元素滚动条到达顶部或者底部
  */
 class Scroll {
 	constructor(element,options) {
 		this.$el = element;
-		if(!$util.isObject(options)){
+		if(!$dap.common.isObject(options)){
 			options = {};
 		}
 		this.top = options.top;
@@ -18,7 +18,7 @@ class Scroll {
 			return;
 		}
 		this.hasInit = true;
-		if(!$util.isElement(this.$el)){
+		if(!$dap.element.isElement(this.$el)){
 			this.$el = window;
 		}
 		if(typeof this.top != "function"){
@@ -27,7 +27,7 @@ class Scroll {
 		if(typeof this.bottom != "function"){
 			this.bottom = function(){};
 		}
-		$util.scrollTopBottomTrigger(this.$el,res=>{
+		$dap.element.scrollTopBottomTrigger(this.$el,res=>{
 			if(res.state == 'top'){
 				this.top(res.target)
 			}else {

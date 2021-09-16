@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 /**
  * 1px适配实现
  */
@@ -6,7 +6,7 @@ class Px {
 	constructor(element, options) {
 		//指定的元素
 		this.$el = element;
-		if (!$util.isObject(options)) {
+		if (!$dap.common.isObject(options)) {
 			options = {}
 		}
 		//适配的样式名称
@@ -26,7 +26,7 @@ class Px {
 		}
 		this.hasInit = true;
 
-		if (!$util.isElement(this.$el)) {
+		if (!$dap.element.isElement(this.$el)) {
 			throw new TypeError('The bound element is not a node element')
 		}
 
@@ -57,7 +57,7 @@ class Px {
 			//生成class名称
 			let className = `mvi-directives-px_${guid}`;
 			//添加该class到元素上
-			$util.addClass(this.$el,className)
+			$dap.element.addClass(this.$el,className)
 			//生成style标签
 			let style = document.createElement('style');
 			style.type = 'text/css';

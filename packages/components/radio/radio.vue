@@ -12,7 +12,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mIcon from "../icon/icon"
 	export default {
 		name:"m-radio",
@@ -144,7 +144,7 @@
 				//checked为boolean
 				if(typeof this.checked == "boolean"){
 					return this.checked;
-				}else if((typeof this.checked == "string" && this.checked) || $util.isNumber(this.checked)){
+				}else if((typeof this.checked == "string" && this.checked) || $dap.number.isNumber(this.checked)){
 					if(this.checked == this.value){
 						return true;
 					}else{
@@ -163,7 +163,7 @@
 		},
 		methods:{
 			change(){
-				if((typeof this.checked == "string" && this.checked) || $util.isNumber(this.checked)){
+				if((typeof this.checked == "string" && this.checked) || $dap.number.isNumber(this.checked)){
 					if(event.target.checked){//勾选
 						this.$emit('update:checked',this.value);
 						this.$emit('model-change',this.value);

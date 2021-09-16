@@ -24,7 +24,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mOverlay from "../overlay/overlay"
 	export default {
 		name:"m-number-keyboard",
@@ -127,7 +127,7 @@
 					this.$emit('model-change',value);
 				},
 				get(){
-					if($util.isNumber(this.value)){
+					if($dap.number.isNumber(this.value)){
 						return this.value.toString();
 					}else{
 						return this.value;
@@ -222,7 +222,7 @@
 				if(this.deleteDisabeld){
 					return;
 				}
-				let value = $util.deleteStr(this.computedValue,this.computedValue.length-1,1);
+				let value = $dap.string.delete(this.computedValue,this.computedValue.length-1,1);
 				this.computedValue = value;
 				this.$emit('delete',value);
 			},

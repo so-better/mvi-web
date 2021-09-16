@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import Observe from "./observe"
 
 Observe.install = Vue=> {
@@ -6,7 +6,7 @@ Observe.install = Vue=> {
 	Vue.directive('observe', {
 		inserted(el, binding) {
 			let options = {};
-			if ($util.isObject(binding.value)) {
+			if ($dap.common.isObject(binding.value)) {
 				Object.assign(options, binding.value);
 			}
 			let observe = new Observe(el, options);

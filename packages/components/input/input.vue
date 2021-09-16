@@ -36,7 +36,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mIcon from "../icon/icon"
 	import mDateNativePicker from "../dateNativePicker/dateNativePicker"
 	export default {
@@ -153,8 +153,8 @@
 				type: [Boolean, Object],
 				default: false,
 				validator(value) {
-					if ($util.isObject(value)) {
-						if ($util.isNumber(value.minRows) && $util.isNumber(value.maxRows)) {
+					if ($dap.common.isObject(value)) {
+						if ($dap.number.isNumber(value.minRows) && $dap.number.isNumber(value.maxRows)) {
 							if (value.minRows > value.maxRows) {
 								return false;
 							}
@@ -198,7 +198,7 @@
 			},
 			leftIconType() {
 				let type = null;
-				if ($util.isObject(this.leftIcon)) {
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.type == "string") {
 						type = this.leftIcon.type;
 					}
@@ -209,7 +209,7 @@
 			},
 			leftIconUrl() {
 				let url = null;
-				if ($util.isObject(this.leftIcon)) {
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.url == "string") {
 						url = this.leftIcon.url;
 					}
@@ -218,7 +218,7 @@
 			},
 			leftIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.leftIcon)) {
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.spin == "boolean") {
 						spin = this.leftIcon.spin;
 					}
@@ -227,7 +227,7 @@
 			},
 			leftIconSize(){
 				let size = null;
-				if ($util.isObject(this.leftIcon)) {
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.size == "string") {
 						size = this.leftIcon.size;
 					}
@@ -236,7 +236,7 @@
 			},
 			leftIconColor(){
 				let color = null;
-				if ($util.isObject(this.leftIcon)) {
+				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.color == "string") {
 						color = this.leftIcon.color;
 					}
@@ -245,7 +245,7 @@
 			},
 			rightIconType() {
 				let type = null;
-				if ($util.isObject(this.rightIcon)) {
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.type == "string") {
 						type = this.rightIcon.type;
 					}
@@ -256,7 +256,7 @@
 			},
 			rightIconUrl() {
 				let url = null;
-				if ($util.isObject(this.rightIcon)) {
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.url == "string") {
 						url = this.rightIcon.url;
 					}
@@ -265,7 +265,7 @@
 			},
 			rightIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.rightIcon)) {
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.spin == "boolean") {
 						spin = this.rightIcon.spin;
 					}
@@ -274,7 +274,7 @@
 			},
 			rightIconSize(){
 				let size = null;
-				if ($util.isObject(this.rightIcon)) {
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.size == "string") {
 						size = this.rightIcon.size;
 					}
@@ -283,7 +283,7 @@
 			},
 			rightIconColor(){
 				let color = null;
-				if ($util.isObject(this.rightIcon)) {
+				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.color == "string") {
 						color = this.rightIcon.color;
 					}
@@ -365,13 +365,13 @@
 			//文本域的rows
 			rowsFilter() {
 				let rows = this.rows;
-				if ($util.isObject(this.autosize)) {
-					if ($util.isNumber(this.autosize.minRows)) {
+				if ($dap.common.isObject(this.autosize)) {
+					if ($dap.number.isNumber(this.autosize.minRows)) {
 						if (this.rows < this.autosize.minRows) {
 							rows = this.autosize.minRows;
 						}
 					}
-					if ($util.isNumber(this.autosize.maxRows)) {
+					if ($dap.number.isNumber(this.autosize.maxRows)) {
 						if (this.rows > this.autosize.maxRows) {
 							rows = this.autosize.maxRows;
 						}
@@ -422,14 +422,14 @@
 		mounted() {
 			if (this.$refs.textarea) {
 				this.setMaxMinHeight();
-				if (this.autosize == true || $util.isObject(this.autosize)) {
+				if (this.autosize == true || $dap.common.isObject(this.autosize)) {
 					this.autosizeSet();
 				}
 			}
 		},
 		watch: {
 			realValue(newValue) {
-				if (this.$refs.textarea && (this.autosize == true || $util.isObject(this.autosize))) {
+				if (this.$refs.textarea && (this.autosize == true || $dap.common.isObject(this.autosize))) {
 					this.autosizeSet();
 				}
 			},
@@ -445,7 +445,7 @@
 			},
 			showClear(newValue){
 				this.$nextTick(()=>{
-					if (this.$refs.textarea && (this.autosize == true || $util.isObject(this.autosize))) {
+					if (this.$refs.textarea && (this.autosize == true || $dap.common.isObject(this.autosize))) {
 						this.autosizeSet();
 					}
 				})
@@ -503,21 +503,21 @@
 			autosizeSet() {
 				this.$refs.textarea.style.height = 'auto';
 				this.$refs.textarea.scrollTop = 0;
-				this.$refs.textarea.style.height = $util.getScrollHeight(this.$refs.textarea) + 'px';
+				this.$refs.textarea.style.height = $dap.element.getScrollHeight(this.$refs.textarea) + 'px';
 			},
 			//行数转为高度
 			rows2Height(rows) {
-				let lineHeight = Math.floor(parseFloat($util.getCssStyle(this.$refs.textarea, 'line-height')));
+				let lineHeight = Math.floor(parseFloat($dap.element.getCssStyle(this.$refs.textarea, 'line-height')));
 				return rows * lineHeight;
 			},
 			//设置最大高度和最小高度
 			setMaxMinHeight() {
-				if ($util.isObject(this.autosize)) {
-					if ($util.isNumber(this.autosize.maxRows)) {
+				if ($dap.common.isObject(this.autosize)) {
+					if ($dap.number.isNumber(this.autosize.maxRows)) {
 						let maxHeight = this.rows2Height(this.autosize.maxRows);
 						this.$refs.textarea.style.maxHeight = maxHeight + "px";
 					}
-					if ($util.isNumber(this.autosize.minRows)) {
+					if ($dap.number.isNumber(this.autosize.minRows)) {
 						let minHeight = this.rows2Height(this.autosize.minRows);
 						this.$refs.textarea.style.minHeight = minHeight + "px";
 					}

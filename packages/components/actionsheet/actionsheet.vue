@@ -26,7 +26,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mPopup from "../popup/popup"
 	import mLoading from "../loading/loading"
 	import mIcon from "../icon/icon"
@@ -122,92 +122,92 @@
 			iconType() {
 				return icon => {
 					let t = null;
-					if ($util.isObject(icon)) {
+					if ($dap.common.isObject(icon)) {
 						if (typeof icon.type == "string") {
-							t = icon.type;
+							t = icon.type
 						}
 					} else if (typeof icon == "string") {
-						t = icon;
+						t = icon
 					}
-					return t;
+					return t
 				}
 			},
 			iconUrl() {
 				return icon => {
-					let url = null;
-					if ($util.isObject(icon)) {
+					let url = null
+					if ($dap.common.isObject(icon)) {
 						if (typeof icon.url == "string") {
-							url = icon.url;
+							url = icon.url
 						}
 					}
-					return url;
+					return url
 				}
 			},
 			iconSpin() {
 				return icon => {
-					let spin = false;
-					if ($util.isObject(icon)) {
+					let spin = false
+					if ($dap.common.isObject(icon)) {
 						if (typeof icon.spin == "boolean") {
-							spin = icon.spin;
+							spin = icon.spin
 						}
 					}
-					return spin;
+					return spin
 				}
 			},
 			iconSize() {
 				return icon => {
-					let size = null;
-					if ($util.isObject(icon)) {
+					let size = null
+					if ($dap.common.isObject(icon)) {
 						if (typeof icon.size == "string") {
-							size = icon.size;
+							size = icon.size
 						}
 					}
-					return size;
+					return size
 				}
 			},
 			iconColor() {
 				return icon => {
-					let color = null;
-					if ($util.isObject(icon)) {
+					let color = null
+					if ($dap.common.isObject(icon)) {
 						if (typeof icon.color == "string") {
-							color = icon.color;
+							color = icon.color
 						}
 					}
-					return color;
+					return color
 				}
 			},
 			itemClass() {
 				return item => {
-					let cls = ['mvi-acionsheet-item','mvi-actionsheet-item-'+this.size];
+					let cls = ['mvi-acionsheet-item','mvi-actionsheet-item-'+this.size]
 					if (item.class) {
 						cls.push(item.class)
 					}
 					if (this.active && !item.loading && !item.disabled) {
 						cls.push('mvi-acionsheet-active')
 					}
-					return cls;
+					return cls
 				}
 			},
 			itemStyle(){
 				return item=>{
-					let style = {};
+					let style = {}
 					//非禁用状态
 					if(!this.itemDisabled(item)){
 						if(item.color){
-							style.color = item.color;
+							style.color = item.color
 						}else if(this.color){
-							style.color = this.color;
+							style.color = this.color
 						}
 					}
-					return style;
+					return style
 				}
 			},
 			itemDisabled(){
 				return item=>{
 					if(typeof item.disabled == 'boolean'){
-						return item.disabled;
+						return item.disabled
 					}else{
-						return false;
+						return false
 					}
 				}
 			}
@@ -219,22 +219,22 @@
 			//点击遮罩关闭
 			hide(event) {
 				if (this.closable) {
-					this.doCancel();
+					this.doCancel()
 				}
 			},
 			//取消
 			doCancel() {
-				this.$emit('update:show', false);
-				this.$emit('model-change', false);
+				this.$emit('update:show', false)
+				this.$emit('model-change', false)
 			},
 			//点击选项
 			doSelect(item, index) {
 				if (item.disabled || item.loading) {
-					return;
+					return
 				}
 				if (this.selectClose) {
-					this.$emit('update:show', false);
-					this.$emit('model-change', false);
+					this.$emit('update:show', false)
+					this.$emit('model-change', false)
 				}
 				this.$emit('select', {
 					item: Object.assign({}, item),

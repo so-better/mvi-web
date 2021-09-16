@@ -20,7 +20,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mLoading from "../loading/loading"
 	export default {
 		name: 'm-picker',
@@ -103,7 +103,7 @@
 				if (this.selectHeight.includes('px')) {
 					return parseFloat(this.selectHeight);
 				} else if (this.selectHeight.includes('rem')) {
-					return $util.rem2px(parseFloat(this.selectHeight));
+					return $dap.element.rem2px(parseFloat(this.selectHeight));
 				}
 			},
 			loadingStyle() {
@@ -294,9 +294,9 @@
 				if(totalTimeStamp < 300 &&　Math.abs(moveTotal)>this.computedHeight){//惯性滑动
 					this.addTransition(this.columnIndex,1000).then(()=>{
 						if(moveTotal > 0){
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $util.rem2px(10) * totalTimeStamp/1000);
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $dap.element.rem2px(10) * totalTimeStamp/1000);
 						}else{
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $util.rem2px(10) * totalTimeStamp/1000);
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $dap.element.rem2px(10) * totalTimeStamp/1000);
 						}
 						return this.addTransition(this.columnIndex,300);
 					}).then(()=>{
@@ -320,9 +320,9 @@
 				if(totalTimeStamp < 300 &&　Math.abs(moveTotal)>this.computedHeight){//惯性滑动
 					this.addTransition(this.columnIndex,1000).then(()=>{
 						if(moveTotal > 0){
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $util.rem2px(10) * totalTimeStamp/1000);
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $dap.element.rem2px(10) * totalTimeStamp/1000);
 						}else{
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $util.rem2px(10) * totalTimeStamp/1000);
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $dap.element.rem2px(10) * totalTimeStamp/1000);
 						}
 						return this.addTransition(this.columnIndex,300);
 					}).then(()=>{

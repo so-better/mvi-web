@@ -12,7 +12,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mOverlay from "../overlay/overlay"
 	import mLoading from "../loading/loading"
 	import mIcon from "../icon/icon"
@@ -66,7 +66,7 @@
 				}
 				if(typeof this.icon == 'string' && this.icon){
 					icon.type = this.icon;
-				} else if($util.isObject(this.icon)){
+				} else if($dap.common.isObject(this.icon)){
 					if(typeof this.icon.type == 'string' && this.icon.type){
 						icon.type = this.icon.type;
 					}
@@ -88,14 +88,14 @@
 			toastMessage(){
 				if(typeof this.message == "string"){
 					return this.message;
-				}else if($util.isObject(this.message)){
+				}else if($dap.common.isObject(this.message)){
 					return JSON.stringify(this.message);
 				}else{
 					return String(this.message);
 				}
 			},
 			toastTimeout(){
-				if($util.isNumber(this.timeout) && this.timeout>0){
+				if($dap.number.isNumber(this.timeout) && this.timeout>0){
 					return this.timeout;
 				}else{
 					return -1;
@@ -109,14 +109,14 @@
 				}
 			},
 			toastZIndex(){
-				if($util.isNumber(this.zIndex)){
+				if($dap.number.isNumber(this.zIndex)){
 					return this.zIndex;
 				}else{
 					return 1100;
 				}
 			},
 			toastLocal(){
-				if((typeof this.local == 'string' && this.local) || $util.isElement(this.local)){
+				if((typeof this.local == 'string' && this.local) || $dap.element.isElement(this.local)){
 					return true;
 				}else{
 					return false;

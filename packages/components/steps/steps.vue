@@ -6,7 +6,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	export default {
 		name:"m-steps",
 		data(){
@@ -55,7 +55,7 @@
 			},
 			activeIconType() {
 				let t = 'success-o';
-				if ($util.isObject(this.activeIcon)) {
+				if ($dap.common.isObject(this.activeIcon)) {
 					if (typeof this.activeIcon.type == "string") {
 						t = this.activeIcon.type;
 					}
@@ -66,7 +66,7 @@
 			},
 			activeIconUrl() {
 				let url = null;
-				if ($util.isObject(this.activeIcon)) {
+				if ($dap.common.isObject(this.activeIcon)) {
 					if (typeof this.activeIcon.url == "string") {
 						url = this.activeIcon.url;
 					}
@@ -75,7 +75,7 @@
 			},
 			activeIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.activeIcon)) {
+				if ($dap.common.isObject(this.activeIcon)) {
 					if (typeof this.activeIcon.spin == "boolean") {
 						spin = this.activeIcon.spin;
 					}
@@ -84,7 +84,7 @@
 			},
 			activeIconSize(){
 				let size = null;
-				if ($util.isObject(this.activeIcon)) {
+				if ($dap.common.isObject(this.activeIcon)) {
 					if (typeof this.activeIcon.size == "string") {
 						size = this.activeIcon.size;
 					}
@@ -93,7 +93,7 @@
 			},
 			activeIconColor(){
 				let color = null;
-				if ($util.isObject(this.activeIcon)) {
+				if ($dap.common.isObject(this.activeIcon)) {
 					if (typeof this.activeIcon.color == "string") {
 						color = this.activeIcon.color;
 					}
@@ -102,7 +102,7 @@
 			},
 			inactiveIconType() {
 				let t = null;
-				if ($util.isObject(this.inactiveIcon)) {
+				if ($dap.common.isObject(this.inactiveIcon)) {
 					if (typeof this.inactiveIcon.type == "string") {
 						t = this.inactiveIcon.type;
 					}
@@ -113,7 +113,7 @@
 			},
 			inactiveIconUrl() {
 				let url = null;
-				if ($util.isObject(this.inactiveIcon)) {
+				if ($dap.common.isObject(this.inactiveIcon)) {
 					if (typeof this.inactiveIcon.url == "string") {
 						url = this.inactiveIcon.url;
 					}
@@ -122,7 +122,7 @@
 			},
 			inactiveIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.inactiveIcon)) {
+				if ($dap.common.isObject(this.inactiveIcon)) {
 					if (typeof this.inactiveIcon.spin == "boolean") {
 						spin = this.inactiveIcon.spin;
 					}
@@ -131,7 +131,7 @@
 			},
 			inactiveIconSize(){
 				let size = null;
-				if ($util.isObject(this.inactiveIcon)) {
+				if ($dap.common.isObject(this.inactiveIcon)) {
 					if (typeof this.inactiveIcon.size == "string") {
 						size = this.inactiveIcon.size;
 					}
@@ -140,7 +140,7 @@
 			},
 			inactiveIconColor(){
 				let color = null;
-				if ($util.isObject(this.inactiveIcon)) {
+				if ($dap.common.isObject(this.inactiveIcon)) {
 					if (typeof this.inactiveIcon.color == "string") {
 						color = this.inactiveIcon.color;
 					}

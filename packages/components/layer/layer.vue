@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mTriangle from "../triangle/triangle"
 	export default {
 		name: 'm-layer',
@@ -238,7 +238,7 @@
 			autoAdjust(){
 				//获取绑定元素位置
 				let $target = this.getTargetEl();
-				let point = $util.getElementBounding($target);
+				let point = $dap.element.getElementBounding($target);
 				this.realPlacement = this.placement;
 				if(this.placement == 'bottom'){
 					//如果底部距离不够
@@ -689,7 +689,7 @@
 			//点击他处关闭悬浮层
 			hideLayer(event){
 				if(this.layerShow && this.firstShow && this.closable){
-					if($util.isContains(this.$el,event.target) || $util.isContains(this.getTargetEl(),event.target)){
+					if($dap.element.isContains(this.$el,event.target) || $dap.element.isContains(this.getTargetEl(),event.target)){
 						return;
 					}
 					this.$emit('update:show',false);
@@ -750,7 +750,7 @@
 			},
 			//重置位置
 			reset(){
-				if(!$util.isElement(this.$el)){
+				if(!$dap.element.isElement(this.$el)){
 					return;
 				}
 				//设置offset
@@ -768,21 +768,21 @@
 				}
 				let $target = this.getTargetEl();
 				let $root = this.getRootEl();
-				let pt = $util.getElementPoint($target,$root);
+				let pt = $dap.element.getElementPoint($target,$root);
 				if(this.fixed){
 					if(this.fixedAuto){
 						let flag = true;
 						let element = $target.offsetParent;
 						while (flag && element){
-							if($util.getCssStyle(element,'transform') != 'none'){
+							if($dap.element.getCssStyle(element,'transform') != 'none'){
 								flag = false;
 							}else {
 								element = element.offsetParent;
 							}
 						}
-						pt = $util.getElementPoint($target,element)
+						pt = $dap.element.getElementPoint($target,element)
 					}else {
-						pt = $util.getElementBounding($target)
+						pt = $dap.element.getElementBounding($target)
 					}
 				}
 				if(this.realPlacement == 'bottom' || this.realPlacement == 'bottom-start' || this.realPlacement == 'bottom-end'){

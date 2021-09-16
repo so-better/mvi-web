@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import msgBoxComponent from './msgbox'
 
 const MsgBox = {};
@@ -12,7 +12,7 @@ MsgBox.install = Vue=> {
 	Vue.prototype.$msgbox = (options,callback) => {
 		// 生成一个该子类的实例
 		const instance = new MsgBoxConstructor();
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.message = options.message;
 			instance.timeout = options.timeout;
 			instance.callback = options.callback;
@@ -27,7 +27,7 @@ MsgBox.install = Vue=> {
 		//挂载该实例
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			document.body.appendChild(instance.$el)
 		}
 	}

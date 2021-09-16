@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 /**
  * 文件上传
  */
@@ -7,7 +7,7 @@ class Upload {
 		this.$el = element; //组件容器
 		this.$selectInput = null; //文件上传元素
 		this.files = []; //选择的文件值数组
-		if(!$util.isObject(options)){
+		if(!$dap.common.isObject(options)){
 			options = {};
 		}
 		this.accept = options.accept; //接受的文件类型
@@ -34,22 +34,22 @@ class Upload {
 			return;
 		}
 		this.hasInit = true;
-		if (!$util.isElement(this.$el)) {
+		if (!$dap.element.isElement(this.$el)) {
 			throw new TypeError("The upload element is not specified");
 		}
 		if (!(this.allowedFileType instanceof Array)) {
 			this.allowedFileType = [];
 		}
-		if (!$util.isNumber(this.minSize) || this.minSize <= 0) {
+		if (!$dap.number.isNumber(this.minSize) || this.minSize <= 0) {
 			this.minSize = -1;
 		}
-		if (!$util.isNumber(this.maxSize) || this.maxSize <= 0) {
+		if (!$dap.number.isNumber(this.maxSize) || this.maxSize <= 0) {
 			this.maxSize = -1;
 		}
-		if (!$util.isNumber(this.maxLength) || this.maxLength <= 0) {
+		if (!$dap.number.isNumber(this.maxLength) || this.maxLength <= 0) {
 			this.maxLength = -1;
 		}
-		if (!$util.isNumber(this.minLength) || this.minLength <= 0) {
+		if (!$dap.number.isNumber(this.minLength) || this.minLength <= 0) {
 			this.minLength = -1;
 		}
 		if (typeof this.multiple != "boolean") {
@@ -77,7 +77,7 @@ class Upload {
 			this.extra = {};
 		}
 		//生成input[type='file']元素
-		this.$selectInput = $util.string2dom("<input type='file' />");
+		this.$selectInput = $dap.element.string2dom("<input type='file' />");
 		if (this.accept === "rar") {
 			this.$selectInput.setAttribute('accept', 'application/x-rar-compressed');
 		} else if (this.accept === "zip") {

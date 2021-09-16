@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import Px from './px'
 
 Px.install = Vue => {
@@ -6,10 +6,10 @@ Px.install = Vue => {
 	Vue.directive('px', {
 		inserted(el, binding) {
 			let options = {};
-			if ($util.isObject(binding.value)) {
+			if ($dap.common.isObject(binding.value)) {
 				Object.assign(options, binding.value);
 			}
-			if ($util.isObject(binding.modifiers)) {
+			if ($dap.common.isObject(binding.modifiers)) {
 				Object.assign(options, binding.modifiers);
 			}
 			if(binding.arg){

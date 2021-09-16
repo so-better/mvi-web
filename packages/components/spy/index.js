@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import Spy from "./spy"
 
 Spy.install = Vue=>{
@@ -6,7 +6,7 @@ Spy.install = Vue=>{
 	Vue.directive('spy', {
 		inserted(el, binding) {
 			let options = {};
-			if($util.isObject(binding.value)){
+			if($dap.common.isObject(binding.value)){
 				Object.assign(options,binding.value);
 			}
 			let spy = new Spy(el,options);

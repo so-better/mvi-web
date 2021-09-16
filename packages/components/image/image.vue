@@ -16,7 +16,7 @@
 	</div>
 </template>
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import Spy from "../spy/spy"
 	import mIcon from "../icon/icon"
 	export default {
@@ -88,7 +88,7 @@
 			},
 			loadIconType(){
 				let type = 'image-alt';
-				if ($util.isObject(this.loadIcon)) {
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.type == "string") {
 						type = this.loadIcon.type;
 					}
@@ -99,7 +99,7 @@
 			},
 			loadIconUrl(){
 				let url = null;
-				if ($util.isObject(this.loadIcon)) {
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.url == "string") {
 						url = this.loadIcon.url;
 					}
@@ -108,7 +108,7 @@
 			},
 			loadIconSpin(){
 				let spin = false;
-				if ($util.isObject(this.loadIcon)) {
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.spin == "boolean") {
 						spin = this.loadIcon.spin;
 					}
@@ -117,7 +117,7 @@
 			},
 			loadIconSize(){
 				let size = null;
-				if ($util.isObject(this.loadIcon)) {
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.size == "string") {
 						size = this.loadIcon.size;
 					}
@@ -126,7 +126,7 @@
 			},
 			loadIconColor(){
 				let color = null;
-				if ($util.isObject(this.loadIcon)) {
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.color == "string") {
 						color = this.loadIcon.color;
 					}
@@ -135,7 +135,7 @@
 			},
 			errorIconType(){
 				let type = 'image-error';
-				if ($util.isObject(this.errorIcon)) {
+				if ($dap.common.isObject(this.errorIcon)) {
 					if (typeof this.errorIcon.type == "string") {
 						type = this.errorIcon.type;
 					}
@@ -146,7 +146,7 @@
 			},
 			errorIconUrl(){
 				let url = null;
-				if ($util.isObject(this.errorIcon)) {
+				if ($dap.common.isObject(this.errorIcon)) {
 					if (typeof this.errorIcon.url == "string") {
 						url = this.errorIcon.url;
 					}
@@ -155,7 +155,7 @@
 			},
 			errorIconSpin(){
 				let spin = false;
-				if ($util.isObject(this.errorIcon)) {
+				if ($dap.common.isObject(this.errorIcon)) {
 					if (typeof this.errorIcon.spin == "boolean") {
 						spin = this.errorIcon.spin;
 					}
@@ -164,7 +164,7 @@
 			},
 			errorIconSize(){
 				let size = null;
-				if ($util.isObject(this.errorIcon)) {
+				if ($dap.common.isObject(this.errorIcon)) {
 					if (typeof this.errorIcon.size == "string") {
 						size = this.errorIcon.size;
 					}
@@ -173,7 +173,7 @@
 			},
 			errorIconColor(){
 				let color = null;
-				if ($util.isObject(this.errorIcon)) {
+				if ($dap.common.isObject(this.errorIcon)) {
 					if (typeof this.errorIcon.color == "string") {
 						color = this.errorIcon.color;
 					}

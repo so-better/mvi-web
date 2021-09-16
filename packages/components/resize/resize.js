@@ -1,11 +1,11 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 /**
  * 拖拽改变元素大小
  */
 class Resize {
 	constructor(element, options) {
 		this.$el = element;
-		if(!$util.isObject(options)){
+		if(!$dap.common.isObject(options)){
 			options = {};
 		}
 		this.draggableX = options.draggableX;
@@ -49,7 +49,7 @@ class Resize {
 		if (typeof this.draggableY != "boolean") {
 			this.draggableY = true;
 		}
-		if (!$util.isObject(this.mode)) {
+		if (!$dap.common.isObject(this.mode)) {
 			this.mode = {
 				left: Resize.MODE.LEFT,
 				top: Resize.MODE.TOP,
@@ -85,7 +85,7 @@ class Resize {
 		if (typeof this.ready != "function") {
 			this.ready = function() {};
 		}
-		if(!$util.isNumber(this.range)){
+		if(!$dap.number.isNumber(this.range)){
 			this.range = 1;
 		}
 
@@ -104,54 +104,54 @@ class Resize {
 		let range = this.$el.getBoundingClientRect();
 		if (this.draggableX && this.draggableY) {
 			this.leftRange = {
-				x: [range.left, range.left + $util.rem2px(this.range)],
-				y: [range.top + $util.rem2px(this.range), range.bottom - $util.rem2px(this.range)]
+				x: [range.left, range.left + $dap.element.rem2px(this.range)],
+				y: [range.top + $dap.element.rem2px(this.range), range.bottom - $dap.element.rem2px(this.range)]
 			}
 			this.rightRange = {
-				x: [range.right - $util.rem2px(this.range), range.right],
-				y: [range.top + $util.rem2px(this.range), range.bottom - $util.rem2px(this.range)]
+				x: [range.right - $dap.element.rem2px(this.range), range.right],
+				y: [range.top + $dap.element.rem2px(this.range), range.bottom - $dap.element.rem2px(this.range)]
 			}
 			this.topRange = {
-				x: [range.left + $util.rem2px(this.range), range.right - $util.rem2px(this.range)],
-				y: [range.top, range.top + $util.rem2px(this.range)]
+				x: [range.left + $dap.element.rem2px(this.range), range.right - $dap.element.rem2px(this.range)],
+				y: [range.top, range.top + $dap.element.rem2px(this.range)]
 			}
 			this.bottomRange = {
-				x: [range.left + $util.rem2px(this.range), range.right - $util.rem2px(this.range)],
-				y: [range.bottom - $util.rem2px(this.range), range.bottom]
+				x: [range.left + $dap.element.rem2px(this.range), range.right - $dap.element.rem2px(this.range)],
+				y: [range.bottom - $dap.element.rem2px(this.range), range.bottom]
 			}
 			this.leftTopRange = {
-				x: [range.left, range.left + $util.rem2px(this.range)],
-				y: [range.top, range.top + $util.rem2px(this.range)]
+				x: [range.left, range.left + $dap.element.rem2px(this.range)],
+				y: [range.top, range.top + $dap.element.rem2px(this.range)]
 			}
 			this.leftBottomRange = {
-				x: [range.left, range.left + $util.rem2px(this.range)],
-				y: [range.bottom - $util.rem2px(this.range), range.bottom]
+				x: [range.left, range.left + $dap.element.rem2px(this.range)],
+				y: [range.bottom - $dap.element.rem2px(this.range), range.bottom]
 			}
 			this.rightTopRange = {
-				x: [range.right - $util.rem2px(this.range), range.right],
-				y: [range.top, range.top + $util.rem2px(this.range)]
+				x: [range.right - $dap.element.rem2px(this.range), range.right],
+				y: [range.top, range.top + $dap.element.rem2px(this.range)]
 			}
 			this.rightBottomRange = {
-				x: [range.right - $util.rem2px(this.range), range.right],
-				y: [range.bottom - $util.rem2px(this.range), range.bottom]
+				x: [range.right - $dap.element.rem2px(this.range), range.right],
+				y: [range.bottom - $dap.element.rem2px(this.range), range.bottom]
 			}
 		} else if (this.draggableX) {
 			this.leftRange = {
-				x: [range.left, range.left + $util.rem2px(this.range)],
+				x: [range.left, range.left + $dap.element.rem2px(this.range)],
 				y: [range.top, range.bottom]
 			}
 			this.rightRange = {
-				x: [range.right - $util.rem2px(this.range), range.right],
+				x: [range.right - $dap.element.rem2px(this.range), range.right],
 				y: [range.top, range.bottom]
 			}
 		} else if (this.draggableY) {
 			this.topRange = {
 				x: [range.left, range.right],
-				y: [range.top, range.top + $util.rem2px(this.range)]
+				y: [range.top, range.top + $dap.element.rem2px(this.range)]
 			}
 			this.bottomRange = {
 				x: [range.left, range.right],
-				y: [range.bottom - $util.rem2px(this.range), range.bottom]
+				y: [range.bottom - $dap.element.rem2px(this.range), range.bottom]
 			}
 		}
 	}
@@ -173,7 +173,7 @@ class Resize {
 		this._height = this.$el.offsetHeight;
 		this._left = this.$el.offsetLeft;
 		this._top = this.$el.offsetTop;
-		this.cursor = $util.getCssStyle(this.$el,'cursor');
+		this.cursor = $dap.element.getCssStyle(this.$el,'cursor');
 		//宽高都可以改
 		if (this.draggableX && this.draggableY) {
 			if (this._getIsInRange(this.startX, this.startY, this.leftTopRange)) { //左上区域内

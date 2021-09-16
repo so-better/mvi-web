@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 /**
  * 高度比例系数
  */
@@ -17,7 +17,7 @@ class Prop {
 			return;
 		}
 		this.hasInit = true;
-		if(!$util.isElement(this.$el)){
+		if(!$dap.element.isElement(this.$el)){
 			throw new TypeError("The bound element is not a node element");
 		}
 		if(typeof this.ratio != "number" || isNaN(this.ratio)){

@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import LoadingBarComponent from './loadingBar'
 
 const LoadingBar = {};
@@ -13,7 +13,7 @@ LoadingBar.install = Vue=> {
 	instance.$mount();
 	Vue.prototype.$showLoadingBar = options => {
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			document.body.appendChild(instance.$el)
 		}
 		if(typeof options == "function"){
@@ -24,7 +24,7 @@ LoadingBar.install = Vue=> {
 			instance.color = options;
 			instance.zIndex = null;
 			instance.callback = null;
-		}else if($util.isObject(options)){
+		}else if($dap.common.isObject(options)){
 			instance.color = options.color;
 			instance.zIndex = options.zIndex;
 			instance.callback = options.callback;

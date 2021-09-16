@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util.js"
+	import $dap from "dap-util"
 	export default {
 		name:"m-swipe-cell",
 		data(){
@@ -77,7 +77,7 @@
 				let moveX = endX - this.startX;//每次移动的偏移值
 				let moveX2 = endX - this.startX2;//总偏移值
 				this.startX = endX;
-				if(Math.abs(moveX2) <= $util.rem2px(1)){
+				if(Math.abs(moveX2) <= $dap.element.rem2px(1)){
 					return;
 				}
 				if(event.cancelable){
@@ -159,7 +159,7 @@
 				let moveX = endX - this.startX;//每次移动的偏移值
 				let moveX2 = endX - this.startX2;//总偏移值
 				this.startX = endX;
-				if(Math.abs(moveX2) <= $util.rem2px(1)){
+				if(Math.abs(moveX2) <= $dap.element.rem2px(1)){
 					return;
 				}
 				if(event.cancelable){

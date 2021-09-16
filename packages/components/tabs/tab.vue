@@ -7,7 +7,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	export default {
 		name:"m-tab",
 		inject:['tabs'],
@@ -68,7 +68,7 @@
 			},
 			iconType() {
 				let t = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.type == "string") {
 						t = this.icon.type;
 					}
@@ -79,7 +79,7 @@
 			},
 			iconUrl() {
 				let url = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.url == "string") {
 						url = this.icon.url;
 					}
@@ -88,7 +88,7 @@
 			},
 			iconSpin() {
 				let spin = false;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.spin == "boolean") {
 						spin = this.icon.spin;
 					}
@@ -97,7 +97,7 @@
 			},
 			iconSize(){
 				let size = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.size == "string") {
 						size = this.icon.size;
 					}
@@ -106,7 +106,7 @@
 			},
 			iconColor(){
 				let color = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.color == "string") {
 						color = this.icon.color;
 					}

@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import dialogComponent from "./dialog"
 import dialogForPCComponent from "./dialogForPC"
 
@@ -12,7 +12,7 @@ Dialog.install = Vue=>{
 	Vue.prototype.$alert = (options,callback) => {
 		// 生成一个该子类的实例
 		const instance = new DialogConstructor();
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.title = options.title;
 			instance.message = options.message;
 			instance.btnText = options.btnText;
@@ -35,7 +35,7 @@ Dialog.install = Vue=>{
 		// 挂载该实例
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
@@ -43,7 +43,7 @@ Dialog.install = Vue=>{
 				}else{
 					document.body.appendChild(instance.$el)
 				}
-			}else if($util.isElement(options.local)){
+			}else if($dap.element.isElement(options.local)){
 				options.local.appendChild(instance.$el)
 			}else{
 				document.body.appendChild(instance.$el)
@@ -55,7 +55,7 @@ Dialog.install = Vue=>{
 	Vue.prototype.$confirm = (options,callback) => {
 		// 生成一个该子类的实例
 		const instance = new DialogConstructor();
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.title = options.title;
 			instance.message = options.message;
 			instance.btnText = options.btnText;
@@ -78,7 +78,7 @@ Dialog.install = Vue=>{
 		// 挂载该实例
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
@@ -86,7 +86,7 @@ Dialog.install = Vue=>{
 				}else{
 					document.body.appendChild(instance.$el)
 				}
-			}else if($util.isElement(options.local)){
+			}else if($dap.element.isElement(options.local)){
 				options.local.appendChild(instance.$el)
 			}else{
 				document.body.appendChild(instance.$el)
@@ -98,7 +98,7 @@ Dialog.install = Vue=>{
 	Vue.prototype.$prompt = (options,callback) => {
 		// 生成一个该子类的实例
 		const instance = new DialogConstructor();
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.title = options.title;
 			instance.message = options.message;
 			instance.btnText = options.btnText;
@@ -129,7 +129,7 @@ Dialog.install = Vue=>{
 		// 挂载该实例
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
@@ -137,7 +137,7 @@ Dialog.install = Vue=>{
 				}else{
 					document.body.appendChild(instance.$el)
 				}
-			}else if($util.isElement(options.local)){
+			}else if($dap.element.isElement(options.local)){
 				options.local.appendChild(instance.$el)
 			}else{
 				document.body.appendChild(instance.$el)
@@ -149,7 +149,7 @@ Dialog.install = Vue=>{
 	Vue.prototype.$Alert = (options,callback)=>{
 		// 生成一个该子类的实例
 		const instance = new DialogForPcConstructor();
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.title = options.title;
 			instance.message = options.message;
 			instance.btns = options.btns;
@@ -171,7 +171,7 @@ Dialog.install = Vue=>{
 		// 挂载该实例
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
@@ -179,7 +179,7 @@ Dialog.install = Vue=>{
 				}else{
 					document.body.appendChild(instance.$el)
 				}
-			}else if($util.isElement(options.local)){
+			}else if($dap.element.isElement(options.local)){
 				options.local.appendChild(instance.$el)
 			}else{
 				document.body.appendChild(instance.$el)
@@ -191,7 +191,7 @@ Dialog.install = Vue=>{
 	Vue.prototype.$Confirm = (options,callback) => {
 		// 生成一个该子类的实例
 		const instance = new DialogForPcConstructor();
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.title = options.title;
 			instance.message = options.message;
 			instance.btns = options.btns;
@@ -213,7 +213,7 @@ Dialog.install = Vue=>{
 		// 挂载该实例
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
@@ -221,7 +221,7 @@ Dialog.install = Vue=>{
 				}else{
 					document.body.appendChild(instance.$el)
 				}
-			}else if($util.isElement(options.local)){
+			}else if($dap.element.isElement(options.local)){
 				options.local.appendChild(instance.$el)
 			}else{
 				document.body.appendChild(instance.$el)
@@ -233,7 +233,7 @@ Dialog.install = Vue=>{
 	Vue.prototype.$Prompt = (options,callback) => {
 		// 生成一个该子类的实例
 		const instance = new DialogForPcConstructor();
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.title = options.title;
 			instance.message = options.message;
 			instance.btns = options.btns;
@@ -262,7 +262,7 @@ Dialog.install = Vue=>{
 		// 挂载该实例
 		instance.$mount();
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			if(typeof options.local == 'string' && options.local){
 				let el = document.body.querySelector(options.local);
 				if(el){
@@ -270,7 +270,7 @@ Dialog.install = Vue=>{
 				}else{
 					document.body.appendChild(instance.$el)
 				}
-			}else if($util.isElement(options.local)){
+			}else if($dap.element.isElement(options.local)){
 				options.local.appendChild(instance.$el)
 			}else{
 				document.body.appendChild(instance.$el)

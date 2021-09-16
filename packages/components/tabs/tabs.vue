@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mIcon from "../icon/icon"
 	export default {
 		name:"m-tabs",
@@ -265,8 +265,8 @@
 			},
 			//设置滑动条
 			setSlider(){
-				this.slideWidth = parseFloat($util.getCssStyle(this.$refs.headers.querySelector('.mvi-tab-header-active'),'width'));
-				this.slideLeft = $util.getElementPoint(this.$refs.headers.querySelector('.mvi-tab-header-active'),this.$refs.headers).left;
+				this.slideWidth = parseFloat($dap.element.getCssStyle(this.$refs.headers.querySelector('.mvi-tab-header-active'),'width'));
+				this.slideLeft = $dap.element.getElementPoint(this.$refs.headers.querySelector('.mvi-tab-header-active'),this.$refs.headers).left;
 			}
 		},
 		beforeDestroy() {

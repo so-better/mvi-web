@@ -28,7 +28,7 @@
 		},
 		computed:{
 			listeners(){
-				return Object.assign({},this.$listeners);
+				return Object.assign({},this.$listeners)
 			}
 		}
 	}

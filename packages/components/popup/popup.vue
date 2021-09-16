@@ -19,7 +19,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import Overlay from "../overlay"
 	import Icon from "../icon"
 	export default {
@@ -108,7 +108,7 @@
 			},
 			iconType() {
 				let t = "times";
-				if ($util.isObject(this.timesIcon)) {
+				if ($dap.common.isObject(this.timesIcon)) {
 					if (typeof this.timesIcon.type == "string") {
 						t = this.timesIcon.type;
 					}
@@ -119,7 +119,7 @@
 			},
 			iconUrl() {
 				let url = null;
-				if ($util.isObject(this.timesIcon)) {
+				if ($dap.common.isObject(this.timesIcon)) {
 					if (typeof this.timesIcon.url == "string") {
 						url = this.timesIcon.url;
 					}
@@ -128,7 +128,7 @@
 			},
 			iconSpin() {
 				let spin = false;
-				if ($util.isObject(this.timesIcon)) {
+				if ($dap.common.isObject(this.timesIcon)) {
 					if (typeof this.timesIcon.spin == "boolean") {
 						spin = this.timesIcon.spin;
 					}
@@ -137,7 +137,7 @@
 			},
 			iconSize(){
 				let size = null;
-				if ($util.isObject(this.timesIcon)) {
+				if ($dap.common.isObject(this.timesIcon)) {
 					if (typeof this.timesIcon.size == "string") {
 						size = this.timesIcon.size;
 					}
@@ -146,7 +146,7 @@
 			},
 			iconColor(){
 				let color = null;
-				if ($util.isObject(this.timesIcon)) {
+				if ($dap.common.isObject(this.timesIcon)) {
 					if (typeof this.timesIcon.color == "string") {
 						color = this.timesIcon.color;
 					}

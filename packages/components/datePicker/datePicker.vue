@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mPicker from "../picker/picker"
 	export default {
 		name: "m-date-picker",
@@ -192,7 +192,7 @@
 			},
 			//日期数组
 			dayArray() {
-				let totalDays = $util.getDays(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1);
+				let totalDays = $dap.date.getDays(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1);
 				let days = [];
 				if (this.selectedDate.getFullYear() == this.startDate.getFullYear() && this.selectedDate.getMonth() == this.startDate
 					.getMonth()) {
@@ -477,7 +477,7 @@
 						}
 					}else if(res.columnIndex == 1){//修改月
 						let month = this.monthArray[res.selected[1].index].month;
-						let totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
+						let totalDays = $dap.date.getDays(this.selectedDate.getFullYear(),month);
 						if(this.selectedDate.getDate() > totalDays){
 							this.selectedDate.setDate(totalDays);
 						}
@@ -522,7 +522,7 @@
 						}
 					}else if(res.columnIndex == 1){//修改月
 						let month = this.monthArray[res.selected[1].index].month;
-						let totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
+						let totalDays = $dap.date.getDays(this.selectedDate.getFullYear(),month);
 						if(this.selectedDate.getDate() > totalDays){
 							this.selectedDate.setDate(totalDays);
 						}
@@ -609,7 +609,7 @@
 						}
 					}else if(res.columnIndex == 1){//修改月
 						let month = this.monthArray[res.selected[1].index].month;
-						let totalDays = $util.getDays(this.selectedDate.getFullYear(),month);
+						let totalDays = $dap.date.getDays(this.selectedDate.getFullYear(),month);
 						if(this.selectedDate.getDate() > totalDays){
 							this.selectedDate.setDate(totalDays);
 						}

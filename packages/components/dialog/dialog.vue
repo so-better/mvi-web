@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import $util from '../../util/util';
+import $dap from "dap-util"
 import mModal from "../modal/modal"
 import mIcon from "../icon/icon"
 export default {
@@ -115,7 +115,7 @@ export default {
 		computedMessage() {
 			if (typeof this.message == 'string') {
 				return this.message;
-			}else if ($util.isObject(this.message)) {
+			}else if ($dap.common.isObject(this.message)) {
 				return JSON.stringify(this.message);
 			} else {
 				return String(this.message)
@@ -210,7 +210,7 @@ export default {
 			} else {
 				input.autofocus = true;
 			}
-			if ($util.isNumber(this.input.maxlength)) {
+			if ($dap.number.isNumber(this.input.maxlength)) {
 				input.maxlength = this.input.maxlength;
 			} else {
 				input.maxlength = -1;
@@ -256,14 +256,14 @@ export default {
 			}
 		},
 		computedZIndex() {
-			if ($util.isNumber(this.zIndex)) {
+			if ($dap.number.isNumber(this.zIndex)) {
 				return this.zIndex;
 			} else {
 				return 1000;
 			}
 		},
 		computedLocal() {
-			if ((typeof this.local == 'string' && this.local) || $util.isElement(this.local)) {
+			if ((typeof this.local == 'string' && this.local) || $dap.element.isElement(this.local)) {
 				return true;
 			} else {
 				return false;
@@ -291,7 +291,7 @@ export default {
 			}
 		},
 		computedTimeout() {
-			if ($util.isNumber(this.timeout)) {
+			if ($dap.number.isNumber(this.timeout)) {
 				return this.timeout;
 			} else {
 				return 300;

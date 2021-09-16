@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import $util from '../../util/util';
+import $dap from "dap-util"
 import mLayer from "../layer/layer"
 import mIcon from "../icon/icon"
 import mCalendar from "../calendar/calendar"
@@ -490,7 +490,7 @@ export default {
 			if (date.getFullYear() <= this.startYear && date.getMonth() == 0) {
 				return;
 			}
-			let prevMonths = $util.getPrevMonths(2, date);
+			let prevMonths = $dap.date.getPrevMonths(date,2)
 			date = prevMonths[1];
 			this.$emit('update:value', date);
 			this.$emit('model-change', date);
@@ -527,7 +527,7 @@ export default {
 			if (date.getFullYear() >= this.endYear && date.getMonth() == 11) {
 				return;
 			}
-			let nextMonths = $util.getNextMonths(2, date);
+			let nextMonths = $dap.date.getNextMonths(date,2)
 			date = nextMonths[1];
 			this.$emit('update:value', date);
 			this.$emit('model-change', date);

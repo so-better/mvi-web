@@ -10,7 +10,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mIcon from "../icon/icon"
 	export default {
 		name:"m-notify",
@@ -43,7 +43,7 @@
 			computedMessage(){
 				if(typeof this.message == "string"){
 					return this.message;
-				}else if($util.isObject(this.message)){
+				}else if($dap.common.isObject(this.message)){
 					return JSON.stringify(this.message);
 				}else {
 					return String(this.message);
@@ -67,7 +67,7 @@
 			},
 			//自定义zIndex
 			computedZIndex(){
-				if($util.isNumber(this.zIndex)){
+				if($dap.number.isNumber(this.zIndex)){
 					return this.zIndex;
 				}else{
 					return 1100;
@@ -75,7 +75,7 @@
 			},
 			//自动关闭时间
 			computedTimeout(){
-				if($util.isNumber(this.timeout) && this.timeout>0){
+				if($dap.number.isNumber(this.timeout) && this.timeout>0){
 					return this.timeout;
 				}else{
 					return 1500;
@@ -92,7 +92,7 @@
 			//图标类型
 			iconType() {
 				let t = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.type == "string") {
 						t = this.icon.type;
 					}
@@ -104,7 +104,7 @@
 			//图标url
 			iconUrl() {
 				let url = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.url == "string") {
 						url = this.icon.url;
 					}
@@ -114,7 +114,7 @@
 			//图标是否旋转
 			iconSpin() {
 				let spin = false;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.spin == "boolean") {
 						spin = this.icon.spin;
 					}
@@ -124,7 +124,7 @@
 			//图标大小
 			iconSize(){
 				let size = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.size == "string") {
 						size = this.icon.size;
 					}
@@ -134,7 +134,7 @@
 			//图标颜色
 			iconColor(){
 				let color = null;
-				if ($util.isObject(this.icon)) {
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.color == "string") {
 						color = this.icon.color;
 					}

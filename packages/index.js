@@ -1,18 +1,20 @@
-//全局默认样式
+//引入全局默认样式
 import "./css/mvi-default.less"
-//辅助样式
+//引入辅助样式
 import "./css/mvi-support.less"
-//工具类
-import util from "./util"
-//JS默认设置
-import "./config"
+//引入dap工具类
+import dap from "dap-util"
+//解决ios系统下css伪类无效的问题
+(function() {
+	window.addEventListener('touchstart',function() {})
+})(window);
 //组件
 import components from "./components"
 
 //注册组件和工具类
 const install = Vue=> {
 	if (install.installed) return
-	util.install(Vue)
+	Vue.prototype.$dap = dap
 	Object.values(components).map(component => {
 		component.install(Vue)
 	})

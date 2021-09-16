@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import Upload from "./upload"
 
 Upload.install = Vue=> {
@@ -6,10 +6,10 @@ Upload.install = Vue=> {
 	Vue.directive('upload', {
 		inserted(el, binding) {
 			let options = {};
-			if ($util.isObject(binding.value)) {
+			if ($dap.common.isObject(binding.value)) {
 				Object.assign(options, binding.value);
 			}
-			if ($util.isObject(binding.modifiers)) {
+			if ($dap.common.isObject(binding.modifiers)) {
 				Object.assign(options, binding.modifiers);
 			}
 			let upload = new Upload(el, options);

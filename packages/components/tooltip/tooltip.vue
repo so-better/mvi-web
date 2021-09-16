@@ -16,7 +16,6 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
 	import mLayer from "../layer/layer"
 	export default {
 		name:"m-tooltip",

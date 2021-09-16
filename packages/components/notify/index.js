@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import NotifyComponent from './notify'
 
 const Notify = {};
@@ -13,10 +13,10 @@ Notify.install = Vue=> {
 	instance.$mount();
 	Vue.prototype.$showNotify = (options,callback) => {
 		//如果实例元素没有添加到页面，则进行添加
-		if(!$util.isContains(document.body,instance.$el)){
+		if(!$dap.element.isContains(document.body,instance.$el)){
 			document.body.appendChild(instance.$el)
 		}
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.type = options.type;
 			instance.message = options.message;
 			instance.timeout = options.timeout;

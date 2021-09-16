@@ -1,11 +1,11 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 /**
  * Drag拖拽插件
  */
 class Drag {
 	constructor(element,options) {
 		this.$el = element;//被拖拽的元素
-		if(!$util.isObject(options)){
+		if(!$dap.common.isObject(options)){
 			options = {};
 		}
 		this.$container = options.container;//可拖拽的区域
@@ -30,22 +30,22 @@ class Drag {
 		}
 		this.hasInit = true;
 		
-		if (!$util.isElement(this.$el)) {
+		if (!$dap.element.isElement(this.$el)) {
 			throw new TypeError("The element that needs to be dragged is not a node element");
 		}
 		if (typeof this.$container == "string" && this.$container) {
 			this.$container = document.body.querySelector(this.$container);
 		}
-		if (!$util.isElement(this.$container)) {
+		if (!$dap.element.isElement(this.$container)) {
 			this.$container = document.body;
 		}
-		if (!$util.isContains(this.$container, this.$el)) {
+		if (!$dap.element.isContains(this.$container, this.$el)) {
 			throw new Error("Elements that need to be dragged are not descendants of container elements");
 		}
-		if ($util.getCssStyle(this.$container, "position") == "static") {
+		if ($dap.element.getCssStyle(this.$container, "position") == "static") {
 			this.$container.style.position = "relative";
 		}
-		if ($util.getCssStyle(this.$el, "position") == "static" || $util.getCssStyle(this.$el, "position") == 'relative') {
+		if ($dap.element.getCssStyle(this.$el, "position") == "static" || $dap.element.getCssStyle(this.$el, "position") == 'relative') {
 			this.$el.style.position = "absolute";
 		}
 		if (typeof this.draggableY != "boolean") {
@@ -82,15 +82,15 @@ class Drag {
 			if(!this.draggableX && !this.draggableY){
 				return
 			}
-			this.pageX = e.targetTouches[0].pageX - $util.getElementPoint(this.$el, this.$container).left;
-			this.pageY = e.targetTouches[0].pageY - $util.getElementPoint(this.$el, this.$container).top;
+			this.pageX = e.targetTouches[0].pageX - $dap.element.getElementPoint(this.$el, this.$container).left;
+			this.pageY = e.targetTouches[0].pageY - $dap.element.getElementPoint(this.$el, this.$container).top;
 			this.draggable = true;
 			this.$el.style.cursor = 'move'
 			//监听事件，监听刚开始拖动触发
 			this.beforedrag({
 				target: this.$el,
 				container: this.$container,
-				placement: $util.getElementPoint(this.$el, this.$container)
+				placement: $dap.element.getElementPoint(this.$el, this.$container)
 			});
 		})
 		//触摸移动
@@ -116,7 +116,7 @@ class Drag {
 					this.drag({
 						target: this.$el,
 						container: this.$container,
-						placement: $util.getElementPoint(this.$el, this.$container)
+						placement: $dap.element.getElementPoint(this.$el, this.$container)
 					})
 				}
 			}
@@ -133,7 +133,7 @@ class Drag {
 				this.dragged({
 					target: this.$el,
 					container: this.$container,
-					placement: $util.getElementPoint(this.$el, this.$container)
+					placement: $dap.element.getElementPoint(this.$el, this.$container)
 				})
 			}
 		})
@@ -142,15 +142,15 @@ class Drag {
 			if(!this.draggableX && !this.draggableY){
 				return
 			}
-			this.pageX = e.pageX - $util.getElementPoint(this.$el, this.$container).left;
-			this.pageY = e.pageY - $util.getElementPoint(this.$el, this.$container).top;
+			this.pageX = e.pageX - $dap.element.getElementPoint(this.$el, this.$container).left;
+			this.pageY = e.pageY - $dap.element.getElementPoint(this.$el, this.$container).top;
 			this.draggable = true;
 			this.$el.style.cursor = 'move'
 			//监听事件，监听刚开始拖动触发
 			this.beforedrag({
 				target: this.$el,
 				container: this.$container,
-				placement: $util.getElementPoint(this.$el, this.$container)
+				placement: $dap.element.getElementPoint(this.$el, this.$container)
 			});
 		})
 		//鼠标移动
@@ -173,7 +173,7 @@ class Drag {
 					this.drag({
 						target: this.$el,
 						container: this.$container,
-						placement: $util.getElementPoint(this.$el, this.$container)
+						placement: $dap.element.getElementPoint(this.$el, this.$container)
 					})
 				}
 			}
@@ -190,7 +190,7 @@ class Drag {
 				this.dragged({
 					target: this.$el,
 					container: this.$container,
-					placement: $util.getElementPoint(this.$el, this.$container)
+					placement: $dap.element.getElementPoint(this.$el, this.$container)
 				})
 			}
 		})
@@ -205,54 +205,54 @@ class Drag {
 	_resize(){
 		if (this.mode == "in") {
 			if (this.draggableX) {
-				if ($util.getElementPoint(this.$el, this.$container).left <= 0) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).left <= 0) {
 					this.$el.style.left = 0;
 				}
-				if ($util.getElementPoint(this.$el, this.$container).left >= this.$container.offsetWidth - this.$el.offsetWidth) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).left >= this.$container.offsetWidth - this.$el.offsetWidth) {
 					this.$el.style.left = this.$container.offsetWidth - this.$el.offsetWidth + 'px';
 				}
 			}
 			if (this.draggableY) {
-				if ($util.getElementPoint(this.$el, this.$container).top <= 0) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).top <= 0) {
 					this.$el.style.top = 0;
 				}
-				if ($util.getElementPoint(this.$el, this.$container).top >= this.$container.offsetHeight - this.$el.offsetHeight) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).top >= this.$container.offsetHeight - this.$el.offsetHeight) {
 					this.$el.style.top = this.$container.offsetHeight - this.$el.offsetHeight + 'px';
 				}
 			}
 		} else if (this.mode == "on") {
 			if (this.draggableX) {
-				if ($util.getElementPoint(this.$el, this.$container).left <= -this.$el.offsetWidth / 2) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).left <= -this.$el.offsetWidth / 2) {
 					this.$el.style.left = -this.$el.offsetWidth / 2 + "px";
 				}
-				if ($util.getElementPoint(this.$el, this.$container).left >= this.$container.offsetWidth - this.$el.offsetWidth /
+				if ($dap.element.getElementPoint(this.$el, this.$container).left >= this.$container.offsetWidth - this.$el.offsetWidth /
 					2) {
 					this.$el.style.left = this.$container.offsetWidth - this.$el.offsetWidth / 2 + 'px';
 				}
 			}
 			if (this.draggableY) {
-				if ($util.getElementPoint(this.$el, this.$container).top <= -this.$el.offsetHeight / 2) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).top <= -this.$el.offsetHeight / 2) {
 					this.$el.style.top = -this.$el.offsetHeight / 2 + "px";
 				}
-				if ($util.getElementPoint(this.$el, this.$container).top >= this.$container.offsetHeight - this.$el.offsetHeight /
+				if ($dap.element.getElementPoint(this.$el, this.$container).top >= this.$container.offsetHeight - this.$el.offsetHeight /
 					2) {
 					this.$el.style.top = this.$container.offsetHeight - this.$el.offsetHeight / 2 + 'px';
 				}
 			}
 		} else if (this.mode == "out") {
 			if (this.draggableX) {
-				if ($util.getElementPoint(this.$el, this.$container).left <= -this.$el.offsetWidth) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).left <= -this.$el.offsetWidth) {
 					this.$el.style.left = -this.$el.offsetWidth + "px";
 				}
-				if ($util.getElementPoint(this.$el, this.$container).left >= this.$container.offsetWidth) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).left >= this.$container.offsetWidth) {
 					this.$el.style.left = this.$container.offsetWidth + 'px';
 				}
 			}
 			if (this.draggableY) {
-				if ($util.getElementPoint(this.$el, this.$container).top <= -this.$el.offsetHeight) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).top <= -this.$el.offsetHeight) {
 					this.$el.style.top = -this.$el.offsetHeight + "px";
 				}
-				if ($util.getElementPoint(this.$el, this.$container).top >= this.$container.offsetHeight) {
+				if ($dap.element.getElementPoint(this.$el, this.$container).top >= this.$container.offsetHeight) {
 					this.$el.style.top = this.$container.offsetHeight + 'px';
 				}
 			}
@@ -274,7 +274,7 @@ class Drag {
 			this.beforedrag({
 				target: this.$el,
 				container: this.$container,
-				placement: $util.getElementPoint(this.$el, this.$container)
+				placement: $dap.element.getElementPoint(this.$el, this.$container)
 			})
 			if (this.draggableX) {
 				this.$el.style.left = left + "px";
@@ -286,7 +286,7 @@ class Drag {
 			let options = {
 				target: this.$el,
 				container: this.$container,
-				placement: $util.getElementPoint(this.$el, this.$container)
+				placement: $dap.element.getElementPoint(this.$el, this.$container)
 			};
 			this.dragged(options);
 			resolve(options);

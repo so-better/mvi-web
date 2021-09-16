@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import $util from '../../util/util'
+import $dap from "dap-util"
 import mIcon from "../icon/icon"
 import mCheckbox from "../checkbox/checkbox"
 import mLoading from "../loading/loading"
@@ -292,7 +292,7 @@ export default {
 		columnsAlign() {
 			if (this.$refs.body) {
 				//判断表格主体是否含有滚动条，与表头对齐设置
-				this.isScroll = $util.getScrollHeight(this.$refs.body) > this.$refs.body.clientHeight;
+				this.isScroll = $dap.element.getScrollHeight(this.$refs.body) > this.$refs.body.clientHeight;
 				if (this.isScroll) {
 					this.scrollWidth = this.$refs.body.offsetWidth - this.$refs.body.clientWidth;
 				}
@@ -375,7 +375,7 @@ export default {
 				this.customSortAsc(column, this.sortData);
 			} else {
 				this.sortData = this.sortData.sort((a, b)=>{
-					if($util.isNumber(a[column.key]) && $util.isNumber(b[column.key])){
+					if($dap.number.isNumber(a[column.key]) && $dap.number.isNumber(b[column.key])){
 						return a[column.key] - b[column.key]
 					}
 					let str1 = a[column.key].toString();
@@ -393,7 +393,7 @@ export default {
 				this.customSortDesc(column, this.sortData);
 			} else {
 				this.sortData = this.sortData.sort((a, b)=>{
-					if($util.isNumber(a[column.key]) && $util.isNumber(b[column.key])){
+					if($dap.number.isNumber(a[column.key]) && $dap.number.isNumber(b[column.key])){
 						return b[column.key] - a[column.key]
 					}
 					let str1 = a[column.key].toString();

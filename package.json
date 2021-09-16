@@ -27,5 +27,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/lovelin0523/mvi-web"
+  },
+  "dependencies": {
+    "dap-util": "0.0.1"
   }
 }

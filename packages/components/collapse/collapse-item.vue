@@ -12,7 +12,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mCell from "../cell/cell"
 	import mTransitionSlide from "../transitionSlide/transitionSlide"
 	export default {
@@ -135,7 +135,7 @@
 			//打开时右侧图标
 			computedOpenArrow() {
 				if ((typeof this.openArrow == 'string' && this.openArrow) ||
-					$util.isObject(this.openArrow)) {
+					$dap.common.isObject(this.openArrow)) {
 					return this.openArrow;
 				} else {
 					return this.collapse.openArrow;
@@ -144,7 +144,7 @@
 			//关闭时右侧图标
 			computedCloseArrow() {
 				if ((typeof this.closeArrow == 'string' && this.closeArrow) ||
-					$util.isObject(this.openArrow)) {
+					$dap.common.isObject(this.openArrow)) {
 					return this.closeArrow;
 				} else {
 					return this.collapse.closeArrow;
@@ -207,7 +207,7 @@
 					}
 				} else { //非手风琴模式
 					//值为数字
-					if ($util.isNumber(this.collapse.openIndex)) {
+					if ($dap.number.isNumber(this.collapse.openIndex)) {
 						if (this.collapse.openIndex == this.itemIndex) { 
 							this.open = true;
 						} else {
@@ -240,7 +240,7 @@
 					}
 				} else { //非手风琴模式
 					//值为数字
-					if ($util.isNumber(this.collapse.openIndex)) {
+					if ($dap.number.isNumber(this.collapse.openIndex)) {
 						if (this.collapse.openIndex == this.itemIndex) { //关闭当前展开的面板
 							this.collapse.$emit('update:openIndex', []);
 							this.collapse.$emit('model-change', []);

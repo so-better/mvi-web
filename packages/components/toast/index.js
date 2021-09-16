@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import ToastComponent from './toast'
 
 const Toast = {};
@@ -17,25 +17,25 @@ Toast.install = Vue=> {
 		if(typeof options.local == 'string' && options.local){
 			let el = document.body.querySelector(options.local);
 			if(el){//局部提示
-				if(!$util.isContains(el,instance.$el)){
+				if(!$dap.element.isContains(el,instance.$el)){
 					el.appendChild(instance.$el);
 				}
 			}else{
-				if(!$util.isContains(document.body,instance.$el)){
+				if(!$dap.element.isContains(document.body,instance.$el)){
 					document.body.appendChild(instance.$el)
 				}
 			}
-		}else if($util.isElement(options.local)){//局部提示
-			if(!$util.isContains(options.local,instance.$el)){
+		}else if($dap.element.isElement(options.local)){//局部提示
+			if(!$dap.element.isContains(options.local,instance.$el)){
 				options.local.appendChild(instance.$el)
 			}
 		}else{
-			if(!$util.isContains(document.body,instance.$el)){
+			if(!$dap.element.isContains(document.body,instance.$el)){
 				document.body.appendChild(instance.$el)
 			}
 		}
 		
-		if($util.isObject(options)){
+		if($dap.common.isObject(options)){
 			instance.type = options.type;
 			instance.icon = options.icon;
 			instance.message = options.message;

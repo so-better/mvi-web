@@ -33,7 +33,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	export default {
 		name:"m-calendar",
 		props:{
@@ -41,7 +41,7 @@
 			date:{
 				type:Date,
 				default:function(){
-					return new Date();
+					return new Date()
 				}
 			},
 			//视图类型
@@ -49,7 +49,7 @@
 				type:String,
 				default:"date",
 				validator(value){
-					return ['year','month','date'].includes(value);
+					return ['year','month','date'].includes(value)
 				}
 			},
 			//月份面板显示的月份数组文字
@@ -60,27 +60,27 @@
 				},
 				validator(value){
 					if(value.length != 12){
-						return false;
+						return false
 					}
 					for(let i = 0;i<value.length;i++){
 						if(typeof value[i] != "string"){
-							return false;
+							return false
 						}
 					}
-					return true;
+					return true
 				}
 			},
 			//头部显示的星期数组
 			weekText:{
 				type:Array,
 				default:function(){
-					return ['日','一','二','三','四','五','六'];
+					return ['日','一','二','三','四','五','六']
 				},
 				validator(value){
 					if(value.length != 7){
-						return false;
+						return false
 					}
-					return true;
+					return true
 				}
 			},
 			//开始年
@@ -120,19 +120,19 @@
 		},
 		computed:{
 			listeners(){
-				return Object.assign({},this.$listeners);
+				return Object.assign({},this.$listeners)
 			},
 			//显示在年份面板上的年数组
 			years(){
-				let arry = [];
-				let current_year = this.date.getFullYear();//获取指定的年份
+				let arry = []
+				let current_year = this.date.getFullYear()//获取指定的年份
 				//指定日期所在年份所在数组的序列,12个值为一个数组
-				let index = Math.floor((current_year - this.startYear)/12);
+				let index = Math.floor((current_year - this.startYear)/12)
 				for(let i = this.startYear+index*12;i<this.startYear+index*12+12;i++){
-					let date = new Date();
-					date.setFullYear(i);
-					date.setMonth(this.date.getMonth());
-					date.setDate(this.date.getDate());
+					let date = new Date()
+					date.setFullYear(i)
+					date.setMonth(this.date.getMonth())
+					date.setDate(this.date.getDate())
 					arry.push({
 						date:date,
 						year:i,
@@ -140,32 +140,32 @@
 						current:i==current_year,
 					})
 				}
-				return arry;
+				return arry
 			},
 			//显示在月份面板上的月数组
 			months(){
 				let arry = [];
 				for(let i = 0;i<12;i++){
-					let date = new Date();
-					date.setFullYear(this.date.getFullYear());
-					date.setMonth(i);
-					date.setDate(this.date.getDate());
+					let date = new Date()
+					date.setFullYear(this.date.getFullYear())
+					date.setMonth(i)
+					date.setDate(this.date.getDate())
 					arry.push({
 						date:date,
 						year:this.date.getFullYear(),
 						month:i+1,
 						text:this.monthText[i],
 						now:((i+1==new Date().getMonth()+1) && (this.date.getFullYear()==new Date().getFullYear())),
-						current:((i+1==this.date.getMonth()+1)),
+						current:((i+1==this.date.getMonth()+1))
 					})
 				}
-				return arry;
+				return arry
 			},
 			//显示在日期面板上的日期数组
 			days(){
 				//获取指定日期的总天数
-				let total = $util.getDays(this.date.getFullYear(),this.date.getMonth()+1);
-				let arry = [];
+				let total = $dap.date.getDays(this.date.getFullYear(),this.date.getMonth()+1)
+				let arry = []
 				for(let i = 0;i<total;i++){
 					arry.push({
 						date:this.getSpecifiedDate(i+1),
@@ -175,70 +175,70 @@
 					})
 				}
 				//在数组中添加上个月末的几天
-				let fd = this.getSpecifiedDate(1);
-				let week = fd.getDay();//获取1号是周几
-				let pd = fd;
+				let fd = this.getSpecifiedDate(1)
+				let week = fd.getDay()//获取1号是周几
+				let pd = fd
 				for(let i = 0;i<week;i++){
-					let prevDate = $util.showTime(pd,-1);//获取前一天
+					let prevDate = $dap.date.getDateBefore(pd,1)//获取前一天
 					arry.unshift({
 						date:prevDate,
 						now: false,
 						current:false,
 						currentMonth:false
-					});
-					pd = prevDate;
+					})
+					pd = prevDate
 				}
 				//在数组中添加下个月初的几天
-				let ld = this.getSpecifiedDate(total);
-				let length = arry.length;
+				let ld = this.getSpecifiedDate(total)
+				let length = arry.length
 				for(let i = length;i<35;i++){
-					let nextDate = $util.showTime(ld,1);//获取后一天
+					let nextDate = $dap.date.getDateAfter(ld,1)//获取后一天
 					arry.push({
 						date:nextDate,
 						now: false,
 						current:false,
 						currentMonth:false
 					})
-					ld = nextDate;
+					ld = nextDate
 				}
-				return arry;
+				return arry
 			},
 			//年视图指定年份样式
 			yearCurrentClass(){
 				return item=>{
-					let str = [];
+					let str = []
 					if(item.current){//指定年
 						if(typeof this.currentClass == "string" && this.currentClass){
-							str.push(this.currentClass);
+							str.push(this.currentClass)
 						}else if(typeof this.currentClass == "object" && this.currentClass && typeof this.currentClass.year == "string" && this.currentClass.year){
-							str.push(this.currentClass.year);
+							str.push(this.currentClass.year)
 						}else{
-							str.push('mvi-calendar-year-current');
+							str.push('mvi-calendar-year-current')
 						}
 					}
-					return str;
+					return str
 				}
 			},
 			//月视图指定月份样式
 			monthCurrentClass(){
 				return item=>{
-					let str = [];
+					let str = []
 					if(item.current){//指定月
 						if(typeof this.currentClass == "string" && this.currentClass){
-							str.push(this.currentClass);
+							str.push(this.currentClass)
 						}else if(typeof this.currentClass == "object" && this.currentClass && typeof this.currentClass.month == "string" && this.currentClass.month){
-							str.push(this.currentClass.month);
+							str.push(this.currentClass.month)
 						}else{
-							str.push('mvi-calendar-month-current');
+							str.push('mvi-calendar-month-current')
 						}
 					}
-					return str;
+					return str
 				}
 			},
 			//日期视图指定日期样式
 			dateCurrentClass(){
 				return item=>{
-					let str = [];
+					let str = []
 					if(item.current){//指定日期
 						if(typeof this.currentClass == "string" && this.currentClass){
 							str.push(this.currentClass)
@@ -248,117 +248,117 @@
 							str.push('mvi-calendar-date-current')
 						}
 					}
-					return str;
+					return str
 				}
 			},
 			//年视图当前年份样式
 			yearNowClass(){
 				return item=>{
-					let ync = [];
+					let ync = []
 					if(item.now){//当前年
 						if(typeof this.nowClass == "string" && this.nowClass){
 							ync.push(this.nowClass)
 						}else if(typeof this.nowClass == "object" && this.nowClass && typeof this.nowClass.year == "string" && this.nowClass.year){
 							ync.push(this.nowClass.year)
 						}else{
-							ync.push('mvi-calendar-year-now');
+							ync.push('mvi-calendar-year-now')
 						}
 					}
-					return ync;
+					return ync
 				}
 			},
 			//月视图当前月份样式
 			monthNowClass(){
 				return item=>{
-					let mnc = [];
+					let mnc = []
 					if(item.now){//当前月
 						if(typeof this.nowClass == "string" && this.nowClass){
 							mnc.push(this.nowClass)
-						}else if($util.isObject(this.nowClass) && typeof this.nowClass.month == "string" && this.nowClass.month){
+						}else if($dap.common.isObject(this.nowClass) && typeof this.nowClass.month == "string" && this.nowClass.month){
 							mnc.push(this.nowClass.month)
 						}else{
-							mnc.push('mvi-calendar-month-now');
+							mnc.push('mvi-calendar-month-now')
 						}
 					}
-					return mnc;
+					return mnc
 				}
 			},
 			//日期视图当前日期样式
 			dateNowClass(){
 				return item=>{
-					let dnc = [];
+					let dnc = []
 					if(item.now){//当前月
 						if(typeof this.nowClass == "string"){
 							dnc.push(this.nowClass)
-						}else if($util.isObject(this.nowClass) && typeof this.nowClass.date == "string" && this.nowClass.date){
+						}else if($dap.common.isObject(this.nowClass) && typeof this.nowClass.date == "string" && this.nowClass.date){
 							dnc.push(this.nowClass.date)
 						}else{
 							dnc.push('mvi-calendar-date-now')
 						}
 					}
-					return dnc;
+					return dnc
 				}
 			},
 		},
 		methods:{
 			//判断是否是今天
 			isNow(date){
-				let now = new Date();
+				let now = new Date()
 				if(this.date.getFullYear() == now.getFullYear()
 				&& this.date.getMonth()== now.getMonth() && date == now.getDate()){
-					return true;
+					return true
 				}else{
-					return false;
+					return false
 				}
 			},
 			//判断是否是指定日期
 			isCurrent(date){
 				if(this.date.getDate() == date){
-					return true;
+					return true
 				}else{
-					return false;
+					return false
 				}
 			},
 			//获取某个日期是星期几
 			getWeek(date){
-				let fullDate = new Date();
-				fullDate.setFullYear(this.date.getFullYear());
-				fullDate.setMonth(this.date.getMonth());
-				fullDate.setDate(date);
-				return fullDate.getDay();
+				let fullDate = new Date()
+				fullDate.setFullYear(this.date.getFullYear())
+				fullDate.setMonth(this.date.getMonth())
+				fullDate.setDate(date)
+				return fullDate.getDay()
 			},
 			//获取本月指定日期
 			getSpecifiedDate(index){
-				let fullDate = new Date();
-				fullDate.setFullYear(this.date.getFullYear());
-				fullDate.setMonth(this.date.getMonth());
-				fullDate.setDate(index);
-				return fullDate;
+				let fullDate = new Date()
+				fullDate.setFullYear(this.date.getFullYear())
+				fullDate.setMonth(this.date.getMonth())
+				fullDate.setDate(index)
+				return fullDate
 			},
 			//日期视图点击事件
 			onDateClick(item){
 				//如果非本月且非本月日期不可点击
 				if(!item.currentMonth && !this.nonCurrentClick){
-					return;
+					return
 				}
-				this.$emit('update:date',item.date);
-				this.$emit('model-change',item.date);
-				this.$emit('date-click',item);
+				this.$emit('update:date',item.date)
+				this.$emit('model-change',item.date)
+				this.$emit('date-click',item)
 			},
 			//月份视图点击事件
 			onMonthClick(item){
-				this.$emit('update:date',item.date);
-				this.$emit('model-change',item.date);
-				this.$emit('month-click',item);
+				this.$emit('update:date',item.date)
+				this.$emit('model-change',item.date)
+				this.$emit('month-click',item)
 			},
 			//年视图点击事件
 			onYearClick(item){
 				if(item.year < this.startYear || item.year > this.endYear){
 					return;
 				}
-				this.$emit('update:date',item.date);
-				this.$emit('model-change',item.date);
-				this.$emit('year-click',item);
+				this.$emit('update:date',item.date)
+				this.$emit('model-change',item.date)
+				this.$emit('year-click',item)
 			}
 		}
 	}

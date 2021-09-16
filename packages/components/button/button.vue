@@ -10,7 +10,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mIcon from "../icon/icon"
 	export default {
 		name:"m-button",
@@ -19,14 +19,14 @@
 				type:String,
 				default:"default",
 				validator(value){
-					return ['default','info','success','error','warn','primary'].includes(value);
+					return ['default','info','success','error','warn','primary'].includes(value)
 				}
 			},
 			size:{
 				type:String,
 				default:"medium",
 				validator(value){
-					return ['mini','small','medium','large'].includes(value);
+					return ['mini','small','medium','large'].includes(value)
 				}
 			},
 			disabled:{
@@ -84,87 +84,87 @@
 		},
 		computed:{
 			iconType(){
-				let type = 'load-e';
-				if ($util.isObject(this.loadIcon)) {
+				let type = 'load-e'
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.type == "string") {
-						type = this.loadIcon.type;
+						type = this.loadIcon.type
 					}
 				} else if (typeof this.loadIcon == "string") {
-					type = this.loadIcon;
+					type = this.loadIcon
 				}
-				return type;
+				return type
 			},
 			iconUrl(){
-				let url = null;
-				if ($util.isObject(this.loadIcon)) {
+				let url = null
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.url == "string") {
-						url = this.loadIcon.url;
+						url = this.loadIcon.url
 					}
 				}
-				return url;
+				return url
 			},
 			iconSpin(){
-				let spin = true;
-				if ($util.isObject(this.loadIcon)) {
+				let spin = true
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.spin == "boolean") {
-						spin = this.loadIcon.spin;
+						spin = this.loadIcon.spin
 					}
 				}
-				return spin;
+				return spin
 			},
 			iconSize(){
-				let size = null;
-				if ($util.isObject(this.loadIcon)) {
+				let size = null
+				if ($dap.common.isObject(this.loadIcon)) {
 					if (typeof this.loadIcon.size == "string") {
-						size = this.loadIcon.size;
+						size = this.loadIcon.size
 					}
 				}
-				return size;
+				return size
 			},
 			btnStyle(){
-				let obj = {};
+				let obj = {}
 				//单色
 				if(this.plain){
 					if(this.color){
-						obj.color = this.color;
-						obj.borderColor = this.color;
-						obj.background = (this.subColor?this.subColor:'#fff');
+						obj.color = this.color
+						obj.borderColor = this.color
+						obj.background = (this.subColor?this.subColor:'#fff')
 					}
 				}else{
 					if(this.color){
-						obj.background = this.color;
-						obj.borderColor = this.color;
-						obj.color = (this.subColor?this.subColor:'#fff');
+						obj.background = this.color
+						obj.borderColor = this.color
+						obj.color = (this.subColor?this.subColor:'#fff')
 					}
 				}
-				return obj;
+				return obj
 			},
 			buttonClass(){
-				let cls = ['mvi-button'];
+				let cls = ['mvi-button']
 				if(this.type){
 					cls.push('mvi-button-'+this.type)
 				}
 				if(this.size){
-					cls.push('mvi-button-'+this.size);
+					cls.push('mvi-button-'+this.size)
 				}
 				if(this.round){
-					cls.push('mvi-button-radius-round');
+					cls.push('mvi-button-radius-round')
 				}else if(this.square){
-					cls.push('mvi-button-radius-square');
+					cls.push('mvi-button-radius-square')
 				}
 				if(this.formControl){
-					cls.push('mvi-button-form-control');
+					cls.push('mvi-button-form-control')
 				}
 				if(this.plain){
-					cls.push('mvi-button-plain');
+					cls.push('mvi-button-plain')
 				}
 				if(this.active && !this.disabled){
-					cls.push('mvi-button-active');
+					cls.push('mvi-button-active')
 				}
 				if(this.loading){
-					cls.push('mvi-button-loading');
+					cls.push('mvi-button-loading')
 				}
-				return cls;
+				return cls
 			}
 		},
 		components:{

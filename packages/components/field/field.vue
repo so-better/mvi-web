@@ -32,7 +32,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util"
+	import $dap from "dap-util"
 	import mIcon from "../icon/icon"
 	export default {
 		name:'m-field',
@@ -311,7 +311,7 @@
 			//前置图标类型
 			prependIconType() {
 				let t = null;
-				if ($util.isObject(this.prepend)) {
+				if ($dap.common.isObject(this.prepend)) {
 					if (typeof this.prepend.type == "string") {
 						t = this.prepend.type;
 					}
@@ -323,7 +323,7 @@
 			//前置图标url
 			prependIconUrl() {
 				let url = null;
-				if ($util.isObject(this.prepend)) {
+				if ($dap.common.isObject(this.prepend)) {
 					if (typeof this.prepend.url == "string") {
 						url = this.prepend.url;
 					}
@@ -333,7 +333,7 @@
 			//前置图标旋转
 			prependIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.prepend)) {
+				if ($dap.common.isObject(this.prepend)) {
 					if (typeof this.prepend.spin == "boolean") {
 						spin = this.prepend.spin;
 					}
@@ -343,7 +343,7 @@
 			//前置图标大小
 			prependIconSize() {
 				let size = null;
-				if ($util.isObject(this.prepend)) {
+				if ($dap.common.isObject(this.prepend)) {
 					if (typeof this.prepend.size == "string") {
 						size = this.prepend.size;
 					}
@@ -353,7 +353,7 @@
 			//前置图标颜色
 			prependIconColor() {
 				let color = null;
-				if ($util.isObject(this.prepend)) {
+				if ($dap.common.isObject(this.prepend)) {
 					if (typeof this.prepend.color == "string") {
 						color = this.prepend.color;
 					}
@@ -363,7 +363,7 @@
 			//后置图标类型
 			appendIconType() {
 				let t = null;
-				if ($util.isObject(this.append)) {
+				if ($dap.common.isObject(this.append)) {
 					if (typeof this.append.type == "string") {
 						t = this.append.type;
 					}
@@ -375,7 +375,7 @@
 			//后置图标url
 			appendIconUrl() {
 				let url = null;
-				if ($util.isObject(this.append)) {
+				if ($dap.common.isObject(this.append)) {
 					if (typeof this.append.url == "string") {
 						url = this.append.url;
 					}
@@ -385,7 +385,7 @@
 			//后置图标旋转
 			appendIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.append)) {
+				if ($dap.common.isObject(this.append)) {
 					if (typeof this.append.spin == "boolean") {
 						spin = this.append.spin;
 					}
@@ -395,7 +395,7 @@
 			//后置图标大小
 			appendIconSize(){
 				let size = null;
-				if ($util.isObject(this.append)) {
+				if ($dap.common.isObject(this.append)) {
 					if (typeof this.append.size == "string") {
 						size = this.append.size;
 					}
@@ -405,7 +405,7 @@
 			//后置图标颜色
 			appendIconColor(){
 				let color = null;
-				if ($util.isObject(this.append)) {
+				if ($dap.common.isObject(this.append)) {
 					if (typeof this.append.color == "string") {
 						color = this.append.color;
 					}
@@ -415,7 +415,7 @@
 			//前缀图标类型
 			prefixIconType() {
 				let t = null;
-				if ($util.isObject(this.prefix)) {
+				if ($dap.common.isObject(this.prefix)) {
 					if (typeof this.prefix.type == "string") {
 						t = this.prefix.type;
 					}
@@ -427,7 +427,7 @@
 			//前缀图标url
 			prefixIconUrl() {
 				let url = null;
-				if ($util.isObject(this.prefix)) {
+				if ($dap.common.isObject(this.prefix)) {
 					if (typeof this.prefix.url == "string") {
 						url = this.prefix.url;
 					}
@@ -437,7 +437,7 @@
 			//前缀图标旋转
 			prefixIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.prefix)) {
+				if ($dap.common.isObject(this.prefix)) {
 					if (typeof this.prefix.spin == "boolean") {
 						spin = this.prefix.spin;
 					}
@@ -447,7 +447,7 @@
 			//前缀图标大小
 			prefixIconSize() {
 				let size = null;
-				if ($util.isObject(this.prefix)) {
+				if ($dap.common.isObject(this.prefix)) {
 					if (typeof this.prefix.size == "string") {
 						size = this.prefix.size;
 					}
@@ -457,7 +457,7 @@
 			//前缀图标颜色
 			prefixIconColor() {
 				let color = null;
-				if ($util.isObject(this.prefix)) {
+				if ($dap.common.isObject(this.prefix)) {
 					if (typeof this.prefix.color == "string") {
 						color = this.prefix.color;
 					}
@@ -467,7 +467,7 @@
 			//后缀图标类型
 			suffixIconType() {
 				let t = null;
-				if ($util.isObject(this.suffix)) {
+				if ($dap.common.isObject(this.suffix)) {
 					if (typeof this.suffix.type == "string") {
 						t = this.suffix.type;
 					}
@@ -479,7 +479,7 @@
 			//后缀图标url
 			suffixIconUrl() {
 				let url = null;
-				if ($util.isObject(this.suffix)) {
+				if ($dap.common.isObject(this.suffix)) {
 					if (typeof this.suffix.url == "string") {
 						url = this.suffix.url;
 					}
@@ -489,7 +489,7 @@
 			//后缀图标旋转
 			suffixIconSpin() {
 				let spin = false;
-				if ($util.isObject(this.suffix)) {
+				if ($dap.common.isObject(this.suffix)) {
 					if (typeof this.suffix.spin == "boolean") {
 						spin = this.suffix.spin;
 					}
@@ -499,7 +499,7 @@
 			//后缀图标大小
 			suffixIconSize() {
 				let size = null;
-				if ($util.isObject(this.suffix)) {
+				if ($dap.common.isObject(this.suffix)) {
 					if (typeof this.suffix.size == "string") {
 						size = this.suffix.size;
 					}
@@ -509,7 +509,7 @@
 			//后缀图标颜色
 			suffixIconColor() {
 				let color = null;
-				if ($util.isObject(this.suffix)) {
+				if ($dap.common.isObject(this.suffix)) {
 					if (typeof this.suffix.color == "string") {
 						color = this.suffix.color;
 					}
@@ -519,13 +519,13 @@
 			//文本域的rows
 			rowsFilter() {
 				let rows = this.rows;
-				if ($util.isObject(this.autosize)) {
-					if ($util.isNumber(this.autosize.minRows)) {
+				if ($dap.common.isObject(this.autosize)) {
+					if ($dap.number.isNumber(this.autosize.minRows)) {
 						if (this.rows < this.autosize.minRows) {
 							rows = this.autosize.minRows;
 						}
 					}
-					if ($util.isNumber(this.autosize.maxRows)) {
+					if ($dap.number.isNumber(this.autosize.maxRows)) {
 						if (this.rows > this.autosize.maxRows) {
 							rows = this.autosize.maxRows;
 						}
@@ -565,7 +565,7 @@
 		watch:{
 			realValue(newValue) {
 				this.$nextTick(()=>{
-					if (this.$refs.textarea && (this.autosize == true || $util.isObject(this.autosize))) {
+					if (this.$refs.textarea && (this.autosize == true || $dap.common.isObject(this.autosize))) {
 						this.autosizeSet();
 					}
 				})
@@ -588,7 +588,7 @@
 		mounted() {
 			if (this.$refs.textarea) {
 				this.setMaxMinHeight();
-				if (this.autosize == true || $util.isObject(this.autosize)) {
+				if (this.autosize == true || $dap.common.isObject(this.autosize)) {
 					this.autosizeSet();
 				}
 			}
@@ -599,22 +599,22 @@
 				this.$refs.textarea.style.overflow = 'hidden';
 				this.$refs.textarea.style.height = 'auto';
 				this.$refs.textarea.scrollTop = 0;
-				this.$refs.textarea.style.height = $util.getScrollHeight(this.$refs.textarea) + 'px';
+				this.$refs.textarea.style.height = $dap.element.getScrollHeight(this.$refs.textarea) + 'px';
 			},
 			//行数转为高度
 			rows2Height(rows) {
-				let lineHeight = Math.floor(parseFloat($util.getCssStyle(this.$refs.textarea, 'line-height')));
+				let lineHeight = Math.floor(parseFloat($dap.element.getCssStyle(this.$refs.textarea, 'line-height')));
 				return rows * lineHeight;
 			},
 			//设置最大高度和最小高度
 			setMaxMinHeight() {
-				if ($util.isObject(this.autosize)) {
-					if ($util.isNumber(this.autosize.maxRows)) {
-						let maxHeight = this.rows2Height(this.autosize.maxRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
+				if ($dap.common.isObject(this.autosize)) {
+					if ($dap.number.isNumber(this.autosize.maxRows)) {
+						let maxHeight = this.rows2Height(this.autosize.maxRows) + parseFloat($dap.element.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($dap.element.getCssStyle(this.$refs.textarea, 'padding-bottom'));
 						this.$refs.textarea.style.maxHeight = maxHeight + "px";
 					}
-					if ($util.isNumber(this.autosize.minRows)) {
-						let minHeight = this.rows2Height(this.autosize.minRows) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($util.getCssStyle(this.$refs.textarea, 'padding-bottom'));
+					if ($dap.number.isNumber(this.autosize.minRows)) {
+						let minHeight = this.rows2Height(this.autosize.minRows) + parseFloat($dap.element.getCssStyle(this.$refs.textarea, 'padding-top')) + parseFloat($dap.element.getCssStyle(this.$refs.textarea, 'padding-bottom'));
 						this.$refs.textarea.style.minHeight = minHeight + "px";
 					}
 				} else {

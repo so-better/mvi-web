@@ -1,4 +1,4 @@
-import $util from "../../util/util"
+import $dap from "dap-util"
 import Drag from "./drag"
 
 Drag.install = Vue=> {
@@ -6,10 +6,10 @@ Drag.install = Vue=> {
 	Vue.directive('drag', {
 		inserted(el, binding) {
 			let options = {};
-			if ($util.isObject(binding.value)) {
+			if ($dap.common.isObject(binding.value)) {
 				Object.assign(options, binding.value);
 			}
-			if ($util.isObject(binding.modifiers)) {
+			if ($dap.common.isObject(binding.modifiers)) {
 				Object.assign(options, binding.modifiers);
 			}
 			let drag = new Drag(el, options);

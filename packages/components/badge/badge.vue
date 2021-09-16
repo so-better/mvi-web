@@ -5,7 +5,7 @@
 </template>
 
 <script>
-	import $util from "../../util/util.js"
+	import $dap from "dap-util"
 	export default {
 		name: "m-badge",
 		props: {
@@ -32,22 +32,22 @@
 		watch: {
 			dot(newValue){
 				if(newValue){
-					this.$el.innerHTML = '';
+					this.$el.innerHTML = ''
 				}else{
 					this.$nextTick(()=>{
-						let html = '';
+						let html = ''
 						this.$slots.default.forEach((item,index)=>{
-							if(item && $util.isElement(item.elm)){
-								html += item.elm.outerHTML;
+							if(item && $dap.element.isElement(item.elm)){
+								html += item.elm.outerHTML
 							}else {
-								html += item.text;
+								html += item.text
 							}
 						})
-						this.$el.innerHTML = html;
+						this.$el.innerHTML = html
 					})
 				}
 				this.$nextTick(()=>{
-					this.setPadding();
+					this.setPadding()
 				})
 			}
 		},
@@ -56,32 +56,32 @@
 				return Object.assign({}, this.$listeners)
 			},
 			badgeStyle() {
-				let style = {};
+				let style = {}
 				if (this.background) {
-					style.backgroundColor = this.background;
+					style.backgroundColor = this.background
 				}
 				if (this.color) {
-					style.color = this.color;
+					style.color = this.color
 				}
-				return style;
+				return style
 			}
 		},
 		mounted() {
 			if(this.dot){
-				this.$el.innerHTML = '';
+				this.$el.innerHTML = ''
 			}
-			this.setPadding();
+			this.setPadding()
 		},
 		methods:{
 			setPadding(){
 				if (this.dot) {
-					this.$el.style.padding = 0;
+					this.$el.style.padding = 0
 				} else{
 					if (this.$el.offsetWidth >= this.$el.offsetHeight) {
 						if(this.size == 'large'){
-							this.$el.style.padding = '0 0.15rem';
+							this.$el.style.padding = '0 0.15rem'
 						}else{
-							this.$el.style.padding = '0 0.12rem';
+							this.$el.style.padding = '0 0.12rem'
 						}
 					}
 				}
