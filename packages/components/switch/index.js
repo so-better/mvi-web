@@ -1,7 +1,7 @@
 import switchComponent from "./switch"
 
-switchComponent.install = Vue=>{
-	Vue.component(switchComponent.name,switchComponent);
+switchComponent.install = Vue => {
+	Vue.component(switchComponent.name, switchComponent)
 }
 
 export default switchComponent

@@ -29,17 +29,17 @@
 		},
 		props: {
 			//标题
-			title: { 
+			title: {
 				type: String,
 				default: ""
 			},
 			//标题侧边显示的图标
-			icon: { 
+			icon: {
 				type: [String, Object],
 				default: null
 			},
 			//是否禁用选项卡
-			disabled: { 
+			disabled: {
 				type: Boolean,
 				default: false
 			},
@@ -119,8 +119,8 @@
 			},
 			//tab在tabs中的序列值
 			tabIndex() {
-				return this.tabs.children.findIndex(item=>{
-					return $dap.common.equal(item,this)
+				return this.tabs.children.findIndex(item => {
+					return $dap.common.equal(item, this)
 				})
 			}
 		}

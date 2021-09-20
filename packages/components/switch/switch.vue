@@ -1,10 +1,11 @@
 <template>
 	<label :class="['mvi-switch',checked?'mvi-switch-checked':'']" :style="switchStyle" v-on="listeners"
-	 :disabled="disabled">
+		:disabled="disabled">
 		<span :class="['mvi-switch-el',checked?'mvi-switch-el-checked':'']" :style="elStyle">
-			<m-icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize" :color="iconColor"/>
+			<m-icon v-if="loading && !disabled" :type="iconType" :spin="iconSpin" :url="iconUrl" :size="iconSize"
+				:color="iconColor" />
 		</span>
-		<input @change="change" type="checkbox" :checked="checked" :disabled="disabled || loading"/>
+		<input @change="change" type="checkbox" :checked="checked" :disabled="disabled || loading" />
 	</label>
 </template>
 
@@ -18,43 +19,50 @@
 			event: 'model-change'
 		},
 		props: {
+			//是否打开
 			checked: {
 				type: Boolean,
 				default: false
 			},
+			//是否显示加载状态
 			loading: {
 				type: Boolean,
 				default: false
 			},
+			//是否禁用
 			disabled: {
 				type: Boolean,
 				default: false
 			},
+			//尺寸
 			size: {
 				type: String,
 				default: '0.4rem'
 			},
-			activeColor: { //开关打开时背景色
+			//开关打开时背景色
+			activeColor: { 
 				type: String,
 				default: null
 			},
-			inactiveColor: { //开关关闭时背景色
+			//开关关闭时背景色
+			inactiveColor: { 
 				type: String,
 				default: null
 			},
+			//开关加载时的图标
 			icon: {
 				type: [String, Object],
 				default: null
 			}
 		},
-		components:{
+		components: {
 			mIcon
 		},
 		methods: {
 			//更改状态
 			change(event) {
-				let check = event.target.checked;
-				this.$emit('update:checked', check);
+				let check = event.target.checked
+				this.$emit('update:checked', check)
 				this.$emit('model-change', check)
 			}
 		},
@@ -63,76 +71,76 @@
 				return Object.assign({}, this.$listeners)
 			},
 			iconType() {
-				let t = 'load-e';
+				let t = 'load-e'
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.type == "string") {
-						t = this.icon.type;
+						t = this.icon.type
 					}
 				} else if (typeof this.icon == "string") {
-					t = this.icon;
+					t = this.icon
 				}
-				return t;
+				return t
 			},
 			iconUrl() {
-				let url = null;
+				let url = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.url == "string") {
-						url = this.icon.url;
+						url = this.icon.url
 					}
 				}
-				return url;
+				return url
 			},
 			iconSpin() {
-				let spin = true;
+				let spin = true
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.spin == "boolean") {
-						spin = this.icon.spin;
+						spin = this.icon.spin
 					}
 				}
-				return spin;
+				return spin
 			},
-			iconSize(){
-				let size = null;
+			iconSize() {
+				let size = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.size == "string") {
-						size = this.icon.size;
+						size = this.icon.size
 					}
 				}
-				return size;
+				return size
 			},
-			iconColor(){
-				let color = null;
+			iconColor() {
+				let color = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.color == "string") {
-						color = this.icon.color;
+						color = this.icon.color
 					}
 				}
-				return color;
+				return color
 			},
 			switchStyle() {
-				let style = {};
+				let style = {}
 				if (this.inactiveColor && !this.checked) {
-					style.backgroundColor = this.inactiveColor;
+					style.backgroundColor = this.inactiveColor
 				}
 				if (this.activeColor && this.checked) {
-					style.backgroundColor = this.activeColor;
+					style.backgroundColor = this.activeColor
 				}
 				if (this.size) {
-					style.width = `calc(${this.size} * 2)`;
+					style.width = `calc(${this.size} * 2)`
 				}
-				return style;
+				return style
 			},
 			elStyle() {
 				let style = {};
 				if (this.activeColor) {
-					style.color = this.activeColor;
+					style.color = this.activeColor
 				}
 				if (this.size) {
-					style.width = this.size;
-					style.height = this.size;
-					style.fontSize = this.size;
+					style.width = this.size
+					style.height = this.size
+					style.fontSize = this.size
 				}
-				return style;
+				return style
 			}
 		}
 	}
@@ -153,14 +161,15 @@
 		transition: background-color 300ms;
 		-webkit-transition: background-color 300ms;
 		cursor: pointer;
-		&>input[type="checkbox"]{
+
+		&>input[type="checkbox"] {
 			display: none;
 			width: 0;
 			height: 0;
 			opacity: 0;
 		}
-		
-		&>input[type="checkbox"][disabled]{
+
+		&>input[type="checkbox"][disabled] {
 			pointer-events: none;
 		}
 	}

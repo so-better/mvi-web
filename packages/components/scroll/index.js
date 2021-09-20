@@ -10,7 +10,7 @@ Scroll.install = Vue=>{
 				Object.assign(options,binding.value)
 			}
 			let scroll = new Scroll(el,options)
-			scroll.init();
+			scroll.init()
 		}
 	})
 }

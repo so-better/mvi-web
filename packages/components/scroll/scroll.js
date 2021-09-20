@@ -4,28 +4,29 @@ import $dap from "dap-util"
  */
 class Scroll {
 	constructor(element,options) {
-		this.$el = element;
+		this.$el = element
 		if(!$dap.common.isObject(options)){
-			options = {};
+			options = {}
 		}
-		this.top = options.top;
-		this.bottom = options.bottom;
-		this.hasInit = false; //是否已经初始化
+		this.top = options.top
+		this.bottom = options.bottom
+		//是否已经初始化
+		this.hasInit = false 
 	}
 	
 	init(){
 		if (this.hasInit) {
-			return;
+			return
 		}
-		this.hasInit = true;
+		this.hasInit = true
 		if(!$dap.element.isElement(this.$el)){
-			this.$el = window;
+			this.$el = window
 		}
 		if(typeof this.top != "function"){
-			this.top = function(){};
+			this.top = function(){}
 		}
 		if(typeof this.bottom != "function"){
-			this.bottom = function(){};
+			this.bottom = function(){}
 		}
 		$dap.element.scrollTopBottomTrigger(this.$el,res=>{
 			if(res.state == 'top'){

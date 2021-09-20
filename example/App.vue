@@ -1,8 +1,9 @@
 <template>
 	<div id="app">
 		<m-button @click="change">Button</m-button>
-		<div id="anchor" style="position: relative;width: 7.5rem;height: 13rem;border: 1px solid #ddd;overflow: auto;">
-			<m-radio v-model="show"></m-radio>
+		<div v-scroll="scrollOpt" id="anchor"
+			style="position: absolute;width: 7.5rem;height: 13rem;border: 1px solid #ddd;overflow: auto;">
+			<m-verify ref="verify" style="height: 1rem;"></m-verify>
 		</div>
 	</div>
 </template>
@@ -11,6 +12,31 @@
 		data() {
 			return {
 				checkes: [1, 2, 3, 4],
+				tabs: [{
+						value: 0,
+						name: '首页'
+					},
+					{
+						value: 1,
+						name: '附近'
+					},
+					{
+						value: 2,
+						name: '关注'
+					},
+					{
+						value: 3,
+						name: '我的'
+					}
+				],
+				scrollOpt: {
+					top: el => {
+						console.log(el);
+					},
+					bottom: el => {
+						console.log(el);
+					}
+				},
 				dragOpt: {
 					container: '#anchor',
 					beforedrag: e => {
@@ -61,11 +87,12 @@
 				active: 1,
 				show: false,
 				expand: false,
-				options:{
-				                values:['mvi','elementUI','iView','vant'],//设置选项
-				                defaultIndex:0//设置默认选项序列
-				            },
-				value: '#ff3300',
+				options: {
+					select: (files, extra) => {
+						console.log(files, extra);
+					}
+				},
+				value: 20,
 				value2: '',
 				date: new Date(),
 				data: [{
@@ -107,7 +134,7 @@
 			};
 		},
 		mounted() {
-
+			console.log(this.$dap)
 		},
 		methods: {
 			change() {

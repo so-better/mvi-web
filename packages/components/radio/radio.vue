@@ -4,7 +4,8 @@
 			:data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
 		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="radio" :name="name" />
 		<span :disabled="disabled" :class="['mvi-radio-item',check?'mvi-radio-item-check':'']" :style="radioStyle">
-			<m-icon :disabled="disabled" :color="iconColor" :size="iconSize" :type="iconType" :class="['mvi-radio-icon',check?'mvi-radio-icon-check':'']"/>
+			<m-icon :disabled="disabled" :color="iconColor" :size="iconSize" :type="iconType"
+				:class="['mvi-radio-icon',check?'mvi-radio-icon-check':'']" />
 		</span>
 		<span :disabled="disabled" v-if="label && labelPlacement == 'right'" class="mvi-radio-label"
 			:data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
@@ -23,7 +24,7 @@
 		props: {
 			//单选框的值
 			value: {
-				type: [Object,Number,String],
+				type: [Object, Number, String],
 				default: ""
 			},
 			//是否选中
@@ -66,7 +67,7 @@
 			},
 			//图标
 			icon: {
-				type: [String,Object],
+				type: [String, Object],
 				default: 'success'
 			},
 			//是否圆形

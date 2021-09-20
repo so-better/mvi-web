@@ -19,7 +19,7 @@ class Spy {
 		this.triggerTag = {
 			before:false,
 			after:false
-		};
+		}
 		this.guid = this._createGuid()//生成唯一标识符
 	}
 	
