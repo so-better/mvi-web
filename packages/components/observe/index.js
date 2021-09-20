@@ -5,12 +5,12 @@ Observe.install = Vue=> {
 	//监听元素属性变化
 	Vue.directive('observe', {
 		inserted(el, binding) {
-			let options = {};
+			let options = {}
 			if ($dap.common.isObject(binding.value)) {
-				Object.assign(options, binding.value);
+				Object.assign(options, binding.value)
 			}
-			let observe = new Observe(el, options);
-			observe.init();
+			let observe = new Observe(el, options)
+			observe.init()
 		}
 	})
 }

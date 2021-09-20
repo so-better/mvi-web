@@ -3,12 +3,16 @@
 		<!-- 日期视图 -->
 		<div v-if="view=='date'" class="mvi-calendar-date">
 			<div class="mvi-calendar-date-header">
-				<div class="mvi-calendar-date-header-item" v-for="(item,index) in weekText" :key="'week-'+index" v-text="item"></div>
+				<div class="mvi-calendar-date-header-item" v-for="(item,index) in weekText" :key="'week-'+index"
+					v-text="item"></div>
 			</div>
 			<div ref="list" class="mvi-calendar-date-list">
 				<div v-for="(item,index) in new Array(6)" :key="'row-'+index" class="mvi-calendar-date-row">
-					<div class="mvi-calendar-date-day" v-for="(item2,index2) in days.slice(index*7,index*7+7)" :key="'date-'+index2">
-						<div :disabled="!item2.currentMonth" :class="['mvi-calendar-date-day-item',(nonCurrentClick?active:(active&&item2.currentMonth))?'mvi-calendar-active':'',dateNowClass(item2),dateCurrentClass(item2)]" v-text="item2.date.getDate()" @click="onDateClick(item2)"></div>
+					<div class="mvi-calendar-date-day" v-for="(item2,index2) in days.slice(index*7,index*7+7)"
+						:key="'date-'+index2">
+						<div :disabled="!item2.currentMonth"
+							:class="['mvi-calendar-date-day-item',(nonCurrentClick?active:(active&&item2.currentMonth))?'mvi-calendar-active':'',dateNowClass(item2),dateCurrentClass(item2)]"
+							v-text="item2.date.getDate()" @click="onDateClick(item2)"></div>
 					</div>
 				</div>
 			</div>
@@ -16,16 +20,21 @@
 		<!-- 月视图 -->
 		<div v-if="view=='month'" class="mvi-calendar-month">
 			<div class="mvi-calendar-month-row" v-for="(item,index) in new Array(3)" :key="'monthRow-'+index">
-				<div class="mvi-calendar-month-m" v-for="(item2,index2) in months.slice(index*4,index*4+4)" :key="'month-'+index2">
-					<div :class="['mvi-calendar-month-item',active?'mvi-calendar-active':'',monthNowClass(item2),monthCurrentClass(item2)]" v-text="item2.text" @click="onMonthClick(item2)"></div>
+				<div class="mvi-calendar-month-m" v-for="(item2,index2) in months.slice(index*4,index*4+4)"
+					:key="'month-'+index2">
+					<div :class="['mvi-calendar-month-item',active?'mvi-calendar-active':'',monthNowClass(item2),monthCurrentClass(item2)]"
+						v-text="item2.text" @click="onMonthClick(item2)"></div>
 				</div>
 			</div>
 		</div>
 		<!-- 年视图 -->
 		<div v-if="view=='year'">
 			<div class="mvi-calendar-year-row" v-for="(item,index) in new Array(3)" :key="'yearRow'+index">
-				<div class="mvi-calendar-year-y" v-for="(item2,index2) in years.slice(index*4,index*4+4)" :key="'year-'+index2">
-					<div :class="['mvi-calendar-year-item',(!(item2.year<startYear || item2.year>endYear) && active)?'mvi-calendar-active':'',yearNowClass(item2),yearCurrentClass(item2)]" v-text="item2.year" @click="onYearClick(item2)" :disabled="item2.year<startYear || item2.year>endYear"></div>
+				<div class="mvi-calendar-year-y" v-for="(item2,index2) in years.slice(index*4,index*4+4)"
+					:key="'year-'+index2">
+					<div :class="['mvi-calendar-year-item',(!(item2.year<startYear || item2.year>endYear) && active)?'mvi-calendar-active':'',yearNowClass(item2),yearCurrentClass(item2)]"
+						v-text="item2.year" @click="onYearClick(item2)"
+						:disabled="item2.year<startYear || item2.year>endYear"></div>
 				</div>
 			</div>
 		</div>
@@ -35,35 +44,35 @@
 <script>
 	import $dap from "dap-util"
 	export default {
-		name:"m-calendar",
-		props:{
+		name: "m-calendar",
+		props: {
 			//指定显示的日期
-			date:{
-				type:Date,
-				default:function(){
+			date: {
+				type: Date,
+				default: function() {
 					return new Date()
 				}
 			},
 			//视图类型
-			view:{
-				type:String,
-				default:"date",
-				validator(value){
-					return ['year','month','date'].includes(value)
+			view: {
+				type: String,
+				default: "date",
+				validator(value) {
+					return ['year', 'month', 'date'].includes(value)
 				}
 			},
 			//月份面板显示的月份数组文字
-			monthText:{
-				type:Array,
-				default:function(){
-					return ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月']
+			monthText: {
+				type: Array,
+				default: function() {
+					return ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
 				},
-				validator(value){
-					if(value.length != 12){
+				validator(value) {
+					if (value.length != 12) {
 						return false
 					}
-					for(let i = 0;i<value.length;i++){
-						if(typeof value[i] != "string"){
+					for (let i = 0; i < value.length; i++) {
+						if (typeof value[i] != "string") {
 							return false
 						}
 					}
@@ -71,148 +80,147 @@
 				}
 			},
 			//头部显示的星期数组
-			weekText:{
-				type:Array,
-				default:function(){
-					return ['日','一','二','三','四','五','六']
+			weekText: {
+				type: Array,
+				default: function() {
+					return ['日', '一', '二', '三', '四', '五', '六']
 				},
-				validator(value){
-					if(value.length != 7){
+				validator(value) {
+					if (value.length != 7) {
 						return false
 					}
 					return true
 				}
 			},
 			//开始年
-			startYear:{
-				type:Number,
-				default:1970
+			startYear: {
+				type: Number,
+				default: 1970
 			},
 			//结束年
-			endYear:{
-				type:Number,
-				default:2099
+			endYear: {
+				type: Number,
+				default: 2099
 			},
 			//当前日期显示样式
-			nowClass:{
-				type:[String,Object],
-				default:null
+			nowClass: {
+				type: [String, Object],
+				default: null
 			},
 			//指定日期显示样式
-			currentClass:{
-				type:[String,Object],
-				default:null
+			currentClass: {
+				type: [String, Object],
+				default: null
 			},
 			//非本月日期是否可以点击
-			nonCurrentClick:{
-				type:Boolean,
-				default:false
+			nonCurrentClick: {
+				type: Boolean,
+				default: false
 			},
 			//点击态
-			active:{
-				type:Boolean,
-				default:true
+			active: {
+				type: Boolean,
+				default: true
 			}
 		},
-		model:{
-			prop:'date',
-			event:'model-change'
+		model: {
+			prop: 'date',
+			event: 'model-change'
 		},
-		computed:{
-			listeners(){
-				return Object.assign({},this.$listeners)
+		computed: {
+			listeners() {
+				return Object.assign({}, this.$listeners)
 			},
 			//显示在年份面板上的年数组
-			years(){
+			years() {
 				let arry = []
-				let current_year = this.date.getFullYear()//获取指定的年份
+				let current_year = this.date.getFullYear() //获取指定的年份
 				//指定日期所在年份所在数组的序列,12个值为一个数组
-				let index = Math.floor((current_year - this.startYear)/12)
-				for(let i = this.startYear+index*12;i<this.startYear+index*12+12;i++){
+				let index = Math.floor((current_year - this.startYear) / 12)
+				for (let i = this.startYear + index * 12; i < this.startYear + index * 12 + 12; i++) {
 					let date = new Date()
 					date.setFullYear(i)
 					date.setMonth(this.date.getMonth())
 					date.setDate(this.date.getDate())
 					arry.push({
-						date:date,
-						year:i,
-						now:i==new Date().getFullYear(),
-						current:i==current_year,
+						date: date,
+						year: i,
+						now: i == new Date().getFullYear(),
+						current: i == current_year,
 					})
 				}
 				return arry
 			},
 			//显示在月份面板上的月数组
-			months(){
+			months() {
 				let arry = [];
-				for(let i = 0;i<12;i++){
+				for (let i = 0; i < 12; i++) {
 					let date = new Date()
 					date.setFullYear(this.date.getFullYear())
 					date.setMonth(i)
 					date.setDate(this.date.getDate())
 					arry.push({
-						date:date,
-						year:this.date.getFullYear(),
-						month:i+1,
-						text:this.monthText[i],
-						now:((i+1==new Date().getMonth()+1) && (this.date.getFullYear()==new Date().getFullYear())),
-						current:((i+1==this.date.getMonth()+1))
+						date: date,
+						year: this.date.getFullYear(),
+						month: i + 1,
+						text: this.monthText[i],
+						now: ((i + 1 == new Date().getMonth() + 1) && (this.date.getFullYear() == new Date()
+							.getFullYear())),
+						current: ((i + 1 == this.date.getMonth() + 1))
 					})
 				}
 				return arry
 			},
 			//显示在日期面板上的日期数组
-			days(){
+			days() {
 				//获取指定日期的总天数
-				let total = $dap.date.getDays(this.date.getFullYear(),this.date.getMonth()+1)
+				let total = $dap.date.getDays(this.date.getFullYear(), this.date.getMonth() + 1)
 				let arry = []
-				for(let i = 0;i<total;i++){
+				for (let i = 0; i < total; i++) {
 					arry.push({
-						date:this.getSpecifiedDate(i+1),
-						now: this.isNow(i+1),
-						current:this.isCurrent(i+1),
-						currentMonth:true
+						date: this.getSpecifiedDate(i + 1),
+						now: this.isNow(i + 1),
+						current: this.isCurrent(i + 1),
+						currentMonth: true
 					})
 				}
 				//在数组中添加上个月末的几天
 				let fd = this.getSpecifiedDate(1)
-				let week = fd.getDay()//获取1号是周几
-				let pd = fd
-				for(let i = 0;i<week;i++){
-					let prevDate = $dap.date.getDateBefore(pd,1)//获取前一天
+				let week = fd.getDay() //获取1号是周几
+				for (let i = 0; i < week; i++) {
+					let prevDate = $dap.date.getDateBefore(fd, i+1)
 					arry.unshift({
-						date:prevDate,
+						date: prevDate,
 						now: false,
-						current:false,
-						currentMonth:false
+						current: false,
+						currentMonth: false
 					})
-					pd = prevDate
 				}
 				//在数组中添加下个月初的几天
 				let ld = this.getSpecifiedDate(total)
 				let length = arry.length
-				for(let i = length;i<35;i++){
-					let nextDate = $dap.date.getDateAfter(ld,1)//获取后一天
+				for (let i = length; i < 35; i++) {
+					let nextDate = $dap.date.getDateAfter(ld, i - length + 1)
 					arry.push({
-						date:nextDate,
+						date: nextDate,
 						now: false,
-						current:false,
-						currentMonth:false
+						current: false,
+						currentMonth: false
 					})
-					ld = nextDate
 				}
 				return arry
 			},
 			//年视图指定年份样式
-			yearCurrentClass(){
-				return item=>{
+			yearCurrentClass() {
+				return item => {
 					let str = []
-					if(item.current){//指定年
-						if(typeof this.currentClass == "string" && this.currentClass){
+					if (item.current) { //指定年
+						if (typeof this.currentClass == "string" && this.currentClass) {
 							str.push(this.currentClass)
-						}else if(typeof this.currentClass == "object" && this.currentClass && typeof this.currentClass.year == "string" && this.currentClass.year){
+						} else if (typeof this.currentClass == "object" && this.currentClass && typeof this
+							.currentClass.year == "string" && this.currentClass.year) {
 							str.push(this.currentClass.year)
-						}else{
+						} else {
 							str.push('mvi-calendar-year-current')
 						}
 					}
@@ -220,15 +228,16 @@
 				}
 			},
 			//月视图指定月份样式
-			monthCurrentClass(){
-				return item=>{
+			monthCurrentClass() {
+				return item => {
 					let str = []
-					if(item.current){//指定月
-						if(typeof this.currentClass == "string" && this.currentClass){
+					if (item.current) { //指定月
+						if (typeof this.currentClass == "string" && this.currentClass) {
 							str.push(this.currentClass)
-						}else if(typeof this.currentClass == "object" && this.currentClass && typeof this.currentClass.month == "string" && this.currentClass.month){
+						} else if (typeof this.currentClass == "object" && this.currentClass && typeof this
+							.currentClass.month == "string" && this.currentClass.month) {
 							str.push(this.currentClass.month)
-						}else{
+						} else {
 							str.push('mvi-calendar-month-current')
 						}
 					}
@@ -236,15 +245,16 @@
 				}
 			},
 			//日期视图指定日期样式
-			dateCurrentClass(){
-				return item=>{
+			dateCurrentClass() {
+				return item => {
 					let str = []
-					if(item.current){//指定日期
-						if(typeof this.currentClass == "string" && this.currentClass){
+					if (item.current) { //指定日期
+						if (typeof this.currentClass == "string" && this.currentClass) {
 							str.push(this.currentClass)
-						}else if(typeof this.currentClass == "object" && this.currentClass && typeof this.currentClass.date == "string" && this.currentClass.date){
+						} else if (typeof this.currentClass == "object" && this.currentClass && typeof this
+							.currentClass.date == "string" && this.currentClass.date) {
 							str.push(this.currentClass.date)
-						}else{
+						} else {
 							str.push('mvi-calendar-date-current')
 						}
 					}
@@ -252,15 +262,16 @@
 				}
 			},
 			//年视图当前年份样式
-			yearNowClass(){
-				return item=>{
+			yearNowClass() {
+				return item => {
 					let ync = []
-					if(item.now){//当前年
-						if(typeof this.nowClass == "string" && this.nowClass){
+					if (item.now) { //当前年
+						if (typeof this.nowClass == "string" && this.nowClass) {
 							ync.push(this.nowClass)
-						}else if(typeof this.nowClass == "object" && this.nowClass && typeof this.nowClass.year == "string" && this.nowClass.year){
+						} else if (typeof this.nowClass == "object" && this.nowClass && typeof this.nowClass.year ==
+							"string" && this.nowClass.year) {
 							ync.push(this.nowClass.year)
-						}else{
+						} else {
 							ync.push('mvi-calendar-year-now')
 						}
 					}
@@ -268,15 +279,16 @@
 				}
 			},
 			//月视图当前月份样式
-			monthNowClass(){
-				return item=>{
+			monthNowClass() {
+				return item => {
 					let mnc = []
-					if(item.now){//当前月
-						if(typeof this.nowClass == "string" && this.nowClass){
+					if (item.now) { //当前月
+						if (typeof this.nowClass == "string" && this.nowClass) {
 							mnc.push(this.nowClass)
-						}else if($dap.common.isObject(this.nowClass) && typeof this.nowClass.month == "string" && this.nowClass.month){
+						} else if ($dap.common.isObject(this.nowClass) && typeof this.nowClass.month == "string" &&
+							this.nowClass.month) {
 							mnc.push(this.nowClass.month)
-						}else{
+						} else {
 							mnc.push('mvi-calendar-month-now')
 						}
 					}
@@ -284,15 +296,16 @@
 				}
 			},
 			//日期视图当前日期样式
-			dateNowClass(){
-				return item=>{
+			dateNowClass() {
+				return item => {
 					let dnc = []
-					if(item.now){//当前月
-						if(typeof this.nowClass == "string"){
+					if (item.now) { //当前月
+						if (typeof this.nowClass == "string") {
 							dnc.push(this.nowClass)
-						}else if($dap.common.isObject(this.nowClass) && typeof this.nowClass.date == "string" && this.nowClass.date){
+						} else if ($dap.common.isObject(this.nowClass) && typeof this.nowClass.date == "string" && this
+							.nowClass.date) {
 							dnc.push(this.nowClass.date)
-						}else{
+						} else {
 							dnc.push('mvi-calendar-date-now')
 						}
 					}
@@ -300,27 +313,27 @@
 				}
 			},
 		},
-		methods:{
+		methods: {
 			//判断是否是今天
-			isNow(date){
+			isNow(date) {
 				let now = new Date()
-				if(this.date.getFullYear() == now.getFullYear()
-				&& this.date.getMonth()== now.getMonth() && date == now.getDate()){
+				if (this.date.getFullYear() == now.getFullYear() &&
+					this.date.getMonth() == now.getMonth() && date == now.getDate()) {
 					return true
-				}else{
+				} else {
 					return false
 				}
 			},
 			//判断是否是指定日期
-			isCurrent(date){
-				if(this.date.getDate() == date){
+			isCurrent(date) {
+				if (this.date.getDate() == date) {
 					return true
-				}else{
+				} else {
 					return false
 				}
 			},
 			//获取某个日期是星期几
-			getWeek(date){
+			getWeek(date) {
 				let fullDate = new Date()
 				fullDate.setFullYear(this.date.getFullYear())
 				fullDate.setMonth(this.date.getMonth())
@@ -328,7 +341,7 @@
 				return fullDate.getDay()
 			},
 			//获取本月指定日期
-			getSpecifiedDate(index){
+			getSpecifiedDate(index) {
 				let fullDate = new Date()
 				fullDate.setFullYear(this.date.getFullYear())
 				fullDate.setMonth(this.date.getMonth())
@@ -336,29 +349,29 @@
 				return fullDate
 			},
 			//日期视图点击事件
-			onDateClick(item){
+			onDateClick(item) {
 				//如果非本月且非本月日期不可点击
-				if(!item.currentMonth && !this.nonCurrentClick){
+				if (!item.currentMonth && !this.nonCurrentClick) {
 					return
 				}
-				this.$emit('update:date',item.date)
-				this.$emit('model-change',item.date)
-				this.$emit('date-click',item)
+				this.$emit('update:date', item.date)
+				this.$emit('model-change', item.date)
+				this.$emit('date-click', item)
 			},
 			//月份视图点击事件
-			onMonthClick(item){
-				this.$emit('update:date',item.date)
-				this.$emit('model-change',item.date)
-				this.$emit('month-click',item)
+			onMonthClick(item) {
+				this.$emit('update:date', item.date)
+				this.$emit('model-change', item.date)
+				this.$emit('month-click', item)
 			},
 			//年视图点击事件
-			onYearClick(item){
-				if(item.year < this.startYear || item.year > this.endYear){
+			onYearClick(item) {
+				if (item.year < this.startYear || item.year > this.endYear) {
 					return;
 				}
-				this.$emit('update:date',item.date)
-				this.$emit('model-change',item.date)
-				this.$emit('year-click',item)
+				this.$emit('update:date', item.date)
+				this.$emit('model-change', item.date)
+				this.$emit('year-click', item)
 			}
 		}
 	}
@@ -366,34 +379,41 @@
 
 <style lang="less" scoped>
 	@import "../../css/mvi-basic.less";
-	
-	.mvi-calendar{
+
+	.mvi-calendar {
 		display: block;
 		width: 100%;
-		padding:@mp-xs;
+		padding: @mp-xs;
 		background-color: #fff;
 		border-radius: @radius-default;
 		color: @font-color-default;
 	}
 
-	.mvi-calendar-month,.mvi-calendar-year{
+	.mvi-calendar-month,
+	.mvi-calendar-year {
 		display: block;
 		width: 100%;
 	}
-	.mvi-calendar-month-row,.mvi-calendar-year-row{
+
+	.mvi-calendar-month-row,
+	.mvi-calendar-year-row {
 		display: flex;
 		display: -webkit-flex;
 		width: 100%;
 		justify-content: space-between;
 	}
-	.mvi-calendar-month-m,.mvi-calendar-year-y{
+
+	.mvi-calendar-month-m,
+	.mvi-calendar-year-y {
 		width: 25%;
 		display: block;
 		text-align: center;
 		vertical-align: middle;
 		padding: @mp-xs;
 	}
-	.mvi-calendar-month-item,.mvi-calendar-year-item{
+
+	.mvi-calendar-month-item,
+	.mvi-calendar-year-item {
 		display: inline-block;
 		position: relative;
 		padding: @mp-xs @mp-sm;
@@ -401,22 +421,26 @@
 		border-radius: @radius-default;
 		cursor: pointer;
 	}
-	
-	.mvi-calendar-month-item.mvi-calendar-month-now,.mvi-calendar-year-item.mvi-calendar-year-now{
+
+	.mvi-calendar-month-item.mvi-calendar-month-now,
+	.mvi-calendar-year-item.mvi-calendar-year-now {
 		color: @info-normal;
 	}
-	
-	.mvi-calendar-month-item.mvi-calendar-month-current,.mvi-calendar-year-item.mvi-calendar-year-current{
+
+	.mvi-calendar-month-item.mvi-calendar-month-current,
+	.mvi-calendar-year-item.mvi-calendar-year-current {
 		color: @info-normal;
 		font-weight: bold;
 	}
-	.mvi-calendar-date{
+
+	.mvi-calendar-date {
 		display: table;
 		border-collapse: collapse;
 		width: 100%;
 		vertical-align: middle;
 	}
-	.mvi-calendar-date-header{
+
+	.mvi-calendar-date-header {
 		margin: 0;
 		padding: 0;
 		width: 100%;
@@ -424,20 +448,23 @@
 		font-weight: bold;
 		vertical-align: middle;
 	}
-	.mvi-calendar-date-header>.mvi-calendar-date-header-item{
+
+	.mvi-calendar-date-header>.mvi-calendar-date-header-item {
 		display: table-cell;
 		padding: @mp-xs;
 		text-align: center;
 		line-height: 1.5;
 		font-size: @font-size-default;
 	}
-	.mvi-calendar-date-list{
+
+	.mvi-calendar-date-list {
 		width: 100%;
 		display: table-row-group;
 		vertical-align: middle;
-		padding:@mp-sm 0;
+		padding: @mp-sm 0;
 	}
-	.mvi-calendar-date-row{
+
+	.mvi-calendar-date-row {
 		margin: 0;
 		padding: 0;
 		display: table-row;
@@ -445,14 +472,16 @@
 		position: relative;
 		vertical-align: middle;
 	}
-	.mvi-calendar-date-day{
+
+	.mvi-calendar-date-day {
 		position: relative;
 		display: table-cell;
 		text-align: center;
 		line-height: 1.5;
 		vertical-align: middle;
 	}
-	.mvi-calendar-date-day-item{
+
+	.mvi-calendar-date-day-item {
 		position: relative;
 		display: inline-flex;
 		display: -webkit-inline-flex;
@@ -464,27 +493,32 @@
 		font-size: @font-size-default;
 		cursor: pointer;
 	}
-	.mvi-calendar-date-day-item.mvi-calendar-date-now{
+
+	.mvi-calendar-date-day-item.mvi-calendar-date-now {
 		color: @info-normal;
 	}
-	.mvi-calendar-date-day-item.mvi-calendar-date-current{
+
+	.mvi-calendar-date-day-item.mvi-calendar-date-current {
 		background-color: @info-normal;
 		color: #fff;
 	}
-	
+
 	//点击
-	.mvi-calendar-date-day-item.mvi-calendar-active:active::before{
+	.mvi-calendar-date-day-item.mvi-calendar-active:active::before {
 		.mvi-active();
 	}
-	.mvi-calendar-month-item.mvi-calendar-active:active::before{
+
+	.mvi-calendar-month-item.mvi-calendar-active:active::before {
 		.mvi-active();
 	}
-	.mvi-calendar-year-item.mvi-calendar-active:active::before{
+
+	.mvi-calendar-year-item.mvi-calendar-active:active::before {
 		.mvi-active();
 	}
+
 	//禁用
 	.mvi-calendar-date-day-item[disabled],
-	.mvi-calendar-year-item[disabled]{
+	.mvi-calendar-year-item[disabled] {
 		opacity: .5;
 	}
 </style>

@@ -8,20 +8,23 @@
 	export default {
 		name:'m-row',
 		props:{
-			justify:{//排列方式
+			//排列方式
+			justify:{
 				type:String,
 				default:'flex-start',
 				validator(value){
-					return ['flex-start','flex-end','space-around','space-between'].lastIndexOf(value)>-1
+					return ['flex-start','flex-end','space-around','space-between'].includes(value)
 				}
 			},
+			//垂直对齐方式
 			align:{
 				type:String,
 				default:'flex-start',
 				validator(value){
-					return ['flex-start','flex-end','center'].lastIndexOf(value)>-1
+					return ['flex-start','flex-end','center'].includes(value)
 				}
 			},
+			//渲染标签
 			tag:{
 				type:String,
 				default:'div'
@@ -34,10 +37,10 @@
 		},
 		computed:{
 			rowStyle(){
-				let style = {};
-				style.justifyContent = this.justify;
-				style.alignItems = this.align;
-				return style;
+				let style = {}
+				style.justifyContent = this.justify
+				style.alignItems = this.align
+				return style
 			}
 		},
 		components:{

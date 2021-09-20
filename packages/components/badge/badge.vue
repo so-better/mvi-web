@@ -9,18 +9,22 @@
 	export default {
 		name: "m-badge",
 		props: {
+			//背景色
 			background: {
 				type: String,
 				default: null
 			},
+			//颜色
 			color: {
 				type: String,
 				default: null
 			},
+			//是否圆点标记
 			dot: {
 				type: Boolean,
 				default: false
 			},
+			//尺寸
 			size: {
 				type: String,
 				default: 'medium',
@@ -30,23 +34,23 @@
 			}
 		},
 		watch: {
-			dot(newValue){
-				if(newValue){
+			dot(newValue) {
+				if (newValue) {
 					this.$el.innerHTML = ''
-				}else{
-					this.$nextTick(()=>{
+				} else {
+					this.$nextTick(() => {
 						let html = ''
-						this.$slots.default.forEach((item,index)=>{
-							if(item && $dap.element.isElement(item.elm)){
+						this.$slots.default.forEach((item, index) => {
+							if (item && $dap.element.isElement(item.elm)) {
 								html += item.elm.outerHTML
-							}else {
+							} else {
 								html += item.text
 							}
 						})
 						this.$el.innerHTML = html
 					})
 				}
-				this.$nextTick(()=>{
+				this.$nextTick(() => {
 					this.setPadding()
 				})
 			}
@@ -67,20 +71,20 @@
 			}
 		},
 		mounted() {
-			if(this.dot){
+			if (this.dot) {
 				this.$el.innerHTML = ''
 			}
 			this.setPadding()
 		},
-		methods:{
-			setPadding(){
+		methods: {
+			setPadding() {
 				if (this.dot) {
 					this.$el.style.padding = 0
-				} else{
+				} else {
 					if (this.$el.offsetWidth >= this.$el.offsetHeight) {
-						if(this.size == 'large'){
+						if (this.size == 'large') {
 							this.$el.style.padding = '0 0.15rem'
-						}else{
+						} else {
 							this.$el.style.padding = '0 0.12rem'
 						}
 					}

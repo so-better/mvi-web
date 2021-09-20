@@ -15,6 +15,7 @@
 	export default {
 		name:"m-button",
 		props:{
+			//主题类型
 			type:{
 				type:String,
 				default:"default",
@@ -22,6 +23,7 @@
 					return ['default','info','success','error','warn','primary'].includes(value)
 				}
 			},
+			//大小
 			size:{
 				type:String,
 				default:"medium",
@@ -29,54 +31,67 @@
 					return ['mini','small','medium','large'].includes(value)
 				}
 			},
+			//是否禁用
 			disabled:{
 				type:Boolean,
 				default:false
 			},
+			//原生button的type值
 			nativeType:{
 				type:String,
 				default:'button'
 			},
+			//是否显示加载样式
 			loading:{
 				type:Boolean,
 				default:false
 			},
+			//加载文字
 			loadText:{
 				type:String,
 				default:"loading..."
 			},
+			//是否独占一行
 			formControl:{
 				type:Boolean,
 				default:false
 			},
+			//自定义标签
 			tag:{
 				type:String,
 				default:'button'
 			},
+			//是否朴素样式
 			plain:{
 				type:Boolean,
 				default:false
 			},
+			//自定义颜色
 			color:{
 				type:String,
 				default:null
 			},
+			//自定义文本颜色
 			subColor:{
 				type:String,
 				default:null
 			},
-			round:{//圆形按钮
+			//圆形按钮
+			round:{
 				type:Boolean,
 				default:false
 			},
-			square:{//方形按钮
+			//方形按钮
+			square:{
 				type:Boolean,
 				default:false
 			},
-			active:{//是否显示点击态
+			//是否显示点击态
+			active:{
 				type:Boolean,
 				default:true
 			},
+			//加载图标
 			loadIcon:{
 				type:[String,Object],
 				default:null
@@ -128,13 +143,13 @@
 					if(this.color){
 						obj.color = this.color
 						obj.borderColor = this.color
-						obj.background = (this.subColor?this.subColor:'#fff')
+						obj.background = this.subColor?this.subColor:'#fff'
 					}
 				}else{
 					if(this.color){
 						obj.background = this.color
 						obj.borderColor = this.color
-						obj.color = (this.subColor?this.subColor:'#fff')
+						obj.color = this.subColor?this.subColor:'#fff'
 					}
 				}
 				return obj
@@ -142,10 +157,10 @@
 			buttonClass(){
 				let cls = ['mvi-button']
 				if(this.type){
-					cls.push('mvi-button-'+this.type)
+					cls.push('mvi-button-' + this.type)
 				}
 				if(this.size){
-					cls.push('mvi-button-'+this.size)
+					cls.push('mvi-button-' + this.size)
 				}
 				if(this.round){
 					cls.push('mvi-button-radius-round')

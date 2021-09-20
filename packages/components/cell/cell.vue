@@ -1,8 +1,8 @@
 <template>
 	<div v-on="listeners" :class="cellClass">
 		<div class="mvi-cell-item">
-			<m-icon class="mvi-cell-icon" v-if="iconType||iconUrl" :type="iconType" :url="iconUrl"
-			 :spin="iconSpin" :size="iconSize" :color="iconColor"/>
+			<m-icon class="mvi-cell-icon" v-if="iconType||iconUrl" :type="iconType" :url="iconUrl" :spin="iconSpin"
+				:size="iconSize" :color="iconColor" />
 			<div :class="['mvi-cell-title',noWrap?'mvi-cell-nowrap':'']">
 				<slot name="title" v-if="$slots.title"></slot>
 				<span v-else v-text="title" :class="titleClass?titleClass:''"></span>
@@ -11,8 +11,8 @@
 				<slot name="content" v-if="$slots.content"></slot>
 				<span v-else-if="content" v-text="content" :class="contentClass?contentClass:''"></span>
 			</div>
-			<m-icon class="mvi-cell-arrow"
-			 v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl" :spin="arrowSpin" :size="arrowSize" :color="arrowColor"/>
+			<m-icon class="mvi-cell-arrow" v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl"
+				:spin="arrowSpin" :size="arrowSize" :color="arrowColor" />
 		</div>
 		<div :class="['mvi-cell-label',labelClass?labelClass:'']" v-if="label || $slots.label" :style="labelTextStyle">
 			<slot name="label" v-if="$slots.label"></slot>
@@ -27,53 +27,65 @@
 	export default {
 		name: "m-cell",
 		props: {
+			//左侧图标
 			icon: {
 				type: [String, Object],
 				default: null
 			},
+			//标题
 			title: {
 				type: String,
 				default: null
 			},
+			//内容
 			content: {
 				type: String,
 				default: null
 			},
+			//描述文本
 			label: {
 				type: String,
 				default: null
 			},
+			//是否显示下边框
 			border: {
 				type: Boolean,
 				default: null
 			},
+			//右侧图标
 			arrow: {
 				type: [String, Object],
 				default: null
 			},
+			//标题class
 			titleClass: {
 				type: String,
 				default: null
 			},
+			//内容class
 			contentClass: {
 				type: String,
 				default: null
 			},
+			//描述文本class
 			labelClass: {
 				type: String,
 				default: null
 			},
+			//是否显示点击态
 			active: {
 				type: Boolean,
 				default: null
 			},
+			//描述文本是否超出省略
 			ellipsis: {
 				type: [Boolean, Number],
 				default: null
 			},
-			noWrap:{
-				type:Boolean,
-				default:false
+			//标题和内容是否超出不换行
+			noWrap: {
+				type: Boolean,
+				default: false
 			}
 		},
 		computed: {
@@ -113,16 +125,16 @@
 				let size = null;
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.size == "string") {
-						size = this.icon.size;
+						size = this.icon.size
 					}
 				}
 				return size;
 			},
-			iconColor(){
+			iconColor() {
 				let color = null;
-				if($dap.common.isObject(this.icon)){
+				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.color == "string") {
-						color = this.icon.color;
+						color = this.icon.color
 					}
 				}
 				return color;
@@ -131,7 +143,7 @@
 				let t = null;
 				if ($dap.common.isObject(this.arrow)) {
 					if (typeof this.arrow.type == "string") {
-						t = this.arrow.type;
+						t = this.arrow.type
 					}
 				} else if (typeof this.arrow == "string") {
 					t = this.arrow;
@@ -169,7 +181,7 @@
 				let color = null;
 				if ($dap.common.isObject(this.arrow)) {
 					if (typeof this.arrow.color == "string") {
-						color = this.arrow.color;
+						color = this.arrow.color
 					}
 				}
 				return color;
@@ -178,7 +190,7 @@
 				if (typeof this.active == "boolean") {
 					return this.active;
 				} else if (typeof this.$parent.active == "boolean") {
-					return this.$parent.active;
+					return this.$parent.active
 				} else {
 					return true;
 				}
@@ -187,7 +199,7 @@
 				if (typeof this.border == "boolean") {
 					return this.border;
 				} else if (typeof this.$parent.border == "boolean") {
-					return this.$parent.border;
+					return this.$parent.border
 				} else {
 					return false;
 				}
@@ -195,31 +207,30 @@
 			labelTextStyle() {
 				let style = {};
 				if (this.ellipsis) { //如果ellipsis不是false
-					style.display = '-webkit-box';
-					style.textOverflow = 'ellipsis';
-					style.webkitBoxOrient = 'vertical';
-					style.overflow = 'hidden';
+					style.display = '-webkit-box'
+					style.textOverflow = 'ellipsis'
+					style.webkitBoxOrient = 'vertical'
+					style.overflow = 'hidden'
 					if (typeof this.ellipsis == "boolean") { //true
-						style.webkitLineClamp = 3;
+						style.webkitLineClamp = 3
 					} else {
-						style.webkitLineClamp = this.ellipsis;
-
+						style.webkitLineClamp = this.ellipsis
 					}
 				}
-				return style;
+				return style
 			},
-			cellClass(){
-				let cls = ['mvi-cell'];
-				if(this.computedBorder){
-					cls.push('mvi-cell-border');
+			cellClass() {
+				let cls = ['mvi-cell']
+				if (this.computedBorder) {
+					cls.push('mvi-cell-border')
 				}
-				if(this.computedActive){
-					cls.push('mvi-cell-active');
+				if (this.computedActive) {
+					cls.push('mvi-cell-active')
 				}
-				return cls;
+				return cls
 			}
 		},
-		components:{
+		components: {
 			mIcon
 		}
 	}
@@ -227,7 +238,7 @@
 
 <style scoped lang="less">
 	@import "../../css/mvi-basic.less";
-	
+
 	.mvi-cell {
 		display: block;
 		width: 100%;
@@ -236,11 +247,11 @@
 		padding: @mp-sm;
 		position: relative;
 	}
-	
-	.mvi-cell-active:active::before{
+
+	.mvi-cell-active:active::before {
 		.mvi-active();
 	}
-	
+
 	.mvi-cell.mvi-cell-border::after {
 		display: block;
 		position: absolute;
@@ -263,7 +274,7 @@
 		position: relative;
 		overflow: hidden;
 	}
-	
+
 	.mvi-cell-icon {
 		margin-right: @mp-xs;
 	}
@@ -272,7 +283,7 @@
 		display: block;
 		width: 100%;
 		font-size: @font-size-default;
-		word-wrap:break-word;
+		word-wrap: break-word;
 		vertical-align: middle;
 	}
 
@@ -283,15 +294,15 @@
 		text-align: right;
 		vertical-align: middle;
 		overflow: hidden;
-		word-wrap:break-word;
+		word-wrap: break-word;
 		color: @font-color-sub;
 	}
-	
-	.mvi-cell-title + .mvi-cell-content{
+
+	.mvi-cell-title+.mvi-cell-content {
 		margin-left: @mp-sm;
 	}
-	
-	.mvi-cell-nowrap{
+
+	.mvi-cell-nowrap {
 		display: -webkit-box;
 		text-overflow: ellipsis;
 		-webkit-box-orient: vertical;
@@ -309,6 +320,6 @@
 		margin-top: @mp-xs;
 		font-size: @font-size-small;
 		color: @font-color-mute;
-		word-wrap:break-word;
+		word-wrap: break-word;
 	}
 </style>

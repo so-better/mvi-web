@@ -51,9 +51,9 @@
 			formStyle(){
 				let style = {}
 				if(this.block && this.width){
-					style.width = this.width;
+					style.width = this.width
 				}
-				return style;
+				return style
 			}
 		},
 		provide(){

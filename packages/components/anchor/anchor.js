@@ -4,7 +4,7 @@ import $dap from "dap-util"
  */
 class Anchor {
 	constructor(element,options) {
-		this.$el = element;//点击的元素
+		this.$el = element//点击的元素
 		if(!$dap.common.isObject(options)){
 			options = {}
 		}
@@ -47,7 +47,7 @@ class Anchor {
 		}
 		
 		if ($dap.element.isElement(this.$root)) {
-			this.$el.on('click',e=>{
+			$dap.event.on(this.$el,'click',e=>{
 				let scrollTop = $dap.element.getElementPoint(this.$target, this.$root).top
 				$dap.element.setScrollTop({
 					el:this.$root,
@@ -59,7 +59,7 @@ class Anchor {
 				})
 			})
 		} else {
-			this.$el.on('click',e=>{
+			$dap.event.on(this.$el,'click',e=>{
 				//获取目标元素到浏览器顶部的距离
 				let scrollTop = $dap.element.getElementPoint(this.$target).top
 				$dap.element.setScrollTop({

@@ -56,58 +56,82 @@ export default {
 	name: 'm-dialog-pc',
 	data() {
 		return {
-			ok: false, //点击的是否是确定按钮
-			show: true, //对话框是否打开，默认为true，即挂载就显示
-			type: 'Alert', //弹窗类型
-			title: null, //标题
-			message: null, //描述
-			btns:null,//弹窗确定按钮和取消按钮配置
-			width: null, //模态框宽度
-			callback: null, //回调函数
-			zIndex: null, //遮罩z-index
-			animation: null, //动画
-			local: null, //是否局部
-			usePadding: null, //局部显示时是否考虑滚动条影响
-			radius: null, //圆角
-			timeout: null, //自定义动画时间
-			overlayColor: null, //遮罩层背景色
-			showTimes:null,//是否显示关闭按钮
+			//点击的是否是确定按钮
+			ok: false,
+			//对话框是否打开，默认为true，即挂载就显示
+			show: true,
+			//弹窗类型
+			type: 'Alert', 
+			//标题
+			title: null,
+			//描述
+			message: null,
+			//弹窗确定按钮和取消按钮配置
+			btns:null,
+			//模态框宽度
+			width: null,
+			//回调函数
+			callback: null,
+			//遮罩z-index
+			zIndex: null,
+			//动画
+			animation: null,
+			//是否局部
+			local: null,
+			//局部显示时是否考虑滚动条影响
+			usePadding: null,
+			//圆角
+			radius: null,
+			//自定义动画时间
+			timeout: null,
+			//遮罩层背景色
+			overlayColor: null,
+			//是否显示关闭按钮
+			showTimes:null,
+			//输入框配置
 			input: {
-				//输入框配置
-				placeholder: null, //占位符
-				type: null, //输入框类型
+				//占位符
+				placeholder: null,
+				//输入框类型
+				type: null, 
+				//是否自动获取焦点
 				autofocus: null,
+				//文本最大长度
 				maxlength: null,
+				//是否显示清除图标
 				clearable: null,
-				value: null, //输入框的值
-				align: null //输入框文本对齐方式
+				//输入框的值
+				value: null,
+				//输入框文本对齐方式
+				align: null 
 			},
-			focus: false //输入框是否已经获得了焦点
-		};
+			//输入框是否已经获得了焦点
+			focus: false 
+		}
 	},
 	computed: {
 		listeners() {
-			return Object.assign({}, this.$listeners);
+			return Object.assign({}, this.$listeners)
 		},
 		computedShowTimes(){
 			if (typeof this.showTimes == 'boolean') {
-				return this.showTimes;
+				return this.showTimes
 			} else {
-				return true;
+				return true
 			}
 		},
 		computedTitle() {
 			if (typeof this.title == 'string') {
-				return this.title;
+				return this.title
 			} else {
-				return '提示';
+				return '提示'
 			}
 		},
 		computedMessage() {
 			if (typeof this.message == 'string') {
-				return this.message;
+				return this.message
 			}else if ($dap.common.isObject(this.message)) {
-				return JSON.stringify(this.message);
+				return JSON.stringify(this.message)
 			} else {
 				return String(this.message)
 			}
@@ -132,36 +156,36 @@ export default {
 			if($dap.common.isObject(this.btns)){
 				if($dap.common.isObject(this.btns.ok)){
 					if(typeof this.btns.ok.type == 'string'){
-						btns.ok.type = this.btns.ok.type;
+						btns.ok.type = this.btns.ok.type
 					}
 					if(typeof this.btns.ok.color == 'string'){
-						btns.ok.color = this.btns.ok.color;
+						btns.ok.color = this.btns.ok.color
 					}
 					if(typeof this.btns.ok.subColor == 'string'){
-						btns.ok.subColor = this.btns.ok.subColor;
+						btns.ok.subColor = this.btns.ok.subColor
 					}
 					if(typeof this.btns.ok.plain == 'boolean'){
-						btns.ok.plain = this.btns.ok.plain;
+						btns.ok.plain = this.btns.ok.plain
 					}
 					if(typeof this.btns.ok.text == 'string'){
-						btns.ok.text = this.btns.ok.text;
+						btns.ok.text = this.btns.ok.text
 					}
 				}
 				if($dap.common.isObject(this.btns.cancel)){
 					if(typeof this.btns.cancel.type == 'string'){
-						btns.cancel.type = this.btns.cancel.type;
+						btns.cancel.type = this.btns.cancel.type
 					}
 					if(typeof this.btns.cancel.color == 'string'){
-						btns.cancel.color = this.btns.cancel.color;
+						btns.cancel.color = this.btns.cancel.color
 					}
 					if(typeof this.btns.cancel.subColor == 'string'){
-						btns.cancel.subColor = this.btns.cancel.subColor;
+						btns.cancel.subColor = this.btns.cancel.subColor
 					}
 					if(typeof this.btns.cancel.plain == 'boolean'){
-						btns.cancel.plain = this.btns.cancel.plain;
+						btns.cancel.plain = this.btns.cancel.plain
 					}
 					if(typeof this.btns.cancel.text == 'string'){
-						btns.cancel.text = this.btns.cancel.text;
+						btns.cancel.text = this.btns.cancel.text
 					}
 				}
 			}
@@ -169,72 +193,72 @@ export default {
 		},
 		computedCallback() {
 			if (typeof this.callback == 'function') {
-				return this.callback;
+				return this.callback
 			} else {
-				return function() {};
+				return function() {}
 			}
 		},
 		computedWidth() {
 			if (typeof this.width == 'string' && this.width) {
-				return this.width;
+				return this.width
 			} else {
-				return '7.2rem';
+				return '7.2rem'
 			}
 		},
 		computedInput() {
-			let input = {};
+			let input = {}
 			if (typeof this.input.placeholder == 'string') {
-				input.placeholder = this.input.placeholder;
+				input.placeholder = this.input.placeholder
 			} else {
-				input.placeholder = '';
+				input.placeholder = ''
 			}
 			if (typeof this.input.type == 'string') {
 				if (this.input.type == 'number') {
-					input.type = 'text';
+					input.type = 'text'
 				} else {
-					input.type = this.input.type;
+					input.type = this.input.type
 				}
 			} else {
-				input.type = 'text';
+				input.type = 'text'
 			}
 			if (typeof this.input.autofocus == 'boolean') {
-				input.autofocus = this.input.autofocus;
+				input.autofocus = this.input.autofocus
 			} else {
-				input.autofocus = true;
+				input.autofocus = true
 			}
 			if ($dap.number.isNumber(this.input.maxlength)) {
-				input.maxlength = this.input.maxlength;
+				input.maxlength = this.input.maxlength
 			} else {
-				input.maxlength = -1;
+				input.maxlength = -1
 			}
 			if (typeof this.input.clearable == 'boolean') {
-				input.clearable = this.input.clearable;
+				input.clearable = this.input.clearable
 			} else {
-				input.clearable = false;
+				input.clearable = false
 			}
 			if (typeof this.input.align == 'string') {
-				input.align = this.input.align;
+				input.align = this.input.align
 			} else {
-				input.align = 'left';
+				input.align = 'left'
 			}
-			return input;
+			return input
 		},
 		computedValue: {
 			get() {
-				let value = '';
+				let value = ''
 				if ((typeof this.input.value == 'string' && this.input.value) || typeof this.input.value == 'number') {
-					value = this.input.value;
+					value = this.input.value
 				}
 				if (this.input.type == 'number') {
-					value = value.replace(/\D/g, '');
+					value = value.replace(/\D/g, '')
 				}
 				if (this.computedInput.maxlength > 0 && value.length > this.computedInput.maxlength) {
-					value = value.substr(0, this.computedInput.maxlength);
+					value = value.substr(0, this.computedInput.maxlength)
 				}
 				if(this.input.value !== value){
 					this.$set(this.input,'value',value)
 				}
-				return value;
+				return value
 			},
 			set(value) {
 				if(this.input.value !== value){
@@ -244,84 +268,84 @@ export default {
 		},
 		computedZIndex() {
 			if ($dap.number.isNumber(this.zIndex)) {
-				return this.zIndex;
+				return this.zIndex
 			} else {
-				return 1000;
+				return 1000
 			}
 		},
 		computedLocal() {
 			if ((typeof this.local == 'string' && this.local) || $dap.element.isElement(this.local)) {
-				return true;
+				return true
 			} else {
-				return false;
+				return false
 			}
 		},
 		computedUsePadding() {
 			if (typeof this.usePadding == 'boolean') {
-				return this.usePadding;
+				return this.usePadding
 			} else {
-				return false;
+				return false
 			}
 		},
 		computedAnimation() {
 			if (typeof this.animation == 'string' && this.animation) {
-				return this.animation;
+				return this.animation
 			} else {
-				return 'translate-top';
+				return 'translate-top'
 			}
 		},
 		computedRadius() {
 			if (typeof this.radius == 'string' && this.radius) {
-				return this.radius;
+				return this.radius
 			} else {
-				return '0.12rem';
+				return '0.12rem'
 			}
 		},
 		computedTimeout() {
 			if ($dap.number.isNumber(this.timeout)) {
-				return this.timeout;
+				return this.timeout
 			} else {
-				return 300;
+				return 300
 			}
 		},
 		computedOverlayColor() {
 			if (typeof this.overlayColor == 'string' && this.overlayColor) {
-				return this.overlayColor;
+				return this.overlayColor
 			} else {
-				return null;
+				return null
 			}
 		},
 		contentShow() {
 			if (this.type == 'Alert' || this.type == 'Confirm') {
 				if (this.computedMessage) {
-					return true;
+					return true
 				} else {
-					return false;
+					return false
 				}
 			} else {
-				return true;
+				return true
 			}
 		},
 		showClear() {
 			if (this.focus && this.computedValue) {
-				return true;
+				return true
 			} else {
-				return false;
+				return false
 			}
 		},
 		inputClass() {
-			let cls = [];
+			let cls = []
 			if (this.showClear && this.computedInput.clearable) {
-				cls.push('mvi-dialog-input-padding');
+				cls.push('mvi-dialog-input-padding')
 			}
-			return cls;
+			return cls
 		},
 		inputStyle() {
-			let style = {};
+			let style = {}
 			if (['left', 'right', 'center'].includes(this.computedInput.align)) {
-				style.textAlign = this.computedInput.align;
+				style.textAlign = this.computedInput.align
 			}
-			return style;
+			return style
 		}
 	},
 	components:{
@@ -331,35 +355,35 @@ export default {
 		//获取焦点
 		inputFocus() {
 			setTimeout(() => {
-				this.focus = true;
-			}, 200);
+				this.focus = true
+			}, 200)
 		},
 		//失去焦点
 		inputBlur(e) {
 			setTimeout(() => {
-				this.focus = false;
-			}, 200);
+				this.focus = false
+			}, 200)
 		},
 		//清除输入框的值
 		doClear() {
 			if(!this.computedInput.clearable){
-				return;
+				return
 			}
-			this.computedValue = '';
-			this.$refs.input.focus();
+			this.computedValue = ''
+			this.$refs.input.focus()
 		},
 		//确定
 		okFun() {
-			this.show = false;
-			this.ok = true;
+			this.show = false
+			this.ok = true
 		},
 		//取消
 		cancelFun() {
-			this.show = false;
+			this.show = false
 			if(this.type == 'Alert'){
-				this.ok = true;
+				this.ok = true
 			}else {
-				this.ok = false;
+				this.ok = false
 			}
 		},
 		//模态框隐藏前
@@ -379,18 +403,18 @@ export default {
 		//模态框隐藏后
 		modalHidden(el) {
 			if (this.type == 'Alert') {
-				this.computedCallback();
+				this.computedCallback()
 			} else if (this.type == 'Confirm') {
-				this.computedCallback(this.ok);
+				this.computedCallback(this.ok)
 			} else if (this.type == 'Prompt') {
-				this.computedCallback(this.ok, this.computedValue);
+				this.computedCallback(this.ok, this.computedValue)
 			}
 			//触发全局的监听
 			if(typeof this.dialogComponentWatch == 'function'){
 				this.dialogComponentWatch.apply(this,['hidden',this.type,el])
 			}
-			this.$el.remove();
-			this.$destroy();
+			this.$el.remove()
+			this.$destroy()
 		},
 		//模态框显示前
 		modalShow(el){
@@ -410,7 +434,7 @@ export default {
 		modalShown(el) {
 			//输入框获取焦点
 			if (this.type == 'Prompt' && this.computedInput.autofocus) {
-				this.$refs.input.focus();
+				this.$refs.input.focus()
 			}
 			//触发全局的监听
 			if(typeof this.dialogComponentWatch == 'function'){
@@ -418,7 +442,7 @@ export default {
 			}
 		}
 	}
-};
+}
 </script>
 
 <style scoped lang="less">

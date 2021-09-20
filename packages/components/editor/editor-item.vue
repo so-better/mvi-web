@@ -121,28 +121,39 @@
 	export default {
 		name: 'm-editor-item',
 		props: {
-			value: { //key值
+			//key值
+			value: { 
 				type: String,
 				default: null
 			},
-			menu: { //菜单项值
+			//菜单项值
+			menu: { 
 				type: [Array, Boolean],
 				default: function() {
-					return false;
+					return false
 				}
 			}
 		},
 		data() {
 			return {
-				layerShow: false, //layer开关
-				tabIndex: 0, //媒体layer浮层默认显示的tab序列
-				remoteUrl: '', //插入的网络图片或者视频地址
-				linkUrl: '', //插入的链接
-				linkText: '', //链接内容
-				linkTarget: false, //链接是否在新窗口打开
-				tableRows: 5, //表格行数
-				tableColumns: 5, //表格列数
-				menuActive: false, //菜单项是否激活状态，激活状态下如果是浮层显示浮层内容有些会有不同
+				//layer开关
+				layerShow: false, 
+				//媒体layer浮层默认显示的tab序列
+				tabIndex: 0, 
+				//插入的网络图片或者视频地址
+				remoteUrl: '', 
+				//插入的链接
+				linkUrl: '', 
+				//链接内容
+				linkText: '', 
+				//链接是否在新窗口打开
+				linkTarget: false, 
+				//表格行数
+				tableRows: 5, 
+				//表格列数
+				tableColumns: 5, 
+				//菜单项是否激活状态，激活状态下如果是浮层显示浮层内容有些会有不同
+				menuActive: false, 
 			}
 		},
 		inject: ['editor'],
@@ -151,15 +162,15 @@
 			activeColorStyle(){
 				let style = {}
 				if(this.editor.activeColor){
-					style.color = this.editor.activeColor;
+					style.color = this.editor.activeColor
 				}
-				return style;
+				return style
 			},
 			//菜单项样式
 			editorTargetStyle(){
 				let style = {}
 				if(this.editor.activeColor && this.menuActive){
-					style.color = this.editor.activeColor;
+					style.color = this.editor.activeColor
 				}
 				return style
 			},
@@ -184,15 +195,15 @@
 					maxLength: this.value == 'image' ? this.editor.defaultUploadImageProps.maxLength : this.editor.defaultUploadVideoProps
 						.maxLength,
 					select: files => {
-						this.editor.restoreRange();
+						this.editor.restoreRange()
 						//使用base64
 						if (this.editor.useBase64) {
 							files.forEach(file => {
 								$dap.file.dataFileToBase64(file).then(base64 => {
 									if (this.value == 'image') {
-										this.editor.insertImage(base64);
+										this.editor.insertImage(base64)
 									} else {
-										this.editor.insertVideo(base64);
+										this.editor.insertVideo(base64)
 									}
 								})
 							})
@@ -236,62 +247,62 @@
 		},
 		mounted() {
 			if (this.editor.trigger == 'hover') {
-				this.$el.on('mouseenter.editor', this.showLayer);
-				this.$el.on('mouseleave.editor', this.hideLayer);
+				$dap.event.on(this.$el,'mouseenter.editor',this.showLayer)
+				$dap.event.on(this.$el,'mouseleave.editor',this.hideLayer)
 			}
 		},
 		methods: {
 			//输入框获取焦点
 			inputFocus(event){
 				if(this.editor.activeColor){
-					event.currentTarget.style.borderColor = this.editor.activeColor;
+					event.currentTarget.style.borderColor = this.editor.activeColor
 				}
 			},
 			//输入框失去焦点
 			inputBlur(event){
 				if(this.editor.activeColor){
-					event.currentTarget.style.borderColor = '';
+					event.currentTarget.style.borderColor = ''
 				}
 			},
 			//菜单项下拉选择
 			doSelect(item) {
 				if (this.editor.disabled) {
-					return;
+					return
 				}
-				this.editor.restoreRange();
+				this.editor.restoreRange()
 				switch (this.value) {
 					case 'tag': //设置dom标签
-						document.execCommand('formatBlock', false, item.value);
-						break;
+						document.execCommand('formatBlock', false, item.value)
+						break
 					case 'fontFamily': //设置字体
-						document.execCommand('fontName', false, item.value);
-						break;
+						document.execCommand('fontName', false, item.value)
+						break
 					case 'list': //设置列表
 						if (item.value == 'ol') {
 							//有序列表
-							document.execCommand('insertOrderedList');
+							document.execCommand('insertOrderedList')
 						} else {
 							//无序列表
-							document.execCommand('insertUnorderedList');
+							document.execCommand('insertUnorderedList')
 						}
-						break;
+						break
 					case 'justify': //对齐方式
 						if (item.value == 'left') {
-							document.execCommand('justifyLeft');
+							document.execCommand('justifyLeft')
 						} else if (item.value == 'center') {
-							document.execCommand('justifyCenter');
+							document.execCommand('justifyCenter')
 						} else if (item.value == 'right') {
-							document.execCommand('justifyRight');
+							document.execCommand('justifyRight')
 						} else if (item.value == 'justify') {
-							document.execCommand('justifyFull');
+							document.execCommand('justifyFull')
 						}
-						break;
+						break
 					case 'foreColor': //字体颜色
-						document.execCommand('foreColor', false, item.value);
-						break;
+						document.execCommand('foreColor', false, item.value)
+						break
 					case 'backColor': //背景色
-						document.execCommand('hiliteColor', false, item.value);
-						break;
+						document.execCommand('hiliteColor', false, item.value)
+						break
 					default: //自定义操作
 						this.editor.$emit('custom', {
 							key: this.value,
@@ -303,18 +314,18 @@
 			//显示浮层
 			showLayer() {
 				if (this.editor.disabled) {
-					return;
+					return
 				}
 				if (this.hasSelect) {
-					this.layerShow = true;
+					this.layerShow = true
 					this.$nextTick(() => {
 						if (this.editor.range) {
 							if (this.value == 'link') {
-								this.linkInsertSet();
+								this.linkInsertSet()
 							} else if (this.value == 'table') {
-								this.tableInsertSet();
+								this.tableInsertSet()
 							} else if (this.value == 'image' || this.value == 'video') {
-								this.uploadSet();
+								this.uploadSet()
 							}
 						}
 					})
@@ -323,19 +334,19 @@
 			//隐藏浮层
 			hideLayer() {
 				if (this.editor.disabled) {
-					return;
+					return
 				}
 				if (this.hasSelect) {
-					this.layerShow = false;
+					this.layerShow = false
 				}
 			},
 			//菜单项点击
 			targetTrigger() {
 				if (this.editor.disabled) {
-					return;
+					return
 				}
 				if (this.value != 'codeView' && this.editor.codeViewShow) {
-					return;
+					return
 				}
 				if (this.hasSelect) {
 					if (this.editor.trigger == 'click') {
@@ -350,78 +361,78 @@
 					//直接设置
 					switch (this.value) {
 						case 'undo': //撤销
-							document.execCommand('undo');
-							break;
+							document.execCommand('undo')
+							break
 						case 'redo': //恢复
-							document.execCommand('redo');
-							break;
+							document.execCommand('redo')
+							break
 						case 'removeFormat': //移出全部样式
-							document.execCommand('removeFormat');
-							break;
+							document.execCommand('removeFormat')
+							break
 						case 'selectAll': //全选
-							document.execCommand('selectAll');
-							break;
+							document.execCommand('selectAll')
+							break
 						case 'divider': //分割线
-							document.execCommand('insertHorizontalRule');
-							document.execCommand('insertHtml', false, '<p><br></p>');
-							break;
+							document.execCommand('insertHorizontalRule')
+							document.execCommand('insertHtml', false, '<p><br></p>')
+							break
 						case 'bold': //加粗
-							document.execCommand('bold');
-							break;
+							document.execCommand('bold')
+							break
 						case 'italic': //斜体
-							document.execCommand('italic');
-							break;
+							document.execCommand('italic')
+							break
 						case 'underline': //下划线
-							document.execCommand('underline');
-							break;
+							document.execCommand('underline')
+							break
 						case 'strikeThrough': //删除线
-							document.execCommand('strikeThrough');
-							break;
+							document.execCommand('strikeThrough')
+							break
 						case 'subscript': //下标
-							document.execCommand('subscript');
-							break;
+							document.execCommand('subscript')
+							break
 						case 'superscript': //上标
-							document.execCommand('superscript');
-							break;
+							document.execCommand('superscript')
+							break
 						case 'quote': //引用
 							if (this.menuActive) {
 								this.removeBlock()
 							} else {
-								document.execCommand('formatBlock', false, 'blockquote');
+								document.execCommand('formatBlock', false, 'blockquote')
 							}
-							break;
+							break
 						case 'code': //代码
 							if (this.menuActive) {
 								this.removeCode()
 							} else {
-								document.execCommand('formatBlock', false, 'pre');
+								document.execCommand('formatBlock', false, 'pre')
 							}
-							break;
+							break
 						case 'codeView': //显示源码
-							this.editor.codeViewShow = !this.editor.codeViewShow;
+							this.editor.codeViewShow = !this.editor.codeViewShow
 							this.$nextTick(() => {
 								if (this.editor.codeViewShow) {
-									this.editor.$refs.codeView.innerText = this.editor.html;
+									this.editor.$refs.codeView.innerText = this.editor.html
 									this.editor.$children.forEach(child=>{
 										if(child.value != 'codeView'){
-											child.menuActive = false;
+											child.menuActive = false
 										}else {
-											child.menuActive = true;
+											child.menuActive = true
 										}
 									})
 								} else {
-									this.editor.$refs.content.innerHTML = this.editor.html;
+									this.editor.$refs.content.innerHTML = this.editor.html
 									this.editor.$children.forEach(child=>{
 										if(child.value != 'codeView'){
 											this.editor.changeActive()
 										}else {
-											child.menuActive = false;
+											child.menuActive = false
 										}
 									})
 								}
-								this.editor.collapseToEnd();
+								this.editor.collapseToEnd()
 							})
-							break;
+							break
 						default: //自定义
 							this.editor.$emit('custom', {
 								key: this.value,
@@ -433,21 +444,21 @@
 			//插入远程图片或者视频
 			insertRemote() {
 				if (this.editor.disabled) {
-					return;
+					return
 				}
 				if (!this.remoteUrl) {
 					this.hideLayer()
 					return
 				}
-				this.editor.restoreRange();
+				this.editor.restoreRange()
 				if (this.value == 'image') {
 					this.editor.insertImage(this.remoteUrl)
 				} else {
 					this.editor.insertVideo(this.remoteUrl)
 				}
-				this.remoteUrl = '';
-				this.tabIndex = 0;
-				this.hideLayer();
+				this.remoteUrl = ''
+				this.tabIndex = 0
+				this.hideLayer()
 			},
 			//上传设置
 			uploadSet() {
@@ -461,24 +472,24 @@
 			//插入链接
 			insertLink() {
 				if (this.editor.disabled) {
-					return;
+					return
 				}
 				if (!this.linkUrl) {
 					this.hideLayer()
 					return
 				}
 				if (!this.linkText) {
-					this.linkText = this.linkUrl;
+					this.linkText = this.linkUrl
 				}
-				let link = $dap.element.string2dom(`<a href="${this.linkUrl}">${this.linkText}</a>`);
+				let link = $dap.element.string2dom(`<a href="${this.linkUrl}">${this.linkText}</a>`)
 				if (this.linkTarget) {
-					link.setAttribute('target', '_blank');
+					link.setAttribute('target', '_blank')
 				}
-				this.editor.restoreRange();
+				this.editor.restoreRange()
 				if (this.menuActive) {
-					let node = this.editor.getSelectNode();
+					let node = this.editor.getSelectNode()
 					if (this.editor.compareTag(node,'a')) {
-						let a = this.editor.getCompareTag(node,'a');
+						let a = this.editor.getCompareTag(node,'a')
 						a.remove()
 					}
 				}
@@ -488,23 +499,23 @@
 			//链接插入设置
 			linkInsertSet() {
 				if (this.menuActive) { //激活状态
-					let node = this.editor.getSelectNode();
-					let a = this.editor.getCompareTag(node,'a');
-					this.linkUrl = a.getAttribute('href'); //初始化赋值
-					this.linkText = a.innerText; //初始化赋值
-					this.linkTarget = a.hasAttribute('target'); //初始化赋值
+					let node = this.editor.getSelectNode()
+					let a = this.editor.getCompareTag(node,'a')
+					this.linkUrl = a.getAttribute('href') //初始化赋值
+					this.linkText = a.innerText //初始化赋值
+					this.linkTarget = a.hasAttribute('target') //初始化赋值
 					this.$nextTick(() => {
 						this.$refs.linkText.focus()
 					})
 				} else {
-					this.linkUrl = '';
-					this.linkTarget = false;
-					let text = this.editor.range.toString();
+					this.linkUrl = ''
+					this.linkTarget = false
+					let text = this.editor.range.toString()
 					if (text) {
-						this.linkText = text;
+						this.linkText = text
 						this.$refs.linkUrl.focus()
 					} else {
-						this.linkText = '';
+						this.linkText = ''
 						this.$refs.linkText.focus()
 					}
 				}
@@ -512,223 +523,223 @@
 			//删除链接
 			deleteLink() {
 				if (this.editor.disabled) {
-					return;
+					return
 				}
-				this.editor.restoreRange();
-				let node = this.editor.getSelectNode();
+				this.editor.restoreRange()
+				let node = this.editor.getSelectNode()
 				if (this.editor.compareTag(node,'a')) {
 					let a = this.editor.getCompareTag(node,'a')
 					if(a){
-						a.remove();
-						this.menuActive = false;
+						a.remove()
+						this.menuActive = false
 					}
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
 				this.hideLayer()
 			},
 			//表格插入设置
 			tableInsertSet() {
 				if (this.$refs.rowsInput) {
-					this.$refs.rowsInput.focus();
+					this.$refs.rowsInput.focus()
 				}
 			},
 			//插入表格
 			insertTable() {
 				if (!this.tableRows || !this.tableColumns) {
 					this.hideLayer()
-					return;
+					return
 				}
-				if (!$dap.common.matchingText(this.tableRows, 'number') || !$dap.common.matchingText(this.tableColumns, 'number')) {
-					this.hideLayer();
-					return;
+				if (!$dap.common.matchingText(this.tableRows.toString(), 'number') || !$dap.common.matchingText(this.tableColumns.toString(), 'number')) {
+					this.hideLayer()
+					return
 				}
-				let table = this.$refs.table.cloneNode(true);
-				table.style.display = '';
-				this.editor.restoreRange();
-				document.execCommand('insertHtml', false, table.outerHTML);
+				let table = this.$refs.table.cloneNode(true)
+				table.style.display = ''
+				this.editor.restoreRange()
+				document.execCommand('insertHtml', false, table.outerHTML)
 				this.hideLayer()
 			},
 			//增加行
 			addTableRow() {
-				let node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode()
 				if(this.editor.compareTag(node,'tr')){
-					let tr = this.editor.getCompareTag(node,'tr');
-					this.copyRowAppend(tr);
+					let tr = this.editor.getCompareTag(node,'tr')
+					this.copyRowAppend(tr)
 				}else if (this.editor.compareTag(node,'tbody')) { //tbody
-					let tbody = this.editor.getCompareTag(node,'tbody');
-					let children = $dap.element.children(tbody, 'tr');
-					this.copyRowAppend(children[children.length - 1]);
+					let tbody = this.editor.getCompareTag(node,'tbody')
+					let children = $dap.element.children(tbody, 'tr')
+					this.copyRowAppend(children[children.length - 1])
 				} else if (this.editor.compareTag(node,'table')) { //table
 					let table = this.editor.getCompareTag(node,'table')
-					let tbody = $dap.element.children(table, 'tbody')[0];
-					let children = $dap.element.children(tbody, 'tr');
-					this.copyRowAppend(children[children.length - 1]);
+					let tbody = $dap.element.children(table, 'tbody')[0]
+					let children = $dap.element.children(tbody, 'tr')
+					this.copyRowAppend(children[children.length - 1])
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
-				this.hideLayer();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
+				this.hideLayer()
 			},
 			//删除行
 			removeTableRow() {
-				let node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode()
 				if(this.editor.compareTag(node,'tr')){
-					let tr = this.editor.getCompareTag(node,'tr');
+					let tr = this.editor.getCompareTag(node,'tr')
 					tr.remove()
 				}else if (this.editor.compareTag(node,'tbody')) { //tbody
-					let tbody = this.editor.getCompareTag(node,'tbody');
-					let children = $dap.element.children(tbody, 'tr');
+					let tbody = this.editor.getCompareTag(node,'tbody')
+					let children = $dap.element.children(tbody, 'tr')
 					children[children.length - 1].remove()
 				} else if (this.editor.compareTag(node,'table')) { //table
 					let table = this.editor.getCompareTag(node,'table')
-					let tbody = $dap.element.children(table, 'tbody')[0];
-					let children = $dap.element.children(tbody, 'tr');
+					let tbody = $dap.element.children(table, 'tbody')[0]
+					let children = $dap.element.children(tbody, 'tr')
 					children[children.length - 1].remove()
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
-				this.hideLayer();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
+				this.hideLayer()
 			},
 			//增加列
 			addTableColumn() {
-				let node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode()
 				if(this.editor.compareTag(node,'td')){
-					let td = this.editor.getCompareTag(node,'td');
+					let td = this.editor.getCompareTag(node,'td')
 					this.copyColumnAppend(td)
 				}else if(this.editor.compareTag(node,'tr')){
-					let tr = this.editor.getCompareTag(node,'tr');
-					let children = $dap.element.children(tr, 'td');
-					this.copyColumnAppend(children[children.length - 1]);
+					let tr = this.editor.getCompareTag(node,'tr')
+					let children = $dap.element.children(tr, 'td')
+					this.copyColumnAppend(children[children.length - 1])
 				}else if(this.editor.compareTag(node,'tbody')){
-					let tbody = this.editor.getCompareTag(node,'tbody');
-					let tr = $dap.element.children(tbody, 'tr')[0];
-					let childrenTd = $dap.element.children(tr, 'td');
-					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
+					let tbody = this.editor.getCompareTag(node,'tbody')
+					let tr = $dap.element.children(tbody, 'tr')[0]
+					let childrenTd = $dap.element.children(tr, 'td')
+					this.copyColumnAppend(childrenTd[childrenTd.length - 1])
 				}else if(this.editor.compareTag(node,'table')){
-					let table = this.editor.getCompareTag(node,'table');
-					let tbody = $dap.element.children(table, 'tbody')[0];
-					let tr = $dap.element.children(tbody, 'tr')[0];
-					let childrenTd = $dap.element.children(tr, 'td');
-					this.copyColumnAppend(childrenTd[childrenTd.length - 1]);
+					let table = this.editor.getCompareTag(node,'table')
+					let tbody = $dap.element.children(table, 'tbody')[0]
+					let tr = $dap.element.children(tbody, 'tr')[0]
+					let childrenTd = $dap.element.children(tr, 'td')
+					this.copyColumnAppend(childrenTd[childrenTd.length - 1])
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
-				this.hideLayer();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
+				this.hideLayer()
 			},
 			//删除列
 			removeTableColumn() {
-				let node = this.editor.getSelectNode();
+				let node = this.editor.getSelectNode()
 				if(this.editor.compareTag(node,'td')){
-					let td = this.editor.getCompareTag(node,'td');
-					this.removeColumn(td);
+					let td = this.editor.getCompareTag(node,'td')
+					this.removeColumn(td)
 				}else if(this.editor.compareTag(node,'tr')){
-					let tr = this.editor.getCompareTag(node,'tr');
-					let children = $dap.element.children(tr, 'td');
-					this.removeColumn(children[children.length - 1]);
+					let tr = this.editor.getCompareTag(node,'tr')
+					let children = $dap.element.children(tr, 'td')
+					this.removeColumn(children[children.length - 1])
 				}else if(this.editor.compareTag(node,'tbody')){
-					let tbody = this.editor.getCompareTag(node,'tbody');
-					let tr = $dap.element.children(tbody, 'tr')[0];
-					let childrenTd = $dap.element.children(tr, 'td');
-					this.removeColumn(childrenTd[childrenTd.length - 1]);
+					let tbody = this.editor.getCompareTag(node,'tbody')
+					let tr = $dap.element.children(tbody, 'tr')[0]
+					let childrenTd = $dap.element.children(tr, 'td')
+					this.removeColumn(childrenTd[childrenTd.length - 1])
 				}else if(this.editor.compareTag(node,'table')){
-					let table = this.editor.getCompareTag(node,'table');
-					let tbody = $dap.element.children(table, 'tbody')[0];
-					let tr = $dap.element.children(tbody, 'tr')[0];
-					let childrenTd = $dap.element.children(tr, 'td');
-					this.removeColumn(childrenTd[childrenTd.length - 1]);
+					let table = this.editor.getCompareTag(node,'table')
+					let tbody = $dap.element.children(table, 'tbody')[0]
+					let tr = $dap.element.children(tbody, 'tr')[0]
+					let childrenTd = $dap.element.children(tr, 'td')
+					this.removeColumn(childrenTd[childrenTd.length - 1])
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
-				this.hideLayer();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
+				this.hideLayer()
 			},
 			//删除表格
 			deleteTable() {
-				this.editor.restoreRange();
+				this.editor.restoreRange()
 				let node = this.editor.getSelectNode()
-				let table = this.editor.getCompareTag(node,'table');
+				let table = this.editor.getCompareTag(node,'table')
 				if(table){
-					table.remove();
-					this.menuActive = false;
+					table.remove()
+					this.menuActive = false
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
-				this.hideLayer();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
+				this.hideLayer()
 			},
 			//在指定节点后插入节点
 			insertNodeAfter(newNode, targetNode) {
-				let parent = targetNode.parentNode;
-				let children = $dap.element.children(parent);
+				let parent = targetNode.parentNode
+				let children = $dap.element.children(parent)
 				if (children[children.length - 1] == targetNode) {
 					parent.appendChild(newNode)
 				} else {
-					parent.insertBefore(newNode, targetNode.nextSibling);
+					parent.insertBefore(newNode, targetNode.nextSibling)
 				}
 			},
 			//复制表格行进行增加
 			copyRowAppend(row) {
-				let newRow = row.cloneNode(true);
+				let newRow = row.cloneNode(true)
 				newRow.querySelectorAll('td').forEach(td => {
-					td.innerHTML = '<br>';
+					td.innerHTML = '<br>'
 				})
-				this.insertNodeAfter(newRow, row);
+				this.insertNodeAfter(newRow, row)
 			},
 			//复制表格列进行增加
 			copyColumnAppend(column) {
 				//该列在父元素中的序列
-				let index = [].indexOf.call($dap.element.children(column.parentNode, column.tagName), column);
+				let index = [].indexOf.call($dap.element.children(column.parentNode, column.tagName), column)
 				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
-					let td = $dap.element.children(tr, 'td')[index];
-					let newColumn = td.cloneNode(true);
-					newColumn.innerHTML = '<br>';
-					this.insertNodeAfter(newColumn, td);
+					let td = $dap.element.children(tr, 'td')[index]
+					let newColumn = td.cloneNode(true)
+					newColumn.innerHTML = '<br>'
+					this.insertNodeAfter(newColumn, td)
 				})
 			},
 			//根据表格列删除指定的一列
 			removeColumn(column) {
 				//该列在父元素中的序列
-				let index = [].indexOf.call($dap.element.children(column.parentNode, column.tagName), column);
+				let index = [].indexOf.call($dap.element.children(column.parentNode, column.tagName), column)
 				column.parentNode.parentNode.querySelectorAll('tr').forEach(tr => {
-					let td = $dap.element.children(tr, 'td')[index];
-					td.remove();
+					let td = $dap.element.children(tr, 'td')[index]
+					td.remove()
 				})
 			},
 			//删除代码块
 			removeCode() {
 				let node = this.editor.getSelectNode()
-				let pres = this.editor.$refs.content.querySelectorAll('pre');
-				let pre = null;
+				let pres = this.editor.$refs.content.querySelectorAll('pre')
+				let pre = null
 				let innerHTML = ''
 				for (let i = 0; i < pres.length; i++) {
 					if ($dap.element.isContains(pres[i], node)) {
-						pre = pres[i];
-						innerHTML = pre.innerHTML;
-						break;
+						pre = pres[i]
+						innerHTML = pre.innerHTML
+						break
 					}
 				}
-				let pEl = $dap.element.string2dom("<p>" + innerHTML + "</p>");
+				let pEl = $dap.element.string2dom("<p>" + innerHTML + "</p>")
 				this.insertNodeAfter(pEl,pre)
 				pre.remove()
 				if(this.editor.range){
 					this.editor.range.setStartAfter(pEl)
-					this.menuActive = false;
+					this.menuActive = false
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
 			},
 			//删除引用
 			removeBlock(){
 				let node = this.editor.getSelectNode()
-				let blockquotes = this.editor.$refs.content.querySelectorAll('blockquote');
-				let blockquote = null;
+				let blockquotes = this.editor.$refs.content.querySelectorAll('blockquote')
+				let blockquote = null
 				let innerHTML = ''
 				for (let i = 0; i < blockquotes.length; i++) {
 					if ($dap.element.isContains(blockquotes[i], node)) {
-						blockquote = blockquotes[i];
-						innerHTML = blockquote.innerHTML;
-						break;
+						blockquote = blockquotes[i]
+						innerHTML = blockquote.innerHTML
+						break
 					}
 				}
-				let pEl = $dap.element.string2dom("<p>" + innerHTML + "</p>");
+				let pEl = $dap.element.string2dom("<p>" + innerHTML + "</p>")
 				if(pEl instanceof HTMLCollection){
 					pEl = $dap.element.string2dom("<div>" + innerHTML + "</div>")
 				}
@@ -736,15 +747,15 @@
 				blockquote.remove()
 				if(this.editor.range){
 					this.editor.range.setStartAfter(pEl)
-					this.menuActive = false;
+					this.menuActive = false
 				}
-				this.editor.updateHtmlText();
-				this.editor.updateValue();
+				this.editor.updateHtmlText()
+				this.editor.updateValue()
 			}
 		},
 		beforeDestroy() {
 			if (this.editor.trigger == 'hover') {
-				this.$el.off('mouseenter.editor mouseleave.editor');
+				this.$el.off('mouseenter.editor mouseleave.editor')
 			}
 		}
 	}

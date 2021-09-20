@@ -9,35 +9,43 @@
 	export default {
 		name:'m-col',
 		props:{
-			span:{//栅格占据的列数
+			//栅格占据的列数
+			span:{
 				type:Number,
 				default:24
 			},
-			offset:{//栅格左侧的间隔格数
+			//栅格左侧的间隔格数
+			offset:{
 				type:Number,
 				default:0
 			},
+			//渲染标签
 			tag:{
 				type:String,
 				default:'div'
 			},
-			xs:{// >=0px 响应式栅格数或者栅格属性对象
+			// >=0px 响应式栅格数或者栅格属性对象
+			xs:{
 				type:[Number,Object],
 				default:null
 			},
-			sm:{// >=640px 响应式栅格数或者栅格属性对象
+			// >=640px 响应式栅格数或者栅格属性对象
+			sm:{
 				type:[Number,Object],
 				default:null
 			},
-			md:{// >=992px 响应式栅格数或者栅格属性对象
+			// >=992px 响应式栅格数或者栅格属性对象
+			md:{
 				type:[Number,Object],
 				default:null
 			},
-			lg:{// >=1440px 响应式栅格数或者栅格属性对象
+			// >=1440px 响应式栅格数或者栅格属性对象
+			lg:{
 				type:[Number,Object],
 				default:null
 			},
-			xl:{// >=1920px 响应式栅格数或者栅格属性对象
+			// >=1920px 响应式栅格数或者栅格属性对象
+			xl:{
 				type:[Number,Object],
 				default:null
 			}
@@ -45,21 +53,19 @@
 		inject:['row'],
 		computed:{
 			colStyle(){
-				let cls = [];
-				
+				let cls = []
 				if(this.span){
-					cls.push('mvi-col-'+this.span);
+					cls.push('mvi-col-'+this.span)
 				}
 				if(this.offset){
-					cls.push('mvi-col-offset-'+this.offset);
+					cls.push('mvi-col-offset-'+this.offset)
 				}
-				
 				if($dap.common.isObject(this.xs)){
 					if($dap.number.isNumber(this.xs.span)){
-						cls.push('mvi-col-xs-' + this.xs.span);
+						cls.push('mvi-col-xs-' + this.xs.span)
 					}
 					if($dap.number.isNumber(this.xs.offset)){
-						cls.push('mvi-col-offset-xs-' + this.xs.offset);
+						cls.push('mvi-col-offset-xs-' + this.xs.offset)
 					}
 				}else if($dap.number.isNumber(this.xs)){
 					cls.push('mvi-col-xs-' + this.xs)
@@ -70,32 +76,32 @@
 						cls.push('mvi-col-sm-' + this.sm.span)
 					}
 					if($dap.number.isNumber(this.sm.offset)){
-						cls.push('mvi-col-offset-sm-' + this.sm.offset);
+						cls.push('mvi-col-offset-sm-' + this.sm.offset)
 					}
 				}else if($dap.number.isNumber(this.sm)){
-					cls.push('mvi-col-sm-' + this.sm);
+					cls.push('mvi-col-sm-' + this.sm)
 				}
 				
 				if($dap.common.isObject(this.md)){
 					if($dap.number.isNumber(this.md.span)){
-						cls.push('mvi-col-md-' + this.md.span);
+						cls.push('mvi-col-md-' + this.md.span)
 					}
 					if($dap.number.isNumber(this.md.offset)){
-						cls.push('mvi-col-offset-md-' + this.md.offset);
+						cls.push('mvi-col-offset-md-' + this.md.offset)
 					}
 				}else if($dap.number.isNumber(this.md)){
-					cls.push('mvi-col-md-' + this.md);
+					cls.push('mvi-col-md-' + this.md)
 				}
 				
 				if($dap.common.isObject(this.lg)){
 					if($dap.number.isNumber(this.lg.span)){
-						cls.push('mvi-col-lg-' + this.lg.span);
+						cls.push('mvi-col-lg-' + this.lg.span)
 					}
 					if($dap.number.isNumber(this.lg.offset)){
-						cls.push('mvi-col-offset-lg-' + this.lg.offset);
+						cls.push('mvi-col-offset-lg-' + this.lg.offset)
 					}
 				}else if($dap.number.isNumber(this.lg)){
-					cls.push('mvi-col-lg-' + this.lg);
+					cls.push('mvi-col-lg-' + this.lg)
 				}
 				
 				if($dap.common.isObject(this.xl)){
@@ -109,7 +115,7 @@
 					cls.push('mvi-col-xl-' + this.xl)
 				}
 				
-				return cls;
+				return cls
 			}
 		},
 		components:{

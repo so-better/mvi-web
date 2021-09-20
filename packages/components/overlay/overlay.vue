@@ -14,15 +14,24 @@
 		name: "m-overlay",
 		data(){
 			return {
+				//overlay是否显示
 				overlayShow:false,
-				scrollTop:0,//父级元素垂直滚动条距离
-				scrollLeft:0,//父级元素水平滚动条距离
-				overflowX:'',//父级元素overflow-x
-				overflowY:'',//父级元素overflow-y
-				paddingRight:0,//父级元素右侧内边距
-				paddingBottom:0,//父级元素底部内边距
-				hasHorizontalScroll:false,//是否含有水平滚动条
-				hasVerticalScroll:false,//是否含有垂直滚动条
+				//父级元素垂直滚动条距离
+				scrollTop:0,
+				//父级元素水平滚动条距离
+				scrollLeft:0,
+				//父级元素overflow-x
+				overflowX:'',
+				//父级元素overflow-y
+				overflowY:'',
+				//父级元素右侧内边距
+				paddingRight:0,
+				//父级元素底部内边距
+				paddingBottom:0,
+				//是否含有水平滚动条
+				hasHorizontalScroll:false,
+				//是否含有垂直滚动条
+				hasVerticalScroll:false
 			}
 		},
 		model:{
@@ -30,37 +39,45 @@
 			event:'model-change'
 		},
 		props: {
-			zIndex: {//遮罩层z-index
+			//遮罩层z-index
+			zIndex: {
 				type: Number,
-				default: 800,
+				default: 800
 			},
-			color:{//遮罩层颜色
+			//遮罩层颜色
+			color:{
 				type:String,
 				default:null
 			},
+			//是否显示遮罩层
 			show: {
 				type: Boolean,
 				default: false
 			},
+			//是否使用渐变效果
 			fade: {
 				type: Boolean,
 				default: true
 			},
+			//渐变效果时长
 			timeout: {
 				type: Number,
 				default: 200,
 				validator(value){
-					return value>=0;
+					return value>=0
 				}
 			},
+			//点击遮罩层是否可关闭
 			closable: {
 				type: Boolean,
 				default: false
 			},
+			//是否局部
 			local:{
 				type:Boolean,
 				default:false
 			},
+			//是否考虑PC端滚动条影响
 			usePadding:{
 				type:Boolean,
 				default:false
@@ -68,49 +85,49 @@
 		},
 		watch:{
 			show(newValue){
-				this.overlayShow = newValue;
+				this.overlayShow = newValue
 			}
 		},
 		computed:{
 			listeners(){
-				return Object.assign({},this.$listeners);
+				return Object.assign({},this.$listeners)
 			},
 			overlayStyle(){
-				let style = {};
+				let style = {}
 				if(this.zIndex){
-					style.zIndex = this.zIndex;
+					style.zIndex = this.zIndex
 				}
 				if(this.color){
-					style.background = this.color;
+					style.background = this.color
 				}
-				return style;
+				return style
 			}
 		},
 		mounted() {
 			//初始化时是否显示遮罩层
-			this.overlayShow = this.show;
-			window.on(`resize.overlay_${this._uid}`,this.resize);
+			this.overlayShow = this.show
+			$dap.event.on(window,`resize.overlay_${this._uid}`,this.resize)
 		},
 		methods: {
 			//窗口改变时改变遮罩层宽高
 			resize(e){
 				if(this.local){
 					if(this.$el.offsetParent){
-						this.$el.style.width = this.$el.offsetParent.clientWidth + 'px';
-						this.$el.style.height = this.$el.offsetParent.clientHeight + 'px';
+						this.$el.style.width = this.$el.offsetParent.clientWidth + 'px'
+						this.$el.style.height = this.$el.offsetParent.clientHeight + 'px'
 					}
 				}else{
-					this.$el.style.width = window.innerWidth + 'px';
-					this.$el.style.height = window.innerHeight + 'px';
+					this.$el.style.width = window.innerWidth + 'px'
+					this.$el.style.height = window.innerHeight + 'px'
 				}
 			},
 			//transition钩子函数：组件显示之前
 			beforeEnter(el){
 				if(this.fade){
-					el.style.transition = 'opacity '+this.timeout+'ms';
-					el.style.webkitTransition = 'opacity '+this.timeout+'ms';
+					el.style.transition = 'opacity '+this.timeout+'ms'
+					el.style.webkitTransition = 'opacity '+this.timeout+'ms'
 				}
-				this.$emit('show',el);
+				this.$emit('show',el)
 				if(typeof this.overlayComponentWatch == 'function'){
 					this.overlayComponentWatch.apply(this,['show',el])
 				}
@@ -123,55 +140,55 @@
 					if($dap.element.getScrollHeight(this.$el.offsetParent) > this.$el.offsetParent.clientHeight){
 						if(this.usePadding){
 							//获取滚动条宽度
-							let scrollWidth = this.$el.offsetParent.offsetWidth - this.$el.offsetParent.clientWidth - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-right-width')) - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-left-width'));
+							let scrollWidth = this.$el.offsetParent.offsetWidth - this.$el.offsetParent.clientWidth - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-right-width')) - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-left-width'))
 							//记录原先右侧内边距的值
-							this.paddingRight = parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'padding-right'));
+							this.paddingRight = parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'padding-right'))
 							//设置右侧内边距值
-							this.$el.offsetParent.style.setProperty('padding-right',this.paddingRight+scrollWidth+'px','important');
+							this.$el.offsetParent.style.setProperty('padding-right',this.paddingRight+scrollWidth+'px','important')
 						}
 						//记录滚动条距离
-						this.scrollTop = $dap.element.getScrollTop(this.$el.offsetParent);
+						this.scrollTop = $dap.element.getScrollTop(this.$el.offsetParent)
 						//记录overflow-y值
-						this.overflowY = $dap.element.getCssStyle(this.$el.offsetParent,'overflow-y');
+						this.overflowY = $dap.element.getCssStyle(this.$el.offsetParent,'overflow-y')
 						//设置overflow-y为hidden
-						this.$el.offsetParent.style.setProperty('overflow-y','hidden','important');
+						this.$el.offsetParent.style.setProperty('overflow-y','hidden','important')
 						//设置遮罩层距离顶部的距离
-						this.$el.style.top = this.scrollTop + 'px';
+						this.$el.style.top = this.scrollTop + 'px'
 						//记录含有垂直滚动条
-						this.hasVerticalScroll = true;
+						this.hasVerticalScroll = true
 					}
 					//元素含水平滚动条(文档宽度大于可视宽度)
 					if($dap.element.getScrollWidth(this.$el.offsetParent) > this.$el.offsetParent.clientWidth){
 						if(this.usePadding){
 							//获取滚动条高度
-							let scrollHeight = this.$el.offsetParent.offsetHeight - this.$el.offsetParent.clientHeight - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-bottom-width')) - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-top-width'));
+							let scrollHeight = this.$el.offsetParent.offsetHeight - this.$el.offsetParent.clientHeight - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-bottom-width')) - parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'border-top-width'))
 							//记录原先底部侧内边距的值
-							this.paddingBottom = parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'padding-bottom'));
+							this.paddingBottom = parseFloat($dap.element.getCssStyle(this.$el.offsetParent,'padding-bottom'))
 							//设置底部内边距值
-							this.$el.offsetParent.style.setProperty('padding-bottom',this.paddingBottom+scrollHeight+'px','important');
+							this.$el.offsetParent.style.setProperty('padding-bottom',this.paddingBottom+scrollHeight+'px','important')
 						}
 						//记录滚动条距离
-						this.scrollLeft = $dap.element.getScrollLeft(this.$el.offsetParent);
+						this.scrollLeft = $dap.element.getScrollLeft(this.$el.offsetParent)
 						//记录overflow-x值
-						this.overflowX = $dap.element.getCssStyle(this.$el.offsetParent,'overflow-x');
+						this.overflowX = $dap.element.getCssStyle(this.$el.offsetParent,'overflow-x')
 						//设置overflow-x为hidden
-						this.$el.offsetParent.style.setProperty('overflow-x','hidden','important');
+						this.$el.offsetParent.style.setProperty('overflow-x','hidden','important')
 						//设置遮罩层距离左侧的距离
-						this.$el.style.left = this.scrollLeft + 'px';
+						this.$el.style.left = this.scrollLeft + 'px'
 						//记录含有水平滚动条
-						this.hasHorizontalScroll = true;
+						this.hasHorizontalScroll = true
 					}
 				}
 				if(this.local){
 					if(this.$el.offsetParent){
-						this.$el.style.width = this.$el.offsetParent.clientWidth + 'px';
-						this.$el.style.height = this.$el.offsetParent.clientHeight + 'px';
+						this.$el.style.width = this.$el.offsetParent.clientWidth + 'px'
+						this.$el.style.height = this.$el.offsetParent.clientHeight + 'px'
 					}
 				}else{
-					this.$el.style.width = window.innerWidth + 'px';
-					this.$el.style.height = window.innerHeight + 'px';
+					this.$el.style.width = window.innerWidth + 'px'
+					this.$el.style.height = window.innerHeight + 'px'
 				}
-				this.$emit('showing',el);
+				this.$emit('showing',el)
 				if(typeof this.overlayComponentWatch == 'function'){
 					this.overlayComponentWatch.apply(this,['showing',el])
 				}
@@ -179,10 +196,10 @@
 			//组件显示之后
 			afterEnter(el){
 				if(this.fade){
-					el.style.transition = '';
-					el.style.webkitTransition = '';
+					el.style.transition = ''
+					el.style.webkitTransition = ''
 				}
-				this.$emit('shown',el);
+				this.$emit('shown',el)
 				if(typeof this.overlayComponentWatch == 'function'){
 					this.overlayComponentWatch.apply(this,['shown',el])
 				}
@@ -190,10 +207,10 @@
 			//组件隐藏之前
 			beforeLeave(el){
 				if(this.fade){
-					el.style.transition = 'opacity '+this.timeout+'ms';
-					el.style.webkitTransition = 'opacity '+this.timeout+'ms';
+					el.style.transition = 'opacity '+this.timeout+'ms'
+					el.style.webkitTransition = 'opacity '+this.timeout+'ms'
 				}
-				this.$emit('hide',el);
+				this.$emit('hide',el)
 				if(typeof this.overlayComponentWatch == 'function'){
 					this.overlayComponentWatch.apply(this,['hide',el])
 				}
@@ -204,21 +221,21 @@
 					//含有垂直滚动条
 					if(this.hasVerticalScroll){
 						if(this.usePadding){
-							this.$el.offsetParent.style.setProperty('padding-right',this.paddingRight+'px','important');
+							this.$el.offsetParent.style.setProperty('padding-right',this.paddingRight+'px','important')
 						}
-						this.$el.offsetParent.style.setProperty('overflow-y',this.overflowY,'important');
-						this.hasVerticalScroll = false;
+						this.$el.offsetParent.style.setProperty('overflow-y',this.overflowY,'important')
+						this.hasVerticalScroll = false
 					}
 					//含有水平滚动条
 					if(this.hasHorizontalScroll){
 						if(this.usePadding){
-							this.$el.offsetParent.style.setProperty('padding-bottom',this.paddingBottom+'px','important');
+							this.$el.offsetParent.style.setProperty('padding-bottom',this.paddingBottom+'px','important')
 						}
-						this.$el.offsetParent.style.setProperty('overflow-x',this.overflowX,'important');
-						this.hasHorizontalScroll = false;
+						this.$el.offsetParent.style.setProperty('overflow-x',this.overflowX,'important')
+						this.hasHorizontalScroll = false
 					}
 				}
-				this.$emit('hidding',el);
+				this.$emit('hidding',el)
 				if(typeof this.overlayComponentWatch == 'function'){
 					this.overlayComponentWatch.apply(this,['hidding',el])
 				}
@@ -226,10 +243,10 @@
 			//组件隐藏之后
 			afterLeave(el){
 				if(this.fade){
-					el.style.transition = '';
-					el.style.webkitTransition = '';
+					el.style.transition = ''
+					el.style.webkitTransition = ''
 				}
-				this.$emit('hidden',el);
+				this.$emit('hidden',el)
 				if(typeof this.overlayComponentWatch == 'function'){
 					this.overlayComponentWatch.apply(this,['hidden',el])
 				}
@@ -237,13 +254,13 @@
 			//点击遮罩关闭此遮罩
 			closeOverlay() {
 				if (this.closable) {
-					this.$emit('update:show',false);
-					this.$emit('model-change',false);
+					this.$emit('update:show',false)
+					this.$emit('model-change',false)
 				}
 			}
 		},
 		beforeDestroy() {
-			window.off(`resize.overlay_${this._uid}`)
+			$dap.event.off(window,`resize.overlay_${this._uid}`)
 		}
 	}
 </script>

@@ -4,17 +4,24 @@
 			<m-loading size="0.5rem" color="#ddd"></m-loading>
 		</div>
 		<div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
-			<div :class="['mvi-picker-toolbar-cancel',cancelClass?cancelClass:'']" v-text="cancelText" @click="doCancel"></div>
+			<div :class="['mvi-picker-toolbar-cancel',cancelClass?cancelClass:'']" v-text="cancelText"
+				@click="doCancel"></div>
 			<div :class="['mvi-picker-toolbar-title',titleClass?titleClass:'']" v-if="title" v-text="title"></div>
-			<div :class="['mvi-picker-toolbar-confirm',confirmClass?confirmClass:'']" v-text="confirmText" @click="doConfirm"></div>
+			<div :class="['mvi-picker-toolbar-confirm',confirmClass?confirmClass:'']" v-text="confirmText"
+				@click="doConfirm"></div>
 		</div>
-		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content" @touchmove="contentTouchMove">
-			<div v-for="(column,index) in computedOptions" :key="'picker-column-'+index" :class="['mvi-picker-items',column.className?column.className:'']" ref="items" :style="columnStyle(column,index)" @touchstart="touchstart($event,index)" @touchmove="touchmove" @touchend="touchend" @mousedown="mousedown($event,index)">
-				<div class="mvi-picker-item" v-for="(item,index2) in column.values" :key="'picker-item-'+index2" v-text="item"
-				 :style="{height:selectHeight?selectHeight:''}"></div>
+		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content"
+			@touchmove="contentTouchMove">
+			<div v-for="(column,index) in computedOptions" :key="'picker-column-'+index"
+				:class="['mvi-picker-items',column.className?column.className:'']" ref="items"
+				:style="columnStyle(column,index)" @touchstart="touchstart($event,index)" @touchmove="touchmove"
+				@touchend="touchend" @mousedown="mousedown($event,index)">
+				<div class="mvi-picker-item" v-for="(item,index2) in column.values" :key="'picker-item-'+index2"
+					v-text="item" :style="{height:selectHeight?selectHeight:''}"></div>
 			</div>
 			<div class="mvi-picker-active" :style="{height:selectHeight?selectHeight:''}"></div>
-			<div class="mvi-picker-mask" :style="{backgroundSize:(selectHeight?'100% '+(computedHeight*(visibleCounts-1)/2)+'px':'')}"></div>
+			<div class="mvi-picker-mask"
+				:style="{backgroundSize:(selectHeight?'100% '+(computedHeight*(visibleCounts-1)/2)+'px':'')}"></div>
 		</div>
 	</div>
 </template>
@@ -34,11 +41,12 @@
 				amounts: 0,
 				mouseDown: false, //鼠标是否按下
 				columnIndex: 0, //按下的列序列
-				StartTimeStamp:0,//开始时间
-				endTimeStamp:0,//结束时间
+				StartTimeStamp: 0, //开始时间
+				endTimeStamp: 0, //结束时间
 			}
 		},
 		props: {
+			//选择器配置
 			options: {
 				type: [Array, Object],
 				default: function() {
@@ -49,122 +57,134 @@
 					}
 				}
 			},
+			//是否显示标题栏
 			showToolbar: {
 				type: Boolean,
 				default: true,
 			},
+			//标题
 			title: {
 				type: String,
 				default: null
 			},
+			//标题class
 			titleClass: {
 				type: String,
 				default: null
 			},
+			//确认文字
 			confirmText: {
 				type: String,
 				default: '确定'
 			},
+			//取消文字
 			cancelText: {
 				type: String,
 				default: '取消'
 			},
+			//确认文字class
 			confirmClass: {
 				type: String,
 				default: null
 			},
+			//取消文字class
 			cancelClass: {
 				type: String,
 				default: null
 			},
+			//是否显示加载状态
 			loading: {
 				type: Boolean,
 				default: false
 			},
-			visibleCounts: { //可见选项个数
+			//可见选项个数
+			visibleCounts: { 
 				type: Number,
 				default: 5
 			},
+			//选择框高度
 			selectHeight: {
 				type: String,
 				default: '0.88rem'
 			}
 		},
-		watch:{
-			computedOptions(newValue){
-				this.init();
+		watch: {
+			computedOptions(newValue) {
+				this.init()
 			}
 		},
 		computed: {
 			listeners() {
-				return Object.assign({}, this.$listeners);
+				return Object.assign({}, this.$listeners)
 			},
 			computedHeight() {
 				if (this.selectHeight.includes('px')) {
-					return parseFloat(this.selectHeight);
+					return parseFloat(this.selectHeight)
 				} else if (this.selectHeight.includes('rem')) {
-					return $dap.element.rem2px(parseFloat(this.selectHeight));
+					return $dap.element.rem2px(parseFloat(this.selectHeight))
 				}
 			},
 			loadingStyle() {
-				let style = {};
-				style.height = `calc(${this.computedHeight.multiplication(this.visibleCounts)}px + 0.88rem)`;
-				return style;
+				let style = {}
+				style.height = `calc(${$dap.number.mutiply(this.computedHeight,this.visibleCounts)}px + 0.88rem)`
+				return style
 			},
 			contentStyle() {
-				let style = {};
-				style.height = `${this.computedHeight.multiplication(this.visibleCounts)}px`;
-				return style;
+				let style = {}
+				style.height = `${$dap.number.mutiply(this.computedHeight,this.visibleCounts)}px`
+				return style
 			},
 			computedOptions() {
-				let op = [];
+				let op = []
 				if (this.options instanceof Array) {
-					op = this.options;
+					op = this.options
 				} else {
 					op = [this.options]
 				}
-				return op;
+				return op
 			},
 			columnStyle() {
 				return (column, index) => {
-					let style = {};
-					style.transform = `translate3d(0,${this.offsets[index] || 0}px,0)`;
-					style.webkitTransform = `translate3d(0,${this.offsets[index] || 0}px,0)`;
-					return style;
+					let style = {}
+					style.transform = `translate3d(0,${this.offsets[index] || 0}px,0)`
+					style.webkitTransform = `translate3d(0,${this.offsets[index] || 0}px,0)`
+					return style
 				}
 			},
 			actives() {
-				let arr = [];
+				let arr = []
 				for (let i = 0; i < this.offsets.length; i++) {
 					arr.push({
 						index: this.getActive(this.offsets[i]),
 						value: this.computedOptions[i].values[this.getActive(this.offsets[i])]
-					});
+					})
 				}
-				return arr;
+				return arr
 			}
 		},
-		components:{
+		components: {
 			mLoading
 		},
 		mounted() {
-			this.init();
-			document.body.on(`mousemove.picker_${this._uid}`, this.mousemove);
-			document.body.on(`mouseup.picker_${this._uid}`, this.mouseup);
+			this.init()
+			$dap.event.on(document.body,`mousemove.picker_${this._uid}`,this.mousemove)
+			$dap.event.on(document.body,`mouseup.picker_${this._uid}`,this.mouseup)
 		},
 		methods: {
 			//初始化
 			init() {
-				this.offsets = [];
+				this.offsets = []
 				for (let i = 0; i < this.computedOptions.length; i++) {
-					this.offsets.push(this.getOffset(this.computedOptions[i].defaultIndex || 0));
+					this.offsets.push(this.getOffset(this.computedOptions[i].defaultIndex || 0))
 				}
 			},
 			//滑动临界值
 			crisis(index) {
-				let max = (this.visibleCounts - 1).division(2).multiplication(this.computedHeight);
-				let min = -(this.visibleCounts - 1).division(2).multiplication(this.computedHeight) + (this.visibleCounts - this.computedOptions[index].values
-					.length).multiplication(this.computedHeight);
+				let max = $dap.number.divide(this.visibleCounts - 1,2)
+				max = $dap.number.mutiply(max, this.computedHeight)
+				let min = $dap.number.divide(-(this.visibleCounts - 1),2)
+				min = $dap.number.mutiply(min,this.computedHeight)
+				min += $dap.number.mutiply(this.visibleCounts - this.computedOptions[index].values.length,this.computedHeight)
 				return {
 					max,
 					min
@@ -172,219 +192,223 @@
 			},
 			//根据offset计算序列
 			getActive(value) {
-				let num = Math.abs((value - (this.visibleCounts - 1).division(2).multiplication(this.computedHeight)).division(this.computedHeight));
-				return Math.round(num);
+				let num = Math.abs($dap.number.divide(value - $dap.number.mutiply($dap.number.divide(this.visibleCounts - 1,2),this.computedHeight),this.computedHeight))
+				return Math.round(num)
 			},
 			//根据序列计算offset
 			getOffset(index) {
-				return ((this.visibleCounts - 1).division(2).subtraction(index)).multiplication(this.computedHeight)
+				return $dap.number.mutiply($dap.number.subtract($dap.number.divide(this.visibleCounts - 1,2),index),this.computedHeight)
 			},
 			//确认
 			doConfirm() {
 				if (this.actives.length == 1) {
-					this.$emit('confirm', this.actives[0]);
+					this.$emit('confirm', this.actives[0])
 				} else {
-					this.$emit('confirm', this.actives);
+					this.$emit('confirm', this.actives)
 				}
 			},
 			//取消
 			doCancel() {
-				this.init();
+				this.init()
 				if (this.actives.length == 1) {
-					this.$emit('cancel', this.actives[0]);
+					this.$emit('cancel', this.actives[0])
 				} else {
-					this.$emit('cancel', this.actives);
+					this.$emit('cancel', this.actives)
 				}
 			},
 			//添加动画
 			addTransition(index, timeout) {
 				return new Promise(resolve => {
-					this.$refs.items[index].style.transition = 'all ' + timeout + 'ms ease-out';
-					this.$refs.items[index].style.webkitTransition = 'all ' + timeout + 'ms ease-out';
+					this.$refs.items[index].style.transition = 'all ' + timeout + 'ms ease-out'
+					this.$refs.items[index].style.webkitTransition = 'all ' + timeout + 'ms ease-out'
 					setTimeout(() => {
-						resolve();
+						resolve()
 					}, 10)
 				})
 			},
 			//移除动画
 			removeTransition(index) {
 				return new Promise(resolve => {
-					this.$refs.items[index].style.transition = '';
-					this.$refs.items[index].style.webkitTransition = '';
+					this.$refs.items[index].style.transition = ''
+					this.$refs.items[index].style.webkitTransition = ''
 					setTimeout(() => {
-						resolve();
+						resolve()
 					}, 10)
 				})
 			},
 			//开始触摸
 			touchstart(event, index) {
-				this.startY = event.targetTouches[0].pageY;
-				this.startY2 = this.startY;
-				this.time = Date.now();
-				this.oldActives = this.actives;
-				this.amounts = 0;
-				this.columnIndex = index;
-				this.StartTimeStamp = Date.now();
+				this.startY = event.targetTouches[0].pageY
+				this.startY2 = this.startY
+				this.time = Date.now()
+				this.oldActives = this.actives
+				this.amounts = 0
+				this.columnIndex = index
+				this.StartTimeStamp = Date.now()
 			},
 			//鼠标开始按下
 			mousedown(event, index) {
-				this.startY = event.pageY;
-				this.startY2 = this.startY;
-				this.time = Date.now();
-				this.oldActives = this.actives;
-				this.amounts = 0;
-				this.mouseDown = true;
-				this.columnIndex = index;
-				this.StartTimeStamp = Date.now();
+				this.startY = event.pageY
+				this.startY2 = this.startY
+				this.time = Date.now()
+				this.oldActives = this.actives
+				this.amounts = 0
+				this.mouseDown = true
+				this.columnIndex = index
+				this.StartTimeStamp = Date.now()
 			},
 			//触摸过程
 			touchmove(event) {
 				if (event.cancelable) {
-					event.preventDefault();
+					event.preventDefault()
 				}
-				let endY = event.targetTouches[0].pageY;
-				let moveY = endY - this.startY; //每次偏移量
-				let moveY2 = endY - this.startY2; //总偏移量
+				let endY = event.targetTouches[0].pageY
+				let moveY = endY - this.startY //每次偏移量
+				let moveY2 = endY - this.startY2 //总偏移量
 				//已经在第一个选项且是下滑的
 				if (this.offsets[this.columnIndex] >= this.crisis(this.columnIndex).max && moveY2 > 0) {
-					this.amounts += 5;
-					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts);
-					return;
+					this.amounts += 5
+					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts)
+					return
 				}
 				//已经在最后一个选项且是上滑的
 				if (this.offsets[this.columnIndex] <= this.crisis(this.columnIndex).min && moveY2 < 0) {
-					this.amounts += 5;
-					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts);
-					return;
+					this.amounts += 5
+					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts)
+					return
 				}
-				this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY);
-				this.startY = endY;
+				this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY)
+				this.startY = endY
 			},
 			//鼠标拖动
 			mousemove(event) {
 				if (!this.mouseDown) {
-					return;
+					return
 				}
 				if (event.cancelable) {
-					event.preventDefault();
+					event.preventDefault()
 				}
-				let endY = event.pageY;
-				let moveY = endY - this.startY; //每次偏移量
-				let moveY2 = endY - this.startY2; //总偏移量
+				let endY = event.pageY
+				let moveY = endY - this.startY //每次偏移量
+				let moveY2 = endY - this.startY2 //总偏移量
 				//已经在第一个选项且是下滑的
 				if (this.offsets[this.columnIndex] >= this.crisis(this.columnIndex).max && moveY2 > 0) {
-					this.amounts += 5;
-					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts);
-					return;
+					this.amounts += 5
+					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts)
+					return
 				}
 				//已经在最后一个选项且是上滑的
 				if (this.offsets[this.columnIndex] <= this.crisis(this.columnIndex).min && moveY2 < 0) {
-					this.amounts += 5;
-					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts);
-					return;
+					this.amounts += 5
+					this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY / this.amounts)
+					return
 				}
-				this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY);
-				this.startY = endY;
+				this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + moveY)
+				this.startY = endY
 			},
 			//触摸结束
 			touchend(event) {
-				this.endTimeStamp = Date.now();
-				let moveTotal = event.changedTouches[0].pageY - this.startY2;
-				let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp;//时间差
-				if(totalTimeStamp < 300 &&　Math.abs(moveTotal)>this.computedHeight){//惯性滑动
-					this.addTransition(this.columnIndex,1000).then(()=>{
-						if(moveTotal > 0){
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $dap.element.rem2px(10) * totalTimeStamp/1000);
-						}else{
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $dap.element.rem2px(10) * totalTimeStamp/1000);
+				this.endTimeStamp = Date.now()
+				let moveTotal = event.changedTouches[0].pageY - this.startY2
+				let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp //时间差
+				if (totalTimeStamp < 300 && Math.abs(moveTotal) > this.computedHeight) { //惯性滑动
+					this.addTransition(this.columnIndex, 1000).then(() => {
+						if (moveTotal > 0) {
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $dap.element
+								.rem2px(10) * totalTimeStamp / 1000)
+						} else {
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $dap.element
+								.rem2px(10) * totalTimeStamp / 1000)
 						}
-						return this.addTransition(this.columnIndex,300);
-					}).then(()=>{
-						this.endDeal(moveTotal,300)
+						return this.addTransition(this.columnIndex, 300)
+					}).then(() => {
+						this.endDeal(moveTotal, 300)
 					})
-				}else{
-					this.addTransition(this.columnIndex,300).then(()=>{
-						this.endDeal(moveTotal,300)
+				} else {
+					this.addTransition(this.columnIndex, 300).then(() => {
+						this.endDeal(moveTotal, 300)
 					})
 				}
 			},
 			//鼠标松开
 			mouseup(event) {
 				if (!this.mouseDown) {
-					return;
+					return
 				}
-				this.mouseDown = false;
-				this.endTimeStamp = Date.now();
-				let moveTotal = event.pageY - this.startY2;
-				let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp;//时间差
-				if(totalTimeStamp < 300 &&　Math.abs(moveTotal)>this.computedHeight){//惯性滑动
-					this.addTransition(this.columnIndex,1000).then(()=>{
-						if(moveTotal > 0){
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $dap.element.rem2px(10) * totalTimeStamp/1000);
-						}else{
-							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $dap.element.rem2px(10) * totalTimeStamp/1000);
+				this.mouseDown = false
+				this.endTimeStamp = Date.now()
+				let moveTotal = event.pageY - this.startY2
+				let totalTimeStamp = this.endTimeStamp - this.StartTimeStamp //时间差
+				if (totalTimeStamp < 300 && Math.abs(moveTotal) > this.computedHeight) { //惯性滑动
+					this.addTransition(this.columnIndex, 1000).then(() => {
+						if (moveTotal > 0) {
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] + $dap.element
+								.rem2px(10) * totalTimeStamp / 1000)
+						} else {
+							this.$set(this.offsets, this.columnIndex, this.offsets[this.columnIndex] - $dap.element
+								.rem2px(10) * totalTimeStamp / 1000)
 						}
-						return this.addTransition(this.columnIndex,300);
-					}).then(()=>{
-						this.endDeal(moveTotal,300)
+						return this.addTransition(this.columnIndex, 300)
+					}).then(() => {
+						this.endDeal(moveTotal, 300)
 					})
-				}else{
-					this.addTransition(this.columnIndex,300).then(()=>{
-						this.endDeal(moveTotal,300)
+				} else {
+					this.addTransition(this.columnIndex, 300).then(() => {
+						this.endDeal(moveTotal, 300)
 					})
 				}
 			},
 			//滑动后归位处理
-			endDeal(moveTotal,timeout){
+			endDeal(moveTotal, timeout) {
 				if (moveTotal > 0) {
 					if (this.offsets[this.columnIndex] >= this.crisis(this.columnIndex).max) {
-						this.$set(this.offsets, this.columnIndex, this.crisis(this.columnIndex).max);
+						this.$set(this.offsets, this.columnIndex, this.crisis(this.columnIndex).max)
 					} else {
-						let order = this.getActive(this.offsets[this.columnIndex]);
-						this.$set(this.offsets, this.columnIndex, this.getOffset(order));
+						let order = this.getActive(this.offsets[this.columnIndex])
+						this.$set(this.offsets, this.columnIndex, this.getOffset(order))
 					}
 				} else {
 					if (this.offsets[this.columnIndex] <= this.crisis(this.columnIndex).min) {
-						this.$set(this.offsets, this.columnIndex, this.crisis(this.columnIndex).min);
+						this.$set(this.offsets, this.columnIndex, this.crisis(this.columnIndex).min)
 					} else {
-						let order = this.getActive(this.offsets[this.columnIndex]);
-						this.$set(this.offsets, this.columnIndex, this.getOffset(order));
+						let order = this.getActive(this.offsets[this.columnIndex])
+						this.$set(this.offsets, this.columnIndex, this.getOffset(order))
 					}
 				}
 				if (this.actives.length == 1) {
 					if (this.actives[0].index != this.oldActives[0].index) {
 						this.$emit('change', {
-							columnIndex:this.columnIndex,
-							selected:this.actives[0]
+							columnIndex: this.columnIndex,
+							selected: this.actives[0]
 						})
 					}
 				} else {
-					let flag = true;
+					let flag = true
 					for (let i = 0; i < this.oldActives.length; i++) {
 						if (this.oldActives[i].index != this.actives[i].index) {
-							flag = false;
+							flag = false
 						}
 					}
 					if (!flag) {
 						this.$emit('change', {
-							columnIndex:this.columnIndex,
-							selected:this.actives
-						});
+							columnIndex: this.columnIndex,
+							selected: this.actives
+						})
 					}
 				}
 				setTimeout(() => {
-					this.removeTransition(this.columnIndex);
+					this.removeTransition(this.columnIndex)
 				}, timeout)
 			},
 			//禁用content的touchmove
-			contentTouchMove(event){
-				if(event.cancelable){
+			contentTouchMove(event) {
+				if (event.cancelable) {
 					event.preventDefault()
 				}
 			}
 		},
 		beforeDestroy() {
-			document.body.off(`mousemove.picker_${this._uid} mouseup.picker_${this._uid}`);
+			$dao.event.off(document.body,`mousemove.picker_${this._uid} mouseup.picker_${this._uid}`)
 		}
 	}
 </script>
@@ -432,8 +456,8 @@
 		padding: 0 @mp-sm;
 		cursor: pointer;
 	}
-	
-	.mvi-picker-toolbar-cancel{
+
+	.mvi-picker-toolbar-cancel {
 		display: flex;
 		display: -webkit-flex;
 		position: relative;
@@ -491,9 +515,10 @@
 		width: 100%;
 		z-index: 10;
 		pointer-events: none;
-		
-		
-		&::before,&::after{
+
+
+		&::before,
+		&::after {
 			position: absolute;
 			left: 0;
 			display: block;
@@ -502,13 +527,13 @@
 			border-bottom: 1px solid @border-color;
 			content: '';
 		}
-		
-		&::before{
+
+		&::before {
 			top: 0;
 		}
-		
-		&::after{
-			bottom:0;
+
+		&::after {
+			bottom: 0;
 		}
 	}
 

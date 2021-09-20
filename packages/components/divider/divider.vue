@@ -8,20 +8,22 @@
 
 <script>
 	export default {
-		name:"m-divider",
-		props:{
-			dashed:{//是否使用虚线
-				type:Boolean,
-				default:false
+		name: "m-divider",
+		props: {
+			//是否使用虚线
+			dashed: { 
+				type: Boolean,
+				default: false
 			},
-			color:{//线颜色
-				type:String,
-				default:null
+			//线颜色
+			color: { 
+				type: String,
+				default: null
 			}
 		},
-		computed:{
-			listeners(){
-				return Object.assign({},this.$listeners)
+		computed: {
+			listeners() {
+				return Object.assign({}, this.$listeners)
 			}
 		}
 	}
@@ -29,8 +31,8 @@
 
 <style scoped lang="less">
 	@import "../../css/mvi-basic.less";
-	
-	.mvi-divider{
+
+	.mvi-divider {
 		display: flex;
 		display: -webkit-flex;
 		justify-content: space-between;
@@ -42,24 +44,25 @@
 		-moz-user-select: none;
 		-webkit-user-select: none;
 	}
-	
-	.mvi-divider-left{
+
+	.mvi-divider-left {
 		flex: 1;
 		display: block;
 		height: 0px;
 		border-top: 1px solid @border-color;
 		margin-right: @mp-sm;
 	}
-	
-	.mvi-divider-right{
+
+	.mvi-divider-right {
 		flex: 1;
 		display: block;
 		height: 0px;
 		border-top: 1px solid @border-color;
 		margin-left: @mp-sm;
 	}
-	
-	.mvi-divider.mvi-divider-dashed>.mvi-divider-left,.mvi-divider.mvi-divider-dashed>.mvi-divider-right{
+
+	.mvi-divider.mvi-divider-dashed>.mvi-divider-left,
+	.mvi-divider.mvi-divider-dashed>.mvi-divider-right {
 		border-top-style: dashed;
 	}
 </style>

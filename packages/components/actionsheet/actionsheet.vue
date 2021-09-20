@@ -1,26 +1,33 @@
 <template>
-	<m-popup popup-color="#fff" :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex" :timeout="timeout" placement="bottom" :round="round" :local="local" :use-padding="usePadding" v-on="listeners">
+	<m-popup popup-color="#fff" :show="show" @click.native.self="hide" :overlay-color="overlayColor" :z-index="zIndex"
+		:timeout="timeout" placement="bottom" :round="round" :local="local" :use-padding="usePadding" v-on="listeners">
 		<div class="mvi-acionsheet">
-			<div class="mvi-acionsheet-title" v-if="title" :style="{color:(titleColor?titleColor:'')}">
+			<div class="mvi-acionsheet-title" v-if="title" :style="{color:titleColor || ''}">
 				<span v-text="title"></span>
 			</div>
 			<div class="mvi-acionsheet-list">
-				<div :class="itemClass(item)" v-for="(item,index) in options" :key="'action-'+index" :style="itemStyle(item)"
-				 :disabled="itemDisabled(item)" @click="doSelect(item,index)">
-					<m-loading :size="(size=='large'?'0.4rem':'0.36rem')" color="#bbb" v-if="(item.loading?item.loading:false)"></m-loading>
-					<div class="mvi-acionsheet-content" v-else-if="item.label||item.sub || iconType(item.icon) || iconUrl(item.icon)">
-						<m-icon data-placement="left" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'"
-						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
+				<div :class="itemClass(item)" v-for="(item,index) in options" :key="'action-'+index"
+					:style="itemStyle(item)" :disabled="itemDisabled(item)" @click="doSelect(item,index)">
+					<m-loading :size="size=='large'?'0.4rem':'0.36rem'" color="#bbb"
+						v-if="item.loading?item.loading:false"></m-loading>
+					<div class="mvi-acionsheet-content"
+						v-else-if="item.label || item.sub || iconType(item.icon) || iconUrl(item.icon)">
+						<m-icon data-placement="left"
+							v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement!='right'"
+							:type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)"
+							:size="iconSize(item.icon)" :color="iconColor(item.icon)" />
 						<span v-if="item.label" class="mvi-actionsheet-item-label" v-text="item.label"></span>
 						<span v-if="item.sub" class="mvi-acionsheet-item-sub" v-text="item.sub"></span>
-						<m-icon data-placement="right" v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement=='right'"
-						 :type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)" :size="iconSize(item.icon)" :color="iconColor(item.icon)" />
+						<m-icon data-placement="right"
+							v-if="(iconType(item.icon) || iconUrl(item.icon)) && item.placement=='right'"
+							:type="iconType(item.icon)" :url="iconUrl(item.icon)" :spin="iconSpin(item.icon)"
+							:size="iconSize(item.icon)" :color="iconColor(item.icon)" />
 					</div>
 				</div>
 			</div>
 			<div class="mvi-acionsheet-divider"></div>
-			<div :class="['mvi-acionsheet-button',active?'mvi-acionsheet-active':'']" v-if="showCancel" v-text="cancelText"
-			 @click="doCancel" :style="{color:cancelColor?cancelColor:''}"></div>
+			<div :class="['mvi-acionsheet-button',active?'mvi-acionsheet-active':'']" v-if="showCancel"
+				v-text="cancelText" @click="doCancel" :style="{color:cancelColor || ''}"></div>
 		</div>
 	</m-popup>
 </template>
@@ -37,81 +44,99 @@
 			event: 'model-change'
 		},
 		props: {
+			//是否显示
 			show: {
 				type: Boolean,
 				default: false
 			},
+			//遮罩层颜色
 			overlayColor: {
 				type: String,
 				default: null
 			},
+			//层级
 			zIndex: {
 				type: Number,
 				default: 900
 			},
+			//显示与隐藏动画时长
 			timeout: {
 				type: Number,
 				default: 300
 			},
+			//是否圆角
 			round: {
 				type: Boolean,
 				default: true
 			},
+			//标题
 			title: {
 				type: String,
 				default: null
 			},
-			titleColor:{
-				type:String,
-				default:null
+			//标题颜色
+			titleColor: {
+				type: String,
+				default: null
 			},
+			//点击背景遮罩是否可关闭
 			closable: {
 				type: Boolean,
 				default: true
 			},
+			//列表参数配置
 			options: {
 				type: Array,
 				default: function() {
 					return []
 				}
 			},
+			//是否显示取消按钮
 			showCancel: {
 				type: Boolean,
 				default: true
 			},
+			//取消文字
 			cancelText: {
 				type: String,
 				default: '取消'
 			},
+			//取消文字的颜色
 			cancelColor: {
 				type: String,
 				default: null
 			},
-			active: { //列表和取消按钮是否显示点击态
+			//列表和取消按钮是否显示点击态
+			active: {
 				type: Boolean,
 				default: true
 			},
-			local: { //是否局部显示
+			//是否局部显示
+			local: {
 				type: Boolean,
 				default: false
 			},
-			selectClose: { //选择完是否自动关闭
+			//选择完是否自动关闭
+			selectClose: {
 				type: Boolean,
 				default: true
 			},
-			usePadding:{//局部显示时是否考虑滚动条影响
-				type:Boolean,
+			//局部显示时是否考虑滚动条影响
+			usePadding: {
+				type: Boolean,
 				default: false
 			},
-			color:{//列表字体颜色
-				type:String,
-				default:null
+			//列表字体颜色
+			color: {
+				type: String,
+				default: null
 			},
-			size:{//尺寸
-				type:String,
-				default:'medium',
-				validator(value){
-					return ['medium','large'].lastIndexOf(value)>-1
+			//尺寸
+			size: {
+				type: String,
+				default: 'medium',
+				validator(value) {
+					return ['medium', 'large'].lastIndexOf(value) > -1
 				}
 			}
 		},
@@ -178,7 +203,7 @@
 			},
 			itemClass() {
 				return item => {
-					let cls = ['mvi-acionsheet-item','mvi-actionsheet-item-'+this.size]
+					let cls = ['mvi-acionsheet-item', 'mvi-actionsheet-item-' + this.size]
 					if (item.class) {
 						cls.push(item.class)
 					}
@@ -188,32 +213,34 @@
 					return cls
 				}
 			},
-			itemStyle(){
-				return item=>{
+			itemStyle() {
+				return item => {
 					let style = {}
 					//非禁用状态
-					if(!this.itemDisabled(item)){
-						if(item.color){
+					if (!this.itemDisabled(item)) {
+						if (item.color) {
 							style.color = item.color
-						}else if(this.color){
+						} else if (this.color) {
 							style.color = this.color
 						}
 					}
 					return style
 				}
 			},
-			itemDisabled(){
-				return item=>{
-					if(typeof item.disabled == 'boolean'){
+			itemDisabled() {
+				return item => {
+					if (typeof item.disabled == 'boolean') {
 						return item.disabled
-					}else{
+					} else {
 						return false
 					}
 				}
 			}
 		},
-		components:{
-			mPopup,mLoading,mIcon
+		components: {
+			mPopup,
+			mLoading,
+			mIcon
 		},
 		methods: {
 			//点击遮罩关闭
@@ -291,13 +318,13 @@
 		color: @font-color-default;
 		padding: 0 @mp-md;
 		cursor: pointer;
-		
-		&.mvi-actionsheet-item-medium{
+
+		&.mvi-actionsheet-item-medium {
 			height: @medium-height;
 			font-size: @font-size-default;
 		}
-		
-		&.mvi-actionsheet-item-large{
+
+		&.mvi-actionsheet-item-large {
 			height: @large-height;
 			font-size: @font-size-h6;
 		}
@@ -306,9 +333,9 @@
 	.mvi-acionsheet-active:active::before {
 		.mvi-active();
 	}
-	
-	.mvi-acionsheet-item[disabled]{
-		color:@font-color-mute;
+
+	.mvi-acionsheet-item[disabled] {
+		color: @font-color-mute;
 	}
 
 	.mvi-acionsheet-content {
@@ -330,8 +357,8 @@
 		}
 
 	}
-	
-	.mvi-actionsheet-item-label{
+
+	.mvi-actionsheet-item-label {
 		display: inline-block;
 		max-width: 80%;
 		overflow: hidden;
@@ -342,7 +369,7 @@
 	.mvi-acionsheet-item-sub {
 		font-size: @font-size-small;
 		margin-left: @mp-xs;
-		opacity:.6;
+		opacity: .6;
 		max-width: 15%;
 		overflow: hidden;
 		white-space: nowrap;
@@ -369,5 +396,6 @@
 		height: @medium-height;
 		font-size: @font-size-h6;
 		color: @font-color-default;
+		cursor: pointer;
 	}
 </style>

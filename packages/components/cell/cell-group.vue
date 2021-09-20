@@ -7,28 +7,32 @@
 
 <script>
 	export default {
-		name:"m-cell-group",
-		props:{
-			title:{
-				type:String,
-				default:null
+		name: "m-cell-group",
+		props: {
+			//单元组标题
+			title: {
+				type: String,
+				default: null
 			},
-			border:{
-				type:Boolean,
-				default:true
+			//每个单元格是否显示下边框
+			border: {
+				type: Boolean,
+				default: true
 			},
-			titleClass:{
-				type:String,
-				default:null
+			//标题class
+			titleClass: {
+				type: String,
+				default: null
 			},
-			active:{
-				type:Boolean,
-				default:true
+			//每个单元格是否显示点击态
+			active: {
+				type: Boolean,
+				default: true
 			}
 		},
-		computed:{
-			listeners(){
-				return Object.assign({},this.$listeners)
+		computed: {
+			listeners() {
+				return Object.assign({}, this.$listeners)
 			}
 		}
 	}
@@ -36,18 +40,19 @@
 
 <style lang="less" scoped>
 	@import "../../css/mvi-basic.less";
-	
-	.mvi-cell-group{
+
+	.mvi-cell-group {
 		display: block;
 		width: 100%;
 		margin-bottom: @mp-md;
 		color: @font-color-sub;
 	}
-	.mvi-cell-group-title{
-		padding:@mp-md @mp-sm;
+
+	.mvi-cell-group-title {
+		padding: @mp-md @mp-sm;
 	}
-	
-	.mvi-cell-group-border ::v-deep .mvi-cell.mvi-cell-border:last-child::after{
+
+	.mvi-cell-group-border ::v-deep .mvi-cell.mvi-cell-border:last-child::after {
 		border: none;
 	}
 </style>

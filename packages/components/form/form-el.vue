@@ -61,37 +61,37 @@
 			labelStyle(){
 				let style = {}
 				if(this.form.labelWidth && !this.form.labelBlock){
-					style.width = this.form.labelWidth;
+					style.width = this.form.labelWidth
 				}
 				if(this.labelWidth && !this.form.labelBlock){
-					style.width = this.labelWidth;
+					style.width = this.labelWidth
 				}
 				if(this.form.labelOffset){
 					if(this.form.labelBlock){
-						style.marginBottom = this.form.labelOffset;
+						style.marginBottom = this.form.labelOffset
 					}else {
-						style.marginRight = this.form.labelOffset;
+						style.marginRight = this.form.labelOffset
 					}
 				}
 				if(this.labelOffset){
 					if(this.form.labelBlock){
-						style.marginBottom = this.labelOffset;
+						style.marginBottom = this.labelOffset
 					}else {
-						style.marginRight = this.labelOffset;
+						style.marginRight = this.labelOffset
 					}
 				}
-				return style;
+				return style
 			},
 			formElStyle(){
 				let style = {}
 				if(this.width && !this.form.block){
-					style.width = this.width;
+					style.width = this.width
 				}
 				if(this.form.align){
-					style.alignItems = this.form.align;
+					style.alignItems = this.form.align
 				}
 				if(this.align){
-					style.alignItems = this.align;
+					style.alignItems = this.align
 				}
 				return style
 			}

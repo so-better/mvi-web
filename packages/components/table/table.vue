@@ -247,7 +247,7 @@ export default {
 			return (item, item2) => {
 				let text = item[item2.key];
 				if (typeof item2.filter == 'function') {
-					text = item2.filter(item[item2.key]);
+					text = item2.filter(item[item2.key])
 				}
 				return text;
 			};
