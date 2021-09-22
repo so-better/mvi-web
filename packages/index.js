@@ -5,9 +5,7 @@ import "./css/mvi-support.less"
 //引入dap工具类
 import dap from "dap-util"
 //解决ios系统下css伪类无效的问题
-(function() {
-	window.addEventListener('touchstart',function() {})
-})(window);
+window.addEventListener('touchstart',function() {})
 //组件
 import components from "./components"
 
