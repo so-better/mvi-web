@@ -5,12 +5,12 @@ import "./css/mvi-support.less"
 //引入dap工具类
 import dap from "dap-util"
 //解决ios系统下css伪类无效的问题
-window.addEventListener('touchstart',function() {})
+dap.event.on(window, 'touchstart.ios', e => {})
 //组件
 import components from "./components"
 
 //注册组件和工具类
-const install = Vue=> {
+const install = Vue => {
 	if (install.installed) return
 	Vue.prototype.$dap = dap
 	Object.values(components).map(component => {
