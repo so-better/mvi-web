@@ -498,7 +498,7 @@
 		},
 		beforeDestroy() {
 			if (this.trigger == 'hover') {
-				this.$el.off('mouseenter.dateChooser mouseleave.dateChooser')
+				$dap.event.off(this.$el,'mouseenter.dateChooser mouseleave.dateChooser')
 			}
 		}
 	}

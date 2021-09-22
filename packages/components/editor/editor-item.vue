@@ -755,7 +755,7 @@
 		},
 		beforeDestroy() {
 			if (this.editor.trigger == 'hover') {
-				this.$el.off('mouseenter.editor mouseleave.editor')
+				$dap.event.off(this.$el,'mouseenter.editor mouseleave.editor')
 			}
 		}
 	}

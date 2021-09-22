@@ -483,7 +483,7 @@ export default {
 	props: {
 		//值
 		value: {
-			type: String,
+			type: [String,Number],
 			default: ''
 		},
 		//是否自动获取焦点
@@ -1138,7 +1138,7 @@ export default {
 			if (this.value == '' || this.value == '<br>' || this.value == '<p></p>') {
 				return '<p><br></p>'
 			} else {
-				return this.value
+				return String(this.value)
 			}
 		},
 		//根据html值更新value值，可对外提供

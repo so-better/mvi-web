@@ -1,9 +1,9 @@
 <template>
 	<div id="app">
 		<m-button @click="change">Button</m-button>
-		<div v-scroll="scrollOpt" id="anchor"
-			style="position: absolute;width: 7.5rem;height: 13rem;border: 1px solid #ddd;overflow: auto;">
-			<m-verify ref="verify" style="height: 1rem;"></m-verify>
+		{{color}}
+		<div v-scroll="scrollOpt" id="anchor" style="position: absolute;width: 7.5rem;height: 13rem;border: 1px solid #ddd;overflow: auto;">
+			<m-color-picker hex v-model="color"></m-color-picker>
 		</div>
 	</div>
 </template>
@@ -92,8 +92,8 @@
 						console.log(files, extra);
 					}
 				},
-				value: 20,
-				value2: '',
+				value: '',
+				color:'#198292',
 				date: new Date(),
 				data: [{
 						id: 4,
