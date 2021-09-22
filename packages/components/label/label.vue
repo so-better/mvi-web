@@ -26,7 +26,7 @@
 		},
 		props: {
 			//标签样式
-			type: { 
+			type: {
 				type: String,
 				default: 'default',
 				validator(value) {
@@ -34,7 +34,7 @@
 				}
 			},
 			//标签大小
-			size: { 
+			size: {
 				type: String,
 				default: 'medium',
 				validator(value) {
@@ -42,37 +42,37 @@
 				}
 			},
 			//自定义颜色
-			color: { 
+			color: {
 				type: String,
 				default: null
 			},
 			//是否为朴素样式
-			plain: { 
+			plain: {
 				type: Boolean,
 				default: false
 			},
 			//是否为圆角样式
-			round: { 
+			round: {
 				type: Boolean,
 				default: false
 			},
 			//是否为标记样式
-			mark: { 
+			mark: {
 				type: Boolean,
 				default: false
 			},
 			//文本颜色
-			textColor: { 
+			textColor: {
 				type: String,
 				default: null
 			},
 			//是否可关闭
-			closable: { 
+			closable: {
 				type: Boolean,
 				default: false
 			},
 			//标记样式时是否反向
-			reverse: { 
+			reverse: {
 				type: Boolean,
 				default: false
 			}
@@ -108,11 +108,11 @@
 				if (this.color) {
 					if (this.plain) {
 						style.borderColor = this.color
-						style.color = (this.textColor ? this.textColor : this.color)
+						style.color = this.textColor ? this.textColor : this.color
 					} else {
 						style.backgroundColor = this.color
 						style.borderColor = this.color
-						style.color = (this.textColor ? this.textColor : "#fff")
+						style.color = this.textColor ? this.textColor : "#fff"
 					}
 				}
 				if (this.textColor) {

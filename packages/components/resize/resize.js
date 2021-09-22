@@ -114,7 +114,7 @@ class Resize {
 			this.ready = function() {}
 		}
 		if (!$dap.number.isNumber(this.range)) {
-			this.range = 1
+			this.range = 0.4
 		}
 
 		//设置可拖动的范围

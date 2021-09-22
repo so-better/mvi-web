@@ -5,7 +5,8 @@
 		<input @change="change" :value="value" :disabled="disabled" :checked="check" type="checkbox" :name="name" />
 		<span :disabled="disabled" :class="['mvi-checkbox-item',check?'mvi-checkbox-item-check':'']"
 			:style="checkboxStyle">
-			<m-icon :disabled="disabled" :color="iconColor" :size="iconSize" :type="iconType" :class="['mvi-checkbox-icon',check?'mvi-checkbox-icon-check':'']"/>
+			<m-icon :disabled="disabled" :color="iconColor" :size="iconSize" :type="iconType"
+				:class="['mvi-checkbox-icon',check?'mvi-checkbox-icon-check':'']" />
 		</span>
 		<span v-if="labelPlacement=='right' && label" :disabled="disabled" class="mvi-checkbox-label"
 			:data-placement="labelPlacement" v-text="label" :style="labelStyle"></span>
@@ -49,7 +50,7 @@
 			},
 			//值
 			value: {
-				type: [Object,Number,String],
+				type: [Object, Number, String],
 				default: ""
 			},
 			//填充颜色
@@ -72,7 +73,7 @@
 			},
 			//图标
 			icon: {
-				type: [String,Object],
+				type: [String, Object],
 				default: 'success'
 			},
 			//原生name属性
@@ -141,8 +142,8 @@
 					return this.checked
 				} else if (Array.isArray(this.checked)) {
 					//数组中是否已包含此复选框的值
-					return this.checked.some(item=>{
-						return $dap.common.equal(item,this.value)
+					return this.checked.some(item => {
+						return $dap.common.equal(item, this.value)
 					})
 				} else {
 					return false
@@ -166,8 +167,8 @@
 					}
 					//取消且包含
 					else if (this.check) {
-						arr = arr.filter(item=>{
-							return !$dap.common.equal(item,this.value)
+						arr = arr.filter(item => {
+							return !$dap.common.equal(item, this.value)
 						})
 					}
 					this.$emit('update:checked', arr)

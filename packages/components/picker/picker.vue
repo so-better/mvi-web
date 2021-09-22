@@ -182,7 +182,7 @@
 			crisis(index) {
 				let max = $dap.number.divide(this.visibleCounts - 1,2)
 				max = $dap.number.mutiply(max, this.computedHeight)
-				let min = $dap.number.divide(-(this.visibleCounts - 1),2)
+				let min = -$dap.number.divide(this.visibleCounts - 1,2)
 				min = $dap.number.mutiply(min,this.computedHeight)
 				min += $dap.number.mutiply(this.visibleCounts - this.computedOptions[index].values.length,this.computedHeight)
 				return {

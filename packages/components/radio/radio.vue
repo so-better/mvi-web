@@ -29,7 +29,7 @@
 			},
 			//是否选中
 			checked: {
-				type: [Boolean, String, Number],
+				type: [Object, Boolean, String, Number],
 				default: false
 			},
 			//是否禁用
@@ -139,14 +139,8 @@
 				//checked为boolean
 				if (typeof this.checked == "boolean") {
 					return this.checked
-				} else if ((typeof this.checked == "string" && this.checked) || $dap.number.isNumber(this.checked)) {
-					if (this.checked == this.value) {
-						return true
-					} else {
-						return false
-					}
 				} else {
-					return false
+					return $dap.common.equal(this.checked, this.value)
 				}
 			},
 			listeners() {
@@ -158,14 +152,15 @@
 		},
 		methods: {
 			change() {
-				if ((typeof this.checked == "string" && this.checked) || $dap.number.isNumber(this.checked)) {
-					if (event.target.checked) { //勾选
+				if (typeof this.checked == "boolean") {
+					this.$emit('update:checked', event.target.checked)
+					this.$emit('model-change', event.target.checked)
+				} else {
+					//勾选
+					if (event.target.checked) { 
 						this.$emit('update:checked', this.value)
 						this.$emit('model-change', this.value)
 					}
-				} else if (typeof this.checked == "boolean") {
-					this.$emit('update:checked', event.target.checked)
-					this.$emit('model-change', event.target.checked)
 				}
 			}
 		}
