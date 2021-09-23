@@ -3,7 +3,7 @@
 		<m-button @click="change">Button</m-button>
 		{{color}}
 		<div v-scroll="scrollOpt" id="anchor" style="position: absolute;width: 7.5rem;height: 13rem;border: 1px solid #ddd;overflow: auto;">
-			<m-color-picker hex v-model="color"></m-color-picker>
+			<m-slider v-model="value"></m-slider>
 		</div>
 	</div>
 </template>
@@ -92,7 +92,7 @@
 						console.log(files, extra);
 					}
 				},
-				value: '',
+				value: 40,
 				color:'#198292',
 				date: new Date(),
 				data: [{
@@ -138,7 +138,8 @@
 		},
 		methods: {
 			change() {
-				this.show = !this.show
+				//this.show = !this.show
+				this.$alert('hello')
 			}
 		}
 	};

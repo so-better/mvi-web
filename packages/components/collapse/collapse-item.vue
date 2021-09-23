@@ -215,13 +215,16 @@
 			},
 			//判断是否需要隐藏此折叠面板
 			isNeedHideSelf() {
-				if (this.collapse.accordion) { //手风琴模式
+				//手风琴模式
+				if (this.collapse.accordion) { 
 					if (this.collapse.openIndex == this.itemIndex) {
 						this.open = true
 					} else {
 						this.open = false
 					}
-				} else { //非手风琴模式
+				} 
+				//非手风琴模式
+				else { 
 					//值为数字
 					if ($dap.number.isNumber(this.collapse.openIndex)) {
 						if (this.collapse.openIndex == this.itemIndex) {
@@ -229,7 +232,9 @@
 						} else {
 							this.open = false
 						}
-					} else if ((this.collapse.openIndex) instanceof Array) { //值为数组
+					} 
+					//值为数组
+					else if (Array.isArray(this.collapse.openIndex)) { 
 						if (this.collapse.openIndex.includes(this.itemIndex)) {
 							this.open = true
 						} else {
@@ -245,34 +250,47 @@
 				if (this.disabled || this.collapse.disabled) {
 					return false
 				}
-				if (this.collapse.accordion) { //手风琴模式
+				//手风琴模式
+				if (this.collapse.accordion) { 
 					//关闭当前面板
 					if (this.collapse.openIndex == this.itemIndex) {
 						this.collapse.$emit('update:openIndex', null)
 						this.collapse.$emit('model-change', null)
-					} else {
+					} 
+					//打开面板
+					else {
 						this.collapse.$emit('update:openIndex', this.itemIndex)
 						this.collapse.$emit('model-change', this.itemIndex)
 					}
-				} else { //非手风琴模式
+				} 
+				//非手风琴模式
+				else { 
 					//值为数字
 					if ($dap.number.isNumber(this.collapse.openIndex)) {
-						if (this.collapse.openIndex == this.itemIndex) { //关闭当前展开的面板
+						//关闭当前展开的面板
+						if (this.collapse.openIndex == this.itemIndex) { 
 							this.collapse.$emit('update:openIndex', [])
 							this.collapse.$emit('model-change', [])
-						} else { //打开面板
+						} 
+						//打开面板
+						else { 
 							this.collapse.$emit('update:openIndex', [this.collapse.openIndex, this.itemIndex])
 							this.collapse.$emit('model-change', [this.collapse.openIndex, this.itemIndex])
 						}
-					} else if (Array.isArray(this.collapse.openIndex)) { //值为数组
+					} 
+					//值为数组
+					else if (Array.isArray(this.collapse.openIndex)) { 
 						let arr = [...this.collapse.openIndex]
-						if (arr.includes(this.itemIndex)) { //关闭当前面板
+						//关闭当前面板
+						if (arr.includes(this.itemIndex)) { 
 							arr = arr.filter(item=>{
 								return item != this.itemIndex
 							})
 							this.collapse.$emit('update:openIndex', arr)
 							this.collapse.$emit('model-change', arr)
-						} else { //打开面板
+						} 
+						//打开面板
+						else { 
 							arr.push(this.itemIndex)
 							this.collapse.$emit('update:openIndex', arr)
 							this.collapse.$emit('model-change', arr)

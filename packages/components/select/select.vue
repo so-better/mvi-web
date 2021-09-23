@@ -348,9 +348,17 @@
 					return
 				}
 				if (this.multiple) {
-					let arr = this.value
-					if (arr.includes(item.value)) {
-						arr.splice(this.getIndexOfArray(arr, item.value), 1)
+					let arr = this.modelValue
+					if (!Array.isArray(arr)) {
+						throw new TypeError('modelValue should be an array')
+					}
+					let flag = arr.some(tmp=>{
+						return $dap.common.equal(tmp,item.value)
+					})
+					if (flag) {
+						arr = arr.filter(tmp=>{
+							return !$dap.common.equal(tmp,item.value)
+						})
 					} else {
 						arr.push(item.value)
 					}
@@ -367,16 +375,6 @@
 					return
 				}
 				this.focus = !this.focus
-			},
-			getIndexOfArray(arr, value) {
-				let index = 0
-				for (let i = 0; i < arr.length; i++) {
-					if (arr[i] == value) {
-						index = i
-						break
-					}
-				}
-				return index
 			}
 		}
 	}

@@ -324,11 +324,7 @@
 				}
 			},
 			showClear() {
-				if (this.focus && this.computedValue) {
-					return true
-				} else {
-					return false
-				}
+				return this.focus && this.computedValue
 			},
 			inputClass() {
 				let cls = []
