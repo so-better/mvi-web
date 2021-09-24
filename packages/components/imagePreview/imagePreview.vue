@@ -2,8 +2,8 @@
 	<m-overlay :show="show" v-on="listeners" color="#000" :fade="false" @showing="overlayShowing" :local="local"
 		:z-index="zIndex" :use-padding="usePadding">
 		<m-swiper v-if="firstShow" class="mvi-image-preview-swiper" :initial-slide="active" show-indicators ref="swiper"
-			 @change="swiperChange" @mousedown="mouseDown" @mouseup="mouseUp"
-			:show-control="showControl" :fade="fade" :touchable="!isDoubleTouch" :control-class="controlClass">
+			@change="swiperChange" @mousedown="mouseDown" @mouseup="mouseUp" :show-control="showControl" :fade="fade"
+			:touchable="!isDoubleTouch" :control-class="controlClass">
 			<m-swiper-slide v-for="(item,index) in images" :key="'image-'+index" @wheel="wheelImage(index,$event)"
 				@touchstart="prviewTouchStart(index,$event)" @touchmove="previewTouchMove(index,$event)"
 				@touchend="previewTouchend(index,$event)" :id="'mvi-preview-slide-'+index"
@@ -46,11 +46,11 @@
 				start: 0,
 				end: 0,
 				//是否双指触摸
-				isDoubleTouch: false, 
+				isDoubleTouch: false,
 				//双指触点距离
-				touchDistance: 0, 
+				touchDistance: 0,
 				//缩放比例
-				scale: 1 
+				scale: 1
 			}
 		},
 		model: {
@@ -59,66 +59,66 @@
 		},
 		props: {
 			//是否显示
-			show: { 
+			show: {
 				type: Boolean,
 				default: false
 			},
 			//图片数组
-			images: { 
+			images: {
 				type: Array,
 				default: function() {
 					return [];
 				}
 			},
 			//图片描述
-			descriptions: { 
+			descriptions: {
 				type: Array,
 				default: function() {
 					return []
 				}
 			},
 			//默认显示的图片序列
-			active: { 
+			active: {
 				type: Number,
 				default: 0
 			},
 			//是否显示页码
-			showPage: { 
+			showPage: {
 				type: Boolean,
 				default: true
 			},
 			//是否局部显示
-			local: { 
+			local: {
 				type: Boolean,
 				default: false
 			},
 			//z-index值
-			zIndex: { 
+			zIndex: {
 				type: Number,
 				default: 5000
 			},
 			//是否使用渐变
-			fade: { 
+			fade: {
 				type: Boolean,
 				default: false
 			},
 			//是否显示控制器
-			showControl: { 
+			showControl: {
 				type: Boolean,
 				default: false
 			},
 			//控制器额外样式
-			controlClass: { 
+			controlClass: {
 				type: String,
 				default: null
 			},
 			//局部显示是否考虑滚动条影响
-			usePadding: { 
+			usePadding: {
 				type: Boolean,
 				default: false
 			},
 			//图片加载失败提示设置
-			errorIcon: { 
+			errorIcon: {
 				type: [String, Object],
 				default: function() {
 					return {
@@ -127,7 +127,7 @@
 				}
 			},
 			//图片加载中提示设置
-			loadIcon: { 
+			loadIcon: {
 				type: [String, Object],
 				default: function() {
 					return {
@@ -185,17 +185,17 @@
 			//滚轮
 			wheelImage(index, event) {
 				//正值向下滚，负值向上滚
-				let deltaY = event.deltaY 
+				let deltaY = event.deltaY
 				//图片元素
 				let el = this.$refs.images[index].$el
 				//向下滚，缩小图片
-				if (deltaY > 0) { 
+				if (deltaY > 0) {
 					if (this.scale > 0.5) {
 						this.scale -= 0.1
 					}
-				} 
+				}
 				//向上滚，放大图片
-				else { 
+				else {
 					if (this.scale < 2) {
 						this.scale += 0.1
 					}
@@ -219,18 +219,20 @@
 						event.preventDefault()
 					}
 					//图片元素
-					let el = this.$refs.images[index].$el 
+					let el = this.$refs.images[index].$el
 					let distance = this.getDistance(event.touches[0], event.touches[1])
 					//缩小
-					if (distance < this.touchDistance) { 
+					if (distance < this.touchDistance) {
 						if (this.scale > 0.5) {
-							this.scale = $dap.number.add(this.scale,$dap.number.divide($dap.number.subtract(distance, this.touchDistance),el.offsetWidth))
+							this.scale = $dap.number.add(this.scale, $dap.number.divide($dap.number.subtract(distance, this
+								.touchDistance), el.offsetWidth))
 						}
-					} 
+					}
 					//放大
-					else { 
+					else {
 						if (this.scale < 2) {
-							this.scale = $dap.number.add(this.scale,$dap.number.divide($dap.number.subtract(distance, this.touchDistance),el.offsetWidth))
+							this.scale = $dap.number.add(this.scale, $dap.number.divide($dap.number.subtract(distance, this
+								.touchDistance), el.offsetWidth))
 						}
 					}
 					el.style.transform = `scale(${this.scale})`

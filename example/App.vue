@@ -3,7 +3,7 @@
 		<m-button @click="change">Button</m-button>
 		{{color}}
 		<div v-scroll="scrollOpt" id="anchor" style="position: absolute;width: 7.5rem;height: 13rem;border: 1px solid #ddd;overflow: auto;">
-			<m-slider v-model="value"></m-slider>
+			<m-image-preview v-model="show" :images="images"></m-image-preview>
 		</div>
 	</div>
 </template>
@@ -11,6 +11,10 @@
 	export default {
 		data() {
 			return {
+				pickerOpt:{
+					values:['mvi','elementUI','iView','vant'],//设置选项
+					defaultIndex:0//设置默认选项序列
+				},
 				checkes: [1, 2, 3, 4],
 				tabs: [{
 						value: 0,
@@ -138,8 +142,8 @@
 		},
 		methods: {
 			change() {
-				//this.show = !this.show
-				this.$alert('hello')
+				this.show = !this.show
+				
 			}
 		}
 	};

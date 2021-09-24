@@ -45,7 +45,7 @@
 			event: 'model-change'
 		},
 		props: {
-			//rgba颜色值
+			//颜色值
 			value: {
 				type: String,
 				default: '#ff0000'
@@ -209,11 +209,14 @@
 				if (this.drag) {
 					return
 				}
-				if (this.value && $dap.common.matchingText(this.value,'hex')) { //如果值为16进制的
+				//如果值为16进制的
+				if (this.value && $dap.common.matchingText(this.value,'hex')) { 
 					this.rgb = $dap.color.hex2rgb(this.value)
 					this.hsv = $dap.color.rgb2hsv(this.rgb)
 					this.opacity = 1
-				} else { //为rgb格式的
+				} 
+				//为rgb格式的
+				else { 
 					try {
 						let first = this.value.indexOf('(')
 						let last = this.value.lastIndexOf(')')

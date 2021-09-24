@@ -71,12 +71,9 @@
 					if (value.length != 12) {
 						return false
 					}
-					for (let i = 0; i < value.length; i++) {
-						if (typeof value[i] != "string") {
-							return false
-						}
-					}
-					return true
+					return value.every(item=>{
+						return typeof item == 'string' && item
+					})
 				}
 			},
 			//头部显示的星期数组
@@ -86,10 +83,7 @@
 					return ['日', '一', '二', '三', '四', '五', '六']
 				},
 				validator(value) {
-					if (value.length != 7) {
-						return false
-					}
-					return true
+					return value.length == 7
 				}
 			},
 			//开始年
@@ -133,7 +127,7 @@
 			},
 			//显示在年份面板上的年数组
 			years() {
-				let arry = []
+				let arr = []
 				let current_year = this.date.getFullYear() //获取指定的年份
 				//指定日期所在年份所在数组的序列,12个值为一个数组
 				let index = Math.floor((current_year - this.startYear) / 12)
@@ -142,24 +136,24 @@
 					date.setFullYear(i)
 					date.setMonth(this.date.getMonth())
 					date.setDate(this.date.getDate())
-					arry.push({
+					arr.push({
 						date: date,
 						year: i,
 						now: i == new Date().getFullYear(),
 						current: i == current_year,
 					})
 				}
-				return arry
+				return arr
 			},
 			//显示在月份面板上的月数组
 			months() {
-				let arry = [];
+				let arr = []
 				for (let i = 0; i < 12; i++) {
 					let date = new Date()
 					date.setFullYear(this.date.getFullYear())
 					date.setMonth(i)
 					date.setDate(this.date.getDate())
-					arry.push({
+					arr.push({
 						date: date,
 						year: this.date.getFullYear(),
 						month: i + 1,
@@ -169,15 +163,15 @@
 						current: ((i + 1 == this.date.getMonth() + 1))
 					})
 				}
-				return arry
+				return arr
 			},
 			//显示在日期面板上的日期数组
 			days() {
 				//获取指定日期的总天数
 				let total = $dap.date.getDays(this.date.getFullYear(), this.date.getMonth() + 1)
-				let arry = []
+				let arr = []
 				for (let i = 0; i < total; i++) {
-					arry.push({
+					arr.push({
 						date: this.getSpecifiedDate(i + 1),
 						now: this.isNow(i + 1),
 						current: this.isCurrent(i + 1),
@@ -189,7 +183,7 @@
 				let week = fd.getDay() //获取1号是周几
 				for (let i = 0; i < week; i++) {
 					let prevDate = $dap.date.getDateBefore(fd, i+1)
-					arry.unshift({
+					arr.unshift({
 						date: prevDate,
 						now: false,
 						current: false,
@@ -198,17 +192,17 @@
 				}
 				//在数组中添加下个月初的几天
 				let ld = this.getSpecifiedDate(total)
-				let length = arry.length
+				let length = arr.length
 				for (let i = length; i < 35; i++) {
 					let nextDate = $dap.date.getDateAfter(ld, i - length + 1)
-					arry.push({
+					arr.push({
 						date: nextDate,
 						now: false,
 						current: false,
 						currentMonth: false
 					})
 				}
-				return arry
+				return arr
 			},
 			//年视图指定年份样式
 			yearCurrentClass() {
@@ -367,7 +361,7 @@
 			//年视图点击事件
 			onYearClick(item) {
 				if (item.year < this.startYear || item.year > this.endYear) {
-					return;
+					return
 				}
 				this.$emit('update:date', item.date)
 				this.$emit('model-change', item.date)

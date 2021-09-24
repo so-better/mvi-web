@@ -27,17 +27,17 @@
 				let style = {}
 				if (this.swiper.vertical) {
 					style.width = '100%'
-					style.height = 'calc(100% * ' + 1 / this.swiper.children.length+')'
+					style.height = 'calc(100% * ' + 1 / this.swiper.children.length + ')'
 				} else { //横向
 					style.height = '100%'
-					style.width = 'calc(100% * ' + 1 / this.swiper.children.length+')'
+					style.width = 'calc(100% * ' + 1 / this.swiper.children.length + ')'
 				}
 				return style
 			},
 			//slide在swiper中的序列值
 			slideIndex() {
-				return this.swiper.children.findIndex(item=>{
-					return $dap.common.equal(item,this)
+				return this.swiper.children.findIndex(item => {
+					return $dap.common.equal(item, this)
 				})
 			}
 		},

@@ -12,11 +12,10 @@
 						<th ref="ths" :class="tableHeaderThClass" v-for="(item, index) in columnsData"
 							:key="'table-column-' + index">
 							<div>
-								<m-checkbox v-if="item.key == 'checkbox'" icon-size="0.24rem"
-									:class="item.value ? 'mvi-table-checkbox' : ''" :checked.sync="selectAll"
-									@model-change="allSelect" :icon-type="item.iconType ? item.iconType : 'success'"
-									:icon-color="item.iconColor ? item.iconColor : null"
-									:fill-color="item.fillColor ? item.fillColor : null"
+								<m-checkbox v-if="item.key == 'checkbox'"
+									:icon="{ size:'0.24rem',color:item.iconColor || null,type:item.iconType || 'success'}"
+									:class="item.value ? 'mvi-table-checkbox' : ''" v-model="selectAll"
+									@model-change="allSelect" :fill-color="item.fillColor ? item.fillColor : null"
 									:label="item.value ? item.value : ''"></m-checkbox>
 								<span v-else-if="item.value" v-html="item.value"></span>
 								<span class="mvi-table-sortable" v-if="item.sortable">
@@ -59,9 +58,9 @@
 								cellClass(item, index, item2, index2) ? cellClass(item, index, item2, index2) : ''
 							]" v-for="(item2, index2) in columnsData" :key="'table-column-data-' + index2"
 							@click="cellClick($event, item, index, item2, index2)">
-							<m-checkbox v-if="item2.key == 'checkbox'" icon-size="0.24rem" v-model="checkRows"
-								:value="index" :icon-type="item2.iconType ? item2.iconType : 'success'"
-								@model-change="selectCheck" :icon-color="item2.iconColor ? item2.iconColor : null"
+							<m-checkbox v-if="item2.key == 'checkbox'"
+								:icon="{ size:'0.24rem',color:item.iconColor || null,type:item.iconType || 'success'}"
+								v-model="checkRows" :value="index" @model-change="selectCheck"
 								:fill-color="item2.fillColor ? item2.fillColor : null"
 								:disabled="item.checkDisabled ? true : false"></m-checkbox>
 							<slot name="custom" :row="item" :column="item2" :row-index="index" :column-index="index2"
@@ -97,7 +96,7 @@
 				//排序的字段，即依据此字段排序
 				sortBy: '',
 				//排序方式，asc还是desc
-				sortMethod: '' 
+				sortMethod: ''
 			}
 		},
 		props: {
@@ -271,7 +270,7 @@
 		},
 		mounted() {
 			this.columnsAlign()
-			$dap.event.on(window,`resize.table_${this._uid}`, this.columnsAlign)
+			$dap.event.on(window, `resize.table_${this._uid}`, this.columnsAlign)
 		},
 		methods: {
 			//重置排序状态
@@ -298,7 +297,7 @@
 							this.$refs.ths.forEach((el, index) => {
 								if (!this.columnsData[index].width && this.$refs.headCols && this.$refs
 									.headCols[index] && this.$refs.bodyCols && this.$refs.bodyCols[index]
-									) {
+								) {
 									this.$refs.headCols[index].style.width = this.$refs.bodyCols[index]
 										.style.width = el.offsetWidth + 'px'
 								}
@@ -405,13 +404,13 @@
 			},
 			//根据data获取sortData
 			getSortData() {
-				return this.data.filter(row=>{
+				return this.data.filter(row => {
 					return !row.hidden
 				})
 			}
 		},
 		beforeDestroy() {
-			$dap.event.off(window,`resize.table_${this._uid}`)
+			$dap.event.off(window, `resize.table_${this._uid}`)
 		}
 	}
 </script>

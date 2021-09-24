@@ -4,24 +4,22 @@
 			<m-loading size="0.5rem" color="#ddd"></m-loading>
 		</div>
 		<div v-if="showToolbar && !loading" class="mvi-picker-toolbar">
-			<div :class="['mvi-picker-toolbar-cancel',cancelClass?cancelClass:'']" v-text="cancelText"
-				@click="doCancel"></div>
-			<div :class="['mvi-picker-toolbar-title',titleClass?titleClass:'']" v-if="title" v-text="title"></div>
-			<div :class="['mvi-picker-toolbar-confirm',confirmClass?confirmClass:'']" v-text="confirmText"
-				@click="doConfirm"></div>
+			<div :class="['mvi-picker-toolbar-cancel',cancelClass || '']" v-text="cancelText" @click="doCancel"></div>
+			<div :class="['mvi-picker-toolbar-title',titleClass || '']" v-if="title" v-text="title"></div>
+			<div :class="['mvi-picker-toolbar-confirm',confirmClass || '']" v-text="confirmText" @click="doConfirm">
+			</div>
 		</div>
 		<div v-if="!loading" class="mvi-picker-content" :style="contentStyle" ref="content"
 			@touchmove="contentTouchMove">
 			<div v-for="(column,index) in computedOptions" :key="'picker-column-'+index"
-				:class="['mvi-picker-items',column.className?column.className:'']" ref="items"
-				:style="columnStyle(column,index)" @touchstart="touchstart($event,index)" @touchmove="touchmove"
-				@touchend="touchend" @mousedown="mousedown($event,index)">
+				:class="['mvi-picker-items',column.className || '']" ref="items" :style="columnStyle(column,index)"
+				@touchstart="touchstart($event,index)" @touchmove="touchmove" @touchend="touchend"
+				@mousedown="mousedown($event,index)">
 				<div class="mvi-picker-item" v-for="(item,index2) in column.values" :key="'picker-item-'+index2"
-					v-text="item" :style="{height:selectHeight?selectHeight:''}"></div>
+					v-text="item" :style="{height:selectHeight || ''}"></div>
 			</div>
-			<div class="mvi-picker-active" :style="{height:selectHeight?selectHeight:''}"></div>
-			<div class="mvi-picker-mask"
-				:style="{backgroundSize:(selectHeight?'100% '+(computedHeight*(visibleCounts-1)/2)+'px':'')}"></div>
+			<div class="mvi-picker-active" :style="{height:selectHeight || ''}"></div>
+			<div class="mvi-picker-mask" :style="maskStyle"></div>
 		</div>
 	</div>
 </template>
@@ -36,13 +34,18 @@
 				offsets: [],
 				startY: 0,
 				startY2: 0,
-				time: 0, //触摸的时间
+				//触摸的时间
+				time: 0, 
 				oldActives: [],
 				amounts: 0,
-				mouseDown: false, //鼠标是否按下
-				columnIndex: 0, //按下的列序列
-				StartTimeStamp: 0, //开始时间
-				endTimeStamp: 0, //结束时间
+				//鼠标是否按下
+				mouseDown: false, 
+				//按下的列序列
+				columnIndex: 0, 
+				//开始时间
+				StartTimeStamp: 0, 
+				//结束时间
+				endTimeStamp: 0
 			}
 		},
 		props: {
@@ -98,7 +101,7 @@
 				default: false
 			},
 			//可见选项个数
-			visibleCounts: { 
+			visibleCounts: {
 				type: Number,
 				default: 5
 			},
@@ -136,7 +139,7 @@
 			},
 			computedOptions() {
 				let op = []
-				if (this.options instanceof Array) {
+				if (Array.isArray(this.options)) {
 					op = this.options
 				} else {
 					op = [this.options]
@@ -160,6 +163,13 @@
 					})
 				}
 				return arr
+			},
+			maskStyle(){
+				let style = {}
+				if(this.selectHeight){
+					style.backgroundSize = '100% '+$dap.number.mutiply(this.computedHeight, $dap.number.divide(this.visibleCounts-1,2))+'px'
+				}
+				return style
 			}
 		},
 		components: {
@@ -167,8 +177,8 @@
 		},
 		mounted() {
 			this.init()
-			$dap.event.on(document.body,`mousemove.picker_${this._uid}`,this.mousemove)
-			$dap.event.on(document.body,`mouseup.picker_${this._uid}`,this.mouseup)
+			$dap.event.on(document.body, `mousemove.picker_${this._uid}`, this.mousemove)
+			$dap.event.on(document.body, `mouseup.picker_${this._uid}`, this.mouseup)
 		},
 		methods: {
 			//初始化
@@ -180,11 +190,11 @@
 			},
 			//滑动临界值
 			crisis(index) {
-				let max = $dap.number.divide(this.visibleCounts - 1,2)
+				let max = $dap.number.divide(this.visibleCounts - 1, 2)
 				max = $dap.number.mutiply(max, this.computedHeight)
-				let min = -$dap.number.divide(this.visibleCounts - 1,2)
-				min = $dap.number.mutiply(min,this.computedHeight)
-				min += $dap.number.mutiply(this.visibleCounts - this.computedOptions[index].values.length,this.computedHeight)
+				let min = -$dap.number.divide(this.visibleCounts - 1, 2)
+				min = $dap.number.mutiply(min, this.computedHeight)
+				min += $dap.number.mutiply(this.visibleCounts - this.computedOptions[index].values.length, this.computedHeight)
 				return {
 					max,
 					min
@@ -192,12 +202,12 @@
 			},
 			//根据offset计算序列
 			getActive(value) {
-				let num = Math.abs($dap.number.divide(value - $dap.number.mutiply($dap.number.divide(this.visibleCounts - 1,2),this.computedHeight),this.computedHeight))
+				let num = Math.abs($dap.number.divide(value - $dap.number.mutiply($dap.number.divide(this.visibleCounts - 1, 2), this.computedHeight), this.computedHeight))
 				return Math.round(num)
 			},
 			//根据序列计算offset
 			getOffset(index) {
-				return $dap.number.mutiply($dap.number.subtract($dap.number.divide(this.visibleCounts - 1,2),index),this.computedHeight)
+				return $dap.number.mutiply($dap.number.subtract($dap.number.divide(this.visibleCounts - 1, 2), index), this.computedHeight)
 			},
 			//确认
 			doConfirm() {
@@ -408,7 +418,7 @@
 			}
 		},
 		beforeDestroy() {
-			$dao.event.off(document.body,`mousemove.picker_${this._uid} mouseup.picker_${this._uid}`)
+			$dao.event.off(document.body, `mousemove.picker_${this._uid} mouseup.picker_${this._uid}`)
 		}
 	}
 </script>
