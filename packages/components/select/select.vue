@@ -231,7 +231,7 @@
 				if (this.multiple) {
 					let labels = []
 					this.options.forEach((item, index) => {
-						if (this.value.includes(item.value)) {
+						if (Array.isArray(this.value) && this.value.includes(item.value)) {
 							labels.push(item.label)
 						}
 					})
@@ -348,9 +348,9 @@
 					return
 				}
 				if (this.multiple) {
-					let arr = this.modelValue
+					let arr = this.value
 					if (!Array.isArray(arr)) {
-						throw new TypeError('modelValue should be an array')
+						throw new TypeError('value should be an array')
 					}
 					let flag = arr.some(tmp=>{
 						return $dap.common.equal(tmp,item.value)
