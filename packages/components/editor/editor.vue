@@ -2,11 +2,11 @@
 	<div class="mvi-editor">
 		<div class="mvi-editor-menus" :style="{ border: border ? '' : 'none' }" v-if="showMenus" :disabled="disabled">
 			<m-editor-item
-				v-if="showMenuItem(item)"
-				v-for="(item, index) in computedMenuKeys"
+				v-if="showMenuItem(key)"
+				v-for="(item, key, index) in computedMenus"
 				:key="'mvi-editor-menu-' + index"
-				:value="item"
-				:menu="computedMenus[item]"
+				:value="key"
+				:menu="item"
 				ref="menu"
 			></m-editor-item>
 		</div>
@@ -669,10 +669,6 @@ export default {
 			})
 			return menus
 		},
-		//菜单配置项所有的键数组
-		computedMenuKeys() {
-			return Object.keys(this.computedMenus)
-		},
 		//编辑区域样式类
 		contentClass() {
 			let cls = ['mvi-editor-content']
@@ -784,11 +780,17 @@ export default {
 			if (this.disabled) {
 				return
 			}
+			if(!this.$refs.content){
+				return
+			}
 			document.execCommand('insertHtml', false, `<img src="${url}" class="mvi-editor-image" />`)
 		},
 		//对外提供的用以插入视频的api
 		insertVideo(url) {
 			if (this.disabled) {
+				return
+			}
+			if(!this.$refs.content){
 				return
 			}
 			let video = $dap.element.string2dom(`<video src="${url}" class="mvi-editor-video"></video>`)
@@ -825,6 +827,9 @@ export default {
 			if (this.disabled) {
 				return
 			}
+			if(!this.$refs.content){
+				return
+			}
 			let selection = window.getSelection()
 			if (selection.getRangeAt && selection.rangeCount) {
 				this.range = selection.getRangeAt(0)
@@ -833,6 +838,9 @@ export default {
 		//恢复选区，可对外提供
 		restoreRange() {
 			if (this.disabled) {
+				return
+			}
+			if(!this.$refs.content){
 				return
 			}
 			let selection = window.getSelection()
@@ -860,9 +868,12 @@ export default {
 		//根据选区获取节点，可对外提供
 		getSelectNode() {
 			if (this.disabled) {
-				return
+				return null
 			}
 			if (!this.range) {
+				return null
+			}
+			if(!this.$refs.content){
 				return null
 			}
 			let node = this.range.commonAncestorContainer
@@ -878,6 +889,9 @@ export default {
 				return
 			}
 			if (!this.showMenus) {
+				return
+			}
+			if(!this.$refs.content){
 				return
 			}
 			this.saveRange()
@@ -988,6 +1002,9 @@ export default {
 		},
 		//编辑区域获取焦点
 		contentFocus() {
+			if (this.disabled) {
+				return
+			}
 			if (this.border && this.activeColor && this.$refs.content) {
 				this.$refs.content.style.borderColor = this.activeColor
 			}
@@ -995,6 +1012,9 @@ export default {
 		},
 		//编辑区域失去焦点
 		contentBlur() {
+			if (this.disabled) {
+				return
+			}
 			if (this.border && this.activeColor && this.$refs.content) {
 				this.$refs.content.style.borderColor = ''
 			}
@@ -1078,6 +1098,9 @@ export default {
 			if(!$dap.element.isElement(el)){
 				return false
 			}
+			if(!this.$refs.content){
+				return false
+			}
 			if ($dap.element.isContains(this.$refs.content, el)) {
 				if (el.tagName.toLocaleUpperCase() == tag.toLocaleUpperCase()) {
 					return true
@@ -1091,6 +1114,9 @@ export default {
 		//判断某个节点是否在指定样式下，可对外提供
 		compareCss(el, cssName, cssValue) {
 			if(!$dap.element.isElement(el)){
+				return false
+			}
+			if(!this.$refs.content){
 				return false
 			}
 			if ($dap.element.isContains(this.$refs.content, el)) {
@@ -1108,6 +1134,9 @@ export default {
 			if(!$dap.element.isElement(el)){
 				return null
 			}
+			if(!this.$refs.content){
+				return null
+			}
 			if ($dap.element.isContains(this.$refs.content, el)) {
 				if (el.tagName.toLocaleUpperCase() == tag.toLocaleUpperCase()) {
 					return el
@@ -1121,6 +1150,9 @@ export default {
 		//根据css获取某个节点，可对外提供
 		getCompareTagForCss(el, cssName, cssValue) {
 			if(!$dap.element.isElement(el)){
+				return null
+			}
+			if(!this.$refs.content){
 				return null
 			}
 			if ($dap.element.isContains(this.$refs.content, el)) {

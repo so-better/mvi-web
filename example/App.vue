@@ -1,10 +1,7 @@
 <template>
 	<div id="app">
 		<m-button @click="change">Button</m-button>
-		{{color}}
-		<div v-scroll="scrollOpt" id="anchor" style="position: absolute;width: 7.5rem;height: 13rem;border: 1px solid #ddd;overflow: auto;">
-			<m-image-preview v-model="show" :images="images"></m-image-preview>
-		</div>
+		<m-editor v-model="value" :menus="{tag:[],codeView:true}"></m-editor>
 	</div>
 </template>
 <script>
