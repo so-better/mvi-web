@@ -37,7 +37,7 @@
 		props: {
 			//默认选中的选项
 			value: { 
-				type: [String, Number],
+				type: [String, Number, Object],
 				default: null
 			},
 			//菜单列表选中的颜色
@@ -235,12 +235,10 @@
 			//判断是否选中项
 			equalValue() {
 				return (item, index) => {
-					//比较value
-					if ((typeof item.value == 'string' && item.value) || $dap.number.isNumber(item.value)) {
-						return this.value === item.value
-					} else {
-						return this.value === index
+					if(item.value === undefined || item.value === null){
+						return this.modelValue === index
 					}
+					return $dap.common.equal(this.modelValue,item.value)
 				}
 			},
 			itemDisabled() {
@@ -313,7 +311,7 @@
 					return
 				}
 				//点击的是已选择的选项
-				if (this.valueFilter(item.value, index) === this.oldIndex) {
+				if ($dap.common.equal(this.valueFilter(item.value, index),this.oldIndex)) {
 					this.$emit('select', {
 						item: Object.assign({}, item),
 						index: index
@@ -336,11 +334,10 @@
 			},
 			//获取当前选择的value值
 			valueFilter(value, index) {
-				if ((typeof value == 'string' && value) || $dap.number.isNumber(value)) {
-					return value
-				} else {
+				if(value === undefined || value === null){
 					return index
 				}
+				return value
 			}
 		}
 	}
