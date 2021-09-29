@@ -27,10 +27,10 @@
 				let style = {}
 				if (this.swiper.vertical) {
 					style.width = '100%'
-					style.height = 'calc(100% * ' + 1 / this.swiper.children.length + ')'
+					style.height = this.swiper.fade?'100%':'calc(100% * ' + 1 / this.swiper.children.length + ')'
 				} else { //横向
 					style.height = '100%'
-					style.width = 'calc(100% * ' + 1 / this.swiper.children.length + ')'
+					style.width = this.swiper.fade?'100%':'calc(100% * ' + 1 / this.swiper.children.length + ')'
 				}
 				return style
 			},
