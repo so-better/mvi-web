@@ -622,6 +622,8 @@
 						} else {
 							return hour + ":" + minutes
 						}
+					} else {
+						return ''
 					}
 				} else {
 					return ""

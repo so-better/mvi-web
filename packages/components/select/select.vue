@@ -231,8 +231,13 @@
 				if (this.multiple) {
 					let labels = []
 					this.options.forEach((item, index) => {
-						if (Array.isArray(this.value) && this.value.includes(item.value)) {
-							labels.push(item.label)
+						if (Array.isArray(this.value)) {
+							let flag = this.value.some(i=>{
+								return $dap.common.equal(i,item.value)
+							})
+							if(flag){
+								labels.push(item.label)
+							}
 						}
 					})
 					if (typeof this.filterMethod == 'function') {
@@ -243,7 +248,7 @@
 				} else {
 					let label = ''
 					this.options.forEach((item, index) => {
-						if (item.value == this.value) {
+						if ($dap.common.equal(this.value,item.value)) {
 							label = item.label
 						}
 					})
@@ -256,11 +261,13 @@
 			},
 			isSelect() {
 				return item => {
-					if (this.multiple && this.showSelectIcon && this.value.includes(item.value)) {
-						return true
-					} else {
-						return false
+					if(this.multiple){
+						let flag = this.value.some(i=>{
+							return $dap.common.equal(i,item.value)
+						})
+						return this.showSelectIcon && flag
 					}
+					return false
 				}
 			},
 			selectedIconType() {
