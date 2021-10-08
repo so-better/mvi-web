@@ -695,8 +695,13 @@
 							} else {
 								this.fadeActiveIndex++
 							}
+							if (this.timer) {
+								clearInterval(this.timer)
+								this.timer = null
+							}
 							setTimeout(() => {
 								this.$emit('change', this.fadeActiveIndex)
+								this.setAutoplay()
 								resolve()
 							}, this.speed)
 						} else {
@@ -704,8 +709,13 @@
 							if (this.fadeActiveIndex != this.children.length - 1) {
 								this.$emit('before-change', this.fadeActiveIndex)
 								this.fadeActiveIndex++
+								if (this.timer) {
+									clearInterval(this.timer)
+									this.timer = null
+								}
 								setTimeout(() => {
 									this.$emit('change', this.fadeActiveIndex)
+									this.setAutoplay()
 									resolve()
 								}, this.speed)
 							} else {
@@ -749,8 +759,13 @@
 							} else {
 								this.fadeActiveIndex--
 							}
+							if (this.timer) {
+								clearInterval(this.timer)
+								this.timer = null
+							}
 							setTimeout(() => {
 								this.$emit('change', this.fadeActiveIndex)
+								this.setAutoplay()
 								resolve()
 							}, this.speed)
 						} else {
@@ -758,8 +773,13 @@
 							if (this.fadeActiveIndex != 0) {
 								this.$emit('before-change', this.fadeActiveIndex)
 								this.fadeActiveIndex--
+								if (this.timer) {
+									clearInterval(this.timer)
+									this.timer = null
+								}
 								setTimeout(() => {
 									this.$emit('change', this.fadeActiveIndex)
+									this.setAutoplay()
 									resolve()
 								}, this.speed)
 							} else {
@@ -823,8 +843,13 @@
 						if (this.fadeActiveIndex != index) {
 							this.$emit('before-change', this.fadeActiveIndex)
 							this.fadeActiveIndex = index
+							if (this.timer) {
+								clearInterval(this.timer)
+								this.timer = null
+							}
 							setTimeout(() => {
 								this.$emit('change', this.fadeActiveIndex)
+								this.setAutoplay()
 								resolve()
 							}, this.speed)
 						} else {
