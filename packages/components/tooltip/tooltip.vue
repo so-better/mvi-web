@@ -51,7 +51,7 @@
 			//显示动画时间
 			timeout: {
 				type: Number,
-				default: 400
+				default: 300
 			},
 			//边框颜色
 			borderColor: {

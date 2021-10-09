@@ -44,6 +44,7 @@ Toast.install = Vue => {
 			instance.zIndex = options.zIndex
 			instance.local = options.local
 			instance.usePadding = options.usePadding
+			instance.overlayColor = options.overlayColor
 			instance.background = options.background
 			instance.color = options.color
 		} else {

@@ -1,6 +1,6 @@
 <template>
 	<div v-on="listeners" :class="['mvi-cell-group',border?'mvi-cell-group-border':'']">
-		<div :class="['mvi-cell-group-title',titleClass?titleClass:'']" v-text="title" v-if="title"></div>
+		<div :class="['mvi-cell-group-title',titleClass || '']" v-text="title" v-if="title"></div>
 		<slot></slot>
 	</div>
 </template>

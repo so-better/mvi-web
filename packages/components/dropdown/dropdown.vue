@@ -37,7 +37,7 @@
 		props: {
 			//默认选中的选项
 			value: { 
-				type: [String, Number, Object],
+				type: [String, Number, Object, Array],
 				default: null
 			},
 			//菜单列表选中的颜色
@@ -129,15 +129,15 @@
 				return Object.assign({}, this.$listeners)
 			},
 			selectIconType() {
-				let t = 'success'
+				let type = 'success'
 				if ($dap.common.isObject(this.selectIcon)) {
 					if (typeof this.selectIcon.type == "string") {
-						t = this.selectIcon.type
+						type = this.selectIcon.type
 					}
 				} else if (typeof this.selectIcon == "string") {
-					t = this.selectIcon
+					type = this.selectIcon
 				}
-				return t
+				return type
 			},
 			selectIconUrl() {
 				let url = null
@@ -177,15 +177,15 @@
 			},
 			iconType() {
 				return icon => {
-					let t = null
+					let type = null
 					if ($dap.common.isObject(icon)) {
 						if (typeof icon.type == "string") {
-							t = icon.type
+							type = icon.type
 						}
 					} else if (typeof icon == "string") {
-						t = icon
+						type = icon
 					}
-					return t
+					return type
 				}
 			},
 			iconUrl() {
@@ -236,9 +236,9 @@
 			equalValue() {
 				return (item, index) => {
 					if(item.value === undefined || item.value === null){
-						return this.modelValue === index
+						return this.value === index
 					}
-					return $dap.common.equal(this.modelValue,item.value)
+					return $dap.common.equal(this.value,item.value)
 				}
 			},
 			itemDisabled() {
@@ -273,9 +273,8 @@
 					let cls = ['mvi-dropdown-item']
 					if (item.class) {
 						cls.push(item.class)
-					}
-					if (this.itemClass) {
-						cls.push(item.class)
+					}else if(this.itemClass){
+						cls.push(this.itemClass)
 					}
 					if (this.equalValue(item, index)) {
 						cls.push('mvi-dropdown-checked')

@@ -5,16 +5,16 @@
 				:size="iconSize" :color="iconColor" />
 			<div :class="['mvi-cell-title',noWrap?'mvi-cell-nowrap':'']">
 				<slot name="title" v-if="$slots.title"></slot>
-				<span v-else v-text="title" :class="titleClass?titleClass:''"></span>
+				<span v-else v-text="title" :class="titleClass || ''"></span>
 			</div>
 			<div :class="['mvi-cell-content',noWrap?'mvi-cell-nowrap':'']" v-if="$slots.content || content">
 				<slot name="content" v-if="$slots.content"></slot>
-				<span v-else-if="content" v-text="content" :class="contentClass?contentClass:''"></span>
+				<span v-else-if="content" v-text="content" :class="contentClass || ''"></span>
 			</div>
 			<m-icon class="mvi-cell-arrow" v-if="arrowType||arrowUrl" :type="arrowType" :url="arrowUrl"
 				:spin="arrowSpin" :size="arrowSize" :color="arrowColor" />
 		</div>
-		<div :class="['mvi-cell-label',labelClass?labelClass:'']" v-if="label || $slots.label" :style="labelTextStyle">
+		<div :class="['mvi-cell-label',labelClass || '']" v-if="label || $slots.label" :style="labelTextStyle">
 			<slot name="label" v-if="$slots.label"></slot>
 			<span v-text="label" v-else-if="label"></span>
 		</div>

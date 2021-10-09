@@ -50,7 +50,7 @@
 			},
 			//值
 			value: {
-				type: [Object, Number, String],
+				type: [String, Number, Object, Array],
 				default: ""
 			},
 			//填充颜色

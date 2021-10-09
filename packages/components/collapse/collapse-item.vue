@@ -141,7 +141,7 @@
 			//item在collapse中的序列值
 			itemIndex() {
 				return this.collapse.children.findIndex(vm => {
-					return $dap.common.equal(vm,this)
+					return $dap.common.equal(vm._uid,this._uid)
 				})
 			},
 			//打开时右侧图标

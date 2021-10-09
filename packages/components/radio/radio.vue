@@ -24,12 +24,12 @@
 		props: {
 			//单选框的值
 			value: {
-				type: [Object, Number, String],
+				type: [String, Number, Object, Array],
 				default: ""
 			},
 			//是否选中
 			checked: {
-				type: [Object, Boolean, String, Number],
+				type: [Object, Boolean, String, Number, Array],
 				default: false
 			},
 			//是否禁用

@@ -1,5 +1,5 @@
 <template>
-	<m-overlay class="mvi-toast-overlay" @hidden="toastHidden" :show="show" :use-padding="toastUsePadding"
+	<m-overlay :color="toastOverlayColor" @hidden="toastHidden" :show="show" :use-padding="toastUsePadding"
 		:zIndex="toastZIndex" :local="toastLocal" fade>
 		<div :class="['mvi-toast',toastMessage?'':'mvi-toast-iconless']" :style="toastStyle" v-on="listeners">
 			<div class="mvi-toast-icon">
@@ -35,6 +35,8 @@
 				message: null,
 				//弹窗自动关闭的时间，默认不自动关闭
 				timeout: null,
+				//遮罩层颜色
+				overlayColor:null,
 				//弹窗背景色
 				background: null, 
 				//弹窗字体颜色
@@ -138,6 +140,13 @@
 					return false
 				}
 			},
+			toastOverlayColor(){
+				if (typeof this.overlayColor == 'string' && this.overlayColor) {
+					return this.overlayColor
+				} else {
+					return 'rgba(0, 10, 20, .05)'
+				}
+			},
 			toastBackground() {
 				if (typeof this.background == 'string' && this.background) {
 					return this.background
@@ -213,11 +222,7 @@
 
 <style scoped lang="less">
 	@import "../../css/mvi-basic.less";
-
-	.mvi-toast-overlay {
-		background-color: rgba(0, 10, 20, .05);
-	}
-
+	
 	.mvi-toast {
 		display: flex;
 		display: -webkit-flex;

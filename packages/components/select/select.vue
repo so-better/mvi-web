@@ -50,7 +50,7 @@
 			},
 			//选择的值
 			value: {
-				type: [String, Number, Array],
+				type: [String, Number, Object, Array],
 				default: null
 			},
 			//占位符

@@ -1,7 +1,13 @@
 <template>
 	<div id="app">
 		<m-button @click="change">Button</m-button>
-		<m-editor v-model="value" :menus="{tag:[],codeView:true}"></m-editor>
+		<div>value:{{value}}</div>
+		<div id="root" style="position: relative;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: auto;margin-top: 4rem;">
+			<m-field v-model="value" clearable></m-field>
+			<!-- <div style="height: 10rem;"></div>
+			
+			<div style="height: 10rem;"></div> -->
+		</div>
 	</div>
 </template>
 <script>
@@ -12,7 +18,7 @@
 					values:['mvi','elementUI','iView','vant'],//设置选项
 					defaultIndex:0//设置默认选项序列
 				},
-				checkes: [1, 2, 3, 4],
+				checkes: [1, [2], 3, 4],
 				tabs: [{
 						value: 0,
 						name: '首页'
@@ -39,7 +45,7 @@
 					}
 				},
 				dragOpt: {
-					container: '#anchor',
+					container: '#root',
 					beforedrag: e => {
 						console.log(1)
 					}
@@ -57,7 +63,7 @@
 				},
 				cls: '',
 				counts: 100000,
-				checked: true,
+				checked: [],
 				images: [
 					'https://www.mvi-web.cn/mvi-resources/images/mvi_image_4_1624705387843.jfif',
 					'https://www.mvi-web.cn/mvi-resources/images/mvi_image_3_1624705387828.jfif',
@@ -66,7 +72,7 @@
 					'https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1624705387765.jfif'
 				],
 				anchor: {
-					root: '#anchor',
+					root: '#root',
 					target: '#btn',
 					time: 400
 				},
@@ -93,7 +99,7 @@
 						console.log(files, extra);
 					}
 				},
-				value: 40,
+				value: '',
 				color:'#198292',
 				date: new Date(),
 				data: [{
@@ -135,12 +141,10 @@
 			};
 		},
 		mounted() {
-			console.log(this.$dap)
 		},
 		methods: {
 			change() {
 				this.show = !this.show
-				
 			}
 		}
 	};
