@@ -22,26 +22,26 @@
 				startX: 0,
 				startX2: 0,
 				//transform偏移值
-				transformX: 0, 
+				transformX: 0,
 				//左侧是否显示
-				leftShow: false, 
+				leftShow: false,
 				//右侧是否显示
-				rightShow: false, 
+				rightShow: false,
 				amounts: 0,
 				//是否按下鼠标
-				mouseDown: false, 
+				mouseDown: false,
 				//是否拖动
 				isDrag: false
 			}
 		},
 		props: {
 			//是否禁用滑动
-			disabled: { 
+			disabled: {
 				type: Boolean,
 				default: false
 			},
 			//默认点击center部分关闭展开的左右内容
-			centerClose: { 
+			centerClose: {
 				type: Boolean,
 				default: true
 			}
@@ -62,8 +62,8 @@
 			}
 		},
 		mounted() {
-			$dap.event.on(document.body,`mousemove.swipeCell_${this._uid}`, this.cellMouseMove)
-			$dap.event.on(document.body,`mouseup.swipeCell_${this._uid}`, this.cellMouseUp)
+			$dap.event.on(document.body, `mousemove.swipeCell_${this._uid}`, this.cellMouseMove)
+			$dap.event.on(document.body, `mouseup.swipeCell_${this._uid}`, this.cellMouseUp)
 		},
 		methods: {
 			//触摸开始
@@ -93,7 +93,7 @@
 					event.preventDefault()
 				}
 				//右滑，展示左侧内容
-				if (moveX2 > 0) { 
+				if (moveX2 > 0) {
 					if (this.leftShow && this.transformX == this.$refs.left.offsetWidth) {
 						return
 					}
@@ -106,9 +106,9 @@
 							this.transformX += moveX
 						}
 					})
-				} 
+				}
 				//左滑，展示右侧内容
-				else if (moveX2 < 0) { 
+				else if (moveX2 < 0) {
 					if (this.rightShow && this.transformX == -this.$refs.right.offsetWidth) {
 						return
 					}
@@ -140,9 +140,9 @@
 					} else {
 						this.close()
 					}
-				} 
+				}
 				//左滑，展示右侧内容
-				else { 
+				else {
 					if (this.transformX < 0) {
 						this.open('right')
 					} else {
@@ -317,7 +317,7 @@
 			}
 		},
 		beforeDestroy() {
-			$dap.event.off(document.body,`mousemove.swipeCell_${this._uid} mouseup.swipeCell_${this._uid}`)
+			$dap.event.off(document.body, `mousemove.swipeCell_${this._uid} mouseup.swipeCell_${this._uid}`)
 		}
 	}
 </script>

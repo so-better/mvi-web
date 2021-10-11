@@ -1,6 +1,5 @@
 <template>
-	<div v-on="listeners" :class="['mvi-steps',vertical?'mvi-steps-vertical':'']"
-		:style="{backgroundColor:background?background:''}">
+	<div v-on="listeners" :class="['mvi-steps',vertical?'mvi-steps-vertical':'']">
 		<slot></slot>
 	</div>
 </template>
@@ -44,11 +43,6 @@
 			inactiveIcon: { 
 				type: [String, Object],
 				default: null
-			},
-			//背景色
-			background: { 
-				type: String,
-				default: null
 			}
 		},
 		provide() {
@@ -61,15 +55,15 @@
 				return Object.assign({}, this.$listeners)
 			},
 			activeIconType() {
-				let t = 'success-o'
+				let type = 'success-o'
 				if ($dap.common.isObject(this.activeIcon)) {
 					if (typeof this.activeIcon.type == "string") {
-						t = this.activeIcon.type
+						type = this.activeIcon.type
 					}
 				} else if (typeof this.activeIcon == "string") {
-					t = this.activeIcon
+					type = this.activeIcon
 				}
-				return t
+				return type
 			},
 			activeIconUrl() {
 				let url = null
@@ -108,15 +102,15 @@
 				return color
 			},
 			inactiveIconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.inactiveIcon)) {
 					if (typeof this.inactiveIcon.type == "string") {
-						t = this.inactiveIcon.type
+						type = this.inactiveIcon.type
 					}
 				} else if (typeof this.inactiveIcon == "string") {
-					t = this.inactiveIcon
+					type = this.inactiveIcon
 				}
-				return t
+				return type
 			},
 			inactiveIconUrl() {
 				let url = null

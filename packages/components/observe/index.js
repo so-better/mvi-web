@@ -1,7 +1,7 @@
 import $dap from "dap-util"
 import Observe from "./observe"
 
-Observe.install = Vue=> {
+Observe.install = Vue => {
 	//监听元素属性变化
 	Vue.directive('observe', {
 		inserted(el, binding) {

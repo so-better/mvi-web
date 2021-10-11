@@ -6,7 +6,7 @@ class Observe {
 	constructor(el, options) {
 		//监听的元素
 		this.$el = el
-		if(!$dap.common.isObject(options)){
+		if (!$dap.common.isObject(options)) {
 			options = {}
 		}
 		//是否监听元素属性变更
@@ -31,61 +31,79 @@ class Observe {
 			return
 		}
 		this.hasInit = true
-		try{
-			if(typeof this.attributes != 'boolean'){
+		try {
+			if (typeof this.attributes != 'boolean') {
 				this.attributes = false
 			}
-			if(typeof this.childList != 'boolean'){
+			if (typeof this.childList != 'boolean') {
 				this.childList = false
 			}
-			if(typeof this.subtree != 'boolean'){
+			if (typeof this.subtree != 'boolean') {
 				this.subtree = false
 			}
-			if(!(this.attributeNames instanceof Array)){
+			if (!(this.attributeNames instanceof Array)) {
 				this.attributeNames = []
 			}
-			if(typeof this.attributesChange != 'function'){
-				this.attributesChange = function(){}
+			if (typeof this.attributesChange != 'function') {
+				this.attributesChange = function() {}
 			}
-			if(typeof this.childNodesChange != 'function'){
-				this.childNodesChange = function(){}
+			if (typeof this.childNodesChange != 'function') {
+				this.childNodesChange = function() {}
 			}
-			
-			let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver
-			let observer = new MutationObserver(mutationList=>{
+
+			let MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window
+				.MozMutationObserver
+			let observer = new MutationObserver(mutationList => {
 				let length = mutationList.length
-				for(let i = 0;i<length;i++){
+				for (let i = 0; i < length; i++) {
 					//监听属性变动
-					if(mutationList[i].type == 'attributes' && this.attributes){
-						this.attributesChange(mutationList[i].attributeName,this.$el.getAttribute(mutationList[i].attributeName),mutationList[i].oldValue)
+					if (mutationList[i].type == 'attributes' && this.attributes) {
+						this.attributesChange(mutationList[i].attributeName, this.$el.getAttribute(
+							mutationList[i].attributeName), mutationList[i].oldValue)
 					}
 					//监听子节点变动
-					else if(mutationList[i].type == 'childList' && this.childList){
-						for(let node of mutationList[i].addedNodes){
-							if($dap.element.isElement(node)){
-								this.childNodesChange(node,null)
+					else if (mutationList[i].type == 'childList' && this.childList) {
+						for (let node of mutationList[i].addedNodes) {
+							if ($dap.element.isElement(node)) {
+								this.childNodesChange(node, null)
 							}
 						}
-						for(let node of mutationList[i].removedNodes){
-							if($dap.element.isElement(node)){
-								this.childNodesChange(null,node)
+						for (let node of mutationList[i].removedNodes) {
+							if ($dap.element.isElement(node)) {
+								this.childNodesChange(null, node)
 							}
 						}
 					}
 				}
 			})
-			if(this.attributes){
-				if(this.attributeNames.length>0){
-					observer.observe(this.$el, { attributes: this.attributes, attributeFilter: this.attributeNames, attributeOldValue: true, childList:this.childList,
-					subtree:this.subtree})
-				}else{
-					observer.observe(this.$el, { attributes: this.attributes, attributeOldValue: true, childList:this.childList, subtree:this.subtree})
+			if (this.attributes) {
+				if (this.attributeNames.length > 0) {
+					observer.observe(this.$el, {
+						attributes: this.attributes,
+						attributeFilter: this.attributeNames,
+						attributeOldValue: true,
+						childList: this.childList,
+						subtree: this.subtree
+					})
+				} else {
+					observer.observe(this.$el, {
+						attributes: this.attributes,
+						attributeOldValue: true,
+						childList: this.childList,
+						subtree: this.subtree
+					})
 				}
-			}else{
-				observer.observe(this.$el, { attributes: this.attributes, childList:this.childList, subtree:this.subtree})
+			} else {
+				observer.observe(this.$el, {
+					attributes: this.attributes,
+					childList: this.childList,
+					subtree: this.subtree
+				})
 			}
-		}catch(e){
-			throw new Error('Listening failed. Your browser may not support it, or childList and attributes are false, meaning there are no objects to listen on')
+		} catch (e) {
+			throw new Error(
+				'Listening failed. Your browser may not support it, or childList and attributes are false, meaning there are no objects to listen on'
+				)
 		}
 	}
 }

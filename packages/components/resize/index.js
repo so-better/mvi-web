@@ -15,11 +15,11 @@ Resize.install = Vue => {
 			let resize = new Resize(el, options)
 			resize.init()
 			//将对象记录在元素里
-			$dap.data.set(el,'directive:resize',resize)
+			$dap.data.set(el, 'directive:resize', resize)
 		},
 		unbind(el, binding) {
 			//获取对象
-			let resize = $dap.data.get(el,'directive:resize')
+			let resize = $dap.data.get(el, 'directive:resize')
 			if (resize) {
 				//移除绑定在body上的事件
 				resize._setOff()

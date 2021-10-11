@@ -157,7 +157,7 @@
 					this.$emit('model-change', event.target.checked)
 				} else {
 					//勾选
-					if (event.target.checked) { 
+					if (event.target.checked) {
 						this.$emit('update:checked', this.value)
 						this.$emit('model-change', this.value)
 					}

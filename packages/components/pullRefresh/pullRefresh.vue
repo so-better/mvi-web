@@ -19,29 +19,29 @@
 		data() {
 			return {
 				//是否显示
-				elShow: true, 
+				elShow: true,
 				//计数点
-				amount: 0, 
+				amount: 0,
 				//计数点最大值
-				amountMax: 4, 
+				amountMax: 4,
 				//垂直起点
-				startY: 0, 
+				startY: 0,
 				//第一次垂直起点
-				startY2: 0, 
+				startY2: 0,
 				//0表示还没触发下拉，1表示触发下拉了但是还没松手，2表示已经松手正在刷新，3表示刷新完成
-				status: 0, 
+				status: 0,
 				//刷新元素高度
-				elHeight: 0, 
+				elHeight: 0,
 				//垂直偏移距离
-				transformY: 0, 
+				transformY: 0,
 				//是否能够执行事件
-				canTouch: true, 
+				canTouch: true,
 				//是否触摸行为导致下拉刷新
-				hasTouch: false, 
+				hasTouch: false,
 				//是否按下鼠标了
-				mouseDown: false, 
+				mouseDown: false,
 				//开始下拉时滚动条是否在顶部
-				isTop: false, 
+				isTop: false,
 				//是否滚动了
 				isScroll: false
 			}
@@ -52,7 +52,7 @@
 		},
 		props: {
 			//下拉文案
-			pullingText: { 
+			pullingText: {
 				type: String,
 				default: '下拉刷新'
 			},
@@ -62,12 +62,12 @@
 				default: '释放刷新'
 			},
 			//刷新时显示的文本
-			loadingText: { 
+			loadingText: {
 				type: String,
 				default: '正在刷新'
 			},
 			//是否刷新
-			refresh: { 
+			refresh: {
 				type: Boolean,
 				default: false
 			},
@@ -117,7 +117,7 @@
 				default: 4000
 			},
 			//下拉触发刷新的距离值
-			distance: { 
+			distance: {
 				type: Number,
 				default: 1
 			}
@@ -181,15 +181,15 @@
 				}
 			},
 			pullingIconType() {
-				let t = 'arrow-down'
+				let type = 'arrow-down'
 				if ($dap.common.isObject(this.pullingIcon)) {
 					if (typeof this.pullingIcon.type == "string") {
-						t = this.pullingIcon.type
+						type = this.pullingIcon.type
 					}
 				} else if (typeof this.pullingIcon == "string") {
-					t = this.pullingIcon
+					type = this.pullingIcon
 				}
-				return t
+				return type
 			},
 			pullingIconUrl() {
 				let url = null
@@ -228,15 +228,15 @@
 				return color
 			},
 			loosingIconType() {
-				let t = 'arrow-up'
+				let type = 'arrow-up'
 				if ($dap.common.isObject(this.loosingIcon)) {
 					if (typeof this.loosingIcon.type == "string") {
-						t = this.loosingIcon.type
+						type = this.loosingIcon.type
 					}
 				} else if (typeof this.loosingIcon == "string") {
-					t = this.loosingIcon
+					type = this.loosingIcon
 				}
-				return t
+				return type
 			},
 			loosingIconUrl() {
 				let url = null
@@ -275,15 +275,15 @@
 				return color
 			},
 			loadingIconType() {
-				let t = 'load-e'
+				let type = 'load-e'
 				if ($dap.common.isObject(this.loadingIcon)) {
 					if (typeof this.loadingIcon.type == "string") {
-						t = this.loadingIcon.type
+						type = this.loadingIcon.type
 					}
 				} else if (typeof this.loadingIcon == "string") {
-					t = this.loadingIcon
+					type = this.loadingIcon
 				}
-				return t
+				return type
 			},
 			loadingIconUrl() {
 				let url = null
@@ -327,8 +327,8 @@
 		},
 		mounted() {
 			this.statusInit()
-			$dap.event.on(document.body,`mousemove.pullRefresh_${this._uid}`, this.onPull2)
-			$dap.event.on(document.body,`mouseup.pullRefresh_${this._uid}`, this.pulled2)
+			$dap.event.on(document.body, `mousemove.pullRefresh_${this._uid}`, this.onPull2)
+			$dap.event.on(document.body, `mouseup.pullRefresh_${this._uid}`, this.pulled2)
 		},
 		watch: {
 			refresh(newValue) {
@@ -577,7 +577,7 @@
 					return
 				}
 				//refresh值为true时状态变为加载状态
-				if (this.refresh) { 
+				if (this.refresh) {
 					this.status = 2
 					this.canTouch = false
 					this.$emit('refresh')
@@ -597,7 +597,7 @@
 					}
 				}
 				//refresh值为false时状态变为下拉前状态，数据恢复初始化
-				else { 
+				else {
 					this.amount = 0
 					this.hasTouch = false
 					this.$refs.refresh.style.transition = 'all 300ms'
@@ -626,7 +626,7 @@
 			}
 		},
 		beforeDestroy() {
-			$dap.event.off(document.body,`mousemove.pullRefresh_${this._uid} mouseup.pullRefresh_${this._uid}`)
+			$dap.event.off(document.body, `mousemove.pullRefresh_${this._uid} mouseup.pullRefresh_${this._uid}`)
 		}
 	}
 </script>

@@ -13,12 +13,12 @@
 						<slot name="title" v-if="$slots.title"></slot>
 						<span v-html="title" v-else-if="title"></span>
 					</div>
-					<div ref="content" :class="['mvi-modal-content',contentClass?contentClass:'']"
+					<div ref="content" :class="['mvi-modal-content',contentClass || '']"
 						v-if="$slots.default || content" :style="{padding:contentPadding?'':'0'}">
 						<slot v-if="$slots.default"></slot>
 						<span v-html="content" v-else-if="content"></span>
 					</div>
-					<div ref="footer" :class="['mvi-modal-footer',footerClass?footerClass:'']"
+					<div ref="footer" :class="['mvi-modal-footer',footerClass || '']"
 						v-if="$slots.footer || footer" :style="{padding:footerPadding?'':'0'}">
 						<slot name="footer" v-if="$slots.footer"></slot>
 						<span class="mvi-modal-footer-text" v-html="footer" v-else-if="footer"></span>
@@ -93,6 +93,7 @@
 				type: Boolean,
 				default: false
 			},
+			//显示动画时长
 			timeout: {
 				type: Number,
 				default: 300

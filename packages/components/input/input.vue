@@ -9,7 +9,7 @@
 				:size="leftIconSize" :color="leftIconColor" />
 		</div>
 		<!-- 左侧文本 -->
-		<div :class="['mvi-input-label',labelClass?labelClass:'']" v-if="label" :style="labelStyle">
+		<div :class="['mvi-input-label',labelClass || '']" v-if="label" :style="labelStyle">
 			<span v-text="label"></span>
 		</div>
 		<!-- 文本域 -->
@@ -388,11 +388,7 @@
 			},
 			//判断是否日期选择
 			isDatePicker() {
-				if (['date', 'datetime', 'month', 'time'].includes(this.type)) {
-					return true
-				} else {
-					return false
-				}
+				return ['date', 'datetime', 'month', 'time'].includes(this.type)
 			},
 			//文本域的rows
 			rowsFilter() {

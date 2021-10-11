@@ -22,12 +22,12 @@
 		},
 		props: {
 			//滚动一个周期需要的时间
-			interval: { 
+			interval: {
 				type: Number,
 				default: 5000
 			},
 			//滚动方向
-			direction: { 
+			direction: {
 				type: String,
 				default: "left",
 				validator(value) {
@@ -35,17 +35,17 @@
 				}
 			},
 			//是否自动滚动
-			autoplay: { 
+			autoplay: {
 				type: Boolean,
 				default: false
 			},
 			//是否循环滚动
-			loop: { 
+			loop: {
 				type: Boolean,
 				default: false
 			},
 			//动画效果
-			animation: { 
+			animation: {
 				type: String,
 				default: "linear",
 				validator(value) {
@@ -53,12 +53,12 @@
 				}
 			},
 			//是否点击暂停
-			clickStop: { 
+			clickStop: {
 				type: Boolean,
 				default: false
 			},
 			//是否悬浮暂停
-			hoverStop: { 
+			hoverStop: {
 				type: Boolean,
 				default: false
 			}
@@ -105,7 +105,7 @@
 			hoverIn() {
 				if (this.hoverStop) {
 					//滚动中可暂停
-					if (this.status == 0) { 
+					if (this.status == 0) {
 						this.pause()
 					}
 				}
@@ -114,7 +114,7 @@
 			hoverOut() {
 				if (this.hoverStop) {
 					//暂停时可开始
-					if (this.status == 1) { 
+					if (this.status == 1) {
 						this.play()
 					}
 				}
@@ -205,7 +205,7 @@
 			//暂停
 			pause() {
 				//只有滚动状态下才能暂停
-				if (this.status != 0) { 
+				if (this.status != 0) {
 					return
 				}
 				this.status = 1
@@ -237,11 +237,11 @@
 			clickStopFun() {
 				if (this.clickStop) {
 					//滚动中可暂停
-					if (this.status == 0) { 
+					if (this.status == 0) {
 						this.pause()
 					}
 					//暂停时可开始
-					else if (this.status == 1) { 
+					else if (this.status == 1) {
 						this.play()
 					}
 				}

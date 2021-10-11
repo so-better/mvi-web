@@ -40,12 +40,12 @@
 				default: '0.4rem'
 			},
 			//开关打开时背景色
-			activeColor: { 
+			activeColor: {
 				type: String,
 				default: null
 			},
 			//开关关闭时背景色
-			inactiveColor: { 
+			inactiveColor: {
 				type: String,
 				default: null
 			},
@@ -71,15 +71,15 @@
 				return Object.assign({}, this.$listeners)
 			},
 			iconType() {
-				let t = 'load-e'
+				let type = 'load-e'
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.type == "string") {
-						t = this.icon.type
+						type = this.icon.type
 					}
 				} else if (typeof this.icon == "string") {
-					t = this.icon
+					type = this.icon
 				}
-				return t
+				return type
 			},
 			iconUrl() {
 				let url = null

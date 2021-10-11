@@ -160,9 +160,9 @@
 						if (this.el) {
 							style.color = $dap.element.getCssStyle(this.el, 'background-color')
 						}
-						style.backgroundColor = (this.color ? this.color : '')
+						style.backgroundColor = this.color || ''
 					} else {
-						style.color = (this.color ? this.color : '')
+						style.color = this.color || ''
 					}
 					return style
 				}
@@ -189,15 +189,15 @@
 				return arry
 			},
 			firstIconType() {
-				let t = 'angle-double-left'
+				let type = 'angle-double-left'
 				if ($dap.common.isObject(this.firstIcon)) {
 					if (typeof this.firstIcon.type == "string") {
-						t = this.firstIcon.type
+						type = this.firstIcon.type
 					}
 				} else if (typeof this.firstIcon == "string") {
-					t = this.firstIcon
+					type = this.firstIcon
 				}
-				return t
+				return type
 			},
 			firstIconUrl() {
 				let url = null
@@ -236,15 +236,15 @@
 				return color
 			},
 			lastIconType() {
-				let t = 'angle-double-right'
+				let type = 'angle-double-right'
 				if ($dap.common.isObject(this.lastIcon)) {
 					if (typeof this.lastIcon.type == "string") {
-						t = this.lastIcon.type
+						type = this.lastIcon.type
 					}
 				} else if (typeof this.lastIcon == "string") {
-					t = this.lastIcon
+					type = this.lastIcon
 				}
-				return t
+				return type
 			},
 			lastIconUrl() {
 				let url = null
@@ -283,15 +283,15 @@
 				return color
 			},
 			prevIconType() {
-				let t = 'angle-left'
+				let type = 'angle-left'
 				if ($dap.common.isObject(this.prevIcon)) {
 					if (typeof this.prevIcon.type == "string") {
-						t = this.prevIcon.type
+						type = this.prevIcon.type
 					}
 				} else if (typeof this.prevIcon == "string") {
-					t = this.prevIcon
+					type = this.prevIcon
 				}
-				return t
+				return type
 			},
 			prevIconUrl() {
 				let url = null
@@ -330,15 +330,15 @@
 				return color
 			},
 			nextIconType() {
-				let t = 'angle-right'
+				let type = 'angle-right'
 				if ($dap.common.isObject(this.nextIcon)) {
 					if (typeof this.nextIcon.type == "string") {
-						t = this.nextIcon.type
+						type = this.nextIcon.type
 					}
 				} else if (typeof this.nextIcon == "string") {
-					t = this.nextIcon
+					type = this.nextIcon
 				}
-				return t
+				return type
 			},
 			nextIconUrl() {
 				let url = null
@@ -442,6 +442,7 @@
 		border: 1px solid @border-color;
 		font-size: @font-size-default;
 		border-radius: @radius-default;
+		overflow: hidden;
 	}
 
 	.mvi-page-first {

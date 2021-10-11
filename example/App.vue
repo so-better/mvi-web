@@ -1,12 +1,11 @@
 <template>
 	<div id="app">
 		<m-button @click="change">Button</m-button>
-		<div>value:{{value}}</div>
-		<div id="root" style="position: relative;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: auto;margin-top: 4rem;">
-			<m-field v-model="value" clearable></m-field>
-			<!-- <div style="height: 10rem;"></div>
-			
-			<div style="height: 10rem;"></div> -->
+		<div>value:{{active}}</div>
+		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: auto;">
+			<!-- <div style="height: 10rem;"></div> -->
+			<m-table :data="data" :columns="columns"></m-table>
+			<!-- <div style="height: 10rem;"></div> -->
 		</div>
 	</div>
 </template>
@@ -20,11 +19,11 @@
 				},
 				checkes: [1, [2], 3, 4],
 				tabs: [{
-						value: 0,
+						value: [0],
 						name: '首页'
 					},
 					{
-						value: 1,
+						value: '1',
 						name: '附近'
 					},
 					{
@@ -32,7 +31,7 @@
 						name: '关注'
 					},
 					{
-						value: 3,
+						value: {a:3},
 						name: '我的'
 					}
 				],
@@ -77,7 +76,7 @@
 					time: 400
 				},
 				spyOpt: {
-					el: '#app',
+					el: '#root',
 					beforeEnter: el => {
 						console.log('触发beforeEnter')
 					},
@@ -94,11 +93,25 @@
 				active: 1,
 				show: false,
 				expand: false,
-				options: {
+				uploadOpt: {
 					select: (files, extra) => {
 						console.log(files, extra);
 					}
 				},
+				options:[
+					{
+						label:'element-ui',
+						value:['a']
+					},
+					{
+						label:'easy-ui',
+						value:1
+					},
+					{
+						label:'mvi-web',
+						value:{a:1}
+					}
+				],
 				value: '',
 				color:'#198292',
 				date: new Date(),
@@ -145,6 +158,9 @@
 		methods: {
 			change() {
 				this.show = !this.show
+			},
+			shown(e){
+				console.log(e)
 			}
 		}
 	};

@@ -1,6 +1,6 @@
 <template>
-	<transition :name="box_animation" @after-enter="afterEnter" @after-leave="afterLeave">
-		<div v-show="show" v-on="listeners" :class="msgBoxClass" v-html="msgBox_message" :style="msgBoxStyle"></div>
+	<transition :name="msgboxAnimation" @after-enter="afterEnter" @after-leave="afterLeave">
+		<div v-show="show" v-on="listeners" :class="msgBoxClass" v-html="computedMessage" :style="msgBoxStyle"></div>
 	</transition>
 </template>
 
@@ -29,7 +29,7 @@
 			}
 		},
 		computed: {
-			msgBox_message() {
+			computedMessage() {
 				if (typeof this.message == "string") {
 					return this.message
 				} else if ($dap.common.isObject(this.message)) {
@@ -38,68 +38,68 @@
 					return String(this.message)
 				}
 			},
-			msgBox_animation() {
+			computedAnimation() {
 				if (typeof this.animation == "string" && this.animation) {
 					return this.animation
 				} else {
 					return 'fade'
 				}
 			},
-			msgBox_timeout() {
+			computedTimeout() {
 				if ($dap.number.isNumber(this.timeout) && this.timeout > 0) {
 					return this.timeout
 				} else {
 					return 1500
 				}
 			},
-			msgBox_callback() {
+			computedCallback() {
 				if (typeof this.callback == "function") {
 					return this.callback
 				} else {
 					return function() {}
 				}
 			},
-			msgBox_zIndex() {
+			computedZIndex() {
 				if ($dap.number.isNumber(this.zIndex)) {
 					return this.zIndex
 				} else {
 					return 1100
 				}
 			},
-			msgBox_background() {
+			computedBackground() {
 				if (typeof this.background == 'string' && this.background) {
 					return this.background
 				} else {
 					return null
 				}
 			},
-			msgBox_color() {
+			computedColor() {
 				if (typeof this.color == 'string' && this.color) {
 					return this.color
 				} else {
 					return null
 				}
 			},
-			box_animation() {
-				return 'mvi-msgbox-' + this.msgBox_animation
+			msgboxAnimation() {
+				return 'mvi-msgbox-' + this.computedAnimation
 			},
 			listeners() {
 				return Object.assign({}, this.$listeners)
 			},
 			msgBoxStyle() {
 				let style = {}
-				style.zIndex = this.msgBox_zIndex
-				if (this.msgBox_background) {
-					style.backgroundColor = this.msgBox_background
+				style.zIndex = this.computedZIndex
+				if (this.computedBackground) {
+					style.backgroundColor = this.computedBackground
 				}
-				if (this.msgBox_color) {
-					style.color = this.msgBox_color
+				if (this.computedColor) {
+					style.color = this.computedColor
 				}
 				return style
 			},
 			msgBoxClass() {
 				let cls = ['mvi-msgbox']
-				if (this.animation == 'translate') {
+				if (this.computedAnimation == 'translate') {
 					cls.push('mvi-msgbox-translate')
 				}
 				return cls
@@ -111,16 +111,16 @@
 		methods: {
 			//完全显示后
 			afterEnter(el) {
-				if (this.msgBox_timeout > 0) {
+				if (this.computedTimeout > 0) {
 					setTimeout(() => {
 						this.show = false
-					}, this.msgBox_timeout)
+					}, this.computedTimeout)
 				}
 			},
 			//完全隐藏后
 			afterLeave(el) {
 				this.$el.remove()
-				this.msgBox_callback()
+				this.computedCallback()
 				this.$destroy()
 			}
 		}

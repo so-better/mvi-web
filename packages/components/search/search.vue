@@ -2,7 +2,7 @@
 	<div class="mvi-search" :disabled="disabled">
 		<div v-if="label" :class="['mvi-search-label',labelClass || '']" v-text="label"></div>
 		<div :class="['mvi-search-input-container',round?'mvi-search-input-round':'']"
-			:style="{backgroundColor:background?background:'',color:color?color:''}">
+			:style="{backgroundColor:background || '',color:color || ''}">
 			<div v-if="leftIconType || leftIconUrl" class="mvi-search-left-icon" @click="leftClick">
 				<m-icon :type="leftIconType" :url="leftIconUrl" :spin="leftIconSpin" :size="leftIconSize"
 					:color="leftIconColor" />
@@ -19,7 +19,7 @@
 					:color="rightIconColor" />
 			</div>
 		</div>
-		<div v-if="showCancel" v-text="cancelText" :class="['mvi-search-cancel',cancelClass?cancelClass:'']"
+		<div v-if="showCancel" v-text="cancelText" :class="['mvi-search-cancel',cancelClass || '']"
 			@click="doCancel"></div>
 	</div>
 </template>
@@ -36,7 +36,7 @@
 		data() {
 			return {
 				//输入框是否获取焦点
-				focus: false 
+				focus: false
 			}
 		},
 		props: {
@@ -56,67 +56,67 @@
 				default: ''
 			},
 			//搜索框左侧文本
-			label: { 
+			label: {
 				type: String,
 				default: null
 			},
 			//左侧文本额外样式
-			labelClass: { 
+			labelClass: {
 				type: String,
 				default: null
 			},
 			//搜索框是否圆形
-			round: { 
+			round: {
 				type: Boolean,
 				default: false
 			},
 			//搜索框背景色
-			background: { 
+			background: {
 				type: String,
 				default: null
 			},
 			//搜索框字体色
-			color: { 
+			color: {
 				type: String,
 				default: null
 			},
 			//输入的最大长度
-			maxlength: { 
+			maxlength: {
 				type: Number,
 				default: -1
 			},
 			//是否自动聚焦
-			autofocus: { 
+			autofocus: {
 				type: Boolean,
 				default: false
 			},
 			//是否在输入框右侧显示取消按钮
-			showCancel: { 
+			showCancel: {
 				type: Boolean,
 				default: false
 			},
 			//取消按钮文字
-			cancelText: { 
+			cancelText: {
 				type: String,
 				default: '取消'
 			},
 			//取消按钮额外样式
-			cancelClass: { 
+			cancelClass: {
 				type: String,
 				default: null
 			},
 			//是否禁用
-			disabled: { 
+			disabled: {
 				type: Boolean,
 				default: false
 			},
 			//是否只读
-			readonly: { 
+			readonly: {
 				type: Boolean,
 				default: false
 			},
 			//输入框内容对齐方式
-			align: { 
+			align: {
 				type: String,
 				default: 'left',
 				validator(value) {
@@ -124,22 +124,22 @@
 				}
 			},
 			//左侧图标
-			leftIcon: { 
+			leftIcon: {
 				type: [String, Object],
 				default: null
 			},
 			//右侧图标
-			rightIcon: { 
+			rightIcon: {
 				type: [String, Object],
 				default: null
 			},
 			//使用清除图标
-			clearable: { 
+			clearable: {
 				type: Boolean,
 				default: false
 			},
 			//输入框调起移动端键盘类型
-			inputMode: { 
+			inputMode: {
 				type: [String, Boolean],
 				default: false,
 				validator(value) {
@@ -166,15 +166,15 @@
 				}
 			},
 			leftIconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.leftIcon)) {
 					if (typeof this.leftIcon.type == "string") {
-						t = this.leftIcon.type
+						type = this.leftIcon.type
 					}
 				} else if (typeof this.leftIcon == "string") {
-					t = this.leftIcon
+					type = this.leftIcon
 				}
-				return t
+				return type
 			},
 			leftIconUrl() {
 				let url = null
@@ -213,15 +213,15 @@
 				return color
 			},
 			rightIconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.rightIcon)) {
 					if (typeof this.rightIcon.type == "string") {
-						t = this.rightIcon.type
+						type = this.rightIcon.type
 					}
 				} else if (typeof this.rightIcon == "string") {
-					t = this.rightIcon
+					type = this.rightIcon
 				}
-				return t
+				return type
 			},
 			rightIconUrl() {
 				let url = null

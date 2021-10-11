@@ -35,15 +35,15 @@
 				startY: 0,
 				startY2: 0,
 				//触摸的时间
-				time: 0, 
+				time: 0,
 				oldActives: [],
 				amounts: 0,
 				//鼠标是否按下
-				mouseDown: false, 
+				mouseDown: false,
 				//按下的列序列
-				columnIndex: 0, 
+				columnIndex: 0,
 				//开始时间
-				StartTimeStamp: 0, 
+				StartTimeStamp: 0,
 				//结束时间
 				endTimeStamp: 0
 			}
@@ -164,10 +164,11 @@
 				}
 				return arr
 			},
-			maskStyle(){
+			maskStyle() {
 				let style = {}
-				if(this.selectHeight){
-					style.backgroundSize = '100% '+$dap.number.mutiply(this.computedHeight, $dap.number.divide(this.visibleCounts-1,2))+'px'
+				if (this.selectHeight) {
+					style.backgroundSize = '100% ' + $dap.number.mutiply(this.computedHeight, $dap.number.divide(this
+						.visibleCounts - 1, 2)) + 'px'
 				}
 				return style
 			}
@@ -194,7 +195,8 @@
 				max = $dap.number.mutiply(max, this.computedHeight)
 				let min = -$dap.number.divide(this.visibleCounts - 1, 2)
 				min = $dap.number.mutiply(min, this.computedHeight)
-				min += $dap.number.mutiply(this.visibleCounts - this.computedOptions[index].values.length, this.computedHeight)
+				min += $dap.number.mutiply(this.visibleCounts - this.computedOptions[index].values.length, this
+					.computedHeight)
 				return {
 					max,
 					min
@@ -202,12 +204,14 @@
 			},
 			//根据offset计算序列
 			getActive(value) {
-				let num = Math.abs($dap.number.divide(value - $dap.number.mutiply($dap.number.divide(this.visibleCounts - 1, 2), this.computedHeight), this.computedHeight))
+				let num = Math.abs($dap.number.divide(value - $dap.number.mutiply($dap.number.divide(this.visibleCounts -
+					1, 2), this.computedHeight), this.computedHeight))
 				return Math.round(num)
 			},
 			//根据序列计算offset
 			getOffset(index) {
-				return $dap.number.mutiply($dap.number.subtract($dap.number.divide(this.visibleCounts - 1, 2), index), this.computedHeight)
+				return $dap.number.mutiply($dap.number.subtract($dap.number.divide(this.visibleCounts - 1, 2), index), this
+					.computedHeight)
 			},
 			//确认
 			doConfirm() {

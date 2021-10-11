@@ -12,10 +12,10 @@ Px.install = Vue => {
 			if ($dap.common.isObject(binding.modifiers)) {
 				Object.assign(options, binding.modifiers)
 			}
-			if(binding.arg){
+			if (binding.arg) {
 				options.attrName = binding.arg
 			}
-			let px = new Px(el,options)
+			let px = new Px(el, options)
 			px.init()
 		}
 	})

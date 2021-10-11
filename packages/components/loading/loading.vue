@@ -1,9 +1,9 @@
 <template>
 	<div v-on="listeners" v-if="type == 0" class="mvi-loading" :style="{width:size,height:size}">
-		<div v-for="(item,index) in new Array(12)" :key="'mvi-loading-'+index" :style="LoadingStyle"></div>
+		<div v-for="(item,index) in new Array(12)" :key="'mvi-loading-'+index" :style="loadingStyle"></div>
 	</div>
 	<div v-on="listeners" v-else-if="type==1" class="mvi-loading2" :style="{width:size,height:size}">
-		<div :style="Loading2Style"></div>
+		<div :style="loading2Style"></div>
 	</div>
 </template>
 
@@ -34,7 +34,7 @@
 			listeners() {
 				return Object.assign({}, this.$listeners)
 			},
-			LoadingStyle() {
+			loadingStyle() {
 				let style = {}
 				style.background = this.color
 				style.width = 'calc(' + this.size + '/20)'
@@ -43,7 +43,7 @@
 				style.webkitTransformOrigin = 'calc(' + this.size + '/40) calc(' + this.size + '/2)'
 				return style
 			},
-			Loading2Style() {
+			loading2Style() {
 				let style = {}
 				style.boxShadow = '0 calc(' + this.size + '/20) 0 0 ' + this.color
 				style.webkitBoxShadow = '0 calc(' + this.size + '/20) 0 0 ' + this.color

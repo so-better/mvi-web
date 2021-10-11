@@ -27,7 +27,7 @@
 		props: {
 			//激活标签的value值
 			value: {
-				type: [String, Number, Object],
+				type: [Object, Number, String, Array],
 				default: null
 			},
 			//配置

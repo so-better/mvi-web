@@ -33,7 +33,7 @@
 			},
 			//值
 			value: {
-				type: [String, Number],
+				type: [Object, Number, String, Array],
 				default: null
 			},
 			//是否禁用
@@ -95,10 +95,10 @@
 			},
 			computedClass() {
 				let cls = ['mvi-tabbar-item']
-				if (this.value == this.tabbar.value) {
+				if ($dap.common.equal(this.value,this.tabbar.value)) {
 					cls.push('mvi-tabbar-item-active')
 				}
-				if (this.tabbar.active && !this.disabled && this.value != this.tabbar.value) {
+				if (this.tabbar.active && !this.disabled && !$dap.common.equal(this.value,this.tabbar.value)) {
 					cls.push('mvi-tabbar-active')
 				}
 				return cls
@@ -106,7 +106,7 @@
 			computedStyle() {
 				let style = {}
 				//激活
-				if (this.value === this.tabbar.value) {
+				if ($dap.common.equal(this.value,this.tabbar.value)) {
 					if (this.tabbar.activeColor) {
 						style.color = this.tabbar.activeColor
 					}
@@ -172,7 +172,7 @@
 				if (this.disabled) {
 					return
 				}
-				if (this.tabbar.value === this.value) {
+				if ($dap.common.equal(this.value,this.tabbar.value)) {
 					return
 				}
 				//如果路由存在

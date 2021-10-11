@@ -4,7 +4,7 @@
 		</div>
 		<div class="mvi-slider-button" ref="btn">
 			<slot name="button" v-if="$slots.button"></slot>
-			<div v-else :class="['mvi-slider-button-el',buttonClass?buttonClass:'']" :style="buttonElStyle"></div>
+			<div v-else :class="['mvi-slider-button-el',buttonClass || '']" :style="buttonElStyle"></div>
 		</div>
 	</div>
 </template>
@@ -189,12 +189,16 @@
 				this.isdrag = true
 				if (this.vertical) {
 					let top = res.placement.top
-					let value = $dap.number.add($dap.number.mutiply($dap.number.divide($dap.number.add(top, $dap.number.divide(this.$refs.btn.offsetHeight,2)),this.$el.offsetHeight), $dap.number.subtract(this.max, this.min)), this.min)
+					let value = $dap.number.add($dap.number.mutiply($dap.number.divide($dap.number.add(top, $dap.number
+						.divide(this.$refs.btn.offsetHeight, 2)), this.$el.offsetHeight), $dap.number.subtract(
+						this.max, this.min)), this.min)
 					this.$emit('update:value', value)
 					this.$emit('model-change', value)
 				} else {
 					let left = res.placement.left
-					let value = $dap.number.add($dap.number.mutiply($dap.number.divide($dap.number.add(left,$dap.number.divide(this.$refs.btn.offsetWidth,2)),this.$el.offsetWidth),$dap.number.subtract(this.max - this.min)),this.min)
+					let value = $dap.number.add($dap.number.mutiply($dap.number.divide($dap.number.add(left, $dap.number
+						.divide(this.$refs.btn.offsetWidth, 2)), this.$el.offsetWidth), $dap.number.subtract(
+						this.max - this.min)), this.min)
 					this.$emit('update:value', value)
 					this.$emit('model-change', value)
 				}
@@ -203,10 +207,14 @@
 			setBtnOffset() {
 				if (this.vertical) {
 					this.$refs.btn.style.left = "50%"
-					this.$refs.btn.style.top = $dap.number.subtract($dap.number.mutiply($dap.number.divide($dap.number.subtract(this.value, this.min),$dap.number.subtract(this.max - this.min)),this.$el.offsetHeight), $dap.number.divide( this.$refs.btn.offsetHeight, 2)) + "px"
+					this.$refs.btn.style.top = $dap.number.subtract($dap.number.mutiply($dap.number.divide($dap.number
+							.subtract(this.value, this.min), $dap.number.subtract(this.max - this.min)), this.$el
+						.offsetHeight), $dap.number.divide(this.$refs.btn.offsetHeight, 2)) + "px"
 				} else {
 					this.$refs.btn.style.top = "50%"
-					this.$refs.btn.style.left = $dap.number.subtract($dap.number.mutiply($dap.number.divide($dap.number.subtract(this.value, this.min),$dap.number.subtract(this.max - this.min)),this.$el.offsetWidth), $dap.number.divide( this.$refs.btn.offsetWidth, 2)) + "px"
+					this.$refs.btn.style.left = $dap.number.subtract($dap.number.mutiply($dap.number.divide($dap.number
+							.subtract(this.value, this.min), $dap.number.subtract(this.max - this.min)), this.$el
+						.offsetWidth), $dap.number.divide(this.$refs.btn.offsetWidth, 2)) + "px"
 				}
 			},
 			//跳转到指定位置
@@ -222,12 +230,14 @@
 				}
 				if (this.vertical) {
 					let top = event.offsetY
-					let value = $dap.number.add($dap.number.mutiply($dap.number.divide(top, this.$el.offsetHeight), $dap.number.subtract(this.max, this.min)), this.min)
+					let value = $dap.number.add($dap.number.mutiply($dap.number.divide(top, this.$el.offsetHeight), $dap
+						.number.subtract(this.max, this.min)), this.min)
 					this.$emit('update:value', value)
 					this.$emit('model-change', value)
 				} else {
 					let left = event.offsetX
-					let value = $dap.number.add($dap.number.mutiply($dap.number.divide(left, this.$el.offsetWidth), $dap.number.subtract(this.max, this.min)), this.min)
+					let value = $dap.number.add($dap.number.mutiply($dap.number.divide(left, this.$el.offsetWidth), $dap
+						.number.subtract(this.max, this.min)), this.min)
 					this.$emit('update:value', value)
 					this.$emit('model-change', value)
 				}
@@ -255,7 +265,7 @@
 	}
 
 	.mvi-slider[disabled] {
-		opacity: .5;
+		opacity: .6;
 	}
 
 	.mvi-slider-vertical {

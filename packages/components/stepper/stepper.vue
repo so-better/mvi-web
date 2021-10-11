@@ -4,8 +4,8 @@
 			:style="minusStyle" @click="doMinus">
 			<m-icon type="minus" />
 		</div>
-		<div :disabled="disabled || disabledInput" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']" :style="inputStyle"
-			v-if="showInput">
+		<div :disabled="disabled || disabledInput" :class="['mvi-stepper-input',border?'mvi-stepper-border':'']"
+			:style="inputStyle" v-if="showInput">
 			<input ref="input" v-model="realValue" :disabled="disabled || disabledInput" type="text" @blur="changeValue"
 				@keyup.enter="changeValue" :style="inputElStyle">
 		</div>
@@ -55,7 +55,7 @@
 				default: null
 			},
 			//显示小数位数
-			digit: { 
+			digit: {
 				type: Number,
 				default: 0
 			},
@@ -95,27 +95,27 @@
 				default: true
 			},
 			//输入框宽度
-			inputWidth: { 
+			inputWidth: {
 				type: String,
 				default: null
 			},
 			//按钮与输入框的背景色
-			background: { 
+			background: {
 				type: String,
 				default: null
 			},
 			//按钮与输入框的字体颜色
-			color: { 
+			color: {
 				type: String,
 				default: null
 			},
 			//是否显示点击态
-			active: { 
+			active: {
 				type: Boolean,
 				default: true
 			},
 			//输入框数字对齐方式
-			inputAlign: { 
+			inputAlign: {
 				type: String,
 				default: 'center',
 				validator(value) {
@@ -123,7 +123,7 @@
 				}
 			},
 			//是否显示边框
-			border: { 
+			border: {
 				type: Boolean,
 				default: false
 			}
@@ -236,7 +236,7 @@
 				if (this.arrivalMin) {
 					return
 				}
-				this.realValue = $dap.number.subtract(this.realValue,this.step)
+				this.realValue = $dap.number.subtract(this.realValue, this.step)
 				this.updateValue()
 			},
 			//加法
@@ -250,7 +250,7 @@
 				if (this.arrivalMax) {
 					return
 				}
-				this.realValue = $dap.number.add(this.realValue,this.step)
+				this.realValue = $dap.number.add(this.realValue, this.step)
 				this.updateValue()
 			},
 			//输入框修改值
@@ -366,7 +366,7 @@
 			font-family: @font-family;
 			background-image: none;
 			margin: 0;
-			font-size: @font-size-default;
+			font-size:inherit;
 			vertical-align: middle;
 
 			&[disabled] {
