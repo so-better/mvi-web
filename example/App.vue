@@ -2,9 +2,9 @@
 	<div id="app">
 		<m-button @click="change">Button</m-button>
 		<div>value:{{active}}</div>
-		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: auto;">
+		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: hidden;">
+			
 			<!-- <div style="height: 10rem;"></div> -->
-			<m-table :data="data" :columns="columns"></m-table>
 			<!-- <div style="height: 10rem;"></div> -->
 		</div>
 	</div>

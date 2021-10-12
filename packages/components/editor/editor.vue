@@ -992,7 +992,7 @@ export default {
 							'image',
 							'video'
 						]
-						if (selectKeys.lastIndexOf(item.value) > -1) {
+						if (selectKeys.includes(item.value)) {
 							item.menuActive = false
 							return
 						}

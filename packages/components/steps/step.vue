@@ -76,7 +76,7 @@
 			//step在steps中的序列值
 			stepIndex() {
 				return this.steps.children.findIndex(item=>{
-					return $dap.common.equal(item,this)
+					return $dap.common.equal(item._uid,this._uid)
 				})
 			},
 			//label

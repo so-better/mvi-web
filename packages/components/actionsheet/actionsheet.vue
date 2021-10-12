@@ -9,7 +9,7 @@
 				<div :class="itemClass(item)" v-for="(item,index) in options" :key="'action-'+index"
 					:style="itemStyle(item)" :disabled="itemDisabled(item)" @click="doSelect(item,index)">
 					<m-loading :size="size=='large'?'0.4rem':'0.36rem'" color="#bbb"
-						v-if="item.loading?item.loading:false"></m-loading>
+						v-if="item.loading || false"></m-loading>
 					<div class="mvi-acionsheet-content"
 						v-else-if="item.label || item.sub || iconType(item.icon) || iconUrl(item.icon)">
 						<m-icon data-placement="left"
@@ -136,7 +136,7 @@
 				type: String,
 				default: 'medium',
 				validator(value) {
-					return ['medium', 'large'].lastIndexOf(value) > -1
+					return ['medium', 'large'].includes(value)
 				}
 			}
 		},

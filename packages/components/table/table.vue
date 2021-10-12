@@ -1,6 +1,6 @@
 <template>
 	<div v-on="listeners" :class="['mvi-table', outBorder ? 'mvi-table-border' : '']">
-		<div :class="['mvi-table-header', headClass ? headClass : '']" v-if="columnsData.length != 0">
+		<div :class="['mvi-table-header', headClass || '']" v-if="columnsData.length != 0">
 			<table cellpadding="0" cellspacing="0">
 				<colgroup>
 					<col ref="headCols" :style="colgroupStyle(item, index)" v-for="(item, index) in columnsData"
@@ -15,8 +15,8 @@
 								<m-checkbox v-if="item.key == 'checkbox'"
 									:icon="{ size:'0.24rem',color:item.iconColor || null,type:item.iconType || 'success'}"
 									:class="item.value ? 'mvi-table-checkbox' : ''" v-model="selectAll"
-									@model-change="allSelect" :fill-color="item.fillColor ? item.fillColor : null"
-									:label="item.value ? item.value : ''"></m-checkbox>
+									@model-change="allSelect" :fill-color="item.fillColor || null"
+									:label="item.value || ''"></m-checkbox>
 								<span v-else-if="item.value" v-html="item.value"></span>
 								<span class="mvi-table-sortable" v-if="item.sortable">
 									<m-icon @click="sortAsc($event, item)"
@@ -54,15 +54,15 @@
 						<td :class="[
 								rowBorder ? 'mvi-table-body-td-border' : '',
 								item.cellClassName && item.cellClassName[item2.key] ? item.cellClassName[item2.key] : '',
-								item2.className ? item2.className : '',
-								cellClass(item, index, item2, index2) ? cellClass(item, index, item2, index2) : ''
+								item2.className || '',
+								cellClass(item, index, item2, index2) || ''
 							]" v-for="(item2, index2) in columnsData" :key="'table-column-data-' + index2"
 							@click="cellClick($event, item, index, item2, index2)">
 							<m-checkbox v-if="item2.key == 'checkbox'"
 								:icon="{ size:'0.24rem',color:item.iconColor || null,type:item.iconType || 'success'}"
 								v-model="checkRows" :value="index" @model-change="selectCheck"
-								:fill-color="item2.fillColor ? item2.fillColor : null"
-								:disabled="item.checkDisabled ? true : false"></m-checkbox>
+								:fill-color="item2.fillColor || null"
+								:disabled="item.checkDisabled"></m-checkbox>
 							<slot name="custom" :row="item" :column="item2" :row-index="index" :column-index="index2"
 								v-if="item2.key == 'custom' && $scopedSlots.custom"></slot>
 							<span v-else v-html="textFilter(item, item2)"></span>

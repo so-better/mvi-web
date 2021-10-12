@@ -3,7 +3,7 @@
 		:zIndex="toastZIndex" :local="toastLocal" fade>
 		<div :class="['mvi-toast',toastMessage?'':'mvi-toast-iconless']" :style="toastStyle" v-on="listeners">
 			<div class="mvi-toast-icon">
-				<m-loading :color="toastColor?toastColor:'#fff'"
+				<m-loading :color="toastColor || '#fff'"
 					v-if="toastType=='loading' && (!toastIcon.type && !toastIcon.url)" :type="0"
 					:size="toastIcon.size" />
 				<m-icon v-else :type="toastIcon.type" :url="toastIcon.url" :spin="toastIcon.spin" :size="toastIcon.size"

@@ -71,15 +71,15 @@
 				return style
 			},
 			iconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.type == "string") {
-						t = this.icon.type
+						type = this.icon.type
 					}
 				} else if (typeof this.icon == "string") {
-					t = this.icon
+					type = this.icon
 				}
-				return t
+				return type
 			},
 			iconUrl() {
 				let url = null
@@ -120,7 +120,7 @@
 			//tab在tabs中的序列值
 			tabIndex() {
 				return this.tabs.children.findIndex(item => {
-					return $dap.common.equal(item, this)
+					return $dap.common.equal(item._uid, this._uid)
 				})
 			}
 		}

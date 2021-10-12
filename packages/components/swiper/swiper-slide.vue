@@ -37,7 +37,7 @@
 			//slide在swiper中的序列值
 			slideIndex() {
 				return this.swiper.children.findIndex(item => {
-					return $dap.common.equal(item, this)
+					return $dap.common.equal(item._uid, this._uid)
 				})
 			}
 		},
