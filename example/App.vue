@@ -2,8 +2,15 @@
 	<div id="app">
 		<m-button @click="change">Button</m-button>
 		<div>value:{{active}}</div>
+		<div style="width: 6rem;margin: 1rem;">
+			<m-field size="small" active-type="info" class="mvi-mb-2" v-model="value"></m-field>
+			<m-field size="small" active-type="warn" class="mvi-mb-2" v-model="value"></m-field>
+			<m-field size="small" active-type="success" class="mvi-mb-2" v-model="value"></m-field>
+			<m-field size="small" active-type="error" class="mvi-mb-2" v-model="value"></m-field>
+			<m-field size="small" active-type="primary" class="mvi-mb-2" v-model="value"></m-field>
+			<m-field size="small" clearable active-color="#10982a" class="mvi-mb-2" v-model="value"></m-field>
+		</div>
 		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: hidden;">
-			
 			<!-- <div style="height: 10rem;"></div> -->
 			<!-- <div style="height: 10rem;"></div> -->
 		</div>
