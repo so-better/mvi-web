@@ -29,7 +29,7 @@
 				type: String,
 				default: 'medium',
 				validator(value) {
-					return ['large', 'medium'].includes(value);
+					return ['large', 'medium'].includes(value)
 				}
 			}
 		},

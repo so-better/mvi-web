@@ -98,7 +98,7 @@
 				if (this.barColor) {
 					style.backgroundColor = this.barColor
 				}
-				return style;
+				return style
 			},
 			sliderBarStyle() {
 				let style = {}
@@ -149,11 +149,11 @@
 				dragged: () => {
 					this.$nextTick(() => {
 						setTimeout(() => {
-							this.isdrag = false;
+							this.isdrag = false
 						}, 10)
 					})
 				}
-			});
+			})
 			this.drag.init()
 		},
 		watch: {

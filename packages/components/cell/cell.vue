@@ -93,18 +93,18 @@
 				return Object.assign({}, this.$listeners)
 			},
 			iconType() {
-				let t = null;
+				let type = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.type == "string") {
-						t = this.icon.type
+						type = this.icon.type
 					}
 				} else if (typeof this.icon == "string") {
-					t = this.icon
+					type = this.icon
 				}
-				return t
+				return type
 			},
 			iconUrl() {
-				let url = null;
+				let url = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.url == "string") {
 						url = this.icon.url
@@ -122,90 +122,90 @@
 				return spin
 			},
 			iconSize() {
-				let size = null;
+				let size = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.size == "string") {
 						size = this.icon.size
 					}
 				}
-				return size;
+				return size
 			},
 			iconColor() {
-				let color = null;
+				let color = null
 				if ($dap.common.isObject(this.icon)) {
 					if (typeof this.icon.color == "string") {
 						color = this.icon.color
 					}
 				}
-				return color;
+				return color
 			},
 			arrowType() {
-				let t = null;
+				let type = null
 				if ($dap.common.isObject(this.arrow)) {
 					if (typeof this.arrow.type == "string") {
-						t = this.arrow.type
+						type = this.arrow.type
 					}
 				} else if (typeof this.arrow == "string") {
-					t = this.arrow;
+					type = this.arrow
 				}
-				return t;
+				return type
 			},
 			arrowUrl() {
-				let url = null;
+				let url = null
 				if ($dap.common.isObject(this.arrow)) {
 					if (typeof this.arrow.url == "string") {
-						url = this.arrow.url;
+						url = this.arrow.url
 					}
 				}
-				return url;
+				return url
 			},
 			arrowSpin() {
-				let spin = false;
+				let spin = false
 				if ($dap.common.isObject(this.arrow)) {
 					if (typeof this.arrow.spin == "boolean") {
-						spin = this.arrow.spin;
+						spin = this.arrow.spin
 					}
 				}
-				return spin;
+				return spin
 			},
 			arrowSize() {
-				let size = null;
+				let size = null
 				if ($dap.common.isObject(this.arrow)) {
 					if (typeof this.arrow.size == "string") {
-						size = this.arrow.size;
+						size = this.arrow.size
 					}
 				}
-				return size;
+				return size
 			},
 			arrowColor() {
-				let color = null;
+				let color = null
 				if ($dap.common.isObject(this.arrow)) {
 					if (typeof this.arrow.color == "string") {
 						color = this.arrow.color
 					}
 				}
-				return color;
+				return color
 			},
 			computedActive() {
 				if (typeof this.active == "boolean") {
-					return this.active;
+					return this.active
 				} else if (typeof this.$parent.active == "boolean") {
 					return this.$parent.active
 				} else {
-					return true;
+					return true
 				}
 			},
 			computedBorder() {
 				if (typeof this.border == "boolean") {
-					return this.border;
+					return this.border
 				} else if (typeof this.$parent.border == "boolean") {
 					return this.$parent.border
 				} else {
-					return false;
+					return false
 				}
 			},
 			labelTextStyle() {
-				let style = {};
+				let style = {}
 				if (this.ellipsis) { //如果ellipsis不是false
 					style.display = '-webkit-box'
 					style.textOverflow = 'ellipsis'

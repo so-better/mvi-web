@@ -327,15 +327,15 @@
 			},
 			//前置图标类型
 			prependIconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.prepend)) {
 					if (typeof this.prepend.type == "string") {
-						t = this.prepend.type
+						type = this.prepend.type
 					}
 				} else if (typeof this.prepend == "string") {
-					t = this.prepend
+					type = this.prepend
 				}
-				return t
+				return type
 			},
 			//前置图标url
 			prependIconUrl() {
@@ -379,15 +379,15 @@
 			},
 			//后置图标类型
 			appendIconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.append)) {
 					if (typeof this.append.type == "string") {
-						t = this.append.type
+						type = this.append.type
 					}
 				} else if (typeof this.append == "string") {
-					t = this.append
+					type = this.append
 				}
-				return t
+				return type
 			},
 			//后置图标url
 			appendIconUrl() {
@@ -431,15 +431,15 @@
 			},
 			//前缀图标类型
 			prefixIconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.prefix)) {
 					if (typeof this.prefix.type == "string") {
-						t = this.prefix.type
+						type = this.prefix.type
 					}
 				} else if (typeof this.prefix == "string") {
-					t = this.prefix
+					type = this.prefix
 				}
-				return t
+				return type
 			},
 			//前缀图标url
 			prefixIconUrl() {
@@ -483,15 +483,15 @@
 			},
 			//后缀图标类型
 			suffixIconType() {
-				let t = null
+				let type = null
 				if ($dap.common.isObject(this.suffix)) {
 					if (typeof this.suffix.type == "string") {
-						t = this.suffix.type
+						type = this.suffix.type
 					}
 				} else if (typeof this.suffix == "string") {
-					t = this.suffix
+					type = this.suffix
 				}
-				return t
+				return type
 			},
 			//后缀图标url
 			suffixIconUrl() {

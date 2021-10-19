@@ -354,7 +354,7 @@
 					this.isTop = false
 					return
 				}
-				let el = this.getScrollEl(event.target);
+				let el = this.getScrollEl(event.target)
 				if (el != this.$el && $dap.element.getScrollTop(el) != 0) {
 					this.isTop = false
 					return
