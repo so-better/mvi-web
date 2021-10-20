@@ -76,9 +76,9 @@ class Px {
 	//生成唯一值
 	_createGuid() {
 		//获取当前guid，不存在则从0开始
-		let guid = $dap.data.get('mvi-directives-px-guid') || 0
+		let guid = $dap.data.get(document.body,'mvi-directives-px-guid') || 0
 		guid++
-		$dap.data.set('mvi-directives-px-guid',guid)
+		$dap.data.set(document.body,'mvi-directives-px-guid',guid)
 		return guid
 	}
 }
