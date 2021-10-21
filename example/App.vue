@@ -2,17 +2,14 @@
 	<div id="app">
 		<m-button @click="change">Button</m-button>
 		<div>value:{{active}}</div>
-		<div style="width: 6rem;margin: 1rem;">
-			<m-autocomplete :list="['2222','aaa']" size="small" active-type="info" class="mvi-mb-2" v-model="value"></m-autocomplete>
-			<m-autocomplete size="small" active-type="warn" class="mvi-mb-2" v-model="value"></m-autocomplete>
-			<m-autocomplete size="small" active-type="success" class="mvi-mb-2" v-model="value"></m-autocomplete>
-			<m-autocomplete size="small" active-type="error" class="mvi-mb-2" v-model="value"></m-autocomplete>
-			<m-autocomplete size="small" active-type="primary" class="mvi-mb-2" v-model="value"></m-autocomplete>
-			<m-autocomplete size="small" active-color="#b01efe" class="mvi-mb-2" v-model="value"></m-autocomplete>
-		</div>
+		<m-tooltip title="hello" trigger="hover">
+			<m-button>按钮</m-button>
+		</m-tooltip>
+		<m-editor></m-editor>
 		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: hidden;">
 			<!-- <div style="height: 10rem;"></div> -->
 			<!-- <div style="height: 10rem;"></div> -->
+			<m-modal v-model="show" animation="custom" title="Modal Title" content="模态框内容" closable></m-modal>
 		</div>
 	</div>
 </template>
@@ -201,5 +198,10 @@
 			bottom: -1rem;
 			left: 0;
 		}
+	}
+
+	.mvi-modal-custom-enter,.mvi-modal-custom-leave-to{
+		opacity: 0;
+		transform: scaleY(0);
 	}
 </style>
