@@ -7,12 +7,11 @@
 		<div class="mvi-editor-body">
 			<div v-if="codeViewShow" v-text="initalHtml" key="code" :contenteditable="!disabled" :style="codeViewStyle"
 				:class="codeViewClass" ref="codeView" @input="codeViewInput" @keydown="tabDown" v-on="listeners"
-				@paste="codeViewPaste" @compositionstart="compositionstart" @compositionend="compositionend"></div>
+				@paste="codeViewPaste"></div>
 			<div v-else ref="content" @blur="contentBlur" @focus="contentFocus" @click="changeActive"
 				@input="contentInput" :class="contentClass" key="content" @keydown="tabDown"
 				:contenteditable="!disabled" :style="contentStyle" v-html="initalHtml" :data-placeholder="placeholder"
-				v-on="listeners" @paste="contentPaste" @compositionstart="compositionstart"
-				@compositionend="compositionend"></div>
+				v-on="listeners" @paste="contentPaste"></div>
 		</div>
 	</div>
 </template>
@@ -24,8 +23,6 @@
 		name: 'm-editor',
 		data() {
 			return {
-				//是否禁用输入事件
-				disableInputEvent: false,
 				//选区
 				range: null,
 				//源码是否显示
@@ -980,40 +977,13 @@
 				}
 				this.changeActive()
 			},
-			//中文输入开始
-			compositionstart() {
-				this.disableInputEvent = true
-			},
-			//中文输入结束
-			compositionend() {
-				this.disableInputEvent = false
-				if (this.$refs.content) {
-					if (this.$refs.content.innerHTML == '' || this.$refs.content.innerHTML == '<br>' || this.$refs.content
-						.innerHTML == '<p></p>') {
-						this.$refs.content.innerHTML = '<p><br></p>'
-					}
-					this.updateHtmlText()
-					this.updateValue()
-					this.changeActive()
-				} else if (this.$refs.codeView) {
-					this.updateHtmlText()
-					this.updateValue()
-				}
-			},
 			//输入框输入
 			contentInput() {
 				if (this.disabled) {
 					return
 				}
-				if (this.disableInputEvent) {
-					return
-				}
 				if (!this.$refs.content) {
 					return
-				}
-				if (this.$refs.content.innerHTML == '' || this.$refs.content.innerHTML == '<br>' || this.$refs.content
-					.innerHTML == '<p></p>') {
-					this.$refs.content.innerHTML = '<p><br></p>'
 				}
 				this.updateHtmlText()
 				this.updateValue()
@@ -1022,9 +992,6 @@
 			//源码视图输入
 			codeViewInput() {
 				if (this.disabled) {
-					return
-				}
-				if (this.disableInputEvent) {
 					return
 				}
 				if (!this.$refs.codeView) {
