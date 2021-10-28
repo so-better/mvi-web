@@ -5,7 +5,7 @@
 		<m-tooltip title="hello" trigger="hover">
 			<m-button>按钮</m-button>
 		</m-tooltip>
-		<m-editor paste-text v-model="value" placeholder="请输入"></m-editor>
+		<m-editor :menu-index="{custom:2,backColor:3}" :menus="{custom:['a','b'],backColor:[]}" :menu-icons="{custom:'user'}" v-model="value" placeholder="请输入"></m-editor>
 		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: hidden;">
 			<!-- <div style="height: 10rem;"></div> -->
 			<!-- <div style="height: 10rem;"></div> -->
