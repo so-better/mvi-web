@@ -1,6 +1,6 @@
 {
   "name": "mvi-web",
-  "version": "4.10.9",
+  "version": "4.10.10",
   "private": false,
   "author": "lingkai",
   "main": "packages/index",
@@ -29,6 +29,6 @@
     "url": "https://github.com/lovelin0523/mvi-web"
   },
   "dependencies": {
-    "dap-util": "^1.0.0"
+    "dap-util": "^1.0.1"
   }
 }
