@@ -2,14 +2,12 @@
 	<div id="app">
 		<m-button @click="change">Button</m-button>
 		<div>value:{{value}}</div>
-		<m-tooltip title="hello" trigger="hover">
-			<m-button>按钮</m-button>
-		</m-tooltip>
-		<m-editor :menu-index="{custom:2,backColor:3}" :menus="{custom:['a','b'],backColor:[]}" :menu-icons="{custom:'user'}" v-model="value" placeholder="请输入"></m-editor>
+		<div class="mvi-px-4">
+			<m-progress strokeWidth="1rem" round :value="value"></m-progress>
+		</div>
 		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: hidden;">
 			<!-- <div style="height: 10rem;"></div> -->
 			<!-- <div style="height: 10rem;"></div> -->
-			<m-modal v-model="show" animation="custom" title="Modal Title" content="模态框内容" closable></m-modal>
 		</div>
 	</div>
 </template>
@@ -116,7 +114,7 @@
 						value:{a:1}
 					}
 				],
-				value: '',
+				value: 100,
 				color:'#198292',
 				date: new Date(),
 				data: [{
@@ -161,7 +159,8 @@
 		},
 		methods: {
 			change() {
-				this.show = !this.show
+				//this.show = !this.show
+				this.value -= 10
 			},
 			shown(e){
 				console.log(e)

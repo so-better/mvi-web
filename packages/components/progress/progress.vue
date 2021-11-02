@@ -98,11 +98,14 @@
 			progressBarStyle() {
 				let style = {}
 				if (this.animation) {
-					style.transition = 'width ' + this.timeout + 'ms'
-					style.webkitTransition = 'width ' + this.timeout + 'ms'
+					style.transition = 'width ' + this.timeout + 'ms,border-radius ' + this.timeout + 'ms'
+					style.webkitTransition = 'width ' + this.timeout + 'ms,border-radius ' + this.timeout + 'ms'
 				}
 				if (this.color) {
 					style.backgroundColor = this.color
+				}
+				if (this.value == this.max) {
+					style.borderRadius = 'inherit'
 				}
 				style.width =
 					`calc(${(this.value - this.min < 0 ? 0 : this.value - this.min) / (this.max - this.min)} * 100%)`
@@ -142,17 +145,6 @@
 				}
 				return cls
 			}
-		},
-		watch: {
-			value(newValue, oldValue) {
-				if (newValue == this.max) {
-					setTimeout(() => {
-						if (this.$refs.bar) {
-							this.$refs.bar.style.borderRadius = 'inherit'
-						}
-					}, this.timeout)
-				}
-			}
 		}
 	}
 </script>
@@ -185,17 +177,7 @@
 		width: 100%;
 		height: 100%;
 		background-color: @info-normal;
-		border-radius: @radius-default;
-		border-top-right-radius: 0;
-		border-bottom-right-radius: 0;
-	}
-
-	.mvi-progress-bar.mvi-progress-radius-square {
-		border-radius: 0;
-	}
-
-	.mvi-progress-bar.mvi-progress-radius-round {
-		border-radius: @radius-round;
+		border-radius: inherit;
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
 	}
