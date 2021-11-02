@@ -595,7 +595,10 @@
 			//激活颜色设定
 			activeColor: {
 				type: String,
-				default: '#0b73de'
+				default: '#0b73de',
+				validator(value) {
+					return $dap.common.matchingText(value,'hex')
+				}
 			},
 			//粘贴是否为纯文本
 			pasteText: {
