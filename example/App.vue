@@ -3,7 +3,7 @@
 		<m-button @click="change">Button</m-button>
 		<div>value:{{value}}</div>
 		<div class="mvi-p-4">
-			<m-editor></m-editor>
+			<m-editor v-model="value"></m-editor>
 		</div>
 		<div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: hidden;">
 			<!-- <div style="height: 10rem;"></div> -->
