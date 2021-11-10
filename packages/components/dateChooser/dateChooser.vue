@@ -255,12 +255,6 @@
 				let month = this.value.getMonth() + 1
 				return (month < 10 ? '0' + month : month) + '月'
 			},
-			hoverHeader() {
-				//头部元素悬浮标记
-				return (hover, index) => {
-					this.$set(this.hover, index, hover)
-				}
-			},
 			headerItemClass() {
 				//头部元素样式类
 				return index => {
@@ -494,11 +488,15 @@
 				event.stopPropagation()
 				this.hover = [false, false, false, false, false, false, false]
 				this.view = 'date'
+			},
+			//头部元素悬浮标记
+			hoverHeader(hover, index) {
+				this.$set(this.hover,index,hover)
 			}
 		},
 		beforeDestroy() {
 			if (this.trigger == 'hover') {
-				$dap.event.off(this.$el,'mouseenter.dateChooser mouseleave.dateChooser')
+				$dap.event.off(this.$el, 'mouseenter.dateChooser mouseleave.dateChooser')
 			}
 		}
 	}

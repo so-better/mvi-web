@@ -422,7 +422,7 @@
 			}
 		},
 		beforeDestroy() {
-			$dao.event.off(document.body, `mousemove.picker_${this._uid} mouseup.picker_${this._uid}`)
+			$dap.event.off(document.body, `mousemove.picker_${this._uid} mouseup.picker_${this._uid}`)
 		}
 	}
 </script>
