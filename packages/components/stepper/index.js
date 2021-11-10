@@ -1,7 +1,7 @@
-import stepper from "./stepper"
+import stepper from './stepper'
 
 stepper.install = Vue => {
-	Vue.component(stepper.name, stepper)
+    Vue.component(stepper.name, stepper)
 }
 
 export default stepper

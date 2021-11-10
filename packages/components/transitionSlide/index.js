@@ -1,7 +1,7 @@
-import transitionSlide from "./transitionSlide"
+import transitionSlide from './transitionSlide'
 
 transitionSlide.install = Vue => {
-	Vue.component(transitionSlide.name, transitionSlide)
+    Vue.component(transitionSlide.name, transitionSlide)
 }
 
 export default transitionSlide

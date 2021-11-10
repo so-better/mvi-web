@@ -1,7 +1,7 @@
-import progress from "./progress"
+import progress from './progress'
 
 progress.install = Vue => {
-	Vue.component(progress.name, progress)
+    Vue.component(progress.name, progress)
 }
 
 export default progress

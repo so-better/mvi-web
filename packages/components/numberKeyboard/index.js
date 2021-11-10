@@ -1,7 +1,7 @@
-import numberKeyboard from "./numberKeyboard"
+import numberKeyboard from './numberKeyboard'
 
 numberKeyboard.install = Vue => {
-	Vue.component(numberKeyboard.name, numberKeyboard)
+    Vue.component(numberKeyboard.name, numberKeyboard)
 }
 
 export default numberKeyboard

@@ -1,7 +1,7 @@
-import actionSheet from "./actionsheet"
+import actionSheet from './actionsheet'
 
 actionSheet.install = Vue => {
-	Vue.component(actionSheet.name, actionSheet)
+    Vue.component(actionSheet.name, actionSheet)
 }
 
 export default actionSheet

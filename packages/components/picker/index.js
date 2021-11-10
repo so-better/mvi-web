@@ -1,7 +1,7 @@
-import picker from "./picker"
+import picker from './picker'
 
 picker.install = Vue => {
-	Vue.component(picker.name, picker)
+    Vue.component(picker.name, picker)
 }
 
 export default picker

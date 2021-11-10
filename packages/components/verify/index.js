@@ -1,7 +1,7 @@
-import verify from "./verify"
+import verify from './verify'
 
 verify.install = Vue => {
-	Vue.component(verify.name, verify)
+    Vue.component(verify.name, verify)
 }
 
 export default verify

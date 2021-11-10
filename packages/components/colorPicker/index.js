@@ -1,7 +1,7 @@
-import colorPicker from "./colorPicker"
+import colorPicker from './colorPicker'
 
 colorPicker.install = Vue => {
-	Vue.component(colorPicker.name, colorPicker)
+    Vue.component(colorPicker.name, colorPicker)
 }
 
 export default colorPicker

@@ -1,7 +1,7 @@
-import slider from "./slider"
+import slider from './slider'
 
 slider.install = Vue => {
-	Vue.component(slider.name, slider)
+    Vue.component(slider.name, slider)
 }
 
 export default slider
