@@ -1,15 +1,7 @@
 <template>
     <div id="app">
         <m-button @click="change">Button</m-button>
-        <div>value:{{value}}</div>
-        <div class="mvi-p-4">
-            <m-editor v-model="value"></m-editor>
-        </div>
-        <div id="root" style="position: absolute;width: 7rem;height: 10rem;border: 1px solid #ddd;overflow: hidden;">
-            <m-number-keyboard v-model="value" :show.sync="show"></m-number-keyboard>
-            <!-- <div style="height: 10rem;"></div> -->
-            <!-- <div style="height: 10rem;"></div> -->
-        </div>
+        <div style="position: absolute;width: 3rem;height: 3rem;left: 0;top: 1rem;background-color: #000000;" v-drag="dragOpt"></div>
     </div>
 </template>
 <script>
@@ -48,7 +40,7 @@ export default {
                 }
             },
             dragOpt: {
-                container: "#root",
+                container: "#app",
                 beforedrag: e => {
                     console.log(1)
                 }
