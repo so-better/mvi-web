@@ -1,8 +1,8 @@
 <template>
     <div id="app">
         <m-button @click="change">Button</m-button>
-        <div class="mvi-mt-10 mvi-text-center">
-            <m-button type="success" size="small" load-icon="load-e" loading>登录</m-button>
+        <div class="mvi-mt-10 mvi-mx-10 mvi-text-center">
+            <m-button square form-control type="success">登录</m-button>
         </div>
     </div>
 </template>
