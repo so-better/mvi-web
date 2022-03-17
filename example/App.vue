@@ -1,7 +1,9 @@
 <template>
     <div id="app">
         <m-button @click="change">Button</m-button>
-        <div style="position: absolute;width: 3rem;height: 3rem;left: 0;top: 1rem;background-color: #000000;" v-drag="dragOpt"></div>
+        <div class="mvi-mt-10 mvi-text-center">
+            <m-button type="success" size="small" load-icon="load-e" loading>登录</m-button>
+        </div>
     </div>
 </template>
 <script>
