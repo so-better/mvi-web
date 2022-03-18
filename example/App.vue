@@ -3,7 +3,7 @@
         <div class="mvi-mt-10 mvi-mx-10 mvi-text-center">
             <m-button square @click="change" form-control type="success">打开图片预览</m-button>
         </div>
-        <m-image-preview v-model="show" :images="images"></m-image-preview>
+        <m-image-preview show-control  v-model="show" :images="images"></m-image-preview>
     </div>
 </template>
 <script>

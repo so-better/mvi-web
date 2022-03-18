@@ -35,8 +35,6 @@ export default {
             downPoint: null,
             //鼠标松开坐标点
             upPoint: null,
-            //唯一值
-            guid: null,
             //触摸松开时是否触发了双指操作
             isTriggerDouble: false,
             //双指松开设置的延时器
@@ -74,19 +72,15 @@ export default {
             }
         }
     },
-    created() {
-        //创建唯一标识
-        this.guid = this.createGuid()
-    },
     mounted() {
         $dap.event.on(
             document.documentElement,
-            `mousemove.richImage_${this.guid}`,
+            `mousemove.richImage_${this._uid}`,
             this.imageMouseMove
         )
         $dap.event.on(
             document.documentElement,
-            `mouseup.richImage_${this.guid} mouseleave.richImage_${this.guid}`,
+            `mouseup.richImage_${this._uid} mouseleave.richImage_${this._uid}`,
             this.imageMouseUp
         )
     },
@@ -283,14 +277,6 @@ export default {
                 this.imageTranslateEnd()
             }
         },
-        //生成唯一值
-        createGuid() {
-            //获取当前guid，不存在则从0开始
-            let guid = $dap.data.get(document.body, 'mvi-rich-image-guid') || 0
-            guid++
-            $dap.data.set(document.body, 'mvi-rich-image-guid', guid)
-            return guid
-        },
         //动画偏移
         doTransition(callback) {
             this.$refs.img.$el.style.transition = 'transform 300ms'
@@ -370,7 +356,7 @@ export default {
     beforeDestroy() {
         $dap.event.off(
             document.documentElement,
-            `mousemove.richImage_${this.guid} mouseup.richImage_${this.guid} mouseleave.richImage_${this.guid}`
+            `mousemove.richImage_${this._uid} mouseup.richImage_${this._uid} mouseleave.richImage_${this._uid}`
         )
     }
 }
