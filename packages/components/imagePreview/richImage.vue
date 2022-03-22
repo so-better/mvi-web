@@ -291,8 +291,9 @@ export default {
         },
         //图片平移函数
         imageTranslate(endX, endY) {
-            let moveX = endX - this.startX
-            let moveY = endY - this.startY
+            console.log(this.startX,this.startY);
+            let moveX = $dap.number.divide(endX - this.startX, 2)
+            let moveY = $dap.number.divide(endY - this.startY, 2)
             const placement = $dap.element.getElementBounding(
                 this.$refs.img.$el
             )
