@@ -1,30 +1,137 @@
 <template>
     <div id="app">
-        <div class="mvi-mt-10 mvi-mx-10 mvi-text-center">
-            <m-button square @click="change" form-control type="success">打开图片预览</m-button>
-        </div>
-        <m-image-preview show-control  v-model="show" :images="images"></m-image-preview>
+        <m-pull-refresh v-model="refresh" @refresh="doRefresh">
+			<m-cell-group>
+				<m-cell v-for="(item,index) in list" :key="index" :title="item.name" :content="item.detail" no-wrap></m-cell>
+			</m-cell-group>
+		</m-pull-refresh>
+		<m-button style="position: absolute;top: 1rem;" @click="refresh=true">refresh</m-button>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            show:false,
-            images: [
-                "https://www.mvi-web.cn/mvi-resources/images/mvi_image_4_1624705387843.jfif",
-                "https://www.mvi-web.cn/mvi-resources/images/mvi_image_3_1624705387828.jfif",
-                "https://www.mvi-web.cn/mvi-resources/images/mvi_image_2_1624705387812.jfif",
-                "https://www.mvi-web.cn/mvi-resources/images/mvi_image_1_1624705387797.jfif",
-                "https://www.mvi-web.cn/mvi-resources/images/mvi_image_0_1624705387765.jfif"
-            ]
+            refresh:false,
+			disableRefresh:false,
+			list:[],
+			originalList:[
+				{
+					name:'奔驰',
+					detail:'2022款C260L运动版'
+				},
+				{
+					name:'奔驰',
+					detail:'2022款C200L运动版'
+				},
+				{
+					name:'奔驰',
+					detail:'2021款C260L运动星耀珍藏版'
+				},
+				{
+					name:'奔驰',
+					detail:'2022款C260L运动版'
+				},
+				{
+					name:'奔驰',
+					detail:'2022款C200L运动版'
+				},
+				{
+					name:'奔驰',
+					detail:'2021款C260L运动星耀珍藏版'
+				},
+				{
+					name:'奔驰',
+					detail:'2022款C260L皓夜运动版'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 45 quattro 臻选'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 40 quattro RS套件燃速型'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 40 豪华致雅'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 40 豪华动感'
+				},
+				{
+					name:'宝马',
+					detail:'2022款325Li M运动套装'
+				},
+				{
+					name:'宝马',
+					detail:'2022款325Li M运动曜夜套装'
+				},
+				{
+					name:'宝马',
+					detail:'2022款330i xDrive'
+				},
+				{
+					name:'奔驰',
+					detail:'2022款C260L运动版'
+				},
+				{
+					name:'奔驰',
+					detail:'2022款C200L运动版'
+				},
+				{
+					name:'奔驰',
+					detail:'2021款C260L运动星耀珍藏版'
+				},
+				{
+					name:'奔驰',
+					detail:'2022款C260L皓夜运动版'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 45 quattro 臻选'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 40 quattro RS套件燃速型'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 40 豪华致雅'
+				},
+				{
+					name:'奥迪',
+					detail:'2022款A4L TSFI 40 豪华动感'
+				},
+				{
+					name:'宝马',
+					detail:'2022款325Li M运动套装'
+				},
+				{
+					name:'宝马',
+					detail:'2022款325Li M运动曜夜套装'
+				},
+				{
+					name:'宝马',
+					detail:'2022款330i xDrive'
+				}
+			]
         }
     },
-    mounted() {},
+    mounted() {
+		this.getList()
+	},
     methods: {
-        change() {
-            this.show = !this.show
-        }
+        doRefresh() {
+           this.getList()
+        },
+		getList(){
+			setTimeout(()=>{
+				this.list = this.originalList
+				this.refresh = false
+			},2000)
+		}
     }
 }
 </script>
@@ -35,33 +142,8 @@ html {
 
 #app {
     height: 100%;
-    overflow: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
     width: 100%;
-}
-
-.demo {
-    width: 4rem;
-    height: 2rem;
-    margin: 0.2rem auto;
-    position: relative;
-    border: 1px solid #000000;
-
-    &::before {
-        content: "";
-        width: 100%;
-        height: 1px;
-        background-color: #000000;
-        position: absolute;
-        bottom: -1rem;
-        left: 0;
-    }
-}
-
-.mvi-modal-custom-enter,
-.mvi-modal-custom-leave-to {
-    opacity: 0;
-    transform: scaleY(0);
 }
 </style>
