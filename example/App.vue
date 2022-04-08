@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <m-editor @upload-video="paste" :use-base64="false" @file-paste="paste" v-model="value" ref="editor"></m-editor>
+        <m-editor :use-base64="false" @upload-video="paste" v-model="value" ref="editor"></m-editor>
     </div>
 </template>
 <script>
@@ -11,8 +11,8 @@ export default {
         }
     },
     methods: {
-        paste(e) {
-            console.log(e)
+        paste(file) {
+            console.log(file)
         }
     }
 }
