@@ -623,6 +623,16 @@ export default {
             default: function () {
                 return {}
             }
+        },
+        //上传图片显示样式
+        imageClass: {
+            type: String,
+            default: null
+        },
+        //上传视频显示样式
+        videoClass: {
+            type: String,
+            default: null
         }
     },
     computed: {
@@ -836,11 +846,12 @@ export default {
             if (!this.$refs.content) {
                 return
             }
-            document.execCommand(
-                'insertHtml',
-                false,
-                `<img src="${url}" class="mvi-editor-image" />`
-            )
+            const style = ['mvi-editor-image']
+            if (this.imageClass) {
+                style.push(this.imageClass)
+            }
+            const imgHtml = `<img src="${url}" class="${style.join(' ')}" />`
+            document.execCommand('insertHtml', false, imgHtml)
         },
         //对外提供的用以插入视频的api
         insertVideo(url) {
@@ -850,8 +861,12 @@ export default {
             if (!this.$refs.content) {
                 return
             }
+            const style = ['mvi-editor-video']
+            if (this.videoClass) {
+                style.push(this.videoClass)
+            }
             let video = $dap.element.string2dom(
-                `<video src="${url}" class="mvi-editor-video"></video>`
+                `<video src="${url}" class="${style.join(' ')}"></video>`
             )
             if (this.defaultVideoShowProps.muted) {
                 video.setAttribute('muted', 'muted')
@@ -1264,36 +1279,55 @@ export default {
         //代码视图粘贴事件
         codeViewPaste(event) {
             event.preventDefault()
-            this.doPasetText(event)
+            let clip = (event.originalEvent || event).clipboardData
+            let text = clip.getData('text/plain') || ''
+            if (text !== '') {
+                document.execCommand('insertText', false, text)
+            }
         },
         //编辑器粘贴事件
         contentPaste(event) {
+            let clip = (event.originalEvent || event).clipboardData
+            let text = clip.getData('text/plain') || ''
+            //纯文本粘贴处理
             if (this.pasteText) {
                 event.preventDefault()
-                this.doPasetText(event)
-            }
-        },
-        //纯文本粘贴处理
-        doPasetText(event) {
-            let text = ''
-            let clip = (event.originalEvent || event).clipboardData
-            //兼容针对于opera ie等浏览器
-            if (clip === undefined || clip === null) {
-                text = window.clipboardData.getData('text') || ''
-                if (text !== '') {
-                    if (window.getSelection) {
-                        let newNode = document.createElement('span')
-                        newNode.innerHTML = text
-                        window.getSelection().getRangeAt(0).insertNode(newNode)
-                    } else {
-                        document.selection.createRange().pasteHTML(text)
-                    }
-                }
-            } else {
-                // 兼容chorme或hotfire
-                text = clip.getData('text/plain') || ''
                 if (text !== '') {
                     document.execCommand('insertText', false, text)
+                }
+            } else {
+                if (clip.files.length > 0) {
+                    event.preventDefault()
+                    for (let file of clip.files) {
+                        const arr = file.name.split('.')
+                        const suffix = arr[arr.length - 1]
+                        const isImage =
+                            this.defaultUploadImageProps.allowedFileType.some(
+                                item => {
+                                    return (
+                                        item.toLocaleUpperCase() ==
+                                        suffix.toLocaleUpperCase()
+                                    )
+                                }
+                            )
+                        const isVideo =
+                            this.defaultUploadVideoProps.allowedFileType.some(
+                                item => {
+                                    return (
+                                        item.toLocaleUpperCase() ==
+                                        suffix.toLocaleUpperCase()
+                                    )
+                                }
+                            )
+                        //符合图片或者视频后缀
+                        if (isImage || isVideo) {
+                            $dap.file.dataFileToBase64(file).then(url => {
+                                this.insertImage(url)
+                            })
+                        } else {
+                            this.$emit('file-paste', file)
+                        }
+                    }
                 }
             }
         }
