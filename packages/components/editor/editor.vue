@@ -1319,13 +1319,27 @@ export default {
                                     )
                                 }
                             )
-                        //符合图片或者视频后缀
-                        if (isImage || isVideo) {
+                        //使用base64
+                        if (this.useBase64) {
                             $dap.file.dataFileToBase64(file).then(url => {
-                                this.insertImage(url)
+                                if (isImage) {
+                                    this.insertImage(url)
+                                } else if (isVideo) {
+                                    this.insertVideo(url)
+                                } else {
+                                    this.$emit('file-paste', file)
+                                }
                             })
-                        } else {
-                            this.$emit('file-paste', file)
+                        }
+                        //自定义上传
+                        else {
+                            if (isImage) {
+                                this.$emit('upload-image', [file])
+                            } else if (isVideo) {
+                                this.$emit('upload-video', [file])
+                            } else {
+                                this.$emit('file-paste', file)
+                            }
                         }
                     }
                 }

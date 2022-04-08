@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <m-editor @file-paste="paste" v-model="value" ref="editor"></m-editor>
+        <m-editor @upload-video="paste" :use-base64="false" @file-paste="paste" v-model="value" ref="editor"></m-editor>
     </div>
 </template>
 <script>
