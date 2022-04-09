@@ -1,18 +1,33 @@
 <template>
     <div id="app">
-        <m-editor :use-base64="false" @upload-video="paste" v-model="value" ref="editor"></m-editor>
+        <m-button v-upload.multiple.append="options">Upload</m-button>
+        <m-button @click="doClear">clear</m-button>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            value: '<p><br></p>'
+            options: {
+                extra: {
+                    name: '离开'
+                },
+                ready: obj => {
+                    this.uploader = obj
+                },
+                select(files, extra) {
+                    console.log(this.getFiles())
+                },
+                error(state, message, file) {
+                    console.log(this, state, message, file)
+                }
+            },
+            uploader: null
         }
     },
     methods: {
-        paste(file) {
-            console.log(file)
+        doClear() {
+            this.uploader.clear()
         }
     }
 }
@@ -29,7 +44,7 @@ html {
 
 #app {
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     position: relative;
     width: 100%;
 }
