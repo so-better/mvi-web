@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import mRichImage from "./richImage"
+import mRichImage from './richImage'
 import mOverlay from '../overlay/overlay'
 import mSwiper from '../swiper/swiper'
 import mSwiperSlide from '../swiper/swiper-slide'
@@ -33,7 +33,7 @@ export default {
     data() {
         return {
             firstShow: false,
-            enableTouch:true
+            enableTouch: true
         }
     },
     model: {
@@ -139,7 +139,7 @@ export default {
         },
         //关闭遮罩
         closeOverlay(e) {
-            this.$refs.richImages.forEach(richImage=>{
+            this.$refs.richImages.forEach(richImage => {
                 richImage.reset()
             })
             this.$emit('model-change', false)
@@ -147,7 +147,7 @@ export default {
         },
         //图片变更
         swiperChange(active) {
-            this.$refs.richImages.forEach(richImage=>{
+            this.$refs.richImages.forEach(richImage => {
                 richImage.reset()
             })
             this.$emit('change', active)

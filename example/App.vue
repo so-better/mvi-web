@@ -1,34 +1,28 @@
 <template>
     <div id="app">
-        <m-button v-upload.multiple.append="options">Upload</m-button>
-        <m-button @click="doClear">clear</m-button>
+        <m-button @click="show=!show">Button</m-button>
+        <m-date-picker v-model="date" mode="datetime"></m-date-picker>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            options: {
-                extra: {
-                    name: '离开'
-                },
-                ready: obj => {
-                    this.uploader = obj
-                },
-                select(files, extra) {
-                    console.log(this.getFiles())
-                },
-                error(state, message, file) {
-                    console.log(this, state, message, file)
+            page: 1,
+            date: new Date(),
+            active: 0,
+            show: false,
+            value: '',
+            options: [
+                {
+                    label: 'LOL',
+                    value: '0'
                 }
-            },
-            uploader: null
+            ]
         }
     },
     methods: {
-        doClear() {
-            this.uploader.clear()
-        }
+        doClear() {}
     }
 }
 </script>

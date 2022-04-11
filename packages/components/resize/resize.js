@@ -124,7 +124,7 @@ class Resize {
         this._setOn()
 
         //初始化完成回调
-        this.ready(this)
+        this.ready.apply(this, [this])
     }
 
     //设置可拖动的范围
@@ -235,10 +235,12 @@ class Resize {
                 if (this.mode.left || this.mode.top) {
                     this.draggable = true
                     this.$el.style.cursor = 'nw-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.LEFTTOP
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFTTOP
+                        }
+                    ])
                 }
             }
             //左下区域内
@@ -252,10 +254,12 @@ class Resize {
                 if (this.mode.left || this.mode.bottom) {
                     this.draggable = true
                     this.$el.style.cursor = 'sw-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.LEFTBOTTOM
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFTBOTTOM
+                        }
+                    ])
                 }
             }
             //右上区域内
@@ -265,10 +269,12 @@ class Resize {
                 if (this.mode.right || this.mode.top) {
                     this.draggable = true
                     this.$el.style.cursor = 'ne-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.RIGHTTOP
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHTTOP
+                        }
+                    ])
                 }
             }
             //右下区域内
@@ -282,10 +288,12 @@ class Resize {
                 if (this.mode.right || this.mode.bottom) {
                     this.draggable = true
                     this.$el.style.cursor = 'se-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.RIGHTBOTTOM
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHTBOTTOM
+                        }
+                    ])
                 }
             }
             //左侧区域内
@@ -295,10 +303,12 @@ class Resize {
                 if (this.mode.left) {
                     this.draggable = true
                     this.$el.style.cursor = 'w-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.LEFT
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFT
+                        }
+                    ])
                 }
             }
             //右侧区域内
@@ -308,10 +318,12 @@ class Resize {
                 if (this.mode.right) {
                     this.draggable = true
                     this.$el.style.cursor = 'e-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.RIGHT
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHT
+                        }
+                    ])
                 }
             }
             //顶部区域内
@@ -321,10 +333,12 @@ class Resize {
                 if (this.mode.top) {
                     this.draggable = true
                     this.$el.style.cursor = 'n-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.TOP
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.TOP
+                        }
+                    ])
                 }
             }
             //底部区域内
@@ -334,10 +348,12 @@ class Resize {
                 if (this.mode.bottom) {
                     this.draggable = true
                     this.$el.style.cursor = 's-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.BOTTOM
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.BOTTOM
+                        }
+                    ])
                 }
             }
         }
@@ -348,10 +364,12 @@ class Resize {
                 if (this.mode.left) {
                     this.draggable = true
                     this.$el.style.cursor = 'w-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.LEFT
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFT
+                        }
+                    ])
                 }
             }
             //右侧区域内
@@ -361,10 +379,12 @@ class Resize {
                 if (this.mode.right) {
                     this.draggable = true
                     this.$el.style.cursor = 'e-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.RIGHT
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHT
+                        }
+                    ])
                 }
             }
         }
@@ -375,10 +395,12 @@ class Resize {
                 if (this.mode.top) {
                     this.draggable = true
                     this.$el.style.cursor = 'n-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.TOP
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.TOP
+                        }
+                    ])
                 }
             }
             //底部区域内
@@ -388,10 +410,12 @@ class Resize {
                 if (this.mode.bottom) {
                     this.draggable = true
                     this.$el.style.cursor = 's-resize'
-                    this.trigger({
-                        event: e,
-                        area: Resize.AREA.BOTTOM
-                    })
+                    this.trigger.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.BOTTOM
+                        }
+                    ])
                 }
             }
         }
@@ -414,14 +438,16 @@ class Resize {
                 ) {
                     if (this.mode.left || this.mode.top) {
                         if (
-                            this.beforeResize({
-                                event: e,
-                                area: Resize.AREA.LEFTTOP,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    event: e,
+                                    area: Resize.AREA.LEFTTOP,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
@@ -435,14 +461,16 @@ class Resize {
                         this.$el.style.top = this._top + moveY + 'px'
                     }
                     if (this.mode.left || this.mode.top) {
-                        this.resize({
-                            area: Resize.AREA.LEFTTOP,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.LEFTTOP,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //左下区域内
@@ -455,14 +483,16 @@ class Resize {
                 ) {
                     if (this.mode.left || this.mode.bottom) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.LEFTBOTTOM,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.LEFTBOTTOM,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
@@ -475,14 +505,16 @@ class Resize {
                         this.$el.style.height = this._height + moveY + 'px'
                     }
                     if (this.mode.left || this.mode.bottom) {
-                        this.resize({
-                            area: Resize.AREA.LEFTBOTTOM,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.LEFTBOTTOM,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //右上区域内
@@ -495,14 +527,16 @@ class Resize {
                 ) {
                     if (this.mode.right || this.mode.top) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.RIGHTTOP,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.RIGHTTOP,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
@@ -515,14 +549,16 @@ class Resize {
                         this.$el.style.top = this._top + moveY + 'px'
                     }
                     if (this.mode.top || this.mode.right) {
-                        this.resize({
-                            area: Resize.AREA.RIGHTTOP,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.RIGHTTOP,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //右下区域内
@@ -535,14 +571,16 @@ class Resize {
                 ) {
                     if (this.mode.right || this.mode.bottom) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.RIGHTBOTTOM,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.RIGHTBOTTOM,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
@@ -554,14 +592,16 @@ class Resize {
                         this.$el.style.height = this._height + moveY + 'px'
                     }
                     if (this.mode.right || this.mode.bottom) {
-                        this.resize({
-                            area: Resize.AREA.RIGHTBOTTOM,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.RIGHTBOTTOM,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //左侧区域内
@@ -570,27 +610,31 @@ class Resize {
                 ) {
                     if (this.mode.left) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.LEFT,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.LEFT,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.width = this._width - moveX + 'px'
                         this.$el.style.left = this._left + moveX + 'px'
-                        this.resize({
-                            area: Resize.AREA.LEFT,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.LEFT,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //右侧区域内
@@ -603,26 +647,30 @@ class Resize {
                 ) {
                     if (this.mode.right) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.RIGHT,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.RIGHT,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.width = this._width + moveX + 'px'
-                        this.resize({
-                            area: Resize.AREA.RIGHT,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.RIGHT,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //顶部区域内
@@ -631,27 +679,31 @@ class Resize {
                 ) {
                     if (this.mode.top) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.TOP,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.TOP,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.height = this._height - moveY + 'px'
                         this.$el.style.top = this._top + moveY + 'px'
-                        this.resize({
-                            area: Resize.AREA.TOP,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.TOP,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //底部区域内
@@ -664,26 +716,30 @@ class Resize {
                 ) {
                     if (this.mode.bottom) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.BOTTOM,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.BOTTOM,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.height = this._height + moveY + 'px'
-                        this.resize({
-                            area: Resize.AREA.BOTTOM,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.BOTTOM,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
             }
@@ -695,27 +751,31 @@ class Resize {
                 ) {
                     if (this.mode.left) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.LEFT,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.LEFT,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.width = this._width - moveX + 'px'
                         this.$el.style.left = this._left + moveX + 'px'
-                        this.resize({
-                            area: Resize.AREA.LEFT,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.LEFT,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //右侧区域内
@@ -728,26 +788,30 @@ class Resize {
                 ) {
                     if (this.mode.right) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.RIGHT,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.RIGHT,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.width = this._width + moveX + 'px'
-                        this.resize({
-                            area: Resize.AREA.RIGHT,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.RIGHT,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
             }
@@ -759,27 +823,31 @@ class Resize {
                 ) {
                     if (this.mode.top) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.TOP,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight,
-								moveX:moveX,
-								moveY:moveY
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.TOP,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.height = this._height - moveY + 'px'
                         this.$el.style.top = this._top + moveY + 'px'
-                        this.resize({
-                            area: Resize.AREA.TOP,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight,
-							moveX:moveX,
-							moveY:moveY
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.TOP,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
                 //底部区域内
@@ -792,22 +860,30 @@ class Resize {
                 ) {
                     if (this.mode.bottom) {
                         if (
-                            this.beforeResize({
-                                area: Resize.AREA.BOTTOM,
-                                event: e,
-                                width: this.$el.offsetWidth,
-                                height: this.$el.offsetHeight
-                            }) === false
+                            this.beforeResize.apply(this, [
+                                {
+                                    area: Resize.AREA.BOTTOM,
+                                    event: e,
+                                    width: this.$el.offsetWidth,
+                                    height: this.$el.offsetHeight,
+                                    moveX: moveX,
+                                    moveY: moveY
+                                }
+                            ]) === false
                         ) {
                             return
                         }
                         this.$el.style.height = this._height + moveY + 'px'
-                        this.resize({
-                            area: Resize.AREA.BOTTOM,
-                            event: e,
-                            width: this.$el.offsetWidth,
-                            height: this.$el.offsetHeight
-                        })
+                        this.resize.apply(this, [
+                            {
+                                area: Resize.AREA.BOTTOM,
+                                event: e,
+                                width: this.$el.offsetWidth,
+                                height: this.$el.offsetHeight,
+                                moveX: moveX,
+                                moveY: moveY
+                            }
+                        ])
                     }
                 }
             }
@@ -829,10 +905,12 @@ class Resize {
                         this.leftTopRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.LEFTTOP
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFTTOP
+                        }
+                    ])
                 }
                 //左下区域
                 else if (
@@ -842,10 +920,12 @@ class Resize {
                         this.leftBottomRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.LEFTBOTTOM
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFTBOTTOM
+                        }
+                    ])
                 }
                 //右上区域
                 else if (
@@ -855,10 +935,12 @@ class Resize {
                         this.rightTopRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.RIGHTTOP
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHTTOP
+                        }
+                    ])
                 }
                 //右下区域
                 else if (
@@ -868,19 +950,23 @@ class Resize {
                         this.rightBottomRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.RIGHTBOTTOM
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHTBOTTOM
+                        }
+                    ])
                 }
                 //左侧区域
                 else if (
                     this._getIsInRange(this.startX, this.startY, this.leftRange)
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.LEFT
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFT
+                        }
+                    ])
                 }
                 //右侧区域
                 else if (
@@ -890,19 +976,23 @@ class Resize {
                         this.rightRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.RIGHT
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHT
+                        }
+                    ])
                 }
                 //上侧区域
                 else if (
                     this._getIsInRange(this.startX, this.startY, this.topRange)
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.TOP
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.TOP
+                        }
+                    ])
                 }
                 //下侧区域
                 else if (
@@ -912,10 +1002,12 @@ class Resize {
                         this.bottomRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.BOTTOM
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.BOTTOM
+                        }
+                    ])
                 }
             }
             //可以改变宽度
@@ -924,10 +1016,12 @@ class Resize {
                 if (
                     this._getIsInRange(this.startX, this.startY, this.leftRange)
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.LEFT
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.LEFT
+                        }
+                    ])
                 }
                 //右侧区域
                 else if (
@@ -937,10 +1031,12 @@ class Resize {
                         this.rightRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.RIGHT
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.RIGHT
+                        }
+                    ])
                 }
             }
             //可以改变元素高度
@@ -949,10 +1045,12 @@ class Resize {
                 if (
                     this._getIsInRange(this.startX, this.startY, this.topRange)
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.TOP
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.TOP
+                        }
+                    ])
                 }
                 //下侧区域
                 else if (
@@ -962,10 +1060,12 @@ class Resize {
                         this.bottomRange
                     )
                 ) {
-                    this.end({
-                        event: e,
-                        area: Resize.AREA.BOTTOM
-                    })
+                    this.end.apply(this, [
+                        {
+                            event: e,
+                            area: Resize.AREA.BOTTOM
+                        }
+                    ])
                 }
             }
             this.setRange()
@@ -995,14 +1095,22 @@ class Resize {
             this.startY = e.pageY
             this._down(e)
         })
-        $dap.event.on(document.documentElement, `mousemove.resize_${this.guid}`, e => {
-            let endX = e.pageX
-            let endY = e.pageY
-            this._move(e, endX, endY)
-        })
-        $dap.event.on(document.documentElement, `mouseup.resize_${this.guid} mouseleave.resize_${this.guid}`, e => {
-            this._leave(e)
-        })
+        $dap.event.on(
+            document.documentElement,
+            `mousemove.resize_${this.guid}`,
+            e => {
+                let endX = e.pageX
+                let endY = e.pageY
+                this._move(e, endX, endY)
+            }
+        )
+        $dap.event.on(
+            document.documentElement,
+            `mouseup.resize_${this.guid} mouseleave.resize_${this.guid}`,
+            e => {
+                this._leave(e)
+            }
+        )
     }
 
     //移除documentElement上的拖动事件

@@ -154,7 +154,7 @@ export default {
     },
     methods: {
         //复选框改变
-        change() {
+        change(event) {
             if (Array.isArray(this.checked)) {
                 let arr = [...this.checked]
                 //勾选且不包含

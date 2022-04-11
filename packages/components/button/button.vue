@@ -203,7 +203,7 @@ export default {
         Button: {
             render(createElement) {
                 const attrs = {}
-                if(this.$parent.tag.toLocaleUpperCase() == 'BUTTON'){
+                if (this.$parent.tag.toLocaleUpperCase() == 'BUTTON') {
                     attrs.type = this.$parent.nativeType
                 }
                 return createElement(

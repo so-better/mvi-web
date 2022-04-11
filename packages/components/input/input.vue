@@ -797,7 +797,6 @@ export default {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        vertical-align: middle;
     }
 }
 
@@ -866,7 +865,6 @@ export default {
     padding: 0;
     border: none;
     border-radius: 0;
-    vertical-align: middle;
     color: inherit;
     background-color: inherit;
     flex: 1;
@@ -920,7 +918,6 @@ export default {
     border-radius: 0;
     height: auto;
     resize: none;
-    vertical-align: middle;
     color: inherit;
     background-color: inherit;
     font-family: @font-family;

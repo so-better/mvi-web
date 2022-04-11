@@ -23,7 +23,7 @@ export default {
         },
         //类型
         type: {
-            type: Number,
+            type: [String, Number],
             default: 0,
             validator(value) {
                 return value == 0 || value == 1

@@ -284,7 +284,6 @@ export default {
     width: 100%;
     font-size: @font-size-default;
     word-wrap: break-word;
-    vertical-align: middle;
 }
 
 .mvi-cell-content {
@@ -292,7 +291,6 @@ export default {
     position: relative;
     width: 100%;
     text-align: right;
-    vertical-align: middle;
     overflow: hidden;
     word-wrap: break-word;
     color: @font-color-sub;
