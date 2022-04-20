@@ -1,9 +1,9 @@
 {
     "name": "mvi-web",
-    "version": "4.11.2",
+    "version": "4.11.1",
     "private": false,
     "author": "lingkai",
-    "main": "lib/mvi.umd.min.js",
+    "main": "packages/index.js",
     "license": "MIT",
     "description": "一个基于Vue2的高度自定义的前端样式框架",
     "scripts": {
