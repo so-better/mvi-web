@@ -1,13 +1,13 @@
 <template>
     <div class="mvi-pull-refresh" v-on="listeners">
-		<div ref="wrapper" class="mvi-pull-refresh-wrapper" @touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2" :style="wrapperStyle">
-			<div ref="el" class="mvi-pull-refresh-el" :style="elStyle">
-			    <slot name="el" v-if="$scopedSlots.el" :status="status"></slot>
-			    <m-icon v-if="!$scopedSlots.el" :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
-			    <span v-if="!$scopedSlots.el" class="mvi-pull-refresh-text" v-text="message"></span>
-			</div>
-			<slot></slot>
-		</div>
+        <div ref="wrapper" class="mvi-pull-refresh-wrapper" @touchstart="startPull" @touchmove="onPull" @touchend="pulled" @mousedown="startPull2" :style="wrapperStyle">
+            <div ref="el" class="mvi-pull-refresh-el" :style="elStyle">
+                <slot name="el" v-if="$scopedSlots.el" :status="status"></slot>
+                <m-icon v-if="!$scopedSlots.el" :type="icon.type" :spin="icon.spin" :url="icon.url" :size="icon.size" :color="icon.color" />
+                <span v-if="!$scopedSlots.el" class="mvi-pull-refresh-text" v-text="message"></span>
+            </div>
+            <slot></slot>
+        </div>
     </div>
 </template>
 
@@ -18,8 +18,8 @@ export default {
     name: 'm-pull-refresh',
     data() {
         return {
-			//刷新元素高度
-			elHeight:0,
+            //刷新元素高度
+            elHeight: 0,
             //计数点
             amount: 0,
             //计数点最大值
@@ -28,7 +28,7 @@ export default {
             startY: 0,
             //第一次垂直起点
             firstStartY: 0,
-            //0表示还没触发下拉，1表示触发下拉了但是还没松手，2表示已经松手正在刷新，3表示刷新完成
+            //0表示还没触发下拉，1表示触发下拉了但是还没松手，2表示已经松手正在刷新
             status: 0,
             //垂直偏移距离
             translateY: 0,
@@ -36,8 +36,8 @@ export default {
             hasTouch: false,
             //是否按下鼠标了
             mouseDown: false,
-			//是否禁用滚动条
-			disableScroll:false
+            //是否禁用滚动条
+            disableScroll: false
         }
     },
     model: {
@@ -115,16 +115,16 @@ export default {
         listeners() {
             return Object.assign({}, this.$listeners)
         },
-        wrapperStyle(){
-			let style = {}
-			style.height = `calc(100% + ${this.elHeight}px)`
-			style.transform = `translateY(${this.translateY}px)`
-			if(this.disableScroll){
-				style.overflowY = 'hidden'
-			}
-			return style
-		},
-		elStyle() {
+        wrapperStyle() {
+            let style = {}
+            style.height = `calc(100% + ${this.elHeight}px)`
+            style.transform = `translateY(${this.translateY}px)`
+            if (this.disableScroll) {
+                style.overflowY = 'hidden'
+            }
+            return style
+        },
+        elStyle() {
             let style = {}
             if (this.color) {
                 style.color = this.color
@@ -320,10 +320,10 @@ export default {
         mIcon
     },
     mounted() {
-		//设置元素高度
-		this.elHeight = this.$refs.el.offsetHeight
-		//设置初始的偏移值
-		this.translateY = -this.elHeight
+        //设置元素高度
+        this.elHeight = this.$refs.el.offsetHeight
+        //设置初始的偏移值
+        this.translateY = -this.elHeight
         $dap.event.on(
             document.body,
             `mousemove.pullRefresh_${this._uid}`,
@@ -346,31 +346,31 @@ export default {
             if (this.disabled) {
                 return
             }
-			if(this.status == 0){
-				this.startY = event.targetTouches[0].pageY //元素按下时的位置
-				this.firstStartY = this.startY //元素按下的位置，此数值不会变更
-			}
+            if (this.status == 0) {
+                this.startY = event.targetTouches[0].pageY //元素按下时的位置
+                this.firstStartY = this.startY //元素按下的位置，此数值不会变更
+            }
         },
         //开始下拉(PC端)
         startPull2(event) {
             if (this.disabled) {
                 return
             }
-			if(this.status == 0){
-				this.mouseDown = true
-				this.startY = event.pageY //元素按下时的位置
-				this.firstStartY = this.startY //元素按下的位置，此数值不会变更
-			}
+            if (this.status == 0) {
+                this.mouseDown = true
+                this.startY = event.pageY //元素按下时的位置
+                this.firstStartY = this.startY //元素按下的位置，此数值不会变更
+            }
         },
         //下拉过程(移动端)
         onPull(event) {
             if (this.disabled) {
                 return
             }
-			//加载状态下禁用
-			if(this.status == 2){
-				return
-			}
+            //加载状态下禁用
+            if (this.status == 2) {
+                return
+            }
             let endY = event.targetTouches[0].pageY
             let move = endY - this.startY //每一次移动的偏移量
             let totalMove = endY - this.firstStartY //距离第一次触摸时的偏移量
@@ -380,20 +380,20 @@ export default {
                 this.firstStartY = this.startY
                 return
             }
-			//滚动条不在顶部时不执行刷新
-			if ($dap.element.getScrollTop(this.$refs.wrapper) > 0) {
-				this.firstStartY = this.startY
-			    return
-			}
-			//内部含有滚动条元素且滚动条不在顶部时阻塞
-			let el = this.getScrollEl(event.target)
-			if (el != this.$refs.wrapper && $dap.element.getScrollTop(el) > 0) {
-				this.firstStartY = this.startY
-			    return
-			}
-			
+            //滚动条不在顶部时不执行刷新
+            if ($dap.element.getScrollTop(this.$refs.wrapper) > 0) {
+                this.firstStartY = this.startY
+                return
+            }
+            //内部含有滚动条元素且滚动条不在顶部时阻塞
+            let el = this.getScrollEl(event.target)
+            if (el != this.$refs.wrapper && $dap.element.getScrollTop(el) > 0) {
+                this.firstStartY = this.startY
+                return
+            }
+
             this.hasTouch = true
-			
+
             if (event.cancelable) {
                 event.preventDefault()
             }
@@ -414,13 +414,13 @@ export default {
         },
         //下拉过程(PC端)
         onPull2(event) {
-			if (!this.mouseDown || this.disabled) {
-			    return
-			}
-			//加载状态下禁用
-			if(this.status == 2){
-				return
-			}
+            if (!this.mouseDown || this.disabled) {
+                return
+            }
+            //加载状态下禁用
+            if (this.status == 2) {
+                return
+            }
             let endY = event.pageY
             let move = endY - this.startY //每一次移动的偏移量
             let totalMove = endY - this.firstStartY //距离第一次触摸时的偏移量
@@ -431,19 +431,19 @@ export default {
                 this.firstStartY = this.startY
                 return
             }
-			//滚动条不在顶部时不执行刷新
-			if ($dap.element.getScrollTop(this.$refs.wrapper) > 0) {
-				this.firstStartY = this.startY
-			    return
-			}
-			//内部含有滚动条元素且滚动条不在顶部时阻塞
-			let el = this.getScrollEl(event.target)
-			if (el != this.$refs.wrapper && $dap.element.getScrollTop(el) > 0) {
-				this.firstStartY = this.startY
-			    return
-			}
+            //滚动条不在顶部时不执行刷新
+            if ($dap.element.getScrollTop(this.$refs.wrapper) > 0) {
+                this.firstStartY = this.startY
+                return
+            }
+            //内部含有滚动条元素且滚动条不在顶部时阻塞
+            let el = this.getScrollEl(event.target)
+            if (el != this.$refs.wrapper && $dap.element.getScrollTop(el) > 0) {
+                this.firstStartY = this.startY
+                return
+            }
             this.hasTouch = true
-			
+
             if (event.cancelable) {
                 event.preventDefault()
             }
@@ -473,9 +473,9 @@ export default {
             if (this.status == 1 && this.refresh == false) {
                 this.$emit('model-change', true)
                 this.$emit('update:refresh', true)
-            }else if(this.status == 0){
-				this.changeStatus()
-			}
+            } else if (this.status == 0) {
+                this.changeStatus()
+            }
         },
         //下拉结束释放(PC端)
         pulled2(event) {
@@ -487,9 +487,9 @@ export default {
             if (this.status == 1 && this.refresh === false) {
                 this.$emit('model-change', true)
                 this.$emit('update:refresh', true)
-            }else if(this.status == 0){
-				this.changeStatus()
-			}
+            } else if (this.status == 0) {
+                this.changeStatus()
+            }
         },
         //根据refresh的值改变状态
         changeStatus() {
@@ -499,15 +499,17 @@ export default {
             //refresh值为true时状态变为加载状态
             if (this.refresh) {
                 this.status = 2
-				this.disableScroll = true
+                this.disableScroll = true
                 this.$emit('refresh')
-				//非触摸下拉的
+                //非触摸下拉的
                 if (!this.hasTouch) {
                     this.$refs.wrapper.style.transition = 'transform 300ms'
-                    this.$refs.wrapper.style.webkitTransition = 'transform 300ms'
-					//触发浏览器重绘刷新
-					const width = this.$refs.wrapper.offsetWidth
-					this.translateY = $dap.element.rem2px(this.distance) - this.elHeight
+                    this.$refs.wrapper.style.webkitTransition =
+                        'transform 300ms'
+                    //触发浏览器重绘刷新
+                    const width = this.$refs.wrapper.offsetWidth
+                    this.translateY =
+                        $dap.element.rem2px(this.distance) - this.elHeight
                     setTimeout(() => {
                         this.$refs.wrapper.style.transition = ''
                         this.$refs.wrapper.style.webkitTransition = ''
@@ -520,14 +522,14 @@ export default {
                 this.hasTouch = false
                 this.$refs.wrapper.style.transition = 'transform 300ms'
                 this.$refs.wrapper.style.webkitTransition = 'transform 300ms'
-				//触发浏览器重绘刷新
-				const width = this.$refs.wrapper.offsetWidth
+                //触发浏览器重绘刷新
+                const width = this.$refs.wrapper.offsetWidth
                 this.translateY = -this.elHeight
                 setTimeout(() => {
                     this.$refs.wrapper.style.transition = ''
                     this.$refs.wrapper.style.webkitTransition = ''
                     this.status = 0
-					this.disableScroll = false
+                    this.disableScroll = false
                 }, 300)
             }
         },
@@ -560,27 +562,27 @@ export default {
     height: 100vh;
     position: relative;
     overflow: hidden;
-	
-	.mvi-pull-refresh-wrapper{
-		display: block;
-		position: relative;
-		width: 100%;
-		overflow-x: hidden;
-		overflow-y: auto;
-		
-		.mvi-pull-refresh-el {
-		    display: flex;
-		    display: -webkit-flex;
-		    justify-content: center;
-		    align-items: center;
-		    color: @font-color-sub;
-		    width: 100%;
-			padding: @mp-lg 0;
-			
-			.mvi-pull-refresh-text {
-			    margin-left: @mp-xs;
-			}
-		}
-	}
+
+    .mvi-pull-refresh-wrapper {
+        display: block;
+        position: relative;
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        .mvi-pull-refresh-el {
+            display: flex;
+            display: -webkit-flex;
+            justify-content: center;
+            align-items: center;
+            color: @font-color-sub;
+            width: 100%;
+            padding: @mp-lg 0;
+
+            .mvi-pull-refresh-text {
+                margin-left: @mp-xs;
+            }
+        }
+    }
 }
 </style>
