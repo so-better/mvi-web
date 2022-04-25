@@ -52,7 +52,6 @@ export default {
     methods: {
         //触发日期选择弹窗
         trigger() {
-            console.log(this.ios)
             if (this.ios) {
                 this.$el.focus()
             } else {
