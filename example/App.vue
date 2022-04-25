@@ -1,7 +1,7 @@
 <template>
     <div id="app">
-        <m-button @click="show=!show">Button</m-button>
-        <m-date-picker v-model="date" mode="datetime"></m-date-picker>
+        <m-button type="success" form-control @click="selectDate">选择日期</m-button>
+        <m-date-native-picker ref="datepicker" type="time" v-model="date"></m-date-native-picker>
     </div>
 </template>
 <script>
@@ -22,7 +22,9 @@ export default {
         }
     },
     methods: {
-        doClear() {}
+        selectDate() {
+            this.$refs.datepicker.trigger()
+        }
     }
 }
 </script>
