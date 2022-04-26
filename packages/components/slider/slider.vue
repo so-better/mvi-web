@@ -178,6 +178,11 @@ export default {
                 this.drag.draggableX = !this.vertical && !this.disabled
                 this.drag.draggableY = this.vertical && !this.disabled
             })
+        },
+        value(newValue) {
+            if (!this.isdrag) {
+                this.setBtnOffset()
+            }
         }
     },
     methods: {
