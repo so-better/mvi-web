@@ -458,6 +458,7 @@ export default {
     display: -webkit-flex;
     width: 100%;
     justify-content: space-between;
+    align-items: center;
 }
 
 .mvi-calendar-month-m,
@@ -465,7 +466,6 @@ export default {
     width: 25%;
     display: block;
     text-align: center;
-    vertical-align: middle;
     padding: @mp-xs;
 }
 

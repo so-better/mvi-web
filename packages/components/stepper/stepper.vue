@@ -369,7 +369,6 @@ export default {
         background-image: none;
         margin: 0;
         font-size: inherit;
-        vertical-align: middle;
 
         &[disabled] {
             background-color: inherit;

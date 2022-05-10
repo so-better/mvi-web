@@ -515,7 +515,6 @@ export default {
     font-size: @font-size-default;
     padding: 0 @mp-sm 0 @mp-sm;
     background-color: #fff;
-    vertical-align: middle;
     margin-left: 5%;
 
     &::placeholder,

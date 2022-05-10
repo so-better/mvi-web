@@ -1,18 +1,26 @@
 <template>
     <div id="app">
-
-        <m-slider v-model="value"></m-slider>
-        <m-slider v-model="value"></m-slider>
+        <m-stepper v-model="value"></m-stepper>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            value: 20
+            value: 20,
+            date: new Date()
         }
     },
-    methods: {}
+    methods: {
+        getInfo() {
+            const info = this.$dap.platform.language()
+            this.$alert({
+                ios: true,
+                title: info,
+                message: null
+            })
+        }
+    }
 }
 </script>
 <style lang="less">

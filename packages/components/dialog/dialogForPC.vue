@@ -12,7 +12,7 @@
             </div>
             <div class="mvi-dialog-footer">
                 <m-button v-if="type!='Alert'" :type="computedBtns.cancel.type" :color="computedBtns.cancel.color" :sub-color="computedBtns.cancel.subColor" :plain="computedBtns.cancel.plain" class="mvi-dialog-cancel" @click="cancelFun" :size="computedBtns.cancel.size">{{computedBtns.cancel.text}}</m-button>
-                <m-button :type="computedBtns.ok.type" :color="computedBtns.ok.color" :sub-color="computedBtns.ok.subColor" :plain="computedBtns.ok.plain" class="mvi-dialog-ok" @click="okFun" :size="computedBtns.ok.size">{{computedBtns.ok.text}}</m-button>
+                <m-button :type="computedBtns.ok.type" :color="computedBtns.ok.color" :sub-color="computedBtns.ok.subColor" :plain="computedBtns.ok.plain" @click="okFun" :size="computedBtns.ok.size">{{computedBtns.ok.text}}</m-button>
             </div>
         </template>
     </m-modal>
@@ -496,7 +496,6 @@ export default {
     color: @font-color-default;
     font-size: @font-size-default;
     background-color: #fff;
-    vertical-align: middle;
     padding: 0 @mp-sm;
 
     &::placeholder,
@@ -539,9 +538,6 @@ export default {
 
     .mvi-dialog-cancel {
         margin-right: @mp-md;
-    }
-
-    .mvi-dialog-ok {
     }
 }
 </style>
