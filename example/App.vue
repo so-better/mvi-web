@@ -1,13 +1,14 @@
 <template>
     <div id="app">
-        <m-select v-model="value" :options="options"></m-select>
+        {{value}}
+        <m-select multiple @change="change" clearable placeholder="请选择" v-model="value" :options="options"></m-select>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            value: 20,
+            value: [],
             date: new Date(),
             options: [
                 {
@@ -22,13 +23,8 @@ export default {
         }
     },
     methods: {
-        getInfo() {
-            const info = this.$dap.platform.language()
-            this.$alert({
-                ios: true,
-                title: info,
-                message: null
-            })
+        change(res) {
+            console.log(res)
         }
     }
 }
