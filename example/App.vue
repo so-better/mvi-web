@@ -1,9 +1,7 @@
 <template>
     <div id="app">
         <!-- <m-select :layer-props="{shadow:false}" style="width:6rem;margin:7rem auto;" @change="change" clearable placeholder="请选择" v-model="value" :options="options"></m-select> -->
-        <m-date-chooser block :layer-props="{showTriangle:true,borderColor:'#f30',border:true}" style="margin-left: 5rem;width:7rem;" v-model="date">
-            <m-field :value="date.toString()"></m-field>
-        </m-date-chooser>
+        <m-select v-model="value" :options="serverList" height="6rem" placeholder="大区服务器" clearable></m-select>
     </div>
 </template>
 <script>
@@ -11,19 +9,76 @@ export default {
     data() {
         return {
             value: '',
-            value2: '',
-            date: new Date(),
-            options: [
+            serverList: [
                 {
-                    label: '安徽',
-                    value: 10
+                    label: '祖安',
+                    value: '祖安'
                 },
                 {
-                    label: '江苏',
-                    value: 20
+                    label: '诺克萨斯',
+                    value: '诺克萨斯'
+                },
+                {
+                    label: '班德尔城',
+                    value: '班德尔城'
+                },
+                {
+                    label: '皮尔特沃夫',
+                    value: '皮尔特沃夫'
+                },
+                {
+                    label: '战争学院',
+                    value: '战争学院'
+                },
+                {
+                    label: '巨神峰',
+                    value: '巨神峰'
+                },
+                {
+                    label: '雷瑟守备',
+                    value: '雷瑟守备'
+                },
+                {
+                    label: '裁决之地',
+                    value: '裁决之地'
+                },
+                {
+                    label: '暗影岛',
+                    value: '暗影岛'
+                },
+                {
+                    label: '钢铁烈阳',
+                    value: '钢铁烈阳'
+                },
+                {
+                    label: '均衡教派',
+                    value: '均衡教派'
+                },
+                {
+                    label: '水晶之痕',
+                    value: '水晶之痕'
+                },
+                {
+                    label: '影流',
+                    value: '影流'
+                },
+                {
+                    label: '守望之海',
+                    value: '守望之海'
+                },
+                {
+                    label: '征服之海',
+                    value: '征服之海'
+                },
+                {
+                    label: '卡拉曼达',
+                    value: '卡拉曼达'
+                },
+                {
+                    label: '皮城警备',
+                    value: '皮城警备'
                 }
-            ],
-            list: ['中国', '美国', '英国']
+            ]
         }
     },
     methods: {

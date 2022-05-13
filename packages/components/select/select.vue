@@ -300,7 +300,6 @@ export default {
                     this.value === '' ||
                     this.value === null ||
                     this.value === undefined ||
-                    isNaN(this.value) ||
                     !this.hover
                 ) {
                     return false
