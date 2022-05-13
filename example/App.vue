@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <m-stepper v-model="value"></m-stepper>
+        <m-select v-model="value" :options="options"></m-select>
     </div>
 </template>
 <script>
@@ -8,7 +8,17 @@ export default {
     data() {
         return {
             value: 20,
-            date: new Date()
+            date: new Date(),
+            options: [
+                {
+                    label: '安徽',
+                    value: 10
+                },
+                {
+                    label: '江苏',
+                    value: 20
+                }
+            ]
         }
     },
     methods: {

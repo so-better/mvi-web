@@ -38,7 +38,9 @@ export default {
         //选项
         options: {
             type: Array,
-            default: []
+            default: function () {
+                return []
+            }
         },
         //选择的值
         value: {
