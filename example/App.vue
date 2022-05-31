@@ -1,14 +1,14 @@
 <template>
     <div id="app">
-        <!-- <m-select :layer-props="{shadow:false}" style="width:6rem;margin:7rem auto;" @change="change" clearable placeholder="请选择" v-model="value" :options="options"></m-select> -->
-        <m-select v-model="value" :options="serverList" height="6rem" placeholder="大区服务器" clearable></m-select>
+        {{value}}
+        <m-stepper v-model="value" :digit="2" :step="0.01"> </m-stepper>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            value: '',
+            value: 0.12,
             serverList: [
                 {
                     label: '祖安',

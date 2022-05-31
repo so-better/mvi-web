@@ -210,9 +210,10 @@ export default {
         },
         realValue: {
             set(value) {
-                if (this.value !== value) {
-                    this.$emit('update:value', value)
-                    this.$emit('model-change', value)
+                let val = this.updateValue(value)
+                if (this.value !== val) {
+                    this.$emit('update:value', val)
+                    this.$emit('model-change', val)
                 }
             },
             get() {
@@ -222,9 +223,6 @@ export default {
     },
     components: {
         mIcon
-    },
-    mounted() {
-        this.updateValue()
     },
     methods: {
         //减法
@@ -239,7 +237,6 @@ export default {
                 return
             }
             this.realValue = $dap.number.subtract(this.realValue, this.step)
-            this.updateValue()
         },
         //加法
         doPlus() {
@@ -253,7 +250,6 @@ export default {
                 return
             }
             this.realValue = $dap.number.add(this.realValue, this.step)
-            this.updateValue()
         },
         //输入框修改值
         changeValue() {
@@ -263,11 +259,12 @@ export default {
             if (this.disabledInput) {
                 return
             }
-            this.updateValue()
+            //更新输入框
+            this.$refs.input.value = this.realValue
         },
-        //更新value值
-        updateValue() {
-            let val = parseFloat(this.realValue)
+        //校验更新value值
+        updateValue(value) {
+            let val = parseFloat(value)
             if (isNaN(val)) {
                 val = 0
             }
@@ -278,9 +275,7 @@ export default {
             if (val >= this.max && this.max != null) {
                 val = this.max
             }
-            if (this.realValue !== val) {
-                this.realValue = val
-            }
+            return val
         }
     }
 }
