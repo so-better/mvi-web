@@ -694,8 +694,9 @@ export default {
                         }
                     })
                     menus[key] = newArray
-                } else if (typeof this.defaultMenus[key] == 'boolean') {
-                    //非数组情况只能是布尔值
+                }
+                //非数组情况只能是布尔值
+                else if (typeof this.defaultMenus[key] == 'boolean') {
                     menus[key] = this.defaultMenus[key]
                 }
             })
@@ -755,6 +756,25 @@ export default {
                 }
             }
             return style
+        },
+        //图标配置值
+        computedMenuIcons() {
+            let menuIcons = {}
+            Object.keys(this.defaultMenuIcons).forEach(key => {
+                //是对象
+                if ($dap.common.isObject(this.defaultMenuIcons[key])) {
+                    menuIcons[key] = {
+                        custom: this.defaultMenuIcons[key].custom,
+                        value: this.defaultMenuIcons[key].value
+                    }
+                } else {
+                    menuIcons[key] = {
+                        custom: false,
+                        value: this.defaultMenuIcons[key]
+                    }
+                }
+            })
+            return menuIcons
         }
     },
     provide() {
