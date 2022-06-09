@@ -1,14 +1,14 @@
 <template>
     <div id="app">
-        {{value}}
-        <m-stepper v-model="value" :digit="2" :step="0.01"> </m-stepper>
+        <div>{{value}}</div>
+        <m-editor ref="editor" :menu-icons="{custom:'user'}" :menu-index="{custom:1}" :tooltips="{custom:'自定义'}" :menus="{custom:true,codeView:true}" @custom="change" v-model="value"></m-editor>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            value: 0.12,
+            value: '',
             serverList: [
                 {
                     label: '祖安',
@@ -84,6 +84,7 @@ export default {
     methods: {
         change(res) {
             console.log(res)
+            console.log(this.$refs.editor.getSelectNode())
         }
     }
 }
