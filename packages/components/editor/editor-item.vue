@@ -75,8 +75,11 @@
                 </div>
                 <!-- 其他 -->
                 <div v-else>
-                    <div class="mvi-editor-el" v-for="(item,index) in menu" :key="'mvi-editor-el-'+index" @click="doSelect(item)">
-                        <m-icon class="mvi-editor-el-icon" v-if="item.icon" :type="item.icon" />
+                    <div class="mvi-editor-el" v-for="(item,index) in menu" :key="'mvi-editor-el-'+index" @click="doSelect(item,index)">
+                        <template v-if="item.icon">
+                            <i class="mvi-editor-el-icon" v-if="item.icon.custom" :class="item.icon.value"></i>
+                            <m-icon v-else class="mvi-editor-el-icon" :type="item.icon.value" />
+                        </template>
                         <span v-text="item.label"></span>
                     </div>
                 </div>
@@ -267,28 +270,33 @@ export default {
             }
         },
         //菜单项下拉选择
-        doSelect(item) {
+        doSelect(item, index) {
             if (this.editor.disabled) {
                 return
             }
             this.editor.restoreRange()
             switch (this.value) {
-                case 'tag': //设置dom标签
+                //设置dom标签
+                case 'tag':
                     document.execCommand('formatBlock', false, item.value)
                     break
-                case 'fontFamily': //设置字体
+                //设置字体
+                case 'fontFamily':
                     document.execCommand('fontName', false, item.value)
                     break
-                case 'list': //设置列表
+                //设置列表
+                case 'list':
+                    //有序列表
                     if (item.value == 'ol') {
-                        //有序列表
                         document.execCommand('insertOrderedList')
-                    } else {
-                        //无序列表
+                    }
+                    //无序列表
+                    else {
                         document.execCommand('insertUnorderedList')
                     }
                     break
-                case 'justify': //对齐方式
+                //对齐方式
+                case 'justify':
                     if (item.value == 'left') {
                         document.execCommand('justifyLeft')
                     } else if (item.value == 'center') {
@@ -299,11 +307,17 @@ export default {
                         document.execCommand('justifyFull')
                     }
                     break
-                case 'foreColor': //字体颜色
+                //字体颜色
+                case 'foreColor':
                     document.execCommand('foreColor', false, item.value)
                     break
-                case 'backColor': //背景色
+                //背景色
+                case 'backColor':
                     document.execCommand('hiliteColor', false, item.value)
+                    break
+                //设置字体大小
+                case 'fontSize':
+                    document.execCommand('fontSize', false, index + 1)
                     break
                 default:
                     //自定义操作
@@ -829,12 +843,13 @@ export default {
         }
 
         .mvi-editor-el {
-            display: block;
-            padding: @mp-sm @mp-md;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: @mp-sm @mp-lg;
             white-space: nowrap;
             font-size: @font-size-default;
             color: @font-color-sub;
-            text-align: center;
 
             &:hover {
                 color: @font-color-default;
@@ -843,7 +858,7 @@ export default {
             }
 
             .mvi-editor-el-icon {
-                margin-right: @mp-sm;
+                margin-right: @mp-xs;
             }
         }
 
