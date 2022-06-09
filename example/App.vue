@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div>{{value}}</div>
-        <m-editor ref="editor" :menu-icons="{custom:'user'}" :menu-index="{custom:1}" :tooltips="{custom:'自定义',codeView:'显示源码显示源码'}" :menus="{custom:true,codeView:true,fontSize:[{label:'12px',value:'12px',icon:{custom:true,value:'fa fa-home'}}]}" @custom="change" v-model="value"></m-editor>
+        <m-editor ref="editor" :menu-icons="{custom:'user'}" :menu-index="{custom:1}" :tooltips="{custom:'自定义',codeView:'显示源码显示源码'}" :menus="{custom:true,codeView:true,fontSize:[{label:'12px',value:'12px',icon:{custom:true,value:'fa fa-home'}}]}" :custom-active="customActive" @custom="change" v-model="value"></m-editor>
     </div>
 </template>
 <script>
@@ -83,8 +83,20 @@ export default {
     },
     methods: {
         change(res) {
-            console.log(res)
-            console.log(this.$refs.editor.getSelectNode())
+            this.$refs.editor.insertHtml(
+                '<div data-v="1" class="mvi-bg-success mvi-p-4"></div>'
+            )
+        },
+        customActive(key, node) {
+            if (key === 'custom') {
+                console.log(
+                    this.$refs.editor.getCompareTagForAttr(node, 'data-v')
+                )
+                if (this.$refs.editor.compareAttribute(node, 'data-v', '1')) {
+                    return true
+                }
+                return false
+            }
         }
     }
 }
