@@ -12,6 +12,7 @@ import components from './components'
 //注册组件和工具类
 const install = Vue => {
     if (install.installed) return
+    install.installed = true
     Vue.prototype.$dap = dap
     Object.values(components).map(component => {
         component.install(Vue)

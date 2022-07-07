@@ -5,8 +5,8 @@ Vue.config.productionTip = false
 import "../packages/config"
 import cmp from "../packages/components/toast"
 Vue.use(cmp) */
-import mvi from "../packages"
+import mvi from '../packages'
 Vue.use(mvi)
 new Vue({
-	render: h => h(App),
+    render: h => h(App)
 }).$mount('#app')
