@@ -758,6 +758,9 @@ export default {
                 }
             }
             let pEl = $dap.element.string2dom('<p>' + innerHTML + '</p>')
+            if (pEl instanceof HTMLCollection) {
+                pEl = $dap.element.string2dom('<div>' + innerHTML + '</div>')
+            }
             this.insertNodeAfter(pEl, pre)
             pre.remove()
             if (this.editor.range) {
