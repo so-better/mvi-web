@@ -60,7 +60,10 @@ class Drag {
                 'The element that need to be dragged is not descendants of container element'
             )
         }
-        if ($dap.element.getCssStyle(this.$container, 'position') == 'static') {
+        if (
+            $dap.element.getCssStyle(this.$container, 'position') == 'static' &&
+            this.$container != document.body
+        ) {
             throw new Error(
                 'The container element cannot be static positioning'
             )

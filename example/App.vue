@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <m-editor ref="editor" :menu-icons="{custom:'user'}" :menu-index="{custom:1}" :tooltips="{custom:'自定义',codeView:'显示源码显示源码'}" :menus="{custom:true,codeView:true,fontSize:[{label:'12px',value:'12px',icon:{custom:true,value:'fa fa-home'}}]}" :custom-active="customActive" @custom="change" v-model="value"></m-editor>
+        <div style="position: absolute;left:0;top:0" v-drag="{container:'body',mode:'in'}">可拖拽的按钮</div>
     </div>
 </template>
 <script>
