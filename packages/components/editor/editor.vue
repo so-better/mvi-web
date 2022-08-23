@@ -16,6 +16,23 @@
 import $dap from 'dap-util'
 import editorItem from './editor-item'
 import Observe from '../observe/observe'
+//不实现激活状态的菜单项
+const unactiveMenus = [
+    'undo',
+    'redo',
+    'removeFormat',
+    'selectAll',
+    'divider',
+    'tag',
+    'fontFamily',
+    'fontSize',
+    'foreColor',
+    'backColor',
+    'list',
+    'justify',
+    'image',
+    'video'
+]
 export default {
     name: 'm-editor',
     data() {
@@ -1140,22 +1157,7 @@ export default {
                         break
                     default:
                         //如果不是自定义的菜单项，则不激活
-                        let selectKeys = [
-                            'undo',
-                            'redo',
-                            'removeFormat',
-                            'selectAll',
-                            'divider',
-                            'tag',
-                            'fontFamily',
-                            'foreColor',
-                            'backColor',
-                            'list',
-                            'justify',
-                            'image',
-                            'video'
-                        ]
-                        if (selectKeys.includes(item.value)) {
+                        if (unactiveMenus.includes(item.value)) {
                             item.menuActive = false
                             return
                         }
