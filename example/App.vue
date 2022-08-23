@@ -83,7 +83,7 @@ export default {
     methods: {
         change(res) {
             this.$refs.editor.insertHtml(
-                '<div data-v="1" class="mvi-bg-success mvi-p-4"></div>'
+                '<div data-v="1" class="mvi-bg-success mvi-p-4"><br></div>'
             )
         },
         customActive(key, node) {
